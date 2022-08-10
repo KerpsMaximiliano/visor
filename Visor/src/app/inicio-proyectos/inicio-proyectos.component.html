@@ -1,0 +1,20 @@
+<h1>Proyectos</h1>
+<div class="busqueda">
+    <form action="">
+        <input type="text" matInput [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let option of options" [value]="option">
+            {{option}}
+        </mat-option>
+        </mat-autocomplete>
+        <mat-icon>search</mat-icon>
+    </form>
+</div>
+<div class="avance-proyecto">
+    Avance del Proyecto
+    <mat-progress-bar mode="determinate" value="80"></mat-progress-bar>
+</div>
+<div class="avance-area">
+    Avance por área
+    <mat-progress-bar mode="determinate" value="40"></mat-progress-bar>
+</div>
