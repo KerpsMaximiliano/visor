@@ -1,3 +1,46 @@
-span {
-  height: 1em;
+h2 {
+  margin-top: 5%;
+}
+
+.container {
+  padding: 2%;
+}
+
+.etiqueta {
+  width: 25%;
+  text-align: left;
+  font-size: large;
+}
+
+.progress {
+  height: 100%;
+  margin: 3%;
+  width: 70%;
+  background-color: #f5f5f5;
+  transition: 0.25s;
+}
+
+.busqueda {
+  width: 50%;
+  height: 3em;
+  transition: .25s;
+}
+
+.busqueda:focus {
+  width: 65%;
+  height: 4.5em;
+  border: 2px solid black;
+}
+
+.lupa {
+  height: 1.5em;
+}
+
+.progress-bar {
+  color: black;
+}
+
+.progress:hover {
+  width: 80%;
+  border: 2px solid black;
 }

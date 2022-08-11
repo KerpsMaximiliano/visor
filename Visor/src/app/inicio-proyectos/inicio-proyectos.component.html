@@ -1,16 +1,16 @@
+<div class="container">
 <h1>Proyectos</h1>
-<div class="busqueda">
+<div>
     <form action="">
-        <input type="text" matInput [matAutocomplete]="auto">
+        <input class="busqueda" type="text" matInput [matAutocomplete]="auto" placeholder="Buscar proyecto...">
         <mat-autocomplete #auto="matAutocomplete">
         <mat-option *ngFor="let option of options" [value]="option">
             {{option}}
         </mat-option>
         </mat-autocomplete>
-        <mat-icon>search</mat-icon>
+        <button><mat-icon class="lupa">search</mat-icon></button>
     </form>
 </div>
-<span></span>
 <h2>Avance del Proyecto</h2>
 <div class="progress">
     <div class="progress-bar bg-danger" role="progressbar" aria-label="Segment one" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
@@ -21,23 +21,24 @@
 <span></span>
 <h2>Avance por área</h2>
 <div class="progress">
-    <div>Funcional</div><div class="progress-bar bg-danger" role="progressbar" aria-label="Segment one" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
+    <div class="etiqueta">Funcional</div><div class="progress-bar bg-danger" role="progressbar" aria-label="Segment one" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
     <div class="progress-bar bg-warning" role="progressbar" aria-label="Segment two" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">40%</div>
     <div class="progress-bar bg-success" role="progressbar" aria-label="Segment one" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">10%</div>
 </div>
 <div class="progress">
-    <div>Técnico</div><div class="progress-bar bg-danger" role="progressbar" aria-label="Segment one" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
-    <div class="progress-bar bg-warning" role="progressbar" aria-label="Segment two" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+    <div class="etiqueta">Técnico</div><div class="progress-bar bg-danger" role="progressbar" aria-label="Segment one" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
+    <div class="progress-bar bg-warning" role="progressbar" aria-label="Segment two" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">40%</div>
     <div class="progress-bar bg-success" role="progressbar" aria-label="Segment one" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">10%</div>
 </div>
 <div class="progress">
-    <div>Desarrollo</div><div class="progress-bar bg-danger" role="progressbar" aria-label="Segment one" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
+    <div class="etiqueta">Desarrollo</div><div class="progress-bar bg-danger" role="progressbar" aria-label="Segment one" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
     <div class="progress-bar bg-warning" role="progressbar" aria-label="Segment two" style="width: 15%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">15%</div>
     <div class="progress-bar bg-info" role="progressbar" aria-label="Segment three" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
     <div class="progress-bar bg-success" role="progressbar" aria-label="Segment one" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">10%</div>
 </div>
 <div class="progress">
-    <div>Testing</div><div class="progress-bar bg-danger" role="progressbar" aria-label="Segment one" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
+    <div class="etiqueta">Testing</div><div class="progress-bar bg-danger" role="progressbar" aria-label="Segment one" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
     <div class="progress-bar bg-warning" role="progressbar" aria-label="Segment two" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">40%</div>
     <div class="progress-bar bg-success" role="progressbar" aria-label="Segment one" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">10%</div>
+</div>
 </div>
