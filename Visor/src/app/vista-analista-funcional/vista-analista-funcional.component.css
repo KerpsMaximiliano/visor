@@ -1,0 +1,90 @@
+
+* {
+    padding: 0;
+    margin: 0;
+    text-decoration: none;
+    list-style: none;
+}
+
+.conteiner-all{
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
+}  
+
+.conteiner-barra{
+    margin-right: 350px;
+    margin-left: 350px;
+}
+
+.porcentajes{
+    margin-top: 13px;
+    color: black;
+}
+
+.cabecera {
+    text-align: center;
+}
+
+#titulo-proyecto {
+    font-size: 25px;
+    margin-top: 20px;
+}
+
+#subtitulo-disenio{
+    font-size: 15px;
+}
+
+.mat-form-field + .mat-form-field {
+    margin-left: 8px;
+}
+
+.conteiner-all-act{
+    margin-top: 10px;
+}
+
+.actividades{
+    padding-top: 10px;
+}
+
+.actividades mat-accordion mat-expansion-panel{
+    background-color: rgb(194, 194, 194);
+    border: solid 1px black;
+}
+
+.actividades mat-accordion mat-expansion-panel-header{
+    height: 25px;
+}
+
+#titulo-act{
+    text-align: center;
+    font-size: 12px;
+}
+
+.card-columna{
+    width: 300px;
+    height: 500px;
+    margin: 5px;
+    border: 1.5px solid black;
+}
+
+.titulo-conteiner-no-iniciadas {
+    height: 25px;
+    background-color: rgb(170, 0, 0);
+    text-align: center;
+    border: 1.5px solid black;
+}
+
+.titulo-conteiner-progreso {
+    height: 25px;
+    background-color: yellow;
+    text-align: center;
+    border: 1.5px solid black;
+}
+
+.titulo-conteiner-completadas {
+    height: 25px;
+    background-color: rgb(4, 131, 2);
+    text-align: center;
+    border: 1.5px solid black; 
+}

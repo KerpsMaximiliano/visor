@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 //Material
 import { MyMaterialModule } from './material';
+import { VistaAnalistaModule } from './vista-analista-funcional/modules/vista-analista.module';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { MyMaterialModule } from './material';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MyMaterialModule
+    MyMaterialModule,
+    VistaAnalistaModule
   ],
   providers: [],
   bootstrap: [AppComponent]
