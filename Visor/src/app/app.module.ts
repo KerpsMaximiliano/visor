@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ReactiveFormsModule } from '@angular/forms';
 
 //Material
 import { MyMaterialModule } from './material';
@@ -13,12 +14,12 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 // Componentes
 import { InicioProyectosComponent } from './inicio-proyectos/inicio-proyectos.component';
 import { InicioEquipoComponent } from './inicio-equipo/inicio-equipo.component';
-
-
 
 @NgModule({
   declarations: [
@@ -34,7 +35,10 @@ import { InicioEquipoComponent } from './inicio-equipo/inicio-equipo.component';
     MatSliderModule,
     MatIconModule,
     MatAutocompleteModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

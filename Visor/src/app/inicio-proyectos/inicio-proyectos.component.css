@@ -20,22 +20,6 @@ h2 {
   transition: 0.25s;
 }
 
-.busqueda {
-  width: 50%;
-  height: 3em;
-  transition: .25s;
-}
-
-.busqueda:focus {
-  width: 65%;
-  height: 4.5em;
-  border: 2px solid black;
-}
-
-.lupa {
-  height: 1.5em;
-}
-
 .progress-bar {
   color: black;
 }
