@@ -1,3 +1,36 @@
 <div class="container">
-    <h1>Equipo</h1>
+<h1>Equipo</h1>
+<div>
+    <form>
+        <mat-form-field appearance="fill">
+        <mat-label>Buscar colaborador...</mat-label>
+        <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn2">
+            <mat-option *ngFor="let option of filteredOptions2 | async" [value]="option">
+            {{option.nombre}}
+            </mat-option>
+        </mat-autocomplete>
+        </mat-form-field>
+        <button><mat-icon>filter_alt</mat-icon></button>
+    </form>
+</div>
+
+<mat-grid-list cols="2" rowHeight="250px">
+    <mat-grid-tile *ngFor="let user of colaboradores">
+        <mat-card class="example-card">
+            <mat-card-title-group>
+                <mat-card-title> {{ user.nombre}} </mat-card-title>
+                <mat-card-subtitle> Funcion: {{ user.rol }} </mat-card-subtitle>
+                <mat-card-subtitle class="saturacion"> {{ user.planificadas / user.capacidad * 100 }}% </mat-card-subtitle>
+                <img mat-card-md-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" >
+            </mat-card-title-group>
+            <mat-card-content>
+                <div>Capacidad: {{ user.capacidad }} </div>
+                <div>Disponibilidad: {{ user.disponibilidad }} </div>
+                <div>Proyectos</div>
+            </mat-card-content>
+        </mat-card>
+    </mat-grid-tile>
+</mat-grid-list>
+
 </div>

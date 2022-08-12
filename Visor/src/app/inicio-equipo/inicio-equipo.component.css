@@ -1,3 +1,27 @@
+h2 {
+    margin-top: 5%;
+}
+
+mat-grid-tile {
+    transition: 0.25s;
+}
+
+mat-grid-tile:hover {
+    border: 2px solid black;
+}
+
 .container {
     padding: 2%;
+}
+
+.example-card {
+    max-width: 300px;
+    margin-bottom: 8px;
+}
+
+.saturacion {
+    background-color: green;
+    width: 50%;
+    text-align: center;
+    color: white;
 }

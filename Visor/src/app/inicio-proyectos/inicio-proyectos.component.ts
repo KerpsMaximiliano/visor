@@ -14,7 +14,7 @@ export interface Proyecto {
 })
 export class InicioProyectosComponent implements OnInit {
 
-  myControl = new FormControl;
+  controlProy = new FormControl;
   options: Proyecto[] = [
     { name: 'Entrenamiento en Drupal y Symfony' },
     { name: 'Sala de Sorteos - Extractos Digitales' },
@@ -22,7 +22,7 @@ export class InicioProyectosComponent implements OnInit {
   ];
   filteredOptions: Observable<Proyecto[]>;
 
-  constructor() { this.filteredOptions = this.myControl.valueChanges.pipe(
+  constructor() { this.filteredOptions = this.controlProy.valueChanges.pipe(
     startWith(''),
     map(value => {
       const name = typeof value === 'string' ? value : value?.name;

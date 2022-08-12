@@ -1,17 +1,17 @@
 <div class="container">
 <h1>Proyectos</h1>
 <div>
-    <form class="busqueda">
+    <form>
         <mat-form-field appearance="fill">
         <mat-label>Buscar proyecto...</mat-label>
-        <input type="text" matInput formControlName="myControl" [matAutocomplete]="auto">
+        <input type="text" matInput [formControl]="controlProy" [matAutocomplete]="auto">
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
             <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
             {{option.name}}
             </mat-option>
         </mat-autocomplete>
         </mat-form-field>
-        <button><mat-icon class="lupa">search</mat-icon></button>
+        <button><mat-icon>search</mat-icon></button>
     </form>
 </div>
 <h2>Avance del Proyecto</h2>
