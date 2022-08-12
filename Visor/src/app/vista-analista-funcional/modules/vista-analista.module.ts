@@ -5,6 +5,7 @@ import { VistaAnalistaFuncionalComponent } from '../vista-analista-funcional.com
 //Angular Material
 import {MatCardModule} from '@angular/material/card';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {MatDividerModule} from '@angular/material/divider';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
   imports: [
     CommonModule,
     MatCardModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatDividerModule
   ],
   exports: [
     VistaAnalistaFuncionalComponent

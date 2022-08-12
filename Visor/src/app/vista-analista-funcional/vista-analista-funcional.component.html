@@ -1,3 +1,4 @@
+
 <!-- Comienzo cabecera -->
 <div class="cabecera">
     <h2 id="titulo-proyecto">Proyecto XXX</h2>
@@ -20,69 +21,63 @@
         <div class="titulo-conteiner-no-iniciadas">
             <h4>NO INICIADAS</h4>
         </div>
-        
+      
         <div class="conteiner-all-act">
-            <div class="actividades">
-                <mat-accordion>
+            <div class="actividades" *ngFor="let actividad of actividades">
+                <mat-accordion class="panel-header">
                     <mat-expansion-panel hideToggle>
+                        <mat-divider id="separador"></mat-divider>
+                        <div class="desc-act">
+                            <div class="datos">
+                                <strong>Prioridad: </strong>
+                                <p>{{actividad.prioridad}}</p>
+                            </div>
+                            <div class="datos">
+                                <strong>Asignado: </strong>
+                                <p>{{actividad.asignado}}</p>
+                            </div>
+                            <div class="datos">
+                                <strong>Facilitador: </strong>
+                                <p>{{actividad.facilitador}}</p>
+                            </div>
+                            <div id="fechas">
+                                <strong>Fechas: </strong>
+                                <p>De inicio: {{actividad.fechas}}</p>
+                                <p>Fin: {{actividad.fechas}}</p>
+                                <p>Planificada: {{actividad.fechas}}</p>
+                            </div> 
+                            <div class="datos">
+                                <strong>Horas: </strong>
+                                <p>{{actividad.horasPlanificadas}}</p>
+                            </div> 
+                            <div class="datos">
+                                <strong>Documento: </strong>
+                                <p>{{actividad.documento}}</p>
+                            </div> 
+                            <div class="datos">
+                                <strong>Tarea: </strong>
+                                <p>{{actividad.tareasPrecondicion}}</p>
+                            </div> 
+                        </div>
                     <mat-expansion-panel-header>
-                    <mat-panel-title>
-                    <div id="titulo-act">
-                        TP 98 - XXXX
-                    </div>     
-                    </mat-panel-title>
+                    <div>
+                        <mat-panel-title>
+                            {{actividad.titulo}}
+                        </mat-panel-title>
+                    </div>
+                    <!-- Icono editar -->    
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16" id="icon-edit">
+                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                    </svg>
                     </mat-expansion-panel-header>
-                        <p>This is the primary content of the panel.ADSFSDASDFADSFASDFASDFDASADSDASADSFFDASDFASDASSDSDFADSFDSFDFADFFDS</p>
                     </mat-expansion-panel>
                   </mat-accordion>
-            </div>
-
-            <div class="actividades">
-                <mat-accordion>
-                    <mat-expansion-panel hideToggle>
-                    <mat-expansion-panel-header>
-                    <mat-panel-title>
-                    <div id="titulo-act">
-                        TP 99 - XXXX 
-                    </div>     
-                    </mat-panel-title>
-                    </mat-expansion-panel-header>
-                        <p>This is the primary content of the panel.</p>
-                    </mat-expansion-panel>
-                  </mat-accordion>
-            </div>
-
-            <div class="actividades">
-                <mat-accordion>
-                    <mat-expansion-panel hideToggle>
-                    <mat-expansion-panel-header>
-                    <mat-panel-title>
-                    <div id="titulo-act">
-                        TP 99 - XXXX 
-                    </div>     
-                    </mat-panel-title>
-                    </mat-expansion-panel-header>
-                        <p>This is the primary content of the panel.</p>
-                    </mat-expansion-panel>
-                  </mat-accordion>
-            </div>
-
-            <div class="actividades">
-                <mat-accordion>
-                    <mat-expansion-panel hideToggle>
-                    <mat-expansion-panel-header>
-                    <mat-panel-title>
-                    <div id="titulo-act">
-                        TP 99 - XXXX 
-                    </div>     
-                    </mat-panel-title>
-                    </mat-expansion-panel-header>
-                        <p>This is the primary content of the panel.</p>
-                    </mat-expansion-panel>
-                  </mat-accordion>
+                  <div id="espacio"></div>
             </div>
         </div>
-
     </mat-card> 
 
     <mat-card class="card-columna">
