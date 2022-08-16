@@ -1,7 +1,7 @@
 <div class="container">
 <h1>Equipo</h1>
 <div>
-    <form>
+    <form class="form">
         <mat-form-field appearance="fill">
         <mat-label>Buscar colaborador...</mat-label>
         <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto">
@@ -11,7 +11,9 @@
             </mat-option>
         </mat-autocomplete>
         </mat-form-field>
-        <button><mat-icon>filter_alt</mat-icon></button>
+        <button type="button" (click)="abrirModal()" mat-mini-fab color="primary" class="lupa" matTooltip="Filtrar resultados..">
+            <mat-icon>filter_alt</mat-icon>
+        </button>
     </form>
 </div>
 
@@ -21,12 +23,15 @@
             <mat-card-title-group>
                 <mat-card-title> {{ user.nombre}} </mat-card-title>
                 <mat-card-subtitle> Funcion: {{ user.rol }} </mat-card-subtitle>
-                <mat-card-subtitle class="saturacion"> {{ user.planificadas / user.capacidad * 100 }}% </mat-card-subtitle>
-                <img mat-card-md-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" >
+                <mat-card-subtitle
+                [ngClass]="{ 'saturacion-verde': getSatVerde(user.planificadas), 'saturacion-amarilla': getSatAma(user.planificadas), 'saturacion-roja': getSatRoja(user.planificadas) }">
+                    {{ getSaturacion(user.planificadas) }}%
+                </mat-card-subtitle>
+                <img mat-card-md-image src="https://picsum.photos/200/300" >
             </mat-card-title-group>
             <mat-card-content>
-                <div>Capacidad: {{ user.capacidad }} </div>
-                <div>Disponibilidad: {{ user.disponibilidad }} </div>
+                <div>Capacidad: {{ user.capacidad }} hs</div>
+                <div>Disponibilidad: {{ user.disponibilidad }} hs</div>
                 <div>Proyectos</div>
             </mat-card-content>
         </mat-card>

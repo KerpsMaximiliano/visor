@@ -21,8 +21,10 @@ export class InicioEquipoComponent implements OnInit {
   myControl = new FormControl;
   colaboradores: Colaborador[] = [
     { nombre: 'Facundo Ghio Serra', rol: 'Analista Funcional', capacidad: 120, disponibilidad: 72, planificadas: 48 },
+    { nombre: 'Patricio Macagno', rol: 'Analista Funcional', capacidad: 120, disponibilidad: 35, planificadas: 65 },
     { nombre: 'Franco Friggeri', rol: 'Analista Técnico', capacidad: 120, disponibilidad: 12, planificadas: 108 },
-    { nombre: 'Federico Gauchat', rol: 'Programador', capacidad: 120, disponibilidad: 42, planificadas: 78 },
+    { nombre: 'Augusto Escandon', rol: 'Desarrollador', capacidad: 120, disponibilidad: 80, planificadas: 40 },
+    { nombre: 'Federico Gauchat', rol: 'Desarrollador', capacidad: 120, disponibilidad: 42, planificadas: 78 },
     { nombre: 'Luciano De Giorgio', rol: 'Tester', capacidad: 120, disponibilidad: 30, planificadas: 90 }
   ];
   filteredOptions2: Observable<Colaborador[]>;
@@ -46,6 +48,27 @@ export class InicioEquipoComponent implements OnInit {
     const filterValue = name.toLowerCase();
 
     return this.colaboradores.filter(option => option.nombre.toLowerCase().includes(filterValue));
+  }
+
+  getSaturacion(hsPlanificadas: number) {
+    return Math.round(hsPlanificadas / 120 * 100);
+  }
+
+  getSatVerde(hsPlanificadas: number) {
+    return this.getSaturacion(hsPlanificadas) < 51;
+  }
+
+  getSatAma(hsPlanificadas: number) {
+    return this.getSaturacion(hsPlanificadas) > 50 && this.getSaturacion(hsPlanificadas) < 81;
+  }
+
+  getSatRoja(hsPlanificadas: number) {
+    return this.getSaturacion(hsPlanificadas) > 81 && this.getSaturacion(hsPlanificadas) < 101;
+  }
+
+  abrirModal() {
+    // Abre modal de búsqueda con mas filtros
+    console.log("ABRIENDO MODAL");
   }
 
 }

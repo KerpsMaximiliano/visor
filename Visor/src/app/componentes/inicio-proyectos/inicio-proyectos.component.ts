@@ -4,7 +4,13 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
 export interface Proyecto {
-  name: string;
+  id: number;
+  nombre: string;
+  planificadas: number;
+  noIniciadas: number;
+  enProgreso: number;
+  enPrueba: number;
+  completadas: number;
 }
 
 @Component({
@@ -16,9 +22,10 @@ export class InicioProyectosComponent implements OnInit {
 
   controlProy = new FormControl;
   options: Proyecto[] = [
-    { name: 'Entrenamiento en Drupal y Symfony' },
-    { name: 'Sala de Sorteos - Extractos Digitales' },
-    { name: 'Visor - Panel de control' }
+    { id: 128109, nombre: 'Entrenamiento en Drupal y Symfony', planificadas: 448, noIniciadas: 424, enProgreso: 24, enPrueba: 0, completadas: 0 },
+    { id: 125029, nombre: 'Restyling y Migración de Portal PAC', planificadas: 3600, noIniciadas: 500, enProgreso: 0, enPrueba: 0, completadas: 2400 },
+    { id: 124192, nombre: 'Sala de Sorteos - Extractos Digitales', planificadas: 2400, noIniciadas: 492, enProgreso: 200, enPrueba: 0, completadas: 1640 },
+    { id: 127230, nombre: 'Visor - Panel de control', planificadas: 1040, noIniciadas: 394, enProgreso: 126, enPrueba: 0, completadas: 184 }
   ];
   filteredOptions: Observable<Proyecto[]>;
 
@@ -33,13 +40,18 @@ export class InicioProyectosComponent implements OnInit {
   ngOnInit(): void {  }
 
   displayFn(user: Proyecto): string {
-    return user && user.name ? user.name : '';
+    return user && user.nombre ? user.nombre : '';
   }
 
   private _filter(name: string): Proyecto[] {
     const filterValue = name.toLowerCase();
 
-    return this.options.filter(option => option.name.toLowerCase().includes(filterValue));
+    return this.options.filter(option => option.nombre.toLowerCase().includes(filterValue));
+  }
+
+  abrirModal() {
+    // Abre modal de búsqueda con mas filtros
+    console.log("ABRIENDO MODAL");
   }
 
 }

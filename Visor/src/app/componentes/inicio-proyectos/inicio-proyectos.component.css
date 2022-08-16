@@ -1,9 +1,15 @@
-h2 {
-  margin-top: 5%;
+.container {
+  margin-top: 5em;
+  margin-left: 5%;
 }
 
-.container {
-  padding: 2%;
+.form {
+  display: flex;
+}
+
+.lupa {
+  margin-top: .8%;
+  margin-left: 3%;
 }
 
 .etiqueta {

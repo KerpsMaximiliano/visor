@@ -1,17 +1,19 @@
 <div class="container">
 <h1>Proyectos</h1>
 <div>
-    <form>
+    <form class="form">
         <mat-form-field appearance="fill">
         <mat-label>Buscar proyecto...</mat-label>
         <input type="text" matInput [formControl]="controlProy" [matAutocomplete]="auto">
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
             <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-            {{option.name}}
+            {{option.nombre}}
             </mat-option>
         </mat-autocomplete>
         </mat-form-field>
-        <button><mat-icon>search</mat-icon></button>
+        <button type="button" (click)="abrirModal()" mat-mini-fab color="primary" class="lupa" matTooltip="Búsqueda avanzada..">
+            <mat-icon>search</mat-icon>
+        </button>
     </form>
 </div>
 <h2>Avance del Proyecto</h2>
