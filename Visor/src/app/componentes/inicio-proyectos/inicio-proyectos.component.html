@@ -15,6 +15,21 @@
             <mat-icon>search</mat-icon>
         </button>
     </form>
+    <div *ngIf="numero">
+        Numero: <i>{{numero}}</i>
+    </div>
+    <div *ngIf="nombre">
+        Nombre: <i>{{nombre}}</i>
+    </div>
+    <div *ngIf="cliente">
+        Cliente: <i>{{cliente}}</i>
+    </div>
+    <div *ngIf="asignadoA">
+        Asignado a: <i>{{asignadoA}}</i>
+    </div>
+    <div *ngIf="misProyectos">
+        Casilla: <i>{{misProyectos}}</i>
+    </div>
 </div>
 <h2>Avance del Proyecto</h2>
 <div class="progress">

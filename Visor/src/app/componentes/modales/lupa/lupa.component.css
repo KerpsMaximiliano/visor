@@ -1,0 +1,19 @@
+.container {
+    display: flex;
+}
+
+.busqueda {
+    width: 50%;
+}
+
+.resultados {
+    width: 50%;
+}
+
+.form {
+    height: 350px;
+}
+
+.seleccionar {
+    margin-top: 10px;
+}

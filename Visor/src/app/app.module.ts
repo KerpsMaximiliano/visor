@@ -20,12 +20,18 @@ import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatListModule } from '@angular/material/list';
+import { MatDividerModule } from '@angular/material/divider';
 
 // Componentes
 import { InicioProyectosComponent } from './componentes/inicio-proyectos/inicio-proyectos.component';
 import { InicioEquipoComponent } from './componentes/inicio-equipo/inicio-equipo.component';
 import { LupaComponent } from './componentes/modales/lupa/lupa.component';
 import { FiltroComponent } from './componentes/modales/filtro/filtro.component';
+import { FormsModule } from '@angular/forms';
+import { FilterPipe } from './filter.pipe';
 
 @NgModule({
   declarations: [
@@ -33,7 +39,8 @@ import { FiltroComponent } from './componentes/modales/filtro/filtro.component';
     InicioProyectosComponent,
     InicioEquipoComponent,
     LupaComponent,
-    FiltroComponent
+    FiltroComponent,
+    FilterPipe
   ],
   imports: [
     BrowserModule,
@@ -50,7 +57,12 @@ import { FiltroComponent } from './componentes/modales/filtro/filtro.component';
     MatCardModule,
     MatGridListModule,
     MatButtonModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatDialogModule,
+    FormsModule,
+    MatCheckboxModule,
+    MatListModule,
+    MatDividerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

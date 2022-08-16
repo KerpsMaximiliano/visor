@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { LupaComponent } from '../modales/lupa/lupa.component';
 
 export interface Proyecto {
   id: number;
@@ -13,12 +15,26 @@ export interface Proyecto {
   completadas: number;
 }
 
+export interface DialogData {
+  numero: number;
+  nombre: string;
+  cliente: string;
+  asignadoA: string;
+  misProyectos: boolean;
+}
+
 @Component({
   selector: 'app-inicio-proyectos',
   templateUrl: './inicio-proyectos.component.html',
   styleUrls: ['./inicio-proyectos.component.css']
 })
-export class InicioProyectosComponent implements OnInit {
+export class InicioProyectosComponent {
+
+  numero!: number;
+  nombre!: string;
+  cliente!: string;
+  asignadoA!: string;
+  misProyectos!: boolean;
 
   controlProy = new FormControl;
   options: Proyecto[] = [
@@ -29,15 +45,13 @@ export class InicioProyectosComponent implements OnInit {
   ];
   filteredOptions: Observable<Proyecto[]>;
 
-  constructor() { this.filteredOptions = this.controlProy.valueChanges.pipe(
+  constructor(public dialog: MatDialog) { this.filteredOptions = this.controlProy.valueChanges.pipe(
     startWith(''),
     map(value => {
       const name = typeof value === 'string' ? value : value?.name;
       return name ? this._filter(name as string) : this.options.slice();
     }),
   ); }
-
-  ngOnInit(): void {  }
 
   displayFn(user: Proyecto): string {
     return user && user.nombre ? user.nombre : '';
@@ -49,9 +63,26 @@ export class InicioProyectosComponent implements OnInit {
     return this.options.filter(option => option.nombre.toLowerCase().includes(filterValue));
   }
 
-  abrirModal() {
-    // Abre modal de búsqueda con mas filtros
-    console.log("ABRIENDO MODAL");
+  abrirModal(): void {
+    const dialogRef = this.dialog.open(LupaComponent, {
+      width: '550px',
+      data: {
+        numero: this.numero,
+        nombre: this.nombre,
+        cliente: this.cliente,
+        asignadoA: this.asignadoA,
+        misProyectos: this.misProyectos
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.numero = result.numero;
+      this.nombre = result.nombre;
+      this.cliente = result.cliente;
+      this.asignadoA = result.asignadoA;
+      this.misProyectos = result.misProyectos;
+    });
   }
 
 }
