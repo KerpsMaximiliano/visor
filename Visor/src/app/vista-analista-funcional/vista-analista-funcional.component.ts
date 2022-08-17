@@ -8,12 +8,17 @@ import { Actividad } from './interfaces/actividad';
 })
 export class VistaAnalistaFuncionalComponent implements OnInit {
 
-  actividades: Actividad[];
+  actividadesNoIniciadas: Actividad[];
+  actividadesEnProgreso: Actividad[];
+  actividadesCompletadas: Actividad[];
+  poseeTareasEnProgreso  !: boolean;
+  poseeTareasCompletadas!: boolean;
 
   panelOpenState = false;
   
   constructor() {
-    this.actividades = [{
+    this.cargarActividades()
+    this.actividadesNoIniciadas = [{
       titulo: "TP 28 - xxx",
       prioridad: "Alta",
       asignado: "Franco Friggeri",
@@ -40,9 +45,27 @@ export class VistaAnalistaFuncionalComponent implements OnInit {
       notas: ""
     }
   ]
+    this.actividadesEnProgreso = [];
+    this.actividadesCompletadas = [{
+      titulo: "TP 28 - xxx",
+      prioridad: "Alta",
+      asignado: "Franco Friggeri",
+      facilitador: "Adrian Enrico",
+      fechas: "22/08/2022",
+      horasPlanificadas: 17,
+      horasEjecutadas: 15,
+      horasDesvio: 2,
+      documento: "Documento 1",
+      tareasPrecondicion: "Tarea 1",
+      notas: ""
+    }];
    }
 
   ngOnInit(): void {
   }
 
+  cargarActividades(){
+    this.poseeTareasEnProgreso = false;
+    this.poseeTareasCompletadas = true;
+  }
 }

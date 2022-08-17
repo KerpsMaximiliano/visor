@@ -1,17 +1,8 @@
-
 * {
     padding: 0;
     margin: 0;
     text-decoration: none;
     list-style: none;
-}
-
-.panel-expansion{
-    background-color: aqua;
-}
-
-.panel-header {
-    background-color: yellow;
 }
 
 .conteiner-all{
@@ -77,12 +68,6 @@
     background-color: black;
 }
 
-#espacio{
-    padding-top: 10px;
-}
-
-
-
 .actividades mat-accordion mat-expansion-panel{
     background-color: white;
     border: solid 1px black;
@@ -92,15 +77,24 @@
     height: 25px;
 }
 
+.actividades {
+    margin-bottom: 8px;
+}
+
 #titulo-act{
     text-align: center;
     font-size: 12px;
 }
 
 .card-columna{
-    width: 300px;
-    margin: 5px;
+    width: 370px;
+    margin: 2px;
+}
+
+.card{
     border: 1.5px solid black;
+    border-radius: 4px;
+    width: 370px;
 }
 
 .titulo-conteiner-no-iniciadas {
@@ -108,6 +102,7 @@
     background-color: rgb(170, 0, 0);
     text-align: center;
     border: 1.5px solid black;
+    border-radius: 4px;
 }
 
 .titulo-conteiner-progreso {
@@ -115,6 +110,7 @@
     background-color: yellow;
     text-align: center;
     border: 1.5px solid black;
+    border-radius: 4px;
 }
 
 .titulo-conteiner-completadas {
@@ -122,4 +118,18 @@
     background-color: rgb(4, 131, 2);
     text-align: center;
     border: 1.5px solid black; 
+    border-radius: 4px;
 }
+
+.conteiner-vacio{
+    width: 370px;
+    border: 1.5px solid black;
+    height: 60px;
+    display: block;
+}
+
+/*  Iconos  */
+#icon-x{
+    margin-top: 5px;
+}
+
