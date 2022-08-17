@@ -1,30 +1,32 @@
 <div class="container">
+
     <div class="busqueda">
     <h1 mat-dialog-title>Búsqueda Avanzada</h1>
     <div mat-dialog-content class="form">
     <mat-form-field appearance="outline">
         <mat-label>Número (Id)</mat-label>
-        <input matInput [(ngModel)]="data.numero" [ngModelOptions]="{standalone: true}">
+        <input matInput name="numero" [(ngModel)]="data.numero" [ngModelOptions]="{standalone: true}" (keyup)="applyFilter($event)">
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Nombre (Asunto)</mat-label>
-        <input matInput [(ngModel)]="data.nombre" [ngModelOptions]="{standalone: true}">
+        <input matInput name="nombre" [(ngModel)]="data.nombre" [ngModelOptions]="{standalone: true}" (keyup)="applyFilter($event)">
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Cliente (Proyecto)</mat-label>
-        <input matInput [(ngModel)]="data.cliente" [ngModelOptions]="{standalone: true}">
+        <input matInput name="cliente" [(ngModel)]="data.cliente" [ngModelOptions]="{standalone: true}" (keyup)="applyFilter($event)">
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Asignado a</mat-label>
-        <input matInput [(ngModel)]="data.asignadoA" [ngModelOptions]="{standalone: true}">
+        <input matInput name="asignado" [(ngModel)]="data.asignadoA" [ngModelOptions]="{standalone: true}" (keyup)="applyFilter($event)">
     </mat-form-field>
-    <mat-checkbox [(ngModel)]="misProyectos" [ngModelOptions]="{standalone: true}">Mis Proyectos</mat-checkbox>
+    <mat-checkbox name="checkbox" [(ngModel)]="data.misProyectos" [ngModelOptions]="{standalone: true}">Mis Proyectos</mat-checkbox>
     </div>
     <div mat-dialog-actions>
     <button mat-raised-button (click)="onNoClick()">Cerrar</button>
-    <button mat-raised-button color="primary">Buscar</button>
+    <button mat-raised-button color="primary" (click)="buscarProyecto({data})">Buscar Proyecto</button>
     </div>
     </div>
+
     <div class="resultados">
         <h1 mat-dialog-title>Resultados</h1>
         <mat-selection-list #proyecto [multiple]="false">
@@ -34,6 +36,7 @@
             </mat-list-option>
         </mat-selection-list>
         <mat-divider></mat-divider>
-        <button mat-raised-button color="primary" [mat-dialog-close]="data" class="seleccionar">Seleccionar</button>
+        <button mat-raised-button color="primary" [mat-dialog-close]="data" class="seleccionar">Seleccionar Proyecto</button>
     </div>
+
 </div>

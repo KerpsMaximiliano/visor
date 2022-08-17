@@ -31,7 +31,6 @@ import { InicioEquipoComponent } from './componentes/inicio-equipo/inicio-equipo
 import { LupaComponent } from './componentes/modales/lupa/lupa.component';
 import { FiltroComponent } from './componentes/modales/filtro/filtro.component';
 import { FormsModule } from '@angular/forms';
-import { FilterPipe } from './filter.pipe';
 
 @NgModule({
   declarations: [
@@ -39,8 +38,7 @@ import { FilterPipe } from './filter.pipe';
     InicioProyectosComponent,
     InicioEquipoComponent,
     LupaComponent,
-    FiltroComponent,
-    FilterPipe
+    FiltroComponent
   ],
   imports: [
     BrowserModule,

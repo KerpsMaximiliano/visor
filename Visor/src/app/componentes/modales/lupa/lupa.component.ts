@@ -20,8 +20,6 @@ export interface Proyecto {
 })
 export class LupaComponent {
 
-  filterPost = '';
-
   proyectos: Proyecto[] = [
     { id: 128109, nombre: 'Entrenamiento en Drupal y Symfony', planificadas: 448, noIniciadas: 424, enProgreso: 24, enPrueba: 0, completadas: 0 },
     { id: 125029, nombre: 'Restyling y Migración de Portal PAC', planificadas: 3600, noIniciadas: 500, enProgreso: 0, enPrueba: 0, completadas: 2400 },
@@ -43,6 +41,17 @@ export class LupaComponent {
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  buscarProyecto(data: any) {
+    console.log(this.proyectos);
+    console.log(this.proyectos.filter(s => (data)));
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    console.log(filterValue);
+    filterValue.trim().toLowerCase();
   }
 
 }
