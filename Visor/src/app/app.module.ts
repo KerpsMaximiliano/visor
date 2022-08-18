@@ -5,8 +5,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { ControlActividadModule } from './control-actividad/control-actividad.module';
+
 //Material
 import { MyMaterialModule } from './material';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -16,7 +19,9 @@ import { MyMaterialModule } from './material';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MyMaterialModule
+    MyMaterialModule,
+    ControlActividadModule,
+    SharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]

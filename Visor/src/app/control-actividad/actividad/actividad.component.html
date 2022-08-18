@@ -1,0 +1,70 @@
+<div class='container'>
+    <mat-toolbar>
+        <span>Actividades</span>
+    </mat-toolbar>
+
+  <div *ngIf="listActividades.length > 0">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+      <!--- Note that these columns can be defined in any order.
+            The actual rendered columns are set as a property on the row definition" -->
+    
+      <!-- Position Column -->
+      <ng-container matColumnDef="fecha">
+        <th mat-header-cell *matHeaderCellDef> Fecha </th>
+        <td mat-cell *matCellDef="let element"> {{element.fecha | date:'dd/MM/yy'}} </td>
+      </ng-container>
+  
+     <!-- Fecha Column -->
+     <ng-container matColumnDef="horas">
+      <th mat-header-cell *matHeaderCellDef> Horas Ejecutadas </th>
+      <td mat-cell *matCellDef="let element"> {{element.horas}} </td>
+    </ng-container>
+     
+    
+      <!-- Descripcion Column -->
+      <ng-container matColumnDef="descripcion">
+        <mat-accordion multi="false">
+          <th mat-header-cell *matHeaderCellDef> </th> 
+          <td mat-cell *matCellDef="let element">
+            <mat-expansion-panel [expanded]="expandedRows[element.position]" (click)="expand(element)">
+              <mat-expansion-panel-header>
+              </mat-expansion-panel-header>
+              {{element.descripcion }}
+              </mat-expansion-panel>
+          </td> 
+        </mat-accordion>
+      </ng-container>
+  
+  
+    <!-- Asunto Column -->
+      <ng-container matColumnDef="asunto">
+        <th mat-header-cell *matHeaderCellDef> Asunto </th>
+        <td mat-cell *matCellDef="let element"> {{element.asunto}} </td>
+      </ng-container>
+   
+      <!-- Acciones Column -->
+      <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef>
+          <button mat-icon-button style="left: 150px;" matTooltip="Agregar Actividad">
+            <mat-icon>add_circle</mat-icon>
+          </button>
+        </th>
+        <td mat-cell *matCellDef="let element; let i = index" style="text-align: right;">
+          <a class="pointer" matTooltip="Editar Actividad">
+              <mat-icon>edit</mat-icon>
+          </a>
+          <a class="pointer" (click)="onEliminarActividad(i)" matTooltip="Eliminar Actividad">
+              <mat-icon>clear</mat-icon>
+          </a>
+        </td>
+      </ng-container>
+ 
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+
+  <h2 *ngIf="listActividades.length == 0">No hay Actividades para mostrar</h2>
+
+</div>

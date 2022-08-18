@@ -1,0 +1,16 @@
+table {
+    width: 100%;
+  }
+
+th {
+    width: 20%;
+}
+.pointer{
+    cursor: pointer;
+}
+mat-expansion-panel{
+    width: 30%;
+}
+.mat-expansion-panel-body {
+    padding: 0 24px 16px;
+    }
