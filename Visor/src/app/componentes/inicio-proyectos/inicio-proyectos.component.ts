@@ -76,7 +76,7 @@ export class InicioProyectosComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+      console.log('The dialog was closed: ', result);
       this.numero = result.numero;
       this.nombre = result.nombre;
       this.cliente = result.cliente;

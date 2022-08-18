@@ -17,3 +17,17 @@
 .seleccionar {
     margin-top: 10px;
 }
+
+.tabla-scroll {
+    overflow-y: scroll;
+    height: 400px;
+}
+
+th {
+    font-size: large;
+}
+
+.fila:hover {
+    background-color: lightgray;
+    cursor: pointer;
+}
