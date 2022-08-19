@@ -12,8 +12,8 @@
 }  
 
 .conteiner-barra{
-    margin-right: 350px;
-    margin-left: 350px;
+    margin-right: 20%;
+    margin-left: 20%;
 }
 
 .porcentajes{
@@ -76,25 +76,22 @@
 .actividades mat-accordion mat-expansion-panel-header{
     height: 25px;
 }
-
-.actividades {
-    margin-bottom: 8px;
-}
-
+   
 #titulo-act{
     text-align: center;
     font-size: 12px;
 }
 
 .card-columna{
-    width: 370px;
-    margin: 2px;
+    width: 100%;
+    margin-left: 0.25%;
+    margin-right: 0.25%;
 }
 
 .card{
     border: 1.5px solid black;
     border-radius: 4px;
-    width: 370px;
+    width: 100%;
 }
 
 .titulo-conteiner-no-iniciadas {
@@ -122,7 +119,7 @@
 }
 
 .conteiner-vacio{
-    width: 370px;
+    width: 100%;
     border: 1.5px solid black;
     height: 60px;
     display: block;
