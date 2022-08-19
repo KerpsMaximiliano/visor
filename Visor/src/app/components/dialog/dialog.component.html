@@ -1,0 +1,211 @@
+<mat-dialog-content *ngIf="buscarProyecto" class="mat-typography">
+    <mat-dialog-content class="header">
+        <h2 mat-dialog-title>Buscar proyecto</h2>
+        <!-- <button id="close" mat-button [mat-dialog-close]="false"><mat-icon >close</mat-icon></button> -->
+        <mat-icon [mat-dialog-close]="false">close</mat-icon>
+    </mat-dialog-content>
+    <mat-divider></mat-divider>
+    <div class="filtros">
+        <mat-dialog-content>
+            <mat-label class="label">Numero</mat-label>
+        
+            <mat-form-field class="example-form-field" appearance="fill">
+                <input matInput type="number" placeholder="1234" [(ngModel)]="numeroProyecto">
+                <button *ngIf="numeroProyecto" matSuffix mat-icon-button aria-label="Clear" (click)="numeroProyecto=''">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-form-field>
+        </mat-dialog-content>
+
+        <mat-dialog-content>
+            <mat-label class="label">Nombre</mat-label>
+            
+            <mat-form-field class="example-form-field" appearance="fill">
+                <input matInput type="text" placeholder="Asunto" [(ngModel)]="nombreProyecto">
+                <button *ngIf="nombreProyecto" matSuffix mat-icon-button aria-label="Clear" (click)="nombreProyecto='' ">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-form-field>
+        </mat-dialog-content>
+
+        <mat-dialog-content>
+            <mat-label class="label">Cliente</mat-label>
+            <mat-form-field appearance="fill">
+                <mat-label>Proyecto</mat-label>
+                <mat-select [(value)]="selectedFood" placeholder="Proyecto">
+                    <mat-option></mat-option>
+                    <mat-option [value]="option.value" *ngFor="let option of foods">{{ option.viewValue }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <!-- <p>You selected: {{selectedFood}}</p> -->
+        </mat-dialog-content>
+
+        <mat-dialog-content>
+            <mat-label class="label">Asignado a</mat-label>
+            <mat-form-field appearance="fill">
+                <mat-label>Asignado a</mat-label>
+                <mat-select [(value)]="selectedEmployee" >
+                    <mat-option></mat-option>
+                    <mat-option [value]="employee.value"  (click)="capturar()" *ngFor="let employee of employees">{{ employee.viewValue }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <!-- <p>You selected: {{selectedFood}}</p> -->
+        </mat-dialog-content>
+        
+        <section class="mis_proyectos" [formGroup]="toppings">
+            <mat-checkbox formControlName="misProyectos" ><p id="text_checkbox">Mis Proyectos</p></mat-checkbox>
+            <!-- <section class="mis_proyectos" [formGroup]="toppings">
+                <h4>You chose:</h4>
+                {{toppings.value | json}}
+            </section> -->
+        </section>
+          
+
+        <mat-selection-list #shoes [multiple]="false" class="lista_proyectos">
+            <mat-list-option *ngFor="let unProyecto of listaProyectos" [value]="unProyecto">
+              {{unProyecto}}
+            </mat-list-option>
+        </mat-selection-list>
+        
+        <mat-dialog-actions align="end">
+            <button mat-raised-button [mat-dialog-close]="false"> Cancelar </button>
+            <button mat-raised-button color="primary" type="submit" cdkFocusInitial> Buscar </button>
+        </mat-dialog-actions>
+    
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-content *ngIf="buscarTareas" class="mat-typography">
+    <mat-dialog-content class="header">
+        <h2 mat-dialog-title>Buscar Tarea</h2>
+        <!-- <button id="close" mat-button [mat-dialog-close]="false"><mat-icon >close</mat-icon></button> -->
+        <mat-icon [mat-dialog-close]="false">close</mat-icon>
+    </mat-dialog-content>
+    <mat-divider></mat-divider>
+    <div class="filtros">
+        <mat-dialog-content>
+            <mat-label class="label">Nombre</mat-label>
+
+            <mat-form-field class="example-form-field" appearance="fill">
+                <input matInput type="text" placeholder="nombreTarea" [(ngModel)]="nombreProyecto">
+                <button *ngIf="nombreTarea" matSuffix mat-icon-button aria-label="Clear" (click)="nombreTarea='' ">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-form-field>
+        </mat-dialog-content>
+
+        <mat-dialog-content>
+            <mat-label class="label">Prioridad</mat-label>
+            <mat-form-field appearance="fill">
+                <mat-label>Prioridad</mat-label>
+                <mat-select [(value)]="selectedFood">
+                    <mat-option></mat-option>
+                    <mat-option [value]="option.value" *ngFor="let option of foods">{{ option.viewValue }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <!-- <p>You selected: {{selectedFood}}</p> -->
+        </mat-dialog-content>
+
+        <mat-dialog-content>
+            <mat-label class="label">Facilitador</mat-label>
+            <mat-form-field appearance="fill">
+                <mat-label>Facilitador</mat-label>
+                <mat-select [(value)]="selectedFood">
+                    <mat-option></mat-option>
+                    <mat-option [value]="option.value" *ngFor="let option of foods">{{ option.viewValue }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <!-- <p>You selected: {{selectedFood}}</p> -->
+        </mat-dialog-content>
+
+        <mat-dialog-content>
+            <mat-label class="label">Asignado a</mat-label>
+            <mat-form-field appearance="fill">
+                <mat-label>Asignado a</mat-label>
+                <mat-select [(value)]="selectedEmployee">
+                    <mat-option></mat-option>
+                    <mat-option [value]="employee.value" *ngFor="let employee of employees">{{ employee.viewValue }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <!-- <p>You selected: {{selectedFood}}</p> -->
+        </mat-dialog-content>
+
+        <mat-dialog-content>
+            <mat-label class="label">Tecnologia</mat-label>
+            <mat-form-field appearance="fill">
+                <mat-label>Tecnologia</mat-label>
+                <mat-select [(value)]="selectedEmployee">
+                    <mat-option></mat-option>
+                    <mat-option [value]="employee.value" *ngFor="let employee of employees">{{ employee.viewValue }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <!-- <p>You selected: {{selectedFood}}</p> -->
+        </mat-dialog-content>
+
+        <mat-dialog-content>
+
+            <mat-label class="label">Desde</mat-label>
+            <mat-label class="label">Hasta</mat-label>
+        </mat-dialog-content>
+        <mat-dialog-content class="fechas">
+            <mat-label class="label">Por fecha de inicio</mat-label>
+            <mat-form-field appearance="fill">
+                <mat-label>dd/mm/aaaa</mat-label>
+                <input matInput [matDatepicker]="fechaInicioDesde">
+                <mat-hint>{{getDateFormatString()}}</mat-hint>
+                <mat-datepicker-toggle matSuffix [for]="fechaInicioDesde"></mat-datepicker-toggle>
+                <mat-datepicker #fechaInicioDesde></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>dd/mm/aaaa</mat-label>
+                <input matInput [matDatepicker]="fechaInicioHasta">
+                <mat-hint>{{getDateFormatString()}}</mat-hint>
+                <mat-datepicker-toggle matSuffix [for]="fechaInicioHasta"></mat-datepicker-toggle>
+                <mat-datepicker #fechaInicioHasta></mat-datepicker>
+            </mat-form-field>
+        </mat-dialog-content>
+        <mat-dialog-content class="fechas">
+            <mat-label class="label">Planificada</mat-label>
+            <mat-form-field appearance="fill">
+                <mat-label>dd/mm/aaaa</mat-label>
+                <input matInput [matDatepicker]="planificadaDesde">
+                <mat-hint>{{getDateFormatString()}}</mat-hint>
+                <mat-datepicker-toggle matSuffix [for]="planificadaDesde"></mat-datepicker-toggle>
+                <mat-datepicker #planificadaDesde></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>dd/mm/aaaa</mat-label>
+                <input matInput [matDatepicker]="planificadaHasta">
+                <mat-hint>{{getDateFormatString()}}</mat-hint>
+                <mat-datepicker-toggle matSuffix [for]="planificadaHasta"></mat-datepicker-toggle>
+                <mat-datepicker #planificadaHasta></mat-datepicker>
+            </mat-form-field>
+        </mat-dialog-content>
+        <mat-dialog-content class="fechas">
+            <mat-label class="label">Fin</mat-label>
+            <mat-form-field appearance="fill">
+                <mat-label>dd/mm/aaaa</mat-label>
+                <input matInput [matDatepicker]="finDesde">
+                <mat-hint>{{getDateFormatString()}}</mat-hint>
+                <mat-datepicker-toggle matSuffix [for]="finDesde"></mat-datepicker-toggle>
+                <mat-datepicker #finDesde></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>dd/mm/aaaa</mat-label>
+                <input matInput [matDatepicker]="finHasta">
+                <mat-hint>{{getDateFormatString()}}</mat-hint>
+                <mat-datepicker-toggle matSuffix [for]="finHasta"></mat-datepicker-toggle>
+                <mat-datepicker #finHasta></mat-datepicker>
+            </mat-form-field>
+        </mat-dialog-content>
+        <!-- <button mat-button (click)="french()">Dynamically switch to French</button> -->
+        
+        
+        
+        <mat-dialog-actions align="end">
+            <button mat-raised-button [mat-dialog-close]="false"> Cancelar </button>
+            <button mat-raised-button color="primary" type="submit" cdkFocusInitial> Buscar </button>
+        </mat-dialog-actions>
+    
+    </div>
+</mat-dialog-content>

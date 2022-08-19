@@ -1,0 +1,21 @@
+h1{
+    text-align: center;
+}
+.mat_divider{
+    margin-bottom: 2px;
+    height: 1px;
+    background-color: black;
+}
+.icon{
+    font-size: 40px;
+    width: 45px;
+}
+
+.buscador{
+    margin-top: 1%;
+    margin-bottom: 2%;
+    width: 21%;
+    height: 5%;
+    display: flex;
+    justify-content: space-between;
+}
