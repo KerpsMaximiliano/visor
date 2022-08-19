@@ -38,32 +38,43 @@
 
                             <div class="desc-act">
                                 <div class="datos">
+                                    <i id="icon-danger" class="fa-solid fa-triangle-exclamation"></i>
                                     <strong>Prioridad: </strong>
                                     <p>{{actividad.prioridad}}</p>
                                 </div>
                                 <div class="datos">
+                                    <i id="icon-avatar" class="fa-solid fa-user-tie"></i>
                                     <strong>Asignado: </strong>
                                     <p>{{actividad.asignado}}</p>
                                 </div>
                                     <div class="datos">
+                                    <i id="icon-avatar" class="fa-solid fa-user-tie"></i>
                                     <strong>Facilitador: </strong>
                                     <p>{{actividad.facilitador}}</p>
                                 </div>
                                 <div id="fechas">
+                                    <i id="icon-calendar" class="fa-regular fa-calendar-days"></i>
                                     <strong>Fechas: </strong>
                                     <p>De inicio: {{actividad.fechas}}</p>
                                     <p>Fin: {{actividad.fechas}}</p>
                                     <p>Planificada: {{actividad.fechas}}</p>
                                 </div> 
-                                <div class="datos">
-                                    <strong>Horas: </strong>
-                                    <p>{{actividad.horasPlanificadas}}</p>
+                                <div class="horas">
+                                    <i id="icon-clock" class="far fa-clock"></i>
+                                    <strong>Horas:</strong>
+                                    <div id="horas-div">
+                                        <p>Planificadas: {{actividad.horasPlanificadas}}h</p>
+                                        <p>Ejecutadas: {{actividad.horasPlanificadas}}h</p>
+                                        <p>Desvió:</p><p id="horasDesvio">{{actividad.horasPlanificadas}}h</p>
+                                    </div>
                                 </div> 
                                 <div class="datos">
+                                    <i id="icon-paper" class="fa-solid fa-copy"></i>
                                     <strong>Documento: </strong>
                                     <p>{{actividad.documento}}</p>
                                 </div> 
                                 <div class="datos">
+                                    <i id="icon-check" class="fa-solid fa-circle-check"></i>
                                     <strong>Tarea: </strong>
                                     <p>{{actividad.tareasPrecondicion}}</p>
                                 </div> 
@@ -103,32 +114,39 @@
 
                             <div class="desc-act">
                                 <div class="datos">
+                                    <i id="icon-danger" class="fa-solid fa-triangle-exclamation"></i>
                                     <strong>Prioridad: </strong>
                                     <p>{{actividad.prioridad}}</p>
                                 </div>
                                 <div class="datos">
+                                    <i id="icon-avatar" class="fa-solid fa-user-tie"></i>
                                     <strong>Asignado: </strong>
                                     <p>{{actividad.asignado}}</p>
                                 </div>
                                 <div class="datos">
+                                    <i id="icon-avatar" class="fa-solid fa-user-tie"></i>
                                     <strong>Facilitador: </strong>
                                     <p>{{actividad.facilitador}}</p>
                                 </div>
                                 <div id="fechas">
+                                    <i id="icon-calendar" class="fa-regular fa-calendar-days"></i>
                                     <strong>Fechas: </strong>
                                     <p>De inicio: {{actividad.fechas}}</p>
                                     <p>Fin: {{actividad.fechas}}</p>
                                     <p>Planificada: {{actividad.fechas}}</p>
                                 </div> 
                                 <div class="datos">
+                                    <i id="icon-clock" class="far fa-clock"></i>
                                     <strong>Horas: </strong>
                                     <p>{{actividad.horasPlanificadas}}</p>
                                 </div> 
                                 <div class="datos">
+                                    <i id="icon-paper" class="fa-solid fa-copy"></i>
                                     <strong>Documento: </strong>
                                     <p>{{actividad.documento}}</p>
                                 </div> 
                                 <div class="datos">
+                                    <i id="icon-check" class="fa-solid fa-circle-check"></i>
                                     <strong>Tarea: </strong>
                                     <p>{{actividad.tareasPrecondicion}}</p>
                                 </div> 
@@ -181,20 +199,24 @@
                                 <p>{{actividad.facilitador}}</p>
                             </div>
                             <div id="fechas">
+                                <i id="icon-calendar" class="fa-regular fa-calendar-days"></i>
                                 <strong>Fechas: </strong>
                                 <p>De inicio: {{actividad.fechas}}</p>
                                 <p>Fin: {{actividad.fechas}}</p>
                                 <p>Planificada: {{actividad.fechas}}</p>
                             </div> 
                             <div class="datos">
+                                <i id="icon-clock" class="far fa-clock"></i>
                                 <strong>Horas: </strong>
                                 <p>{{actividad.horasPlanificadas}}</p>
                             </div> 
                             <div class="datos">
+                                <i id="icon-paper" class="fa-solid fa-copy"></i>
                                 <strong>Documento: </strong>
                                 <p>{{actividad.documento}}</p>
                             </div> 
                             <div class="datos">
+                                <i id="icon-check" class="fa-solid fa-circle-check"></i>
                                 <strong>Tarea: </strong>
                                 <p>{{actividad.tareasPrecondicion}}</p>
                             </div> 
