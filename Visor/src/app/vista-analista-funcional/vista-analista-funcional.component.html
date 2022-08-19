@@ -29,6 +29,13 @@
                     <mat-accordion class="panel-header">
                         <mat-expansion-panel hideToggle>
                             <mat-divider id="separador"></mat-divider>
+
+                             <!-- Iconos -->
+                            <div id="iconos">
+                                <i id="icon-edit" class="fas fa-edit"></i>
+                                <i id="icon-x" class="fa-solid fa-x"></i> 
+                            </div> 
+
                             <div class="desc-act">
                                 <div class="datos">
                                     <strong>Prioridad: </strong>
@@ -87,6 +94,13 @@
                     <mat-accordion class="panel-header">
                         <mat-expansion-panel hideToggle>
                             <mat-divider id="separador"></mat-divider>
+
+                            <!-- Iconos -->
+                            <div id="iconos">
+                                <i id="icon-edit" class="fas fa-edit"></i>
+                                <i id="icon-x" class="fa-solid fa-x"></i> 
+                            </div> 
+
                             <div class="desc-act">
                                 <div class="datos">
                                     <strong>Prioridad: </strong>
@@ -143,21 +157,26 @@
                     <mat-accordion class="panel-header">
                     <mat-expansion-panel hideToggle>
                         <mat-divider id="separador"></mat-divider>
-                        
-                        <!-- Icono editar -->
-                        <div id="icon-x">
-                            <i class="fa-solid fa-x"></i> 
+
+                        <!-- Iconos -->
+                        <div id="iconos">
+                            <i id="icon-edit" class="fas fa-edit"></i>
+                            <i id="icon-x" class="fa-solid fa-x"></i> 
                         </div> 
+
                         <div class="desc-act">
                             <div class="datos">
+                                <i id="icon-danger" class="fa-solid fa-triangle-exclamation"></i>
                                 <strong>Prioridad: </strong>
                                 <p>{{actividad.prioridad}}</p>
                             </div>
                             <div class="datos">
+                                <i id="icon-avatar" class="fa-solid fa-user-tie"></i>
                                 <strong>Asignado: </strong>
                                 <p>{{actividad.asignado}}</p>
                             </div>
                             <div class="datos">
+                                <i id="icon-avatar" class="fa-solid fa-user-tie"></i>
                                 <strong>Facilitador: </strong>
                                 <p>{{actividad.facilitador}}</p>
                             </div>

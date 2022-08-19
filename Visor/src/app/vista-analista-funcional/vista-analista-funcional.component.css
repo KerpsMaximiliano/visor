@@ -129,7 +129,29 @@
 }
 
 /*  Iconos  */
+#iconos{
+    margin-top: 10px;
+    text-align: right;
+}
+
+#icon-edit{
+    margin-right: 5px;
+    cursor: pointer;
+    color: black;
+}
+
 #icon-x{
-    margin-top: 5px;
+    cursor: pointer;
+    color: black;
+}
+
+#icon-danger{
+    margin-top: 2px;
+    margin-right: 3px;
+}
+
+#icon-avatar{
+    margin-top: 2px;
+    margin-right: 3px;
 }
 
