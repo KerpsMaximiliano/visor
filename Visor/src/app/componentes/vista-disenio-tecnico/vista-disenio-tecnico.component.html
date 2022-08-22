@@ -2,8 +2,8 @@
 
 <!-- Comienzo cabecera -->
 <div class="cabecera">
-    <h2 id="titulo-proyecto">Proyecto XXX (FEDE)</h2>
-    <p id="subtitulo-disenio">Avance de Diseño Funcional</p>
+    <h2 id="titulo-proyecto">Proyecto Seleccionado (Viene de componente tareas)</h2>
+    <p id="subtitulo-disenio">Avance de Diseño Técnico</p>
 
     <!-- Barra de progreso -->
     <div class="conteiner-barra">
@@ -23,14 +23,14 @@
             <div class="titulo-conteiner-no-iniciadas">
                 <h4>NO INICIADAS</h4>
             </div>
-      
+
             <div class="conteiner-all-act">
                 <div class="actividades" *ngFor="let actividad of actividadesNoIniciadas ; let i = index">
                     <mat-accordion class="panel-header">
                         <mat-expansion-panel hideToggle>
                             <mat-divider id="separador"></mat-divider>
 
-                             <!-- Iconos -->
+                            <!-- Iconos -->
                             <div id="iconos">
                                 <i id="icon-edit" class="fas fa-edit"></i>
                                 <i id="icon-x" class="fa-solid fa-x"></i> 
@@ -55,9 +55,9 @@
                                 <div id="fechas">
                                     <i id="icon-calendar" class="fa-regular fa-calendar-days"></i>
                                     <strong>Fechas: </strong>
-                                    <p>De inicio: {{actividad.fechas}}</p>
-                                    <p>Fin: {{actividad.fechas}}</p>
-                                    <p>Planificada: {{actividad.fechas}}</p>
+                                    <p>De inicio: {{actividad.fechaInicio}}</p>
+                                    <p>Fin: {{actividad.fechaFin}}</p>
+                                    <p>Planificada: {{actividad.fechaPlanificacion}}</p>
                                 </div> 
                                 <div class="horas">
                                     <i id="icon-clock" class="far fa-clock"></i>
@@ -131,9 +131,9 @@
                                 <div id="fechas">
                                     <i id="icon-calendar" class="fa-regular fa-calendar-days"></i>
                                     <strong>Fechas: </strong>
-                                    <p>De inicio: {{actividad.fechas}}</p>
-                                    <p>Fin: {{actividad.fechas}}</p>
-                                    <p>Planificada: {{actividad.fechas}}</p>
+                                    <p>De inicio: {{actividad.fechaInicio}}</p>
+                                    <p>Fin: {{actividad.fechaFin}}</p>
+                                    <p>Planificada: {{actividad.fechaPlanificacion}}</p>
                                 </div> 
                                 <div class="datos">
                                     <i id="icon-clock" class="far fa-clock"></i>
@@ -201,9 +201,9 @@
                             <div id="fechas">
                                 <i id="icon-calendar" class="fa-regular fa-calendar-days"></i>
                                 <strong>Fechas: </strong>
-                                <p>De inicio: {{actividad.fechas}}</p>
-                                <p>Fin: {{actividad.fechas}}</p>
-                                <p>Planificada: {{actividad.fechas}}</p>
+                                <p>De inicio: {{actividad.fechaInicio}}</p>
+                                <p>Fin: {{actividad.fechaFin}}</p>
+                                <p>Planificada: {{actividad.fechaPlanificacion}}</p>
                             </div> 
                             <div class="datos">
                                 <i id="icon-clock" class="far fa-clock"></i>
@@ -235,6 +235,3 @@
         </mat-card>
     </div>
 </div>
-
-
-
