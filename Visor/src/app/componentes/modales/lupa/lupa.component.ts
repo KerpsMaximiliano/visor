@@ -1,22 +1,10 @@
 import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormControl } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { DialogData, InicioProyectosComponent } from '../../inicio-proyectos/inicio-proyectos.component';
+import { InicioProyectosComponent } from '../../inicio-proyectos/inicio-proyectos.component';
 import { MatTableDataSource } from '@angular/material/table';
-import { asapScheduler } from 'rxjs';
-
-export interface Proyecto {
-  id: number;
-  nombre: string;
-  planificadas: number;
-  noIniciadas: number;
-  enProgreso: number;
-  enPrueba: number;
-  completadas: number;
-  tieneTareasUsuario: boolean;
-  cliente: string;
-  asignadoA: string;
-}
+import { DialogData } from 'src/app/interfaces/dialog-data';
+import { Proyecto } from 'src/app/interfaces/proyecto';
 
 @Component({
   selector: 'app-lupa',
@@ -39,28 +27,25 @@ export class LupaComponent {
 
   columnas: string[] = ['nombre'];
   dataSource = new MatTableDataSource(this.proyectos);
-
-  misProyectos = false;
-  options = this._formBuilder.group({
-    hideRequired: this.misProyectos
-  });
-  
+  misProyectos = false;  
 
   constructor(
     private _formBuilder: FormBuilder, public dialogRef: MatDialogRef<InicioProyectosComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
   ) {}
 
+  // Cierra el modal
   onNoClick(): void {
     this.dialogRef.close();
   }
 
+  // Filtro disparado al ingresar 1 caracter en el input
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    console.log(filterValue);
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
+  // Filtra segun marca del checkbox
   marcarCheckbox() {
     if (this.misProyectos) {
       this.misProyectos = false;
@@ -70,6 +55,7 @@ export class LupaComponent {
     this.dataSource.filter = this.misProyectos.toString();
   }
 
+  // Retorna el proyecto elegido para mostrarlo
   seleccionarProyecto(proy: Object) {
     console.log(proy);
   }

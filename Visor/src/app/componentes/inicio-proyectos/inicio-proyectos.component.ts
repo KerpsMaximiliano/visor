@@ -1,27 +1,10 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { LupaComponent } from '../modales/lupa/lupa.component';
-
-export interface Proyecto {
-  id: number;
-  nombre: string;
-  planificadas: number;
-  noIniciadas: number;
-  enProgreso: number;
-  enPrueba: number;
-  completadas: number;
-}
-
-export interface DialogData {
-  numero: number;
-  nombre: string;
-  cliente: string;
-  asignadoA: string;
-  misProyectos: boolean;
-}
+import { Proyecto } from 'src/app/interfaces/proyecto';
 
 @Component({
   selector: 'app-inicio-proyectos',
@@ -34,18 +17,20 @@ export class InicioProyectosComponent {
   nombre!: string;
   cliente!: string;
   asignadoA!: string;
-  misProyectos!: boolean;
+  misProyectos!: boolean;  
 
   controlProy = new FormControl;
   options: Proyecto[] = [
-    { id: 128109, nombre: 'Entrenamiento en Drupal y Symfony', planificadas: 448, noIniciadas: 424, enProgreso: 24, enPrueba: 0, completadas: 0 },
-    { id: 125029, nombre: 'Restyling y Migración de Portal PAC', planificadas: 3600, noIniciadas: 500, enProgreso: 0, enPrueba: 0, completadas: 2400 },
-    { id: 124192, nombre: 'Sala de Sorteos - Extractos Digitales', planificadas: 2400, noIniciadas: 492, enProgreso: 200, enPrueba: 0, completadas: 1640 },
-    { id: 127230, nombre: 'Visor - Panel de control', planificadas: 1040, noIniciadas: 394, enProgreso: 126, enPrueba: 0, completadas: 184 }
+    { id: 128109, nombre: 'Entrenamiento en Drupal y Symfony', planificadas: 448, noIniciadas: 424, enProgreso: 24, enPrueba: 0, completadas: 0, tieneTareasUsuario: false, cliente: 'Factory', asignadoA: 'Adrian Enrico' },
+    { id: 125029, nombre: 'Restyling y Migración de Portal PAC', planificadas: 3600, noIniciadas: 500, enProgreso: 0, enPrueba: 0, completadas: 2400, tieneTareasUsuario: false, cliente: 'Factory', asignadoA: 'Patricio Hernán Macagno' },
+    { id: 124192, nombre: 'Sala de Sorteos - Extractos Digitales', planificadas: 2400, noIniciadas: 492, enProgreso: 200, enPrueba: 0, completadas: 1640, tieneTareasUsuario: true, cliente: 'Factory', asignadoA: 'Adrian Enrico' },
+    { id: 127230, nombre: 'Visor - Panel de control', planificadas: 1040, noIniciadas: 394, enProgreso: 126, enPrueba: 0, completadas: 184, tieneTareasUsuario: true, cliente: 'Factory', asignadoA: 'Patricio Hernán Macagno' }
   ];
   filteredOptions: Observable<Proyecto[]>;
 
-  constructor(public dialog: MatDialog) { this.filteredOptions = this.controlProy.valueChanges.pipe(
+  constructor(public dialog: MatDialog) { 
+    // En el constructor se setea el autocompletado y sugerencia de búsqueda
+    this.filteredOptions = this.controlProy.valueChanges.pipe(
     startWith(''),
     map(value => {
       const name = typeof value === 'string' ? value : value?.name;
@@ -64,6 +49,7 @@ export class InicioProyectosComponent {
   }
 
   abrirModal(): void {
+    // Abre modal lupa con mas opciones de búsqueda
     const dialogRef = this.dialog.open(LupaComponent, {
       width: '550px',
       data: {
@@ -75,6 +61,7 @@ export class InicioProyectosComponent {
       }
     });
 
+    // Cierra modal y se suscribe a la respuesta con el proyecto elegido
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed: ', result);
       this.numero = result.numero;

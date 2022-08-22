@@ -1,22 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-
-export interface Colaborador {
-  nombre: string;
-  rol: string;
-  capacidad: number;
-  disponibilidad: number;
-  planificadas: number;
-}
+import { Colaborador } from 'src/app/interfaces/colaborador';
 
 @Component({
   selector: 'app-inicio-equipo',
   templateUrl: './inicio-equipo.component.html',
   styleUrls: ['./inicio-equipo.component.css']
 })
-export class InicioEquipoComponent implements OnInit {
+export class InicioEquipoComponent {
 
   myControl = new FormControl;
   colaboradores: Colaborador[] = [
@@ -27,16 +20,15 @@ export class InicioEquipoComponent implements OnInit {
   ];
   filteredOptions2: Observable<Colaborador[]>;
   
-  constructor() { this.filteredOptions2 = this.myControl.valueChanges.pipe(
+  constructor() {
+    // En el constructor se setea el autocompletado y sugerencia de búsqueda
+    this.filteredOptions2 = this.myControl.valueChanges.pipe(
     startWith(''),
     map(value => {
       const name = typeof value === 'string' ? value : value?.name;
       return name ? this._filter(name as string) : this.colaboradores.slice();
     }),
   ); }
-
-  ngOnInit(): void {
-  }
 
   displayFn2(user: Colaborador): string {
     return user && user.nombre ? user.nombre : '';
@@ -48,25 +40,28 @@ export class InicioEquipoComponent implements OnInit {
     return this.colaboradores.filter(option => option.nombre.toLowerCase().includes(filterValue));
   }
 
+  // Retorna la saturacion actual
   getSaturacion(hsPlanificadas: number) {
     return Math.round(hsPlanificadas / 120 * 100);
   }
 
+  // Pinta el div de color verde si cumple la condicion
   getSatVerde(hsPlanificadas: number) {
     return this.getSaturacion(hsPlanificadas) < 51;
   }
 
+  // Pinta el div de color amarillo si cumple la condicion
   getSatAma(hsPlanificadas: number) {
     return this.getSaturacion(hsPlanificadas) > 50 && this.getSaturacion(hsPlanificadas) < 81;
   }
 
+  // Pinta el div de color rojo si cumple la condicion
   getSatRoja(hsPlanificadas: number) {
     return this.getSaturacion(hsPlanificadas) > 81 && this.getSaturacion(hsPlanificadas) < 101;
   }
 
   abrirModal() {
-    // Abre modal de búsqueda con mas filtros
-    console.log("ABRIENDO MODAL");
+    // Abre modal filtro con mas opciones de búsqueda
   }
 
 }

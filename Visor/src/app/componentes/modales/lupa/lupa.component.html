@@ -1,54 +1,39 @@
 <div class="container">
 
     <div class="busqueda">
-    <h1 mat-dialog-title>Búsqueda Avanzada</h1>
-    <div mat-dialog-content class="form">
-    <mat-form-field appearance="outline">
-        <mat-label>Número (Id)</mat-label>
-        <input matInput name="numero" [(ngModel)]="data.numero" [ngModelOptions]="{standalone: true}" (keyup)="applyFilter($event)">
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-        <mat-label>Nombre (Asunto)</mat-label>
-        <input matInput name="nombre" [(ngModel)]="data.nombre" [ngModelOptions]="{standalone: true}" (keyup)="applyFilter($event)">
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-        <mat-label>Cliente (Proyecto)</mat-label>
-        <input matInput name="cliente" [(ngModel)]="data.cliente" [ngModelOptions]="{standalone: true}" (keyup)="applyFilter($event)">
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-        <mat-label>Asignado a</mat-label>
-        <input matInput name="asignado" [(ngModel)]="data.asignadoA" [ngModelOptions]="{standalone: true}" (keyup)="applyFilter($event)">
-    </mat-form-field>
-    <mat-checkbox name="checkbox" [(ngModel)]="data.misProyectos" [ngModelOptions]="{standalone: true}" (click)="marcarCheckbox()">Mis Proyectos</mat-checkbox>
-    </div>
-    <!-- <div mat-dialog-actions>
-    <button mat-raised-button (click)="onNoClick()">Cerrar</button>
-    <button mat-raised-button color="primary" (click)="buscarProyecto({data})">Buscar Proyecto</button>
-    </div> -->
+        <h1 mat-dialog-title>Búsqueda Avanzada</h1>
+        <div mat-dialog-content class="form">
+            <mat-form-field appearance="outline">
+                <mat-label>Número (Id)</mat-label>
+                <input matInput name="numero" [(ngModel)]="data.numero" [ngModelOptions]="{standalone: true}" (keyup)="applyFilter($event)">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Nombre (Asunto)</mat-label>
+                <input matInput name="nombre" [(ngModel)]="data.nombre" [ngModelOptions]="{standalone: true}" (keyup)="applyFilter($event)">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Cliente (Proyecto)</mat-label>
+                <input matInput name="cliente" [(ngModel)]="data.cliente" [ngModelOptions]="{standalone: true}" (keyup)="applyFilter($event)">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Asignado a</mat-label>
+                <input matInput name="asignado" [(ngModel)]="data.asignadoA" [ngModelOptions]="{standalone: true}" (keyup)="applyFilter($event)">
+            </mat-form-field>
+            <mat-checkbox name="checkbox" [(ngModel)]="data.misProyectos" [ngModelOptions]="{standalone: true}" (click)="marcarCheckbox()">Mis Proyectos</mat-checkbox>
+        </div>
     </div>
 
     <div class="resultados">
         <div class="tabla-scroll">
-        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-            <ng-container matColumnDef="nombre">
-                <th mat-header-cell *matHeaderCellDef>Proyectos</th>
-                <td mat-cell *matCellDef="let proy" (click)="seleccionarProyecto(proy)" [mat-dialog-close]="proy" class="fila"> {{ proy.nombre }} </td>
-            </ng-container>
-            <tr mat-header-row *matHeaderRowDef="columnas"></tr>
-            <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
-        </table>
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                <ng-container matColumnDef="nombre">
+                    <th mat-header-cell *matHeaderCellDef>Proyectos</th>
+                    <td mat-cell *matCellDef="let proy" (click)="seleccionarProyecto(proy)" [mat-dialog-close]="proy" class="fila"> {{ proy.nombre }} </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+                <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
+            </table>
         </div>
-        <!-- <button mat-raised-button color="primary" [mat-dialog-close]="data" class="seleccionar">Seleccionar Proyecto</button>
-
-        <h1 mat-dialog-title>Resultados</h1>
-        <mat-selection-list #proyecto [multiple]="false">
-            <mat-list-option *ngFor="let proy of proyectos" [value]="proy">
-                {{ proy.nombre }}
-                <mat-divider></mat-divider>
-            </mat-list-option>
-        </mat-selection-list>
-        <mat-divider></mat-divider>
-        <button mat-raised-button color="primary" [mat-dialog-close]="data" class="seleccionar">Seleccionar Proyecto</button> -->
     </div>
 
 </div>
