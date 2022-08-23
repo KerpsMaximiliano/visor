@@ -9,6 +9,7 @@ export class TareaService {
 tareas: Tarea[] = [
     {
         titulo: "124192-H4-ANG-PUBLICAR EXTRACTO (CU-705)",
+        proyecto: "Sala de Sorteos - Extractos Digitales",
         prioridad: "Alta",
         asignado: "Franco Friggeri",
         facilitador: "Jose Gerardo Gonzalez Muñoz",
@@ -21,10 +22,264 @@ tareas: Tarea[] = [
         tareasPrecondicion: "Tarea 1",
         notas: "",
         tipoTarea: "Relevamiento Requerimientos",
-        estado: "No Iniciada"
+        estado: "No Iniciada",
+        sprint: ""
+    },
+    {
+        titulo: "124192-H4-ANG-PUBLICAR EXTRACTO (CU-705)",
+        proyecto: "Sala de Sorteos - Extractos Digitales",
+        prioridad: "Alta",
+        asignado: "Franco Friggeri",
+        facilitador: "Jose Gerardo Gonzalez Muñoz",
+        fechaInicio: "01/09/2022",
+        fechaFin: "",
+        fechaPlanificacion: "30/09/2022",
+        horasPlanificadas: 4,
+        horasEjecutadas: 0,
+        documento: "Documento 1",
+        tareasPrecondicion: "Tarea 1",
+        notas: "",
+        tipoTarea: "Relevamiento Requerimientos",
+        estado: "No Iniciada",
+        sprint: ""
+    },
+    {
+        titulo: "124192-H4-ANG-PUBLICAR EXTRACTO (CU-705)",
+        proyecto: "Sala de Sorteos - Extractos Digitales",
+        prioridad: "Alta",
+        asignado: "Franco Friggeri",
+        facilitador: "Jose Gerardo Gonzalez Muñoz",
+        fechaInicio: "01/09/2022",
+        fechaFin: "",
+        fechaPlanificacion: "30/09/2022",
+        horasPlanificadas: 4,
+        horasEjecutadas: 0,
+        documento: "Documento 1",
+        tareasPrecondicion: "Tarea 1",
+        notas: "",
+        tipoTarea: "Relevamiento Requerimientos",
+        estado: "No Iniciada",
+        sprint: ""
+    },
+    {
+        titulo: "124192-H4-ANG-PUBLICAR EXTRACTO (CU-705)",
+        proyecto: "Sala de Sorteos - Extractos Digitales",
+        prioridad: "Alta",
+        asignado: "Franco Friggeri",
+        facilitador: "Jose Gerardo Gonzalez Muñoz",
+        fechaInicio: "01/09/2022",
+        fechaFin: "",
+        fechaPlanificacion: "30/09/2022",
+        horasPlanificadas: 4,
+        horasEjecutadas: 0,
+        documento: "Documento 1",
+        tareasPrecondicion: "Tarea 1",
+        notas: "",
+        tipoTarea: "Relevamiento Requerimientos",
+        estado: "No Iniciada",
+        sprint: ""
+    },
+    {
+        titulo: "124192-H4-ANG-PUBLICAR EXTRACTO (CU-705)",
+        proyecto: "Sala de Sorteos - Extractos Digitales",
+        prioridad: "Alta",
+        asignado: "Franco Friggeri",
+        facilitador: "Jose Gerardo Gonzalez Muñoz",
+        fechaInicio: "01/09/2022",
+        fechaFin: "",
+        fechaPlanificacion: "30/09/2022",
+        horasPlanificadas: 4,
+        horasEjecutadas: 0,
+        documento: "Documento 1",
+        tareasPrecondicion: "Tarea 1",
+        notas: "",
+        tipoTarea: "Relevamiento Requerimientos",
+        estado: "No Iniciada",
+        sprint: ""
+    },
+    {
+        titulo: "124192-H4-ANG-PUBLICAR EXTRACTO (CU-705)",
+        proyecto: "Sala de Sorteos - Extractos Digitales",
+        prioridad: "Alta",
+        asignado: "Franco Friggeri",
+        facilitador: "Jose Gerardo Gonzalez Muñoz",
+        fechaInicio: "01/09/2022",
+        fechaFin: "",
+        fechaPlanificacion: "30/09/2022",
+        horasPlanificadas: 4,
+        horasEjecutadas: 0,
+        documento: "Documento 1",
+        tareasPrecondicion: "Tarea 1",
+        notas: "",
+        tipoTarea: "Relevamiento Requerimientos",
+        estado: "No Iniciada",
+        sprint: ""
+    },
+    {
+        titulo: "124192-H4-ANG-PUBLICAR EXTRACTO (CU-705)",
+        proyecto: "Sala de Sorteos - Extractos Digitales",
+        prioridad: "Alta",
+        asignado: "Franco Friggeri",
+        facilitador: "Jose Gerardo Gonzalez Muñoz",
+        fechaInicio: "01/09/2022",
+        fechaFin: "",
+        fechaPlanificacion: "30/09/2022",
+        horasPlanificadas: 4,
+        horasEjecutadas: 0,
+        documento: "Documento 1",
+        tareasPrecondicion: "Tarea 1",
+        notas: "",
+        tipoTarea: "Relevamiento Requerimientos",
+        estado: "No Iniciada",
+        sprint: ""
+    },
+    {
+        titulo: "124192-H4-ANG-PUBLICAR EXTRACTO (CU-705)",
+        proyecto: "Sala de Sorteos - Extractos Digitales",
+        prioridad: "Alta",
+        asignado: "Franco Friggeri",
+        facilitador: "Jose Gerardo Gonzalez Muñoz",
+        fechaInicio: "01/09/2022",
+        fechaFin: "",
+        fechaPlanificacion: "30/09/2022",
+        horasPlanificadas: 4,
+        horasEjecutadas: 0,
+        documento: "Documento 1",
+        tareasPrecondicion: "Tarea 1",
+        notas: "",
+        tipoTarea: "Relevamiento Requerimientos",
+        estado: "No Iniciada",
+        sprint: ""
+    },
+    {
+        titulo: "124192-H4-ANG-PUBLICAR EXTRACTO (CU-705)",
+        proyecto: "Sala de Sorteos - Extractos Digitales",
+        prioridad: "Alta",
+        asignado: "Franco Friggeri",
+        facilitador: "Jose Gerardo Gonzalez Muñoz",
+        fechaInicio: "01/09/2022",
+        fechaFin: "",
+        fechaPlanificacion: "30/09/2022",
+        horasPlanificadas: 4,
+        horasEjecutadas: 0,
+        documento: "Documento 1",
+        tareasPrecondicion: "Tarea 1",
+        notas: "",
+        tipoTarea: "Relevamiento Requerimientos",
+        estado: "No Iniciada",
+        sprint: ""
+    },
+    {
+        titulo: "124192-H4-ANG-PUBLICAR EXTRACTO (CU-705)",
+        proyecto: "Sala de Sorteos - Extractos Digitales",
+        prioridad: "Alta",
+        asignado: "Franco Friggeri",
+        facilitador: "Jose Gerardo Gonzalez Muñoz",
+        fechaInicio: "01/09/2022",
+        fechaFin: "",
+        fechaPlanificacion: "30/09/2022",
+        horasPlanificadas: 4,
+        horasEjecutadas: 0,
+        documento: "Documento 1",
+        tareasPrecondicion: "Tarea 1",
+        notas: "",
+        tipoTarea: "Relevamiento Requerimientos",
+        estado: "No Iniciada",
+        sprint: ""
+    },
+    {
+        titulo: "124192-H4-ANG-PUBLICAR EXTRACTO (CU-705)",
+        proyecto: "Sala de Sorteos - Extractos Digitales",
+        prioridad: "Alta",
+        asignado: "Franco Friggeri",
+        facilitador: "Jose Gerardo Gonzalez Muñoz",
+        fechaInicio: "01/09/2022",
+        fechaFin: "",
+        fechaPlanificacion: "30/09/2022",
+        horasPlanificadas: 4,
+        horasEjecutadas: 0,
+        documento: "Documento 1",
+        tareasPrecondicion: "Tarea 1",
+        notas: "",
+        tipoTarea: "Relevamiento Requerimientos",
+        estado: "No Iniciada",
+        sprint: ""
+    },
+    {
+        titulo: "124192-H4-ANG-PUBLICAR EXTRACTO (CU-705)",
+        proyecto: "Sala de Sorteos - Extractos Digitales",
+        prioridad: "Alta",
+        asignado: "Franco Friggeri",
+        facilitador: "Jose Gerardo Gonzalez Muñoz",
+        fechaInicio: "01/09/2022",
+        fechaFin: "",
+        fechaPlanificacion: "30/09/2022",
+        horasPlanificadas: 4,
+        horasEjecutadas: 0,
+        documento: "Documento 1",
+        tareasPrecondicion: "Tarea 1",
+        notas: "",
+        tipoTarea: "Relevamiento Requerimientos",
+        estado: "No Iniciada",
+        sprint: ""
+    },
+    {
+        titulo: "124192-H4-ANG-PUBLICAR EXTRACTO (CU-705)",
+        proyecto: "Sala de Sorteos - Extractos Digitales",
+        prioridad: "Alta",
+        asignado: "Franco Friggeri",
+        facilitador: "Jose Gerardo Gonzalez Muñoz",
+        fechaInicio: "01/09/2022",
+        fechaFin: "",
+        fechaPlanificacion: "30/09/2022",
+        horasPlanificadas: 4,
+        horasEjecutadas: 0,
+        documento: "Documento 1",
+        tareasPrecondicion: "Tarea 1",
+        notas: "",
+        tipoTarea: "Relevamiento Requerimientos",
+        estado: "No Iniciada",
+        sprint: ""
+    },
+    {
+        titulo: "124192-H4-ANG-PUBLICAR EXTRACTO (CU-705)",
+        proyecto: "Sala de Sorteos - Extractos Digitales",
+        prioridad: "Alta",
+        asignado: "Franco Friggeri",
+        facilitador: "Jose Gerardo Gonzalez Muñoz",
+        fechaInicio: "01/09/2022",
+        fechaFin: "",
+        fechaPlanificacion: "30/09/2022",
+        horasPlanificadas: 4,
+        horasEjecutadas: 0,
+        documento: "Documento 1",
+        tareasPrecondicion: "Tarea 1",
+        notas: "",
+        tipoTarea: "Relevamiento Requerimientos",
+        estado: "No Iniciada",
+        sprint: ""
+    },
+    {
+        titulo: "124192-H4-ANG-PUBLICAR EXTRACTO (CU-705)",
+        proyecto: "Sala de Sorteos - Extractos Digitales",
+        prioridad: "Alta",
+        asignado: "Franco Friggeri",
+        facilitador: "Jose Gerardo Gonzalez Muñoz",
+        fechaInicio: "01/09/2022",
+        fechaFin: "",
+        fechaPlanificacion: "30/09/2022",
+        horasPlanificadas: 4,
+        horasEjecutadas: 0,
+        documento: "Documento 1",
+        tareasPrecondicion: "Tarea 1",
+        notas: "",
+        tipoTarea: "Relevamiento Requerimientos",
+        estado: "No Iniciada",
+        sprint: ""
     },
     {
         titulo: "124192-H4-ANG-PUBLICAR EXTRACTO WEB (CU-711)",
+        proyecto: "Sala de Sorteos - Extractos Digitales",
         prioridad: "Baja",
         asignado: "Franco Friggeri",
         facilitador: "Jose Gerardo Gonzalez Muñoz",
@@ -37,10 +292,12 @@ tareas: Tarea[] = [
         tareasPrecondicion: "Tarea 9",
         notas: "",
         tipoTarea: "Relevamiento Requerimientos",
-        estado: "Completada"
+        estado: "Completada",
+        sprint: ""
     },
     {
-    titulo: "124192-I+D-ANG-DESZIPEO DE ARCHIVO",
+        titulo: "124192-I+D-ANG-DESZIPEO DE ARCHIVO",
+        proyecto: "Sala de Sorteos - Extractos Digitales",
         prioridad: "Media",
         asignado: "Franco Friggeri",
         facilitador: "Adrian Enrico",
@@ -53,10 +310,12 @@ tareas: Tarea[] = [
         tareasPrecondicion: "Tarea 1",
         notas: "",
         tipoTarea: "Relevamiento Requerimientos",
-        estado: "Completada"
+        estado: "Completada",
+        sprint: ""
     },
     {
-    titulo: "124192-HX-ANG-UI ACTA ESCRIBANO",
+        titulo: "124192-HX-ANG-UI ACTA ESCRIBANO",
+        proyecto: "Sala de Sorteos - Extractos Digitales",
         prioridad: "Baja",
         asignado: "Franco Friggeri",
         facilitador: "Adrian Enrico",
@@ -69,7 +328,8 @@ tareas: Tarea[] = [
         tareasPrecondicion: "Tarea 1",
         notas: "",
         tipoTarea: "Relevamiento Requerimientos",
-        estado: "Completada"
+        estado: "Completada",
+        sprint: "124192-ETAPA 5 ANGULAR"
     }
 ];
 
@@ -79,7 +339,7 @@ constructor() { }
 getTareasNoIniciadas() {
     const respuesta: Tarea[] = [];
     this.tareas.forEach(tarea => {
-        if(tarea.estado == "No Iniciada") {
+        if(tarea.estado == "No Iniciada" && tarea.tipoTarea == "Relevamiento Requerimientos") {
             respuesta.push(tarea);
         }
     });
@@ -89,7 +349,7 @@ getTareasNoIniciadas() {
 getTareasEnProgreso() {
     const respuesta: Tarea[] = [];
     this.tareas.forEach(tarea => {
-        if(tarea.estado == "En Progreso") {
+        if(tarea.estado == "En Progreso" && tarea.tipoTarea == "Relevamiento Requerimientos") {
             respuesta.push(tarea);
         }
     });
@@ -99,7 +359,7 @@ getTareasEnProgreso() {
 getTareasCompletadas() {
     const respuesta: Tarea[] = [];
     this.tareas.forEach(tarea => {
-        if(tarea.estado == "Completada") {
+        if(tarea.estado == "Completada" && tarea.tipoTarea == "Relevamiento Requerimientos") {
             respuesta.push(tarea);
         }
     });

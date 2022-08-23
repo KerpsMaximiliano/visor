@@ -1,5 +1,6 @@
 export interface Tarea {
     titulo: string,
+    proyecto: string,
     prioridad: string,
     asignado: string,
     facilitador: string,
@@ -12,5 +13,6 @@ export interface Tarea {
     tareasPrecondicion: string,
     notas: string,
     tipoTarea: string,
-    estado: string
+    estado: string,
+    sprint: string,
 }
