@@ -6,4 +6,5 @@ export interface Actividad{
     horas: Number;
     descripcion: any;
     asunto: String;
+    tareas: String;
 }

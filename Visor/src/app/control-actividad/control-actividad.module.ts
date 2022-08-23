@@ -1,21 +1,27 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActividadComponent } from './actividad/actividad.component';
+import { ActividadComponent } from  '../control-actividad/actividad/actividad.component';
 import { MyMaterialModule } from '../material';
 import { SharedModule } from '../shared/shared.module';
+import { ModalActividadComponent } from './modal-actividad/modal-actividad.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
 
 
 
 
 @NgModule({
   declarations: [
-    ActividadComponent
+    ActividadComponent,
+    ModalActividadComponent
   ],
   imports: [
     CommonModule,
     MyMaterialModule,
-    SharedModule
+    SharedModule,
+    ReactiveFormsModule
   ],
-  exports:[ActividadComponent]
+  exports:[ActividadComponent,ModalActividadComponent],
+  providers:[ModalActividadComponent]
 })
 export class ControlActividadModule { }
