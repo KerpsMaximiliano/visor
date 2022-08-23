@@ -1,4 +1,4 @@
-export interface Actividad {
+export interface Tarea {
     titulo: string,
     prioridad: string,
     asignado: string,
@@ -8,9 +8,9 @@ export interface Actividad {
     fechaPlanificacion: string,
     horasPlanificadas: number,
     horasEjecutadas: number,
-    horasDesvio: number,
     documento: string,
     tareasPrecondicion: string,
     notas: string,
-    tipoTarea: string
+    tipoTarea: string,
+    estado: string
 }

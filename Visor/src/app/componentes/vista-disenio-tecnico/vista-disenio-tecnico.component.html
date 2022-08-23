@@ -25,7 +25,7 @@
             </div>
 
             <div class="conteiner-all-act">
-                <div class="actividades" *ngFor="let actividad of actividadesNoIniciadas ; let i = index">
+                <div class="actividades" *ngFor="let actividad of tareasNoIniciadas ; let i = index">
                     <mat-accordion class="panel-header">
                         <mat-expansion-panel hideToggle>
                             <mat-divider id="separador"></mat-divider>
@@ -52,20 +52,27 @@
                                     <strong>Facilitador: </strong>
                                     <p>{{actividad.facilitador}}</p>
                                 </div>
-                                <div id="fechas">
+                                <div class="horas">
                                     <i id="icon-calendar" class="fa-regular fa-calendar-days"></i>
                                     <strong>Fechas: </strong>
-                                    <p>De inicio: {{actividad.fechaInicio}}</p>
-                                    <p>Fin: {{actividad.fechaFin}}</p>
-                                    <p>Planificada: {{actividad.fechaPlanificacion}}</p>
+                                    <div class="horas-div">
+                                        <p>De inicio: {{actividad.fechaInicio}}</p>
+                                        <p>Planificada: {{actividad.fechaPlanificacion}}</p>
+                                        <p>Fin: {{actividad.fechaFin}}</p>
+                                    </div>
                                 </div> 
                                 <div class="horas">
                                     <i id="icon-clock" class="far fa-clock"></i>
                                     <strong>Horas:</strong>
-                                    <div id="horas-div">
-                                        <p>Planificadas: {{actividad.horasPlanificadas}}h</p>
-                                        <p>Ejecutadas: {{actividad.horasPlanificadas}}h</p>
-                                        <p>Desvió:</p><p id="horasDesvio">{{actividad.horasPlanificadas}}h</p>
+                                    <div class="horas-div">
+                                        <p>Planificadas: {{actividad.horasPlanificadas}} hs</p>
+                                        <p>Ejecutadas: {{actividad.horasEjecutadas}} hs</p>
+                                        <p>Desvío:</p><p [ngClass]="{
+                                            'desvioNegativo': calcularDesvio(actividad.horasPlanificadas, actividad.horasEjecutadas),
+                                            'desvioPositivo': !calcularDesvio(actividad.horasPlanificadas, actividad.horasEjecutadas)
+                                        }">
+                                            {{valorAbsoluto(actividad.horasPlanificadas-actividad.horasEjecutadas)}} hs
+                                        </p>
                                     </div>
                                 </div> 
                                 <div class="datos">
@@ -75,7 +82,7 @@
                                 </div> 
                                 <div class="datos">
                                     <i id="icon-check" class="fa-solid fa-circle-check"></i>
-                                    <strong>Tarea: </strong>
+                                    <strong>Tareas Precondicion: </strong>
                                     <p>{{actividad.tareasPrecondicion}}</p>
                                 </div> 
                             </div>
@@ -101,7 +108,7 @@
                 <h4>EN PROGRESO</h4>
             </div>
             <div class="conteiner-all-act">
-                <div class="actividades" *ngFor="let actividad of actividadesEnProgreso ; let i = index">
+                <div class="actividades" *ngFor="let actividad of tareasEnProgreso ; let i = index">
                     <mat-accordion class="panel-header">
                         <mat-expansion-panel hideToggle>
                             <mat-divider id="separador"></mat-divider>
@@ -132,13 +139,20 @@
                                     <i id="icon-calendar" class="fa-regular fa-calendar-days"></i>
                                     <strong>Fechas: </strong>
                                     <p>De inicio: {{actividad.fechaInicio}}</p>
-                                    <p>Fin: {{actividad.fechaFin}}</p>
                                     <p>Planificada: {{actividad.fechaPlanificacion}}</p>
+                                    <p>Fin: {{actividad.fechaFin}}</p>
                                 </div> 
                                 <div class="datos">
                                     <i id="icon-clock" class="far fa-clock"></i>
                                     <strong>Horas: </strong>
-                                    <p>{{actividad.horasPlanificadas}}</p>
+                                    <p>Planificadas: {{actividad.horasPlanificadas}} hs</p>
+                                    <p>Ejecutadas: {{actividad.horasEjecutadas}} hs</p>
+                                    <p>Desvío:</p><p [ngClass]="{
+                                        'desvioNegativo': calcularDesvio(actividad.horasPlanificadas, actividad.horasEjecutadas),
+                                        'desvioPositivo': !calcularDesvio(actividad.horasPlanificadas, actividad.horasEjecutadas)
+                                    }">
+                                        {{valorAbsoluto(actividad.horasPlanificadas-actividad.horasEjecutadas)}} hs
+                                    </p>
                                 </div> 
                                 <div class="datos">
                                     <i id="icon-paper" class="fa-solid fa-copy"></i>
@@ -147,7 +161,7 @@
                                 </div> 
                                 <div class="datos">
                                     <i id="icon-check" class="fa-solid fa-circle-check"></i>
-                                    <strong>Tarea: </strong>
+                                    <strong>Tareas Precondicion: </strong>
                                     <p>{{actividad.tareasPrecondicion}}</p>
                                 </div> 
                             </div>
@@ -171,7 +185,7 @@
                 <h4>COMPLETADAS</h4>
             </div>
             <div class="conteiner-all-act">
-                <div class="actividades" *ngFor="let actividad of actividadesCompletadas">
+                <div class="actividades" *ngFor="let actividad of tareasCompletadas">
                     <mat-accordion class="panel-header">
                     <mat-expansion-panel hideToggle>
                         <mat-divider id="separador"></mat-divider>
@@ -198,17 +212,29 @@
                                 <strong>Facilitador: </strong>
                                 <p>{{actividad.facilitador}}</p>
                             </div>
-                            <div id="fechas">
+                            <div class="horas">
                                 <i id="icon-calendar" class="fa-regular fa-calendar-days"></i>
                                 <strong>Fechas: </strong>
-                                <p>De inicio: {{actividad.fechaInicio}}</p>
-                                <p>Fin: {{actividad.fechaFin}}</p>
-                                <p>Planificada: {{actividad.fechaPlanificacion}}</p>
+                                <div class="horas-div">
+                                    <p>De inicio: {{actividad.fechaInicio}}</p>
+                                    <p>Planificada: {{actividad.fechaPlanificacion}}</p>
+                                    <p>Fin: {{actividad.fechaFin}}</p>
+                                </div>
                             </div> 
-                            <div class="datos">
+                            <div class="horas">
                                 <i id="icon-clock" class="far fa-clock"></i>
                                 <strong>Horas: </strong>
-                                <p>{{actividad.horasPlanificadas}}</p>
+                                <div class="horas-div">
+                                    <p>Planificadas: {{actividad.horasPlanificadas}} hs</p>
+                                    <p>Ejecutadas: {{actividad.horasEjecutadas}} hs</p>
+                                    <p>Desvío:</p>
+                                    <p [ngClass]="{
+                                        'desvioNegativo': calcularDesvio(actividad.horasPlanificadas, actividad.horasEjecutadas),
+                                        'desvioPositivo': !calcularDesvio(actividad.horasPlanificadas, actividad.horasEjecutadas)
+                                    }">
+                                        {{valorAbsoluto(actividad.horasPlanificadas-actividad.horasEjecutadas)}} hs
+                                    </p>
+                                </div>
                             </div> 
                             <div class="datos">
                                 <i id="icon-paper" class="fa-solid fa-copy"></i>
@@ -217,7 +243,7 @@
                             </div> 
                             <div class="datos">
                                 <i id="icon-check" class="fa-solid fa-circle-check"></i>
-                                <strong>Tarea: </strong>
+                                <strong>Tareas Precondicion: </strong>
                                 <p>{{actividad.tareasPrecondicion}}</p>
                             </div> 
                         </div>
