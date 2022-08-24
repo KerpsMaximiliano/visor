@@ -6,18 +6,17 @@
     <p id="subtitulo-disenio">Avance de Diseño Técnico</p>
 
     <!-- Barra de progreso -->
-    <div class="conteiner-barra">
-        <div class="progress">
-            <div class="progress-bar bg-danger" role="progressbar" aria-label="Segment one" style="width: 86%" aria-valuenow="cargarBarraRoja()" aria-valuemin="0" aria-valuemax="100"><p class="porcentajes">{{cargarBarraRoja()}}%</p></div>
-            <div class="progress-bar bg-warning" role="progressbar" aria-label="Segment two" style="width: 0%" aria-valuenow="cargarBarraAmarilla()" aria-valuemin="0" aria-valuemax="100"><p class="porcentajes">{{cargarBarraAmarilla()}}%</p></div>
-            <div class="progress-bar bg-success" role="progressbar" aria-label="Segment one" style="width: 14%" aria-valuenow="cargarBarraVerde()" aria-valuemin="0" aria-valuemax="100"><p class="porcentajes">{{cargarBarraVerde()}}%</p></div>
-        </div>
+    <!-- <div *ngIf="!noHayProyecto"> -->
+    <div class="progress conteiner-barra">
+        <div #barraRoja class="progress-bar bg-danger" role="progressbar" aria-label="Segment one" aria-valuenow="cargarBarraRoja()" aria-valuemin="0" aria-valuemax="100"><p class="porcentajes">{{cargarBarraRoja()}}%</p></div>
+        <div #barraAmarilla class="progress-bar bg-warning" role="progressbar" aria-label="Segment two" aria-valuenow="cargarBarraAmarilla()" aria-valuemin="0" aria-valuemax="100"><p id="porcentajeAmarillo" class="porcentajes">{{cargarBarraAmarilla()}}%</p></div>
+        <div #barraVerde class="progress-bar bg-success" role="progressbar" aria-label="Segment one" aria-valuenow="cargarBarraVerde()" aria-valuemin="0" aria-valuemax="100"><p class="porcentajes">{{cargarBarraVerde()}}%</p></div>
     </div>
-</div>
+<!-- </div> -->
 <!-- Termina cabecera -->
 
 <!-- Contenedor para las columnas de las tareas -->
-<div class="conteiner-all">
+<div class="conteiner-all" *ngIf="!noHayProyecto">
     <div class="card-columna">
         <mat-card [ngClass]="{'card': poseeTareasNoIniciadas, 'conteiner-vacio': !poseeTareasNoIniciadas}">
             <div class="titulo-conteiner-no-iniciadas">
@@ -114,7 +113,7 @@
     <div class="card-columna">
         <mat-card [ngClass]="{'card': poseeTareasEnProgreso, 'conteiner-vacio': !poseeTareasEnProgreso}">
             <div class="titulo-conteiner-progreso">
-                <h4>EN PROGRESO</h4>
+                <h4 id="progress">EN PROGRESO</h4>
             </div>
             <div class="conteiner-all-act">
                 <div class="actividades" *ngFor="let actividad of tareasEnProgreso ; let i = index">

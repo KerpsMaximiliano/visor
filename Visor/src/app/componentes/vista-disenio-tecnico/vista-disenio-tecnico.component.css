@@ -18,7 +18,8 @@
 
 .porcentajes{
     margin-top: 13px;
-    color: black;
+    color: white;
+    font-weight: 700;
 }
 
 .cabecera {
@@ -28,10 +29,12 @@
 #titulo-proyecto {
     font-size: 25px;
     margin-top: 20px;
+    font-weight: 700;
 }
 
 #subtitulo-disenio{
     font-size: 15px;
+    font-weight: 700;
 }
 
 .datos{
@@ -218,4 +221,17 @@
 .actividades-desplegable {
     width: 100%;
     margin-top: 5px;
+}
+
+h4 {
+    font-weight: 700;
+    color: white;
+}
+
+#progress {
+    color: black;
+}
+
+#porcentajeAmarillo {
+    color: black;
 }

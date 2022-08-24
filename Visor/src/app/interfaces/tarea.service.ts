@@ -161,12 +161,12 @@ tareas: Tarea[] = [
         fechaFin: "",
         fechaPlanificacion: "30/09/2022",
         horasPlanificadas: 4,
-        horasEjecutadas: 0,
+        horasEjecutadas: 3,
         documento: "Documento 1",
         tareasPrecondicion: "Tarea 1",
         notas: "",
         tipoTarea: "Relevamiento Requerimientos",
-        estado: "No Iniciada",
+        estado: "En Progreso",
         sprint: ""
     },
     {
@@ -184,7 +184,7 @@ tareas: Tarea[] = [
         tareasPrecondicion: "Tarea 1",
         notas: "",
         tipoTarea: "Relevamiento Requerimientos",
-        estado: "No Iniciada",
+        estado: "En Progreso",
         sprint: ""
     },
     {
@@ -202,7 +202,7 @@ tareas: Tarea[] = [
         tareasPrecondicion: "Tarea 1",
         notas: "",
         tipoTarea: "Relevamiento Requerimientos",
-        estado: "No Iniciada",
+        estado: "En Progreso",
         sprint: ""
     },
     {
@@ -220,7 +220,7 @@ tareas: Tarea[] = [
         tareasPrecondicion: "Tarea 1",
         notas: "",
         tipoTarea: "Relevamiento Requerimientos",
-        estado: "No Iniciada",
+        estado: "En Progreso",
         sprint: ""
     },
     {
@@ -238,7 +238,7 @@ tareas: Tarea[] = [
         tareasPrecondicion: "Tarea 1",
         notas: "",
         tipoTarea: "Relevamiento Requerimientos",
-        estado: "No Iniciada",
+        estado: "En Progreso",
         sprint: ""
     },
     {
