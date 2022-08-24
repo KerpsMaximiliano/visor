@@ -1,0 +1,19 @@
+<div id="conteiner-all">
+    <div id="conteiner-login">
+        <form [formGroup]="form" novalidate class="needs-validation">
+            <img src="../../../assets/images/company_logo.png" />
+            <br />
+            <input id="passwordInput" type="password" formControlName="password" placeholder="Contraseña nueva" autocomplete="off" required>
+            <div class="separador">
+            </div>
+            <input id="confirmPasswordInput" type="password" formControlName="confirmPassword" placeholder="Repita la contraseña nueva" autocomplete="off" required>
+            <div class="separador">
+                <!-- Se activa unicamente si el usuario introduce mal el usuario y el correo -->
+                <p id="mensajeError" *ngIf="visibilidadMensajeContrasenia == true">{{mensajeErrorContrasenia}}</p>
+            </div>  
+            <button type="submit" class="sesionButton" (click)="verificarCredenciales()"><span>Enviar correo</span></button>
+        </form>
+    </div>
+</div>
+
+

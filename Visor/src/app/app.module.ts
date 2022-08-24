@@ -8,15 +8,22 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 //Material
 import { MyMaterialModule } from './material';
 
+//Modulos internos
+import { LoginModule } from './components/login/login.module';
+import { EnviarcorreoModule } from './components/enviarcorreo/enviarcorreo.module';
+import { RecuperarcontraseniaModule } from './components/recuperarcontrasenia/recuperarcontrasenia.module';
+
 @NgModule({
   declarations: [
-    AppComponent
-  ],
+    AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MyMaterialModule
+    MyMaterialModule,
+    LoginModule,
+    EnviarcorreoModule,
+    RecuperarcontraseniaModule
   ],
   providers: [],
   bootstrap: [AppComponent]
