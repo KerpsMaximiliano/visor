@@ -4,6 +4,19 @@
     text-decoration: none;
     list-style: none;
 }
+#progressNoIniciadas{
+    background-color: #cc0000;
+}
+
+#progressEnProgreso{
+    background-color: #f1c232;
+}
+#progressEnPrueba{
+    background-color: #93c47d;
+}
+#progressCompletadas{
+    background-color: #6aa84f;
+}
 
 .conteiner-all{
     display: flex;
@@ -87,19 +100,19 @@
 }
 
 .card-columna{
-    width: 370px;
+    width: 25%;
     margin: 2px;
 }
 
 .card{
     border: 1.5px solid black;
     border-radius: 4px;
-    width: 370px;
+    /* width: 370px; */
 }
 
 .titulo-conteiner-no-iniciadas {
     height: 25px;
-    background-color: rgb(170, 0, 0);
+    background-color: #cc0000;
     text-align: center;
     border: 1.5px solid black;
     border-radius: 4px;
@@ -107,7 +120,15 @@
 
 .titulo-conteiner-progreso {
     height: 25px;
-    background-color: yellow;
+    background-color: #f1c232;
+    text-align: center;
+    border: 1.5px solid black;
+    border-radius: 4px;
+}
+
+.titulo-conteiner-en-prueba {
+    height: 25px;
+    background-color: #93c47d;
     text-align: center;
     border: 1.5px solid black;
     border-radius: 4px;
@@ -115,7 +136,7 @@
 
 .titulo-conteiner-completadas {
     height: 25px;
-    background-color: rgb(4, 131, 2);
+    background-color: #6aa84f;
     text-align: center;
     border: 1.5px solid black; 
     border-radius: 4px;
@@ -153,17 +174,32 @@
     text-align: right;
 }
 
+#shakehands{
+    display: flex;
+    justify-content: center;
+}
+
+#shakehands::before{
+    cursor: pointer;
+    color: blue;
+}
+
 #icon-edit{
     margin-right: 5px;
     cursor: pointer;
     color: black;
+}
+#icon-edit::before{
+    color: #085394;
 }
 
 #icon-x{
     cursor: pointer;
     color: black;
 }
-
+#icon-x{
+    color:#cc0000
+}
 #icon-danger{
     margin-top: 2px;
     margin-right: 3px;
