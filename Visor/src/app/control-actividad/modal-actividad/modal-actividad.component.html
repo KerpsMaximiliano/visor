@@ -55,7 +55,7 @@
     </mat-form-field>
     </div>
     <button mat-raised-button style="margin-right: 100px;">Cancelar</button>
-    <button type="submit" [disabled]="form.invalid" >Aceptar</button>
+    <button type="submit" [disabled]="form.invalid" [mat-dialog-close]="true">Aceptar</button>
   
 </form>
 

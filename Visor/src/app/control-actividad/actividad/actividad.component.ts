@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { Actividad } from 'src/app/interfaces/actividades';
 import { ActividadService } from 'src/app/control-actividad/actividad.service';
 import { DialogService } from 'src/app/shared/dialog.service';
-import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ModalActividadComponent } from '../modal-actividad/modal-actividad.component';
-
+import { FormGroup } from '@angular/forms';
 
 
 @Component({
@@ -20,13 +20,14 @@ export class ActividadComponent implements OnInit {
 
   displayedColumns: string[] = ['fecha', 'horas', 'descripcion', 'asunto', 'acciones'];
   dataSource!: MatTableDataSource<any>;
+  
 
   //inyecto el servicio 
   constructor(private _actividadService: ActividadService,
               private _snackBar: MatSnackBar,
               private dialogService: DialogService,
-              private dialog: MatDialog
-              
+              private dialog: MatDialog,
+              public dialogRef: MatDialogRef<ActividadComponent>
                ) { }
 
   ngOnInit(): void {
@@ -60,21 +61,24 @@ export class ActividadComponent implements OnInit {
     });
   }
 
-  
-  onAgregarActividad(){
-    this._actividadService.initializeFormGroup();
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '60%';
-    this.dialog.open(ModalActividadComponent);
+  /*onAgregarActividad(){
+    this._actividadService.openModalActividad(form: FormGroup);
+    //this.modalActividad.agregarActividad();
 
+  }*/
+
+  //eseeeeee
+  onAgregarActividad(){
+   const dialogRef = this.dialog.open(ModalActividadComponent,{});
+  // this.dialog.open(ModalActividadComponent);
+    dialogRef.afterClosed().subscribe(res =>{
+      if(res){
+        console.log(res);
+        this.cargarActividades();
+      }
+    });
   }
  
-
-  /*onClose(){
-  this._actividadService.form.reset();
-  this._actividadService.initializeFormGroup();
-  this.dialogRef.close();
-  }*/
 }
+
+

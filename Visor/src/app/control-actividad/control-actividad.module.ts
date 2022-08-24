@@ -6,6 +6,7 @@ import { SharedModule } from '../shared/shared.module';
 import { ModalActividadComponent } from './modal-actividad/modal-actividad.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { DialogService } from '../shared/dialog.service';
 
 
 
@@ -21,7 +22,8 @@ import { MatDialogRef } from '@angular/material/dialog';
     SharedModule,
     ReactiveFormsModule
   ],
+  entryComponents:[ModalActividadComponent,ActividadComponent],
   exports:[ActividadComponent,ModalActividadComponent],
-  providers:[ModalActividadComponent]
+  providers:[ModalActividadComponent,ActividadComponent,{provide:MatDialogRef,useValue:{}},DialogService]
 })
 export class ControlActividadModule { }

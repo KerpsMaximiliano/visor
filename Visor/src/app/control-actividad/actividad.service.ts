@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table/table-data-source';
 import { Subject } from 'rxjs';
 import { Actividad } from 'src/app/interfaces/actividades';
 import { ModalActividadComponent } from './modal-actividad/modal-actividad.component';
@@ -9,6 +10,7 @@ import { ModalActividadComponent } from './modal-actividad/modal-actividad.compo
   providedIn: 'root'
 })
 export class ActividadService {
+
 
   listActividades: Actividad[] = [
     {fecha: new Date('01/10/21'), horas: 5, descripcion:'Descri´cion para la Actividad 1' , asunto:'XXXX', tareas:'tarea1'},
@@ -27,7 +29,7 @@ export class ActividadService {
     fecha: new FormControl(null),
     horas: new FormControl('', Validators.required),
     descripcion: new FormControl('', Validators.email),
-    asunto: new FormControl('', [Validators.required, Validators.minLength(8)]),
+    asunto: new FormControl('', Validators.required),
     tareas: new FormControl('')
   });
 
@@ -55,15 +57,25 @@ export class ActividadService {
     this.listActividades.splice(index, 1);
   }
 
-  openModalDialog(){
+  /*openModalActividad(form: FormGroup){
     return this.dialog.open(ModalActividadComponent,{
-      width:'390px',
+      width:'500px',
+      panelClass: 'confirm-dialog-container',
+      disableClose: true,
+      data :{
+        formulario: form
+      }
+    })
+  }*/
+  openModalActividad(){
+    this.dialog.open(ModalActividadComponent,{
+      width:'500px',
       panelClass: 'confirm-dialog-container',
       disableClose: true
-    });
+    })
   }
 
-  agregarUsuario(actividad: Actividad){
+  agregarActividad2(actividad: Actividad){
     this.listActividades.unshift(actividad);
   }
   
