@@ -1,9 +1,10 @@
 import { MatButtonModule } from '@angular/material/button';
+import { MatTableModule } from '@angular/material/table';
 
 
 const MATERIALES = [
     MatButtonModule,
-    
+    MatTableModule
 ]
 
 
