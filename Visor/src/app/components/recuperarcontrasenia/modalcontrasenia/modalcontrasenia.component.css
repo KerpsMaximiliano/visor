@@ -1,4 +1,14 @@
-#separador{
-    background-color: gray;
-    width: 100%;
+#conteiner-button{
+    margin-left: 40%;
+    margin-right: 40%;
 }
+
+#button-login{
+    font-size: 10px;
+    padding: 6px;
+    background-color: orange;
+    border: 1px solid black;
+    border-radius: 4px;
+}
+
+

@@ -10,7 +10,6 @@ import { MyMaterialModule } from './material';
 
 //Modulos internos
 import { LoginModule } from './components/login/login.module';
-import { EnviarcorreoModule } from './components/enviarcorreo/enviarcorreo.module';
 import { RecuperarcontraseniaModule } from './components/recuperarcontrasenia/recuperarcontrasenia.module';
 
 @NgModule({
@@ -22,7 +21,6 @@ import { RecuperarcontraseniaModule } from './components/recuperarcontrasenia/re
     BrowserAnimationsModule,
     MyMaterialModule,
     LoginModule,
-    EnviarcorreoModule,
     RecuperarcontraseniaModule
   ],
   providers: [],

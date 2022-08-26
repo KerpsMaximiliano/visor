@@ -28,10 +28,10 @@ export class RecuperarcontraseniaComponent implements OnInit {
   verificarCredenciales(){
     //Cambia las visibilidades porque no hay forma por el momento de comprobar credenciales.
     this.visibilidadMensajeContrasenia = true;
-    this.openDialog();
+    this.openModal();
   }
 
-  openDialog() {
+  openModal() {
     this.dialog.open(ModalcontraseniaComponent);
   }
 }

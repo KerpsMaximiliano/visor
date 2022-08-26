@@ -3,9 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 //Componentes
 import { LoginComponent } from './components/login/login.component';
-import { EnviarcorreoComponent } from './components/enviarcorreo/enviarcorreo.component';
 import { RecuperarcontraseniaComponent } from './components/recuperarcontrasenia/recuperarcontrasenia.component';
-import { ModalcontraseniaComponent } from './components/recuperarcontrasenia/modalcontrasenia/modalcontrasenia.component';
 
 const routes: Routes = [
   {
@@ -18,16 +16,8 @@ const routes: Routes = [
     component: LoginComponent
   },
   {
-    path: "enviar-correo",
-    component: EnviarcorreoComponent
-  },
-  {
     path: "recuperar-contraseña",
     component: RecuperarcontraseniaComponent
-  },
-  {
-    path: "prueba",
-    component: ModalcontraseniaComponent
   }
 ];
 

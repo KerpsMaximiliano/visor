@@ -1,0 +1,14 @@
+<div id="conteiner-all">
+    <form [formGroup]="form" novalidate class="needs-validation">
+        <label id="titulo">Cambio de contraseña</label>
+        <br />
+        <input id="usernameInput" type="text" formControlName="user" placeholder="Usuario..." autocomplete="off" required>
+        <div class="separador"></div>
+        <input id="correoInput" type="email" formControlName="correo" placeholder="Correo electrónico..." autocomplete="off" required>
+        <div class="separador">
+            <!-- Se activa unicamente si el usuario introduce mal el usuario y el correo -->
+            <p id="mensajeError" *ngIf="visibilidadMensajeCorreo == true">{{mensajeErrorCorreo}}</p>
+        </div>  
+        <button type="submit" class="correoButton" (click)="enviarCorreo()"><span>Enviar correo</span></button>
+    </form>
+</div>

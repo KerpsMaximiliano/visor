@@ -1,7 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300&display=swap');
 #conteiner-all{
-    width: 100%;
-    margin-top: 15%;
+    width: 400px;
     text-align: center;
+    height: 120px;
 }
 
 #usernameInput{
@@ -19,7 +20,7 @@
     outline: none;
 }
 
-.sesionButton{
+.correoButton{
     height: 25px;
     width: 150px;
     border-radius: 4px;
@@ -45,6 +46,12 @@
 
 .separador{
     margin-bottom: 1.0%;
+}
+
+#titulo{
+    font-size: 25px;
+    margin-bottom: 5px;
+    font-family: 'Roboto';
 }
 
 /*

@@ -1,20 +1,29 @@
 <div id="conteiner-all">
     <div id="conteiner-login">
-        <form [formGroup]="form" novalidate class="needs-validation">
+        <form>
             <img src="../../../assets/images/company_logo.png" />
             <br />
-            <input class="usernameInput" type="text" formControlName="user" placeholder="Usuario..." autocomplete="off" required>
-            <div class="separador">
-                <!-- Se activa unicamente si el usuario introduce mal el nombre -->
-                <p id="mensajeError" *ngIf="visibilidadMensajeUsuario == true">{{mensajeErrorUsuario}}</p>
-            </div>
-            <input class="passwordInput" type="password" formControlName="user" placeholder="Contraseña..." autocomplete="off" required>
-            <div class="separador">
-                <!-- Se activa unicamente si el usuario introduce mal la constraseña -->
-                <p id="mensajeError" *ngIf="visibilidadMensajeContrasenia == true">{{mensajeErrorContrasenia}}</p>
-            </div>  
-            <button type="submit" class="sesionButton" (click)="verificarCredenciales()"><span>Iniciar Sesión</span></button>
-            <a href="/enviar-correo"><p id="olvidePass">Olvidé mi contraseña</p></a>
-        </form>
-    </div>
-</div>
+
+            <!-- Usuario form-field-->
+            <mat-form-field class="conteinerInput" appearance="fill">
+                <input class="input" type="text" matInput [formControl]="user" autocomplete="off" placeholder="Usuario...">
+                <mat-error class="mensajeError" *ngIf="user?.hasError('required')">
+                    <p>Porfavor introduce un usuario</p>
+                </mat-error>
+            </mat-form-field>
+            <div id="separadorInputs"></div>
+            
+            <!-- Password form-field -->
+            <mat-form-field class="conteinerInput" appearance="fill">
+            <input class="input" type="password" matInput [formControl]="password" autocomplete="off" placeholder="Contraseña...">
+            <mat-error class="mensajeError" *ngIf="password?.hasError('required')">
+                <p>Porfavor ingresa una contraseña</p>
+            </mat-error>
+        </mat-form-field>
+    </form>
+    <div class="separador"></div>
+    <button type="submit" class="sesionButton" (click)="comprobarCredenciales()"><span>Iniciar Sesión</span></button>
+    <p id="mensajeError" [ngClass]="{'noVisible': !visibilidadMensaje}">{{mensajeError}}</p>
+    <p id="olvidePass" (click)="openModal()">Olvidé mi contraseña</p>
+</div> 
+

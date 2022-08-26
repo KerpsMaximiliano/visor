@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EnviarcorreoComponent } from './enviarcorreo.component';
+import { ModalenviarcorreoComponent } from './modalenviarcorreo.component';
 
-describe('EnviarcorreoComponent', () => {
-  let component: EnviarcorreoComponent;
-  let fixture: ComponentFixture<EnviarcorreoComponent>;
+describe('ModalenviarcorreoComponent', () => {
+  let component: ModalenviarcorreoComponent;
+  let fixture: ComponentFixture<ModalenviarcorreoComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EnviarcorreoComponent ]
+      declarations: [ ModalenviarcorreoComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EnviarcorreoComponent);
+    fixture = TestBed.createComponent(ModalenviarcorreoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
