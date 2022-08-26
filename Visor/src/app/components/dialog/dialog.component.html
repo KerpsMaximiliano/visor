@@ -46,7 +46,7 @@
                 <mat-label>Asignado a</mat-label>
                 <mat-select [(value)]="selectedEmployee" >
                     <mat-option></mat-option>
-                    <mat-option [value]="employee.value"  (click)="capturar()" *ngFor="let employee of employees">{{ employee.viewValue }}</mat-option>
+                    <mat-option [value]="employee.value"  *ngFor="let employee of employees">{{ employee.viewValue }}</mat-option>
                 </mat-select>
             </mat-form-field>
             <!-- <p>You selected: {{selectedFood}}</p> -->
@@ -61,15 +61,15 @@
         </section>
           
 
-        <mat-selection-list #shoes [multiple]="false" class="lista_proyectos">
-            <mat-list-option *ngFor="let unProyecto of listaProyectos" [value]="unProyecto">
-              {{unProyecto}}
+        <mat-selection-list  [multiple]="false" class="lista_proyectos" >
+            <mat-list-option  *ngFor="let unProyecto of listaProyectos" [value]="unProyecto">
+              <mat-option (click)="getNombreProyecto(unProyecto.nombre)">{{unProyecto.nombre}}</mat-option>
             </mat-list-option>
         </mat-selection-list>
         
         <mat-dialog-actions align="end">
             <button mat-raised-button [mat-dialog-close]="false"> Cancelar </button>
-            <button mat-raised-button color="primary" type="submit" cdkFocusInitial> Buscar </button>
+            <button mat-raised-button color="primary" type="submit" cdkFocusInitial [mat-dialog-close]="true"> Buscar </button>
         </mat-dialog-actions>
     
     </div>

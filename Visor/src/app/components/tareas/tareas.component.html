@@ -1,4 +1,4 @@
-<h1>Proyecto XXX</h1>
+<h1>Proyecto {{nombreProyecto}}</h1>
 
 <button mat-button [matMenuTriggerFor]="aboveMenu">Inicio</button>
 <mat-menu #aboveMenu="matMenu" yPosition="above">
@@ -46,13 +46,35 @@
     <mat-icon class="icon" (click)="buscarProyecto($event)">search</mat-icon>
     
     <button mat-button [matMenuTriggerFor]="menu">Vista</button>
-    <mat-menu #menu="matMenu">
-        <button mat-menu-item>Analista funcional</button>
-        <button mat-menu-item>Analsita Técnico</button>
-        <button mat-menu-item>Desarrollador</button>
-        <button mat-menu-item>Tester</button>
-        <button mat-menu-item>Project manager</button>
+    <mat-menu  #menu="matMenu" >
+      <button mat-menu-item (click)='proyectoSeleccionado()'>Analista funcional</button>
+      <button mat-menu-item (click)='proyectoSeleccionado()'>Analsita Técnico</button>
+      <button mat-menu-item (click)='proyectoSeleccionado()'>Desarrollador</button>
+      <button mat-menu-item (click)='proyectoSeleccionado()'>Tester</button>
+      <button mat-menu-item (click)='proyectoSeleccionado()'>Project manager</button>
     </mat-menu>
+
+    <!-- <mat-form-field appearance="fill">
+      <mat-label>Horizontal position</mat-label>
+      <mat-select [(value)]="horizontalPosition">
+        <mat-option value="start">Start</mat-option>
+        <mat-option value="center">Center</mat-option>
+        <mat-option value="end">End</mat-option>
+        <mat-option value="left">Left</mat-option>
+        <mat-option value="right">Right</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Vertical position</mat-label>
+      <mat-select [(value)]="verticalPosition">
+        <mat-option value="top">Top</mat-option>
+        <mat-option value="bottom">Bottom</mat-option>
+      </mat-select>
+    </mat-form-field> -->
+    
+    <!-- <button mat-stroked-button (click)="openSnackBar()" aria-label="Show an example snack-bar">
+      Pool party!
+    </button> -->
 </div>
 
 <div class="buscador">

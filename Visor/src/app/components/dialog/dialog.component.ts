@@ -1,10 +1,10 @@
 import { Component, Inject, OnInit} from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Proyectos } from 'src/app/interfaces/proyectos';
 import { Tareas } from 'src/app/interfaces/tareas';
 import {DateAdapter, MAT_DATE_LOCALE} from '@angular/material/core';
-import 'moment/locale/ja';
-import 'moment/locale/fr';
+// import 'moment/locale/ja';
+// import 'moment/locale/fr';
 import { FormBuilder } from '@angular/forms';
 
 
@@ -31,21 +31,6 @@ export interface Tile {
   templateUrl: './dialog.component.html',
   styleUrls: ['./dialog.component.css'],
   providers: [
-    // The locale would typically be provided on the root module of your application. We do it at
-    // the component level here, due to limitations of our example generation script.
-    //{provide: MAT_DATE_LOCALE, useValue: 'ja-JP'},
-    
-    
-
-    // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
-    // `MatMomentDateModule` in your applications root module. We provide it at the component level
-    // here, due to limitations of our example generation script.
-    // {
-    //   provide: DateAdapter,
-    //   useClass: MomentDateAdapter,
-    //   deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
-    // },
-    // {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
   ]
 })
 
@@ -57,12 +42,13 @@ export class DialogComponent implements OnInit {
   nombreProyecto: string = '';
   nombreTarea = "Tareas";
   proyectoSeleccionado: string = '';
+  listaProyectos: any[] = [];
   
 
   
 
   constructor(private _formBuilder: FormBuilder, @Inject(MAT_DIALOG_DATA) public buscarProyectoInterface: Proyectos, @Inject(MAT_DIALOG_DATA) public buscarTareasInterface: Tareas, private _adapter: DateAdapter<any>,
-  @Inject(MAT_DATE_LOCALE) private _locale: string,) {
+  @Inject(MAT_DATE_LOCALE) private _locale: string, public dialogRef: MatDialogRef<DialogComponent>) {
     
     if(buscarProyectoInterface.buscaProyectos){
       this.buscarProyecto = buscarProyectoInterface.buscaProyectos;
@@ -76,6 +62,11 @@ export class DialogComponent implements OnInit {
     this._adapter.setLocale(this._locale);
     
         
+    //this.listaProyectos = ['Proyecto 1', 'Proyecto 2', 'Proyecto 3', 'Proyecto 4', 'Proyecto 5'];
+    this.listaProyectos = [
+      {nombre: 'Proyecto 1'}, 
+      {nombre: 'Proyecto 2'}
+    ];
   }
 
   ngOnInit(): void {
@@ -87,8 +78,8 @@ export class DialogComponent implements OnInit {
   });
   
 
-  listaProyectos: string[] = ['Proyecto 1', 'Proyecto 2', 'Proyecto 3', 'Proyecto 4', 'Proyecto 5'];
-  //this.proyectoSeleccionado = this.listaProyectos[]
+  
+
   foods: Food[] = [
     {value: 'ninguno', viewValue: 'Ninguno'},
     {value: 'steak-0', viewValue: 'Cliente 1'},
@@ -121,10 +112,13 @@ export class DialogComponent implements OnInit {
     }
     return '';
   }
-
-  capturar(){
-    console.log("hola")
+  getNombreProyecto(valor:string):void{
+    this.nombreProyecto = valor;
+    this.dialogRef.close(this.nombreProyecto);
+    console.log(this.nombreProyecto);
+    
   }
+  
 
   
 

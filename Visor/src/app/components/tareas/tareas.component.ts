@@ -2,6 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
 import { finalize } from 'rxjs/operators';
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
 
 
 @Component({
@@ -13,9 +18,13 @@ import { finalize } from 'rxjs/operators';
 export class TareasComponent implements OnInit {
 
   nombreProyecto='';
+  seleccionoProyecto = '';
+  horizontalPosition: MatSnackBarHorizontalPosition = 'start';
+  verticalPosition: MatSnackBarVerticalPosition = 'bottom';
 
 
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog, private _snackBar: MatSnackBar) {
+  }
 
   ngOnInit(): void {
   }
@@ -33,26 +42,12 @@ export class TareasComponent implements OnInit {
     const dialogRef = this.dialog.open(DialogComponent,{width:'600px', data:{buscaProyectos: true}});
     dialogRef.afterClosed().pipe(
       finalize(() => {
-          console.log("Actualiza autoridades")
+          this.proyectoSeleccionado();
       })
     )
     .subscribe(result => {
-      //filaEditar.name = result.name;
-      if(result !== false){
-        console.log(result)
-        console.log(result.name)
-        if(result.name !== result.nombre || result.codigo !== result.aut_codigo){
-          console.log("Llama servicio de editar")
-          // this.loginService.editarAutoridad(filaEditar,this.token).subscribe((data)=>{
-          //   console.log(data)
-          // });
-          // actualizar = true;
-        }
-        else{
-          console.log("No cambió ningún valor")
-        }
-      }
-         
+      this.nombreProyecto = result;
+      this.seleccionoProyecto = result;
     })
   }
 
@@ -68,5 +63,25 @@ export class TareasComponent implements OnInit {
       //filaEditar.name = result.name;
          
     })
+  }
+
+  proyectoSeleccionado():boolean{
+    console.log(this.nombreProyecto)
+    if(this.nombreProyecto == ''){
+      this.openSnackBar();
+     return true;
+    }
+    else{
+      return false;
+    } 
+  }
+
+  openSnackBar() {
+    this._snackBar.open('Seleccione un proyecto y una vista', 'Cerrar', {
+      //horizontalPosition: this.horizontalPosition,
+      horizontalPosition: 'center',
+      //verticalPosition: this.verticalPosition,
+      verticalPosition: 'top'
+    });
   }
 }

@@ -27,6 +27,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
  
 
 
@@ -56,7 +57,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatDatepickerModule,
     FormsModule,
     MatGridListModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]
