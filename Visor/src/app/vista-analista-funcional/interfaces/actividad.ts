@@ -1,13 +1,18 @@
 export interface Actividad {
     titulo: string,
+    proyecto: string,
     prioridad: string,
     asignado: string,
     facilitador: string,
-    fechas: string,
+    fechaInicio: string,
+    fechaFin: string,
+    fechaPlanificacion: string,
     horasPlanificadas: number,
     horasEjecutadas: number,
-    horasDesvio: number,
     documento: string,
     tareasPrecondicion: string,
-    notas: string
+    notas: string,
+    tipoTarea: string,
+    estado: string,
+    sprint: string
 }

@@ -5,19 +5,33 @@
     list-style: none;
 }
 
-.conteiner-all{
+.oculto {
+    display: none;
+}
+
+.container-all {
     display: flex;
     justify-content: center;
     padding-top: 20px;
 }  
 
-.conteiner-barra{
+.container-barra {
     margin-right: 20%;
     margin-left: 20%;
+    border: 1px solid black;
 }
 
-.porcentajes{
+.porcentajes {
     margin-top: 13px;
+    color: white;
+    font-weight: 700;
+}
+
+#progress {
+    color: black;
+}
+
+#porcentajeAmarillo {
     color: black;
 }
 
@@ -28,174 +42,126 @@
 #titulo-proyecto {
     font-size: 25px;
     margin-top: 20px;
+    font-weight: 700;
 }
 
-#subtitulo-disenio{
-    font-size: 15px;
+#subtitulo-disenio {
+    font-size: 20px;
+    font-weight: 700;
 }
 
-.datos{
+h4 {
+    font-weight: 700;
+    color: white;
+}
+
+.datos {
     display: flex;
 }
 
-.datos strong{
+.datos strong {
     padding-right: 4px;
     font-size: 12px;
 }
 
-.datos p{
-    font-size: 12px;
-}
-
-.desc-act{
-    padding-top: 10px;
-}
-
-.conteiner-all-act{
-    margin-top: 10px;
-}
-
-#fechas strong{
-    font-size: 12px;
-}
-
-#fechas p{
-    padding-left: 10px;
+.datos p {
     font-size: 10px;
 }
 
-#separador{
-    background-color: black;
+.fecha p {
+    margin-left: 13px;
 }
 
-.actividades mat-accordion mat-expansion-panel{
-    background-color: white;
+.descripcion-tarea {
+    padding-top: 10px;
+}
+
+.container-all-tareas {
+    margin-top: 10px;
+}
+
+mat-accordion mat-expansion-panel {
+    background-color: rgba(255, 255, 255, .7);
     border: solid 1px black;
 }
 
-.actividades mat-accordion mat-expansion-panel-header{
-    height: 25px;
-}
-   
-#titulo-act{
-    text-align: center;
-    font-size: 12px;
+mat-accordion mat-expansion-panel-header {
+    height: 45px;
 }
 
-.card-columna{
+.card-columna {
     width: 100%;
     margin-left: 0.25%;
     margin-right: 0.25%;
 }
 
-.card{
+.card {
     border: 1.5px solid black;
     border-radius: 4px;
     width: 100%;
 }
 
-.titulo-conteiner-no-iniciadas {
+.titulo-container {
     height: 25px;
+    text-align: center;
+    border: 1.5px solid black;
+    border-radius: 4px;
+}
+
+#no-iniciadas {
     background-color: rgb(170, 0, 0);
-    text-align: center;
-    border: 1.5px solid black;
-    border-radius: 4px;
 }
 
-.titulo-conteiner-progreso {
-    height: 25px;
+#en-progreso {
     background-color: yellow;
-    text-align: center;
-    border: 1.5px solid black;
-    border-radius: 4px;
 }
 
-.titulo-conteiner-completadas {
-    height: 25px;
-    background-color: rgb(4, 131, 2);
-    text-align: center;
-    border: 1.5px solid black; 
-    border-radius: 4px;
+#completadas {
+    background-color: green;
 }
 
-.conteiner-vacio{
-    width: 100%;
+.container-vacio {
     border: 1.5px solid black;
     height: 60px;
-    display: block;
 }
 
-.horas{
-    padding-right: 4px;
-    font-size: 12px;
+.horas {
+    padding-right: 5px;
 }
 
-.horas p{
-    display: inline-block;
-    font-size: 10px;
-    padding: 3px;
-}
-
-#horas-div{
-    padding-left: 7px;
-}
-
-#horasDesvio{
+.desvioNegativo {
     color: red;
+    font-weight: 700;
 }
 
-/*  Iconos  */
-#iconos{
+.desvioPositivo {
+    color: green;
+    font-weight: 700;
+}
+
+.iconos-superior {
     margin-top: 10px;
     text-align: right;
 }
 
-#icon-edit{
+.icon-edit {
     margin-right: 5px;
     cursor: pointer;
-    color: black;
+    color: blue;
 }
 
-#icon-x{
+.icon-x {
     cursor: pointer;
-    color: black;
+    color: red;
 }
 
-#icon-danger{
+.icon-general {
     margin-top: 2px;
-    margin-right: 3px;
+    margin-right: 5px;
     color: black;
 }
 
-#icon-avatar{
-    margin-top: 2px;
-    margin-right: 3px;
-    color: black;
+.actividades-desplegable {
+    width: 100%;
+    margin-top: 5px;
 }
-
-#icon-calendar{
-    margin-top: 2px;
-    margin-right: 3px;
-    color: black;
-}
-
-#icon-paper{
-    margin-top: 2px;
-    margin-right: 3px;
-    color: black;
-}
-
-#icon-check{
-    margin-top: 2px;
-    margin-right: 3px;
-    color: black;
-}
-
-#icon-clock{
-    margin-top: 2px;
-    margin-right: 3px;
-    color: black;
-}
-
-
-
