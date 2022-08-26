@@ -8,19 +8,26 @@ import { Actividad } from './interfaces/actividad';
 })
 export class VistaAnalistaFuncionalComponent implements OnInit {
 
-  actividadesNoIniciadas: Actividad[];
-  actividadesEnProgreso: Actividad[];
-  actividadesEnPrueba: Actividad[];
-  actividadesCompletadas: Actividad[];
-  // poseeTareasEnProgreso  !: boolean;
-  poseeTareasCompletadas!: boolean;
+  actividadesNoIniciadas: Actividad[] = [];
+  actividadesEnProgreso: Actividad[] = [];
+  actividadesEnPrueba: Actividad[] = [];
+  actividadesCompletadas: Actividad[] = [];
+  proyectoSeleccionado: boolean = true;
+  poseeTareasCompletadas: boolean = true;
 
   panelOpenState = false;
   
   constructor() {
-    this.cargarActividades()
+    this.cargarActividades();
+    this.ordenarListas();
+  }
+
+  ngOnInit(): void {
+  }
+
+  cargarActividades(){
     this.actividadesNoIniciadas = [{
-      titulo: "NO INICIADA 1 - xxx",
+      titulo: "CHANO - xxx",
       prioridad: "Alta",
       asignado: "Franco Friggeri",
       facilitador: "Adrian Enrico",
@@ -33,7 +40,7 @@ export class VistaAnalistaFuncionalComponent implements OnInit {
       notas: ""
     },
     {
-      titulo: "NO INICIADA 2 - xxx",
+      titulo: "A - xxx",
       prioridad: "Baja",
       asignado: "Luciano De Giorgio",
       facilitador: "Federico Gauchat",
@@ -114,14 +121,57 @@ export class VistaAnalistaFuncionalComponent implements OnInit {
       tareasPrecondicion: "Tarea 1",
       notas: ""
     }];
-    console.log(this.actividadesCompletadas[0].titulo > "hola")
   }
 
-  ngOnInit(): void {
+  ordenarListas() {
+    this.ordenAlfabetico(this.actividadesNoIniciadas);
+    this.ordenAlfabetico(this.actividadesEnProgreso);
+    this.ordenAlfabetico(this.actividadesEnPrueba);
+    this.ordenAlfabetico(this.actividadesCompletadas);
+    // this.actividadesNoIniciadas = this.ordenPrioridad(this.actividadesNoIniciadas);
+    // this.actividadesEnProgreso = this.ordenPrioridad(this.actividadesEnProgreso);
+    // this.actividadesEnPrueba = this.ordenPrioridad(this.actividadesEnPrueba);
+    // this.actividadesCompletadas = this.ordenPrioridad(this.actividadesCompletadas);
   }
 
-  cargarActividades(){
-    //this.poseeTareasEnProgreso = false;
-    this.poseeTareasCompletadas = true;
+  ordenAlfabetico(lista: Array<Actividad>) {
+    console.log("entra")
+    lista.sort(function(a, b) {
+      
+      if (a.titulo > b.titulo) {
+        console.log("Retorna 1: " + a.titulo + b.titulo)
+        return 1;
+      }
+      if (a.titulo < b.titulo) {
+        console.log("Retorna -1: " + a.titulo + b.titulo)
+        return -1;
+      }
+      return 0;
+    });
   }
+
+  ordenPrioridad(lista: Array<Actividad>) {
+    let arrayOrdenado: Actividad[]=[];
+    lista.forEach(tarea => {
+    if (tarea.prioridad == 'Alta') {
+      arrayOrdenado.push(tarea);
+    }});
+    lista.forEach(tarea => {
+    if (tarea.prioridad == 'Media') {
+      arrayOrdenado.push(tarea);
+    }});
+    lista.forEach(tarea => {
+    if (tarea.prioridad == 'Baja') {
+      arrayOrdenado.push(tarea);
+    }});
+    lista.forEach(tarea => {
+    if (tarea.prioridad == '') {
+      arrayOrdenado.push(tarea);
+    }});
+    console.log(arrayOrdenado);
+    return arrayOrdenado;
+  }
+
+
+
 }
