@@ -1,20 +1,29 @@
 <div class="container">
-    <div class="barraBusqueda">BARRA BUSQUEDA</div>
+    
+    <div class="barraBusqueda">
+        <div mat-dialog-content class="form">
+            <mat-form-field appearance="outline">
+                <mat-label><mat-icon>search</mat-icon> Buscar...</mat-label>
+                <input matInput name="usuario" (keyup)="applyFilter($event)">
+            </mat-form-field>
+        </div>
+    </div>
+
     <div class="tabla">
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
         
             <ng-container matColumnDef="usuario">
-                <th mat-header-cell *matHeaderCellDef> USUARIO </th>
+                <th mat-header-cell *matHeaderCellDef><button mat-button disabled class="botonTabla"> USUARIO </button></th>
                 <td mat-cell *matCellDef="let element"> {{element.usuario }} </td>
             </ng-container>
         
             <ng-container matColumnDef="nombre">
-                <th mat-header-cell *matHeaderCellDef> NOMBRE </th>
+                <th mat-header-cell *matHeaderCellDef><button mat-button disabled class="botonTabla"> NOMBRE </button></th>
                 <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
             </ng-container>
         
             <ng-container matColumnDef="rol">
-                <th mat-header-cell *matHeaderCellDef> ROL </th> 
+                <th mat-header-cell *matHeaderCellDef><button mat-button [matMenuTriggerFor]="menu" class="botonTabla"> ROL </button></th>
                 <td mat-cell *matCellDef="let element"> {{element.rol }} </td>
             </ng-container>
         
@@ -22,5 +31,11 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
         </table>
+
+        <mat-menu #menu="matMenu" class="menuDesplegable">
+            <mat-checkbox name="checkbox" (click)="marcarCheckbox()">Administrador</mat-checkbox>
+            <mat-checkbox name="checkbox" (click)="marcarCheckbox()">Supervisor</mat-checkbox>
+            <mat-checkbox name="checkbox" (click)="marcarCheckbox()">Operativo</mat-checkbox>
+        </mat-menu>
     </div>
 </div>

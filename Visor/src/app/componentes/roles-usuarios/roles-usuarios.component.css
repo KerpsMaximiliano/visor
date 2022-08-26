@@ -1,4 +1,35 @@
 .container {
-    margin-left: 20px;
-    margin-right: 20px;
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+.barraBusqueda {
+    width: 100%;
+}
+
+table {
+    min-width: 750px
+}
+
+th {
+    width: 250px;
+}
+
+td {
+    text-align: center;
+}
+
+.botonTabla {
+    width: 250px;
+}
+
+.menuDesplegable {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+mat-checkbox {
+    width: 50%;
+    margin-left: 25%;
 }
