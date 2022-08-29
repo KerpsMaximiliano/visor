@@ -13,7 +13,7 @@
             
             <!-- Email form-field -->
             <mat-form-field class="conteinerInput" appearance="fill">
-                <input type="email" matInput [formControl]="email" placeholder="Email...">
+                <input class="input" type="email" matInput [formControl]="email" placeholder="Email...">
                 <mat-error class="mensajeError" *ngIf="email.hasError('email') && !email.hasError('required')">
                     <p>Porfavor ingrese un email válido</p>
                 </mat-error>
