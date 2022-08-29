@@ -33,9 +33,9 @@
         </table>
 
         <mat-menu #menu="matMenu" class="menuDesplegable">
-            <mat-checkbox name="checkbox" (click)="marcarCheckbox()">Administrador</mat-checkbox>
-            <mat-checkbox name="checkbox" (click)="marcarCheckbox()">Supervisor</mat-checkbox>
-            <mat-checkbox name="checkbox" (click)="marcarCheckbox()">Operativo</mat-checkbox>
+                <mat-checkbox *ngFor="let rol of roles" [value]="rol.nombre" [checked]="rol.check" (change)="marcarCheckbox($event)"> {{ rol.nombre }} </mat-checkbox>
+            <!-- <mat-checkbox [checked]="checkSup" (change)="marcarCheckboxSup()">Supervisor</mat-checkbox>
+            <mat-checkbox [checked]="checkOp" (change)="marcarCheckboxOp()">Operativo</mat-checkbox> -->
         </mat-menu>
     </div>
 </div>

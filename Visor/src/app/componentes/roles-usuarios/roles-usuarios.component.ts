@@ -14,6 +14,13 @@ export class RolesUsuariosComponent implements OnInit {
   dataSource!: MatTableDataSource<any>;
   displayedColumns: string[] = ['usuario', 'nombre', 'rol'];
 
+  roles: any[] = [
+    { id: 1, nombre: 'Administrador', check: false },
+    { id: 2, nombre: 'Supervisor', check: false },
+    { id: 3, nombre: 'Operativo', check: false }
+  ]
+
+
   constructor(private _usuarioService: UsuarioService) { }
 
   ngOnInit(): void {
@@ -26,8 +33,45 @@ export class RolesUsuariosComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  marcarCheckbox() {
+  marcarCheckbox($event: any) {
+    const id = $event.source.id;
+    const isChecked = $event.checked;
+    const newArray: MatTableDataSource<any> = this.dataSource;
 
+    console.log(id);
+    if (id == 'mat-checkbox-1') {
+      if (isChecked == true) {
+        newArray.filter = 'Administrador';
+      }
+    }
+
+    /* if (!this.checkAdm) {
+      this.checkAdm = true;
+      this.dataSource.filter = 'Administrador';
+    } else {
+      this.checkAdm = false;
+      this.dataSource = new MatTableDataSource(this.usuarios);
+    } */
   }
+
+  /* marcarCheckboxSup() {
+    if (!this.checkSup) {
+      this.checkSup = true;
+      this.dataSource.filter = 'Supervisor';
+    } else {
+      this.checkSup = false;
+      this.dataSource = new MatTableDataSource(this.usuarios);
+    }
+  }
+
+  marcarCheckboxOp() {
+    if (!this.checkOp) {
+      this.checkOp = true;
+      this.dataSource.filter = 'Operativo';
+    } else {
+      this.checkOp = false;
+      this.dataSource = new MatTableDataSource(this.usuarios);
+    }
+  } */
 
 }
