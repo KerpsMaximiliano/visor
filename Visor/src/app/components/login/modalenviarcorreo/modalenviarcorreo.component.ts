@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { Validators, FormControl } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { LoginComponent } from '../login.component';
 
@@ -10,15 +10,13 @@ import { LoginComponent } from '../login.component';
 })
 export class ModalenviarcorreoComponent implements OnInit {
 
-  form: FormGroup;
+  user:FormControl = new FormControl("", Validators.required);
+  email:FormControl = new FormControl("", [Validators.required, Validators.email]);
   mensajeErrorCorreo: string;
   visibilidadMensajeCorreo: boolean;
+  duracionEnSegundos: Number = 5;
 
   constructor(public dialogRef: MatDialogRef<LoginComponent>) {
-    this.form = new FormGroup ({
-      user: new FormControl(''),
-      correo: new FormControl('')
-    });
     this.mensajeErrorCorreo = "El usuario y/o correo ingresados no son válidos. Contactesé con el administrador del sitio";
     this.visibilidadMensajeCorreo = true;
   }
@@ -27,6 +25,6 @@ export class ModalenviarcorreoComponent implements OnInit {
 
   enviarCorreo(){
     this.dialogRef.close();
-   
+    setTimeout('window.alert("Se ha enviado un email con las instrucciones")', 500);
   }
 }

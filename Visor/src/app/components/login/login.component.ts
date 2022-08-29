@@ -10,7 +10,7 @@ import { LoginService } from '../../interfaces/login.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  
+
   user:FormControl = new FormControl("", Validators.required);
   password:FormControl = new FormControl("", Validators.required);
 

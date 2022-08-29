@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-modalcontrasenia',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ModalcontraseniaComponent implements OnInit {
 
-  constructor() { }
+  constructor(private _router: Router) {}
 
   ngOnInit(): void {
+  }
+
+  reDireccionar(){
+    this._router.navigate(['login'])
   }
 
 }

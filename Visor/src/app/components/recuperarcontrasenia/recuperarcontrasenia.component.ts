@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import {MatDialog} from '@angular/material/dialog'
+import { FormControl, Validators } from '@angular/forms';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ModalcontraseniaComponent } from './modalcontrasenia/modalcontrasenia.component';
 
 @Component({
@@ -10,25 +10,33 @@ import { ModalcontraseniaComponent } from './modalcontrasenia/modalcontrasenia.c
 })
 export class RecuperarcontraseniaComponent implements OnInit {
 
-  form: FormGroup;
+  password:FormControl = new FormControl("", Validators.required);
+  confirmPassword:FormControl = new FormControl("", Validators.required);
   mensajeErrorContrasenia: string;
   visibilidadMensajeContrasenia: boolean;
 
   constructor(public dialog: MatDialog) {
-    this.form = new FormGroup ({
-      password: new FormControl(''),
-      confirmPassword: new FormControl('')
-    });
     this.mensajeErrorContrasenia = "Las contraseñas no coinciden";
     this.visibilidadMensajeContrasenia = false;
   }
 
   ngOnInit(): void {}
 
-  verificarCredenciales(){
+  enviarCorreo(){
     //Cambia las visibilidades porque no hay forma por el momento de comprobar credenciales.
-    this.visibilidadMensajeContrasenia = true;
     this.openModal();
+  }
+
+  verificarContrasenias(){
+    let username: string = String(this.password.value)
+    let password: string = String(this.confirmPassword.value)
+    if(String(this.password.value) != String(this.confirmPassword.value)){
+      this.visibilidadMensajeContrasenia = true;
+    }
+    else{
+      this.visibilidadMensajeContrasenia = false;
+      this.openModal()
+    }
   }
 
   openModal() {

@@ -3,16 +3,14 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RecuperarcontraseniaComponent } from './recuperarcontrasenia.component';
 import { ModalcontraseniaComponent } from './modalcontrasenia/modalcontrasenia.component';
-import { MatDialogModule } from '@angular/material/dialog';
-import {MatDividerModule} from '@angular/material/divider';
+import { MyMaterialModule } from '../../material';
 
 @NgModule({
   declarations: [RecuperarcontraseniaComponent, ModalcontraseniaComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    MatDialogModule,
-    MatDividerModule
+    MyMaterialModule
   ],
   exports: [RecuperarcontraseniaComponent]
 })
