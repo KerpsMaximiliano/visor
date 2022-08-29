@@ -1,0 +1,33 @@
+<div id="conteiner-all">
+    <div id="conteiner-login">
+        <form>
+            <img src="../../../assets/images/company_logo.png" />
+            <br />
+
+            <!-- Usuario form-field -->
+            <mat-form-field class="conteinerInput" appearance="fill">
+                <input class="input" type="text" matInput [formControl]="user" autocomplete="off" placeholder="Usuario...">
+                <mat-error class="mensajeError" *ngIf="user?.hasError('required')">
+                    <p>Porfavor introduce un usuario</p>
+                </mat-error>
+            </mat-form-field>
+            <div id="separadorInputs"></div>
+<<<<<<< HEAD
+
+=======
+            Holaasdf
+>>>>>>> parent of e26c85e (Refactorizaciones I)
+            <!-- Password form-field -->
+            <mat-form-field class="conteinerInput" appearance="fill">
+            <input class="input" type="password" matInput [formControl]="password" autocomplete="off" placeholder="Contraseña...">
+            <mat-error class="mensajeError" *ngIf="password?.hasError('required')">
+                <p>Porfavor ingresa una contraseña</p>
+            </mat-error>
+        </mat-form-field>
+    </form>
+    <div class="separador-2"></div>
+    <button type="submit" class="sesionButton" (click)="comprobarCredenciales()"><span>Iniciar Sesión</span></button>
+    <p id="mensajeError" [ngClass]="{'noVisible': !visibilidadMensaje}">{{mensajeError}}</p>
+    <p id="olvidePass" (click)="openModal()">Olvidé mi contraseña</p>
+</div> 
+
