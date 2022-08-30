@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 <div class="container">
     
     <div class="barraBusqueda">
@@ -23,8 +25,8 @@
             </ng-container>
         
             <ng-container matColumnDef="rol">
-                <th mat-header-cell *matHeaderCellDef><button mat-button [matMenuTriggerFor]="menu" class="botonTabla"> ROL </button></th>
-                <td mat-cell *matCellDef="let element"> {{element.rol }} </td>
+                <th mat-header-cell *matHeaderCellDef><button mat-button [matMenuTriggerFor]="menuFiltro" class="botonTabla"> ROL <i class="icon-general fa-solid fa-angle-down"></i></button></th>
+                <td mat-cell *matCellDef="let element"><button mat-button [matMenuTriggerFor]="menuRol" class="botonTabla"> {{element.rol }} <i class="icon-general fa-solid fa-angle-down"></i></button></td>
             </ng-container>
         
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -32,10 +34,13 @@
 
         </table>
 
-        <mat-menu #menu="matMenu" class="menuDesplegable">
-                <mat-checkbox *ngFor="let rol of roles" [value]="rol.nombre" [checked]="rol.check" (change)="marcarCheckbox($event)"> {{ rol.nombre }} </mat-checkbox>
-            <!-- <mat-checkbox [checked]="checkSup" (change)="marcarCheckboxSup()">Supervisor</mat-checkbox>
-            <mat-checkbox [checked]="checkOp" (change)="marcarCheckboxOp()">Operativo</mat-checkbox> -->
+        <mat-menu #menuFiltro="matMenu" class="menuDesplegable">
+            <mat-checkbox *ngFor="let rol of roles" [value]="rol.nombre" [checked]="rol.check" (change)="marcarCheckbox($event)"> {{ rol.nombre }} </mat-checkbox>
         </mat-menu>
+
+        <mat-menu #menuRol="matMenu">
+            <div class="seleccionRoles" *ngFor="let rol of roles"> <button></button>  </div>
+        </mat-menu>
+
     </div>
 </div>

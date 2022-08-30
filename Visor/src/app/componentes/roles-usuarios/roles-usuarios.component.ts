@@ -19,12 +19,15 @@ export class RolesUsuariosComponent implements OnInit {
     { id: 2, nombre: 'Supervisor', check: false },
     { id: 3, nombre: 'Operativo', check: false }
   ]
-
+  tempArray: any[] = [];
+  newArray: any[] = [];
+  arrayBack: any[] = [];
 
   constructor(private _usuarioService: UsuarioService) { }
 
   ngOnInit(): void {
     this.usuarios = this._usuarioService.getUsuarios();
+    this.arrayBack = this._usuarioService.getUsuarios();
     this.dataSource = new MatTableDataSource(this.usuarios);
   }
 
@@ -33,45 +36,42 @@ export class RolesUsuariosComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  marcarCheckbox($event: any) {
-    const id = $event.source.id;
-    const isChecked = $event.checked;
-    const newArray: MatTableDataSource<any> = this.dataSource;
-
-    console.log(id);
-    if (id == 'mat-checkbox-1') {
-      if (isChecked == true) {
-        newArray.filter = 'Administrador';
-      }
-    }
-
-    /* if (!this.checkAdm) {
-      this.checkAdm = true;
-      this.dataSource.filter = 'Administrador';
+  marcarCheckbox(event: any) {
+    if (event.checked) {
+      this.roles.forEach(rol => {
+        if (rol.nombre == event.source.value) {
+          rol.check = true;
+        }});
+      this.tempArray = this.arrayBack.filter((e: any) => e.rol == event.source.value);
+      this.usuarios = [];
+      this.newArray.push(this.tempArray);
+      this.newArray.forEach(element => {
+        let firstArray = element;
+        for (let i=0;i<firstArray.length;i++) {
+          let obj = firstArray[i];
+          this.usuarios.push(obj);
+          this.dataSource = new MatTableDataSource(this.usuarios);
+        }});
     } else {
-      this.checkAdm = false;
-      this.dataSource = new MatTableDataSource(this.usuarios);
-    } */
+      this.roles.forEach(rol => {
+        if (rol.nombre == event.source.value) {
+          rol.check = false;
+        }});
+      this.tempArray = this.usuarios.filter((e: any) => e.rol != event.source.value);
+      this.newArray = [];
+      this.usuarios = [];
+      this.newArray.push(this.tempArray);
+      this.newArray.forEach(element => {
+        let firstArray = element;
+        for (let i=0;i<firstArray.length;i++) {
+          let obj = firstArray[i];
+          this.usuarios.push(obj);
+          this.dataSource = new MatTableDataSource(this.usuarios);
+        }});
+    }
+  if (this.roles[0].check == false && this.roles[1].check == false && this.roles[2].check == false) {
+    this.usuarios = this._usuarioService.getUsuarios();
+    this.dataSource = new MatTableDataSource(this.usuarios);
   }
-
-  /* marcarCheckboxSup() {
-    if (!this.checkSup) {
-      this.checkSup = true;
-      this.dataSource.filter = 'Supervisor';
-    } else {
-      this.checkSup = false;
-      this.dataSource = new MatTableDataSource(this.usuarios);
-    }
-  }
-
-  marcarCheckboxOp() {
-    if (!this.checkOp) {
-      this.checkOp = true;
-      this.dataSource.filter = 'Operativo';
-    } else {
-      this.checkOp = false;
-      this.dataSource = new MatTableDataSource(this.usuarios);
-    }
-  } */
-
+}
 }
