@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Tarea } from 'src/app/interfaces/tarea';
-import { TareaService } from 'src/app/interfaces/tarea.service';
+import { TareaService } from 'src/app/services/i2t/tarea.service';
 
 @Component({
   selector: 'app-vista-disenio-tecnico',

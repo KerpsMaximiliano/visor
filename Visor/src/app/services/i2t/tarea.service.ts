@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Tarea } from './tarea';
+import { Tarea } from 'src/app/interfaces/tarea';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class TareaService {
 
@@ -23,7 +23,7 @@ tareas: Tarea[] = [
         notas: "",
         tipoTarea: "Relevamiento Requerimientos",
         estado: "No Iniciada",
-        sprint: ""
+        sprint: ""  
     },
     {
         titulo: "124192-AA-ANG-PUBLICAR EXTRACTO (CU-705)",
@@ -189,37 +189,34 @@ tareas: Tarea[] = [
     }
 ];
 
-
-constructor() { }
-
 getTareasNoIniciadas() {
     const respuesta: Tarea[] = [];
     this.tareas.forEach(tarea => {
-        if(tarea.estado == "No Iniciada" && tarea.tipoTarea == "Relevamiento Requerimientos") {
-            respuesta.push(tarea);
-        }
-    });
-    return respuesta;
+    if(tarea.estado == "No Iniciada" && tarea.tipoTarea == "Relevamiento Requerimientos") {
+        respuesta.push(tarea);
+    }
+});
+return respuesta;
 }
 
 getTareasEnProgreso() {
-    const respuesta: Tarea[] = [];
-    this.tareas.forEach(tarea => {
-        if(tarea.estado == "En Progreso" && tarea.tipoTarea == "Relevamiento Requerimientos") {
-            respuesta.push(tarea);
-        }
-    });
-    return respuesta;
+const respuesta: Tarea[] = [];
+this.tareas.forEach(tarea => {
+    if(tarea.estado == "En Progreso" && tarea.tipoTarea == "Relevamiento Requerimientos") {
+        respuesta.push(tarea);
+    }
+});
+return respuesta;
 }
 
 getTareasCompletadas() {
-    const respuesta: Tarea[] = [];
-    this.tareas.forEach(tarea => {
-        if(tarea.estado == "Completada" && tarea.tipoTarea == "Relevamiento Requerimientos") {
-            respuesta.push(tarea);
-        }
-    });
-    return respuesta;
+const respuesta: Tarea[] = [];
+this.tareas.forEach(tarea => {
+    if(tarea.estado == "Completada" && tarea.tipoTarea == "Relevamiento Requerimientos") {
+        respuesta.push(tarea);
+    }
+});
+return respuesta;
 }
 
 }
