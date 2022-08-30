@@ -6,17 +6,31 @@ import {DateAdapter, MAT_DATE_LOCALE} from '@angular/material/core';
 // import 'moment/locale/ja';
 // import 'moment/locale/fr';
 import { FormBuilder } from '@angular/forms';
+import { TOUCH_BUFFER_MS } from '@angular/cdk/a11y/input-modality/input-modality-detector';
 
 
 
 
-interface Food {
+interface Cliente {
   value: string;
   viewValue: string;
 }
-interface Employee {
+interface Programador {
   value: string;
   viewValue: string;
+}
+
+interface Prioridad {
+  nombre: string,
+  valor: string
+}
+
+interface Facilitador{
+  nombre: string
+}
+
+interface Tecnologia{
+  nombre: string
 }
 
 export interface Tile {
@@ -37,12 +51,17 @@ export interface Tile {
 export class DialogComponent implements OnInit {
 
   buscarProyecto: boolean = false;
-  buscarTareas: boolean = false;
+  
   numeroProyecto: string = '';
   nombreProyecto: string = '';
+  clienteProyecto: string = '';
+  asignadoAproyecto: string = '';
+
+  buscarTareas: boolean = false;
   nombreTarea = "Tareas";
   proyectoSeleccionado: string = '';
   listaProyectos: any[] = [];
+  tecnologia: string = '';
   
 
   
@@ -52,6 +71,7 @@ export class DialogComponent implements OnInit {
     
     if(buscarProyectoInterface.buscaProyectos){
       this.buscarProyecto = buscarProyectoInterface.buscaProyectos;
+      buscarProyectoInterface.filtros = [];
     }
     
     if(buscarTareasInterface.buscaTareas){
@@ -65,7 +85,13 @@ export class DialogComponent implements OnInit {
     //this.listaProyectos = ['Proyecto 1', 'Proyecto 2', 'Proyecto 3', 'Proyecto 4', 'Proyecto 5'];
     this.listaProyectos = [
       {nombre: 'Proyecto 1'}, 
-      {nombre: 'Proyecto 2'}
+      {nombre: 'Proyecto 2'},
+      {nombre: 'Proyecto 3'},
+      {nombre: 'Proyecto 4'},
+      {nombre: 'Proyecto 5'},
+      {nombre: 'Proyecto 6'},
+      {nombre: 'Proyecto 7'},
+      {nombre: 'Proyecto 8'},
     ];
   }
 
@@ -80,21 +106,53 @@ export class DialogComponent implements OnInit {
 
   
 
-  foods: Food[] = [
+  clientes: Cliente[] = [
     {value: 'ninguno', viewValue: 'Ninguno'},
     {value: 'steak-0', viewValue: 'Cliente 1'},
     {value: 'pizza-1', viewValue: 'Cliente 2'},
     {value: 'tacos-2', viewValue: 'Cliente 3'},
   ];
+  getCliente(cliente: any){
+    this.clienteProyecto = cliente.viewValue
+  }
+  seleccionado = this.clientes[0].value
 
-  selectedFood = this.foods[0].value;
+  prioridades: Prioridad[] = [
+    {nombre:'Alta', valor:'Alta'},
+    {nombre:'Media', valor:'Media'},
+    {nombre:'Baja', valor:'Baja'}
+  ]
+
+
+  facilitadores: Facilitador[] = [
+    {nombre:'Franco Friggeri'},
+    {nombre:'Maximiliano Reichert'},
+    {nombre:'Jeremias García'}
+  ]
+
   
-  employees: Employee[] = [
+  
+  
+  programadores: Programador[] = [
     {value: 'Federico', viewValue: 'Federico Gauchat'},
-    {value: 'steak-0', viewValue: 'Ignacio Girod 1'},
+    {value: 'steak-0', viewValue: 'Ignacio Girod'},
     {value: 'pizza-1', viewValue: 'Luciano Di Giorgio'},
   ];
-  selectedEmployee = this.employees[0].value
+  selectedProgramador = this.programadores[0].value
+
+  getAsignadoA(programador: any){
+    this.asignadoAproyecto = programador.viewValue;
+    
+  }
+
+  tecnologias: Tecnologia[]=[
+    {nombre: 'Angular'},
+    {nombre: 'Wordpress'}
+  ]
+
+  tecnologiaElegida(tecnologia:any){
+    this.tecnologia = tecnologia.nombre
+  }
 
   french() {
     this._locale = 'fr';
@@ -113,10 +171,35 @@ export class DialogComponent implements OnInit {
     return '';
   }
   getNombreProyecto(valor:string):void{
-    this.nombreProyecto = valor;
-    this.dialogRef.close(this.nombreProyecto);
+    this.buscarProyectoInterface.proyectoSeleccionado = valor;
+    this.dialogRef.close(this.buscarProyectoInterface);
     console.log(this.nombreProyecto);
     
+  }
+
+  guardarValoresDeFiltro(){
+    const valoresDeFiltro = [];
+
+    if(this.numeroProyecto != ''){
+      this.buscarProyectoInterface.filtros.push({numeroProyecto: this.numeroProyecto} )
+      //valoresDeFiltro.push({numeroProyecto: this.numeroProyecto})
+      
+    }
+    if(this.nombreProyecto != ''){
+      this.buscarProyectoInterface.filtros.push({nombreProyecto: this.nombreProyecto})
+    }
+    
+    if(this.clienteProyecto != ''){
+      this.buscarProyectoInterface.filtros.push({cliente: this.clienteProyecto})
+    }
+
+    if(this.asignadoAproyecto != ''){
+      console.log(this.asignadoAproyecto)
+      this.buscarProyectoInterface.filtros.push({asignado: this.asignadoAproyecto})
+    }
+
+
+    this.dialogRef.close(this.buscarProyectoInterface);
   }
   
 

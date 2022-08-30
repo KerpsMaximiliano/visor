@@ -21,6 +21,7 @@
 .lista_proyectos {
     overflow-y: scroll;
     border: 1px solid black;
+    height: 15vw;
 }
 .mis_proyectos {
     margin: 12px 0;
@@ -35,6 +36,11 @@
     display: flex;
     align-items: baseline;
     justify-content: space-between;
+}
+
+.accionesBotones{
+    display: flex;
+    justify-content: space-around;
 }
   
 

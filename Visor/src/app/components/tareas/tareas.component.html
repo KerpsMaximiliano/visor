@@ -1,4 +1,5 @@
-<h1>Proyecto {{nombreProyecto}}</h1>
+<h1> {{nombreProyecto}}</h1>
+<h3>{{subtituloProyecto}}</h3>
 
 <button mat-button [matMenuTriggerFor]="aboveMenu">Inicio</button>
 <mat-menu #aboveMenu="matMenu" yPosition="above">
@@ -47,11 +48,11 @@
     
     <button mat-button [matMenuTriggerFor]="menu">Vista</button>
     <mat-menu  #menu="matMenu" >
-      <button mat-menu-item (click)='proyectoSeleccionado()'>Analista funcional</button>
-      <button mat-menu-item (click)='proyectoSeleccionado()'>Analsita Técnico</button>
-      <button mat-menu-item (click)='proyectoSeleccionado()'>Desarrollador</button>
-      <button mat-menu-item (click)='proyectoSeleccionado()'>Tester</button>
-      <button mat-menu-item (click)='proyectoSeleccionado()'>Project manager</button>
+      <button mat-menu-item (click)='proyectoSeleccionado($event)' id="Analista Funcional">Analista funcional</button>
+      <button mat-menu-item (click)='proyectoSeleccionado($event)' id="Analista Tecnico">Analsita Técnico</button>
+      <button mat-menu-item (click)='proyectoSeleccionado($event)' id="Desarrollador">Desarrollador</button>
+      <button mat-menu-item (click)='proyectoSeleccionado($event)' id="Tester">Tester</button>
+      <button mat-menu-item (click)='proyectoSeleccionado($event)' id="Project manager">Project manager</button>
     </mat-menu>
 
     <!-- <mat-form-field appearance="fill">

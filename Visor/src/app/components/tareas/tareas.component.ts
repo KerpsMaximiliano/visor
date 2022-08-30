@@ -21,6 +21,8 @@ export class TareasComponent implements OnInit {
   seleccionoProyecto = '';
   horizontalPosition: MatSnackBarHorizontalPosition = 'start';
   verticalPosition: MatSnackBarVerticalPosition = 'bottom';
+  subtituloProyecto: string ='';
+  filtrosBusquedaProyecto: Object[] = []
 
 
   constructor(public dialog: MatDialog, private _snackBar: MatSnackBar) {
@@ -36,18 +38,40 @@ export class TareasComponent implements OnInit {
 
   buscarProyecto(event: Event){
     event.preventDefault();
-    //Para mostrar interfaz correpsondiente a editar una autoridad
     
-    
-    const dialogRef = this.dialog.open(DialogComponent,{width:'600px', data:{buscaProyectos: true}});
+    const dialogRef = this.dialog.open(DialogComponent,{width:'600px', data:{buscaProyectos: true, filtros: this.filtrosBusquedaProyecto}});
     dialogRef.afterClosed().pipe(
       finalize(() => {
-          this.proyectoSeleccionado();
+        //this.proyectoSeleccionado();
       })
     )
     .subscribe(result => {
-      this.nombreProyecto = result;
-      this.seleccionoProyecto = result;
+      
+      //this.filtrosBusquedaProyecto = result;
+      
+      if(result != false){
+        console.log(result)
+        //Pregunto si utilizó filtros
+        if(result.filtros.length == 0){
+          
+          //No utilizó filtros para encontrar el proyecto
+          this.nombreProyecto = result.proyectoSeleccionado
+          console.log(this.nombreProyecto)
+        }
+        else{
+          if(result.filtros[0].nombreProyecto == ''){
+            this.nombreProyecto = "Proyecto prueba";
+          }
+          else{
+            this.nombreProyecto = result.filtros[0].nombreProyecto;
+          }
+        }
+        
+      }
+      else{
+        //this.nombreProyecto = 'cancelar';
+        this.nombreProyecto = '';
+      }
     })
   }
 
@@ -65,15 +89,47 @@ export class TareasComponent implements OnInit {
     })
   }
 
-  proyectoSeleccionado():boolean{
+  proyectoSeleccionado(event: Event){
     console.log(this.nombreProyecto)
     if(this.nombreProyecto == ''){
+      console.log(this.nombreProyecto)
       this.openSnackBar();
-     return true;
+     
     }
     else{
-      return false;
+      this.setSubtituloProyecto(event);
+      if(this.nombreProyecto == 'cancelar'){
+        this.nombreProyecto = '';
+      }
+      else{
+      }
+      
     } 
+  }
+
+  setSubtituloProyecto(event: Event){
+    const vistaSeleccionada = (event.target as HTMLInputElement).id
+    switch(vistaSeleccionada){
+      case 'Analista Funcional':
+        this.subtituloProyecto = ' Avance de Diseño funcional';
+      break;
+      case 'Analista Tecnico':
+        this.subtituloProyecto = ' Avance de Diseño técnico';
+      break;
+      case 'Desarrollador':
+        this.subtituloProyecto = ' Avance de Diseño funcional';
+      break;
+      case 'Tester':
+        this.subtituloProyecto = ' Avance de Testing';
+      break;
+      case 'Project manager':
+        this.subtituloProyecto = ' Avance del Proyecto';
+      break;
+
+      default:
+        this.subtituloProyecto = '';
+      break;
+    }
   }
 
   openSnackBar() {

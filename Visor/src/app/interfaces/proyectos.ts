@@ -1,3 +1,5 @@
 export interface Proyectos {
-    buscaProyectos: boolean
+    buscaProyectos: boolean,
+    proyectoSeleccionado: string,
+    filtros: Array<{}>
 }
