@@ -5,8 +5,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-//Material
+// Material
 import { MyMaterialModule } from './material';
+
+// Módulos
+import { VistaDisenioTecnicoModule } from './componentes/vista-disenio-tecnico/vista-disenio-tecnico.module';
 
 @NgModule({
   declarations: [
@@ -16,7 +19,8 @@ import { MyMaterialModule } from './material';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MyMaterialModule
+    MyMaterialModule,
+    VistaDisenioTecnicoModule
   ],
   providers: [],
   bootstrap: [AppComponent]
