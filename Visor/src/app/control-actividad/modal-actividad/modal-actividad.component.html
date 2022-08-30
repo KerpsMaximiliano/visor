@@ -5,7 +5,7 @@
  
 </div>
 
-<form [formGroup]="form" (ngSubmit)="agregarActividad()">
+<form [formGroup]="form" (ngSubmit)="agregarActividad();editarActividad()">
 
   
     <table class="example-full-width" cellspacing="0"><tr>
@@ -30,6 +30,13 @@
     </td>
 </tr></table>
 
+    <div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
+      <mat-label>Descripcion</mat-label>
+    <mat-form-field class="example-full-width" appearance="fill">
+    <!--<mat-label>Descripcion completar</mat-label>-->
+    <input matInput value="Descripcion a completar" formControlName="descripcion">
+    </mat-form-field>
+    </div>
 
     <div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
         <mat-label>Asunto</mat-label>
@@ -39,13 +46,6 @@
     </mat-form-field>
     </div>
 
-    <div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
-        <mat-label>Descripcion</mat-label>
-    <mat-form-field class="example-full-width" appearance="fill">
-      <!--<mat-label>Descripcion completar</mat-label>-->
-      <input matInput value="Descripcion a completar" formControlName="descripcion">
-    </mat-form-field>
-    </div>
 
     <div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
         <mat-label>Tarea asociada</mat-label>
@@ -55,7 +55,7 @@
     </mat-form-field>
     </div>
     <button mat-raised-button style="margin-right: 100px;">Cancelar</button>
-    <button type="submit" [disabled]="form.invalid" [mat-dialog-close]="true">Aceptar</button>
+    <button type="submit" [disabled]="form.invalid" [mat-dialog-close]="true" (click)="recibirIndex()">Aceptar</button>
   
 </form>
 

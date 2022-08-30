@@ -6,7 +6,7 @@ import { ActividadService } from 'src/app/control-actividad/actividad.service';
 import { DialogService } from 'src/app/shared/dialog.service';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ModalActividadComponent } from '../modal-actividad/modal-actividad.component';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 
 @Component({
@@ -20,18 +20,26 @@ export class ActividadComponent implements OnInit {
 
   displayedColumns: string[] = ['fecha', 'horas', 'descripcion', 'asunto', 'acciones'];
   dataSource!: MatTableDataSource<any>;
-  
+  form! : FormGroup;
+  actividad!: Actividad;
+  index! : number | undefined;
+
 
   //inyecto el servicio 
   constructor(private _actividadService: ActividadService,
               private _snackBar: MatSnackBar,
               private dialogService: DialogService,
               private dialog: MatDialog,
-              public dialogRef: MatDialogRef<ActividadComponent>
+              public dialogRef: MatDialogRef<ActividadComponent>,
+              public dialogRefModal: MatDialogRef<ModalActividadComponent>,
+              @Inject(MAT_DIALOG_DATA) public data:Actividad,
                ) { }
 
   ngOnInit(): void {
     this.cargarActividades();
+    this._actividadService.enviarIndexObservable.subscribe(response => {
+      this.index = response;
+    })
   }
 
   cargarActividades(){
@@ -61,6 +69,41 @@ export class ActividadComponent implements OnInit {
     });
   }
 
+ cambioIndex(index: number){
+  this._actividadService.enviarIndex(index);
+ }
+  
+  onEditarActividad(index: number){
+     
+    
+    this.cambioIndex(index);
+    this.index = index;
+   this._actividadService.editarActividad(index);
+   this.actividad= this._actividadService.listActividades[index];
+
+   this._actividadService.form.patchValue({
+    fecha: this.actividad.fecha,
+    horasEjecutadas: this.actividad.horas,
+    descripcion: this.actividad.descripcion,
+    asunto: this.actividad.asunto,
+    tareaAsociada: this.actividad.tareas
+   })
+   
+   //this._actividadService.openModalActividad(8);
+   const dialogRef = this.dialog.open(ModalActividadComponent,{});
+   dialogRef.afterClosed().subscribe(res =>{
+    if(res){
+      console.log(res);
+      this.cargarActividades();
+      this._snackBar.open('Actividad actualizada','',{
+        duration: 1500,
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom'
+      })
+    }
+  });
+  }
+
   /*onAgregarActividad(){
     this._actividadService.openModalActividad(form: FormGroup);
     //this.modalActividad.agregarActividad();
@@ -69,16 +112,28 @@ export class ActividadComponent implements OnInit {
 
   //eseeeeee
   onAgregarActividad(){
-   const dialogRef = this.dialog.open(ModalActividadComponent,{});
+
+    
+      // Agregamos una nueva Actividad
+
+      const dialogRef = this.dialog.open(ModalActividadComponent,{});
   // this.dialog.open(ModalActividadComponent);
     dialogRef.afterClosed().subscribe(res =>{
       if(res){
         console.log(res);
         this.cargarActividades();
+        this._snackBar.open('Actividad agregada','',{
+          duration: 1500,
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom'
+        })
       }
     });
+    
+
+
+   
   }
- 
 }
 
 
