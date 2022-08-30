@@ -1,24 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { VistaDisenioTecnicoComponent } from './componentes/vista-disenio-tecnico/vista-disenio-tecnico.component';
 
 //Componentes
-import { LoginComponent } from './components/login/login.component';
-import { RecuperarcontraseniaComponent } from './components/recuperarcontrasenia/recuperarcontrasenia.component';
+
 
 const routes: Routes = [
-  {
-    path: "",
-    pathMatch: "full",
-    redirectTo: "login"
-  },
-  {
-    path: "login",
-    component: LoginComponent
-  },
-  {
-    path: "recuperar-contraseña",
-    component: RecuperarcontraseniaComponent
-  }
+  { path: 'vista-1', component: VistaDisenioTecnicoComponent}
 ];
 
 @NgModule({
