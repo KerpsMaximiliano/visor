@@ -5,22 +5,23 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-// Material
+//Material
 import { MyMaterialModule } from './material';
 
-// Módulos
-import { VistaDisenioTecnicoModule } from './componentes/vista-disenio-tecnico/vista-disenio-tecnico.module';
+//Modulos internos
+import { LoginModule } from './components/login/login.module';
+import { RecuperarcontraseniaModule } from './components/recuperarcontrasenia/recuperarcontrasenia.module';
 
 @NgModule({
   declarations: [
-    AppComponent
-  ],
+    AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MyMaterialModule,
-    VistaDisenioTecnicoModule
+    LoginModule,
+    RecuperarcontraseniaModule
   ],
   providers: [],
   bootstrap: [AppComponent]
