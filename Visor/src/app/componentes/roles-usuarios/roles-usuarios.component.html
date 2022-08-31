@@ -26,7 +26,7 @@
         
             <ng-container matColumnDef="rol">
                 <th mat-header-cell *matHeaderCellDef><button mat-button [matMenuTriggerFor]="menuFiltro" class="botonTabla"> ROL <i class="icon-general fa-solid fa-angle-down"></i></button></th>
-                <td mat-cell *matCellDef="let element"><button mat-button [matMenuTriggerFor]="menuRol" class="botonTabla"> {{element.rol }} <i class="icon-general fa-solid fa-angle-down"></i></button></td>
+                <td mat-cell *matCellDef="let element"><button mat-button [matMenuTriggerFor]="menuRol" class="botonTabla" (click)="getRolesDisponibles(element.rol)"> {{element.rol }} <i class="icon-general fa-solid fa-angle-down"></i></button></td>
             </ng-container>
         
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -39,7 +39,7 @@
         </mat-menu>
 
         <mat-menu #menuRol="matMenu">
-            <div class="seleccionRoles" *ngFor="let rol of roles"> <button></button>  </div>
+            <div class="seleccionRoles" *ngFor="let rol of rolesFaltantes"> <button mat-button class="botonTabla" (click)="cambiarRol()"> {{ rol.nombre }} </button>  </div>
         </mat-menu>
 
     </div>

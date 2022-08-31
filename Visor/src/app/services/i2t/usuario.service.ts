@@ -7,17 +7,31 @@ import { Usuario } from '../../interfaces/usuario';
 export class UsuarioService {
 
   usuarios: Usuario[] = [
-    { usuario: 'igirod', nombre: 'Ignacio Girod', rol: 'Administrador' },
-    { usuario: 'fghio', nombre: 'Facundo Ghio Serra', rol: 'Operativo' },
-    { usuario: 'folivera', nombre: 'Fabio Daniel Olivera', rol: 'Operativo' },
-    { usuario: 'fcorvalan', nombre: 'Franco Corvalan', rol: 'Supervisor' },
-    { usuario: 'glaner', nombre: 'Gian Laner', rol: 'Operativo' },
-    { usuario: 'pmacagno', nombre: 'Patricio Macagno', rol: 'Supervisor' },
-    { usuario: 'aescandon', nombre: 'Augusto Escandon', rol: 'Operativo' }
+    { id: 1, usuario: 'igirod', nombre: 'Ignacio Girod', rol: 'Administrador' },
+    { id: 2, usuario: 'fghio', nombre: 'Facundo Ghio Serra', rol: 'Operativo' },
+    { id: 3, usuario: 'folivera', nombre: 'Fabio Daniel Olivera', rol: 'Operativo' },
+    { id: 4, usuario: 'fcorvalan', nombre: 'Franco Corvalan', rol: 'Supervisor' },
+    { id: 5, usuario: 'glaner', nombre: 'Gian Laner', rol: 'Operativo' },
+    { id: 6, usuario: 'pmacagno', nombre: 'Patricio Macagno', rol: 'Supervisor' },
+    { id: 7, usuario: 'aescandon', nombre: 'Augusto Escandon', rol: 'Operativo' }
+  ];
+
+  roles: any[] = [
+    { id: 1, nombre: 'Administrador', check: false },
+    { id: 2, nombre: 'Supervisor', check: false },
+    { id: 3, nombre: 'Operativo', check: false }
   ];
 
   getUsuarios() {
     return this.usuarios;
 }
+
+  getRoles() {
+    return this.roles;
+  }
+
+  cambiarRol(index: number) {
+    console.log(this.usuarios[index-1]);
+  }
 
 }

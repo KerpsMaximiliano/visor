@@ -12,12 +12,14 @@ import { MyMaterialModule } from './material';
 import { ConfiguracionesComponent } from './componentes/configuraciones/configuraciones.component';
 import { PermisosRolesComponent } from './componentes/permisos-roles/permisos-roles.component';
 import { RolesUsuariosModule } from './componentes/roles-usuarios/roles-usuarios.module';
+import { MatConfirmDialogComponent } from './shared/mat-confirm-dialog/mat-confirm-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ConfiguracionesComponent,
-    PermisosRolesComponent
+    PermisosRolesComponent,
+    MatConfirmDialogComponent
   ],
   imports: [
     BrowserModule,
