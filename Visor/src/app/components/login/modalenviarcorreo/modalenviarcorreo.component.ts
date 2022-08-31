@@ -11,7 +11,7 @@ import { LoginComponent } from '../login.component';
 export class ModalenviarcorreoComponent implements OnInit {
 
   user:FormControl = new FormControl("", Validators.required);
-  email:FormControl = new FormControl("", [Validators.required, Validators.email]);
+  email:FormControl = new FormControl("", [Validators.required, Validators.email, Validators.pattern('^[^@]+@[^@]+\.[a-zA-Z]{2,}$')]);
   mensajeErrorCorreo: string;
   visibilidadMensajeCorreo: boolean;
   duracionEnSegundos: Number = 5;
