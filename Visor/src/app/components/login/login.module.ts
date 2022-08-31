@@ -4,8 +4,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 //Componentes
 import { LoginComponent } from './login.component';
-import { ModalenviarcorreoComponent } from './modalenviarcorreo/modalenviarcorreo.component';
 import { MyMaterialModule } from '../../material';
+import { ModalenviarcorreoComponent } from '../../shared/modal-enviar-correo/modal-enviar-correo.component';
 
 
 

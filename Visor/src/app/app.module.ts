@@ -10,7 +10,7 @@ import { MyMaterialModule } from './material';
 
 //Modulos internos
 import { LoginModule } from './components/login/login.module';
-import { RecuperarcontraseniaModule } from './components/recuperarcontrasenia/recuperarcontrasenia.module';
+import { RecuperarcontraseniaModule } from './components/recuperar-contrasenia/recuperar-contrasenia.module';
 
 @NgModule({
   declarations: [

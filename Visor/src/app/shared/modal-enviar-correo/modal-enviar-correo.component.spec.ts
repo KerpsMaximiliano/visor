@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ModalenviarcorreoComponent } from './modalenviarcorreo.component';
+import { ModalenviarcorreoComponent } from './modal-enviar-correo.component';
 
 describe('ModalenviarcorreoComponent', () => {
   let component: ModalenviarcorreoComponent;

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RecuperarcontraseniaComponent } from './recuperarcontrasenia.component';
+import { RecuperarcontraseniaComponent } from './recuperar-contrasenia.component';
 
 describe('RecuperarcontraseniaComponent', () => {
   let component: RecuperarcontraseniaComponent;

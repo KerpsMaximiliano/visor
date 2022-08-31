@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog'
-import { ModalenviarcorreoComponent } from './modalenviarcorreo/modalenviarcorreo.component';
+import { ModalenviarcorreoComponent } from '../../componentes/shared/modales/modal-enviar-correo/modal-enviar-correo.component';
 import { LoginService } from '../../interfaces/login.service';
 
 @Component({

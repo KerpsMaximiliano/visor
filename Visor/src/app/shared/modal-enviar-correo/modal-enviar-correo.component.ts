@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormControl } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { LoginComponent } from '../login.component';
+import { LoginComponent } from '../../../../components/login/login.component';
 
 @Component({
   selector: 'app-modalenviarcorreo',
-  templateUrl: './modalenviarcorreo.component.html',
-  styleUrls: ['./modalenviarcorreo.component.css']
+  templateUrl: './modal-enviar-correo.component.html',
+  styleUrls: ['./modal-enviar-correo.component.css']
 })
 export class ModalenviarcorreoComponent implements OnInit {
 

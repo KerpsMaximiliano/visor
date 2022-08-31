@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 //Componentes
 import { LoginComponent } from './components/login/login.component';
-import { RecuperarcontraseniaComponent } from './components/recuperarcontrasenia/recuperarcontrasenia.component';
+import { RecuperarcontraseniaComponent } from './components/recuperar-contrasenia/recuperar-contrasenia.component';
 
 const routes: Routes = [
   {

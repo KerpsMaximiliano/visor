@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ModalcontraseniaComponent } from './modalcontrasenia/modalcontrasenia.component';
+import { MatDialog } from '@angular/material/dialog';
+import { ModalcontraseniaComponent } from 'src/app/shared/modal-contrasenia/modalcontrasenia.component';
 
 @Component({
   selector: 'app-recuperarcontrasenia',
-  templateUrl: './recuperarcontrasenia.component.html',
-  styleUrls: ['./recuperarcontrasenia.component.css']
+  templateUrl: './recuperar-contrasenia.component.html',
+  styleUrls: ['./recuperar-contrasenia.component.css']
 })
 export class RecuperarcontraseniaComponent implements OnInit {
 
