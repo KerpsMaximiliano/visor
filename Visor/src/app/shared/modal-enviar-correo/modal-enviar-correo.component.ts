@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormControl } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { LoginComponent } from '../../../../components/login/login.component';
+import { LoginComponent } from 'src/app/componentes/login/login.component';
 
 @Component({
   selector: 'app-modalenviarcorreo',

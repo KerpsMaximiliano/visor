@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog'
-import { ModalenviarcorreoComponent } from '../../componentes/shared/modales/modal-enviar-correo/modal-enviar-correo.component';
-import { LoginService } from '../../interfaces/login.service';
+import { LoginService } from '../../services/i2t/login.service';
+import { ModalenviarcorreoComponent } from '../../shared/modal-enviar-correo/modal-enviar-correo.component';
 
 @Component({
   selector: 'app-login',
