@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { Usuario } from 'src/app/interfaces/usuario';
 import { DialogService } from 'src/app/services/i2t/dialog.service';
@@ -14,14 +15,16 @@ export class RolesUsuariosComponent implements OnInit {
   usuarios: Usuario[] = [];
   dataSource!: MatTableDataSource<any>;
   displayedColumns: string[] = ['usuario', 'nombre', 'rol'];
-
   roles: any[] = [];
   rolesFaltantes: any[] = [];
   tempArray: any[] = [];
   newArray: any[] = [];
   arrayBack: any[] = [];
+  auxUser: any;
 
-  constructor(private _usuarioService: UsuarioService, private dialogService: DialogService) { }
+  constructor(private _usuarioService: UsuarioService,
+              private dialogService: DialogService,
+              private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.usuarios = this._usuarioService.getUsuarios();
@@ -74,23 +77,42 @@ export class RolesUsuariosComponent implements OnInit {
   }
 }
 
-  getRolesDisponibles(rol: any) {
-    this.rolesFaltantes = [{ nombre: 'Administrador' }, { nombre: 'Supervisor' }, { nombre: 'Operativo' }];
+  getRolesDisponibles(usuario: any) {
+    this.auxUser = usuario;
+    this.rolesFaltantes = [ 'Administrador', 'Supervisor', 'Operativo' ];
     let aux = -1;
     this.rolesFaltantes.forEach(x => {
       aux++;
-      if (x.nombre == rol) {
+      if (x == usuario.rol) {
         this.rolesFaltantes.splice(aux, 1);
       }
     });
   }
 
-  cambiarRol() {
+  cambiarRol(rolCambio: any) {
     this.dialogService.openConfirmDialog(
       '¿Está seguro de que desea cambiar el permiso de este usuario?'
       ).afterClosed().subscribe(res => {
         if (res) {
-          console.log('Dialog Abierto');
+          if (rolCambio != 'Administrador') {
+            let contador = 0;
+            this.usuarios.forEach(user => {
+              if (user.rol == 'Administrador') {
+                contador++;
+              }
+            });
+            if (contador == 1 && this.auxUser.rol == 'Administrador') {
+              this._snackBar.open('No se pudo cambiar el rol (Debe haber 1 Administrador)','',{
+                duration: 2500,
+                horizontalPosition: 'center',
+                verticalPosition:  'bottom'
+              })
+            } else {
+              this.usuarios[this.auxUser.id-1].rol = rolCambio;
+            }
+          } else {
+            this.usuarios[this.auxUser.id-1].rol = rolCambio;
+          }
         }
     })
   }
