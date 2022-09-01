@@ -72,7 +72,6 @@ export class RolesUsuariosComponent implements OnInit {
         }});
     }
   if (this.roles[0].check == false && this.roles[1].check == false && this.roles[2].check == false) {
-    this.usuarios = this._usuarioService.getUsuarios();
     this.dataSource = new MatTableDataSource(this.usuarios);
   }
 }
@@ -108,10 +107,20 @@ export class RolesUsuariosComponent implements OnInit {
                 verticalPosition:  'bottom'
               })
             } else {
-              this.usuarios[this.auxUser.id-1].rol = rolCambio;
+              this.usuarios.forEach(user => {
+                if (user.id == this.auxUser.id) {
+                  user.rol = rolCambio;
+                  this.dataSource = new MatTableDataSource(this.usuarios);
+                }
+              });
             }
           } else {
-            this.usuarios[this.auxUser.id-1].rol = rolCambio;
+            this.usuarios.forEach(user => {
+              if (user.id == this.auxUser.id) {
+                user.rol = rolCambio;
+                this.dataSource = new MatTableDataSource(this.usuarios);
+              }
+            });
           }
         }
     })

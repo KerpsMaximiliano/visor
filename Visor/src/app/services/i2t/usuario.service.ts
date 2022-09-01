@@ -17,9 +17,9 @@ export class UsuarioService {
   ];
 
   roles: any[] = [
-    { id: 1, nombre: 'Administrador', check: false },
-    { id: 2, nombre: 'Supervisor', check: false },
-    { id: 3, nombre: 'Operativo', check: false }
+    { id: 1, nombre: 'Administrador', check: true },
+    { id: 2, nombre: 'Supervisor', check: true },
+    { id: 3, nombre: 'Operativo', check: true }
   ];
 
   getUsuarios() {
