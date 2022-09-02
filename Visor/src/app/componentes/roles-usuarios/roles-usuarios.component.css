@@ -2,8 +2,26 @@
     margin-left: 100px;
 }
 
+mat-form-field {
+    font-size: 14px;
+    width: 100%;
+}
+
+.tabla {
+    position: relative;
+    max-height: 450px;
+    overflow: auto;
+    border: 1px solid;
+    border-radius: 3px
+}
+
 table {
-    width: 750px
+    width: 750px;
+}
+
+th {
+    position: sticky;
+    color: black;
 }
 
 td {

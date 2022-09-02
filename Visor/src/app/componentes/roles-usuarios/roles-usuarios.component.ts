@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { Usuario } from 'src/app/interfaces/usuario';
@@ -21,6 +22,7 @@ export class RolesUsuariosComponent implements OnInit {
   newArray: any[] = [];
   arrayBack: any[] = [];
   auxUser: any;
+  auxEvent?: any;
 
   constructor(private _usuarioService: UsuarioService,
               private dialogService: DialogService,
@@ -29,8 +31,30 @@ export class RolesUsuariosComponent implements OnInit {
   ngOnInit(): void {
     this.usuarios = this._usuarioService.getUsuarios();
     this.arrayBack = this._usuarioService.getUsuarios();
+    this.ordenAlfabetico(this.usuarios);
+    this.ordenAlfabetico(this.arrayBack);
     this.dataSource = new MatTableDataSource(this.usuarios);
     this.roles = this._usuarioService.getRoles();
+    this.roles.forEach(rol => { rol.check = true; });
+    this.roles.forEach(rol => {
+      if (rol.check == false) {
+        this.auxEvent.source.value = rol.nombre;
+        this.auxEvent.checked = rol.check;
+        this.marcarCheckbox(this.auxEvent);
+      }
+    })
+  }
+
+  ordenAlfabetico(lista: Array<Usuario>) {
+    lista.sort(function(a, b) {
+      if (a.usuario > b.usuario) {
+        return 1;
+      }
+      if (a.usuario < b.usuario) {
+        return -1;
+      }
+      return 0;
+    });
   }
 
   applyFilter(event: Event) {
@@ -39,21 +63,14 @@ export class RolesUsuariosComponent implements OnInit {
   }
 
   marcarCheckbox(event: any) {
+    this.auxEvent = event;
     if (event.checked) {
       this.roles.forEach(rol => {
         if (rol.nombre == event.source.value) {
           rol.check = true;
         }});
       this.tempArray = this.arrayBack.filter((e: any) => e.rol == event.source.value);
-      this.usuarios = [];
-      this.newArray.push(this.tempArray);
-      this.newArray.forEach(element => {
-        let firstArray = element;
-        for (let i=0;i<firstArray.length;i++) {
-          let obj = firstArray[i];
-          this.usuarios.push(obj);
-          this.dataSource = new MatTableDataSource(this.usuarios);
-        }});
+      this.filtrarRoles();
     } else {
       this.roles.forEach(rol => {
         if (rol.nombre == event.source.value) {
@@ -61,19 +78,23 @@ export class RolesUsuariosComponent implements OnInit {
         }});
       this.tempArray = this.usuarios.filter((e: any) => e.rol != event.source.value);
       this.newArray = [];
-      this.usuarios = [];
-      this.newArray.push(this.tempArray);
-      this.newArray.forEach(element => {
-        let firstArray = element;
-        for (let i=0;i<firstArray.length;i++) {
-          let obj = firstArray[i];
-          this.usuarios.push(obj);
-          this.dataSource = new MatTableDataSource(this.usuarios);
-        }});
+      this.filtrarRoles();
     }
-  if (this.roles[0].check == false && this.roles[1].check == false && this.roles[2].check == false) {
+
     this.dataSource = new MatTableDataSource(this.usuarios);
-  }
+}
+
+filtrarRoles() {
+  this.usuarios = [];
+  this.newArray.push(this.tempArray);
+  this.newArray.forEach(element => {
+    let firstArray = element;
+    for (let i=0;i<firstArray.length;i++) {
+      let obj = firstArray[i];
+      this.usuarios.push(obj);
+      this.dataSource = new MatTableDataSource(this.usuarios);
+    }
+  });
 }
 
   getRolesDisponibles(usuario: any) {
@@ -101,28 +122,33 @@ export class RolesUsuariosComponent implements OnInit {
               }
             });
             if (contador == 1 && this.auxUser.rol == 'Administrador') {
-              this._snackBar.open('No se pudo cambiar el rol (Debe haber 1 Administrador)','',{
-                duration: 2500,
-                horizontalPosition: 'center',
-                verticalPosition:  'bottom'
-              })
+              this.mensajeCambio('No se pudo cambiar el rol (Debe haber 1 Administrador)');
             } else {
-              this.usuarios.forEach(user => {
-                if (user.id == this.auxUser.id) {
-                  user.rol = rolCambio;
-                  this.dataSource = new MatTableDataSource(this.usuarios);
-                }
-              });
+              this.cambioExitoso(rolCambio);
             }
           } else {
-            this.usuarios.forEach(user => {
-              if (user.id == this.auxUser.id) {
-                user.rol = rolCambio;
-                this.dataSource = new MatTableDataSource(this.usuarios);
-              }
-            });
+            this.cambioExitoso(rolCambio);
           }
+          this.ngOnInit();
         }
+    })
+  }
+
+  cambioExitoso(rolCambio: string) {
+    this.usuarios.forEach(user => {
+      if (user.id == this.auxUser.id) {
+        user.rol = rolCambio;
+        this.dataSource = new MatTableDataSource(this.usuarios);
+      }
+    });
+    this.mensajeCambio('El cambio de rol fue realizado con éxito');
+  }
+
+  mensajeCambio(msj: string) {
+    this._snackBar.open(msj,'',{
+      duration: 2500,
+      horizontalPosition: 'center',
+      verticalPosition:  'bottom'
     })
   }
 

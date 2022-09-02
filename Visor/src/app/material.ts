@@ -15,6 +15,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatTableModule } from '@angular/material/table';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 
 const MATERIALES = [
@@ -34,7 +35,8 @@ const MATERIALES = [
   MatDividerModule,
   MatTableModule,
   MatMenuModule,
-  MatSnackBarModule
+  MatSnackBarModule,
+  MatPaginatorModule
 ]
 
 
