@@ -1,5 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
+import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { Usuario } from 'src/app/interfaces/usuario';
@@ -22,7 +21,7 @@ export class RolesUsuariosComponent implements OnInit {
   newArray: any[] = [];
   arrayBack: any[] = [];
   auxUser: any;
-  auxEvent?: any;
+  auxEvent: any;
 
   constructor(private _usuarioService: UsuarioService,
               private dialogService: DialogService,
@@ -36,13 +35,6 @@ export class RolesUsuariosComponent implements OnInit {
     this.dataSource = new MatTableDataSource(this.usuarios);
     this.roles = this._usuarioService.getRoles();
     this.roles.forEach(rol => { rol.check = true; });
-    this.roles.forEach(rol => {
-      if (rol.check == false) {
-        this.auxEvent.source.value = rol.nombre;
-        this.auxEvent.checked = rol.check;
-        this.marcarCheckbox(this.auxEvent);
-      }
-    })
   }
 
   ordenAlfabetico(lista: Array<Usuario>) {
@@ -111,7 +103,7 @@ filtrarRoles() {
 
   cambiarRol(rolCambio: any) {
     this.dialogService.openConfirmDialog(
-      '¿Está seguro de que desea cambiar el permiso de este usuario?'
+      '¿Está seguro de que desea cambiar el rol de este usuario?'
       ).afterClosed().subscribe(res => {
         if (res) {
           if (rolCambio != 'Administrador') {
@@ -128,6 +120,10 @@ filtrarRoles() {
             }
           } else {
             this.cambioExitoso(rolCambio);
+          }
+          let input = document.querySelector('input');
+          if (input != null) {
+            input.value = "";
           }
           this.ngOnInit();
         }

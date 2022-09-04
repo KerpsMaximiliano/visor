@@ -9,16 +9,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MyMaterialModule } from './material';
 
 // Componentes
-import { ConfiguracionesComponent } from './componentes/configuraciones/configuraciones.component';
-import { PermisosRolesComponent } from './componentes/permisos-roles/permisos-roles.component';
-import { RolesUsuariosModule } from './componentes/roles-usuarios/roles-usuarios.module';
+import { ConfiguracionesComponent } from './components/configuraciones/configuraciones-main/configuraciones-main.component';
+import { RolesUsuariosModule } from './components/configuraciones/roles-usuarios/roles-usuarios.module';
+import { PermisosRolesModule } from './components/configuraciones/permisos-roles/permisos-roles.module';
 import { MatConfirmDialogComponent } from './shared/mat-confirm-dialog/mat-confirm-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ConfiguracionesComponent,
-    PermisosRolesComponent,
     MatConfirmDialogComponent
   ],
   imports: [
@@ -26,7 +25,8 @@ import { MatConfirmDialogComponent } from './shared/mat-confirm-dialog/mat-confi
     AppRoutingModule,
     BrowserAnimationsModule,
     MyMaterialModule,
-    RolesUsuariosModule
+    RolesUsuariosModule,
+    PermisosRolesModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -9,15 +9,19 @@ mat-form-field {
 
 .tabla {
     position: relative;
-    min-height: 200px;
     max-height: 450px;
     overflow: auto;
-    border: 2px solid black;
-    border-radius: 5px;
+    border: 1px solid;
+    border-radius: 3px;
 }
 
 table {
     width: 750px;
+}
+
+th {
+    position: sticky;
+    color: black;
 }
 
 td {

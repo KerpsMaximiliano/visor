@@ -6,16 +6,9 @@ import { MyMaterialModule } from 'src/app/material';
 
 
 @NgModule({
-  declarations: [
-    RolesUsuariosComponent
-  ],
-  imports: [
-    CommonModule,
-    MyMaterialModule
-  ],
-  exports: [
-    RolesUsuariosComponent
-  ],
+  declarations: [ RolesUsuariosComponent ],
+  imports: [ CommonModule, MyMaterialModule ],
+  exports: [ RolesUsuariosComponent ],
   providers: []
 })
 export class RolesUsuariosModule { }

@@ -28,11 +28,6 @@ td {
     text-align: center;
 }
 
-.rol:hover {
-    background-color: #f5f5f5;
-    cursor: pointer;
-}
-
 .botonTabla {
     width: 250px;
 }

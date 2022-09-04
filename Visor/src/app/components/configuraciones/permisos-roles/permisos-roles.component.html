@@ -1,0 +1,40 @@
+<div class="container">
+    
+    <div class="barraBusqueda">
+        <div mat-dialog-content class="form">
+            <mat-form-field appearance="outline">
+                <mat-label><mat-icon>search</mat-icon> Buscar...</mat-label>
+                <input matInput name="usuario" (keyup)="applyFilter($event)">
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div class="tabla">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        
+            <ng-container matColumnDef="permiso">
+                <th mat-header-cell *matHeaderCellDef><button mat-button class="botonTablaPermiso"> PERMISO </button></th>
+                <td mat-cell *matCellDef="let element"> {{element.nombre }} </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="operativo">
+                <th mat-header-cell *matHeaderCellDef><button mat-button class="botonTablaCheck"> OPERATIVO </button></th>
+                <td mat-cell *matCellDef="let element"><mat-checkbox [(ngModel)]="element.operativo" color="accent" [value]="element.id" [checked]="element.operativo" (change)="marcarCheckbox($event, 'Operativo')">  </mat-checkbox></td>
+            </ng-container>
+        
+            <ng-container matColumnDef="supervisor">
+                <th mat-header-cell *matHeaderCellDef><button mat-button class="botonTablaCheck"> SUPERVISOR </button></th>
+                <td mat-cell *matCellDef="let element"><mat-checkbox [(ngModel)]="element.supervisor" color="primary" [value]="element.id" [checked]="element.supervisor" (change)="marcarCheckbox($event, 'Supervisor')">  </mat-checkbox></td>
+            </ng-container>
+
+            <ng-container matColumnDef="administrador">
+                <th mat-header-cell *matHeaderCellDef><button mat-button class="botonTablaCheck"> ADMINISTRADOR </button></th>
+                <td mat-cell *matCellDef="let element"><mat-checkbox [(ngModel)]="element.administrador" color="warn" [value]="element.id" [checked]="element.administrador" (change)="marcarCheckbox($event, 'Administrador')">  </mat-checkbox></td>
+            </ng-container>
+        
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        </table>
+    </div>
+</div>

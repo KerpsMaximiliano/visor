@@ -1,11 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PermisosRolesComponent } from './componentes/permisos-roles/permisos-roles.component';
-import { RolesUsuariosComponent } from './componentes/roles-usuarios/roles-usuarios.component';
+import { ConfiguracionesComponent } from './components/configuraciones/configuraciones-main/configuraciones-main.component';
+import { PermisosRolesComponent } from './components/configuraciones/permisos-roles/permisos-roles.component';
+import { RolesUsuariosComponent } from './components/configuraciones/roles-usuarios/roles-usuarios.component';
 
 const routes: Routes = [
-  { path: 'roles-usuarios', component: RolesUsuariosComponent },
-  { path: 'permisos-roles', component: PermisosRolesComponent }
+  { path: 'configuraciones-main', component: ConfiguracionesComponent,
+    children: [
+      { path: 'roles-usuarios', component: RolesUsuariosComponent },
+      { path: 'permisos-roles', component: PermisosRolesComponent }
+    ] }
 ];
 
 @NgModule({
