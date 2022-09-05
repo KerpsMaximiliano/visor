@@ -7,8 +7,6 @@ import { LoginComponent } from './login.component';
 import { MyMaterialModule } from '../../material';
 import { ModalenviarcorreoComponent } from '../../shared/modal-enviar-correo/modal-enviar-correo.component';
 
-
-
 @NgModule({
   declarations: [LoginComponent, ModalenviarcorreoComponent],
   imports: [
@@ -16,6 +14,7 @@ import { ModalenviarcorreoComponent } from '../../shared/modal-enviar-correo/mod
     ReactiveFormsModule,
     MyMaterialModule
   ],
-  exports: [LoginComponent]
+  exports: [LoginComponent],
+  providers: []
 })
 export class LoginModule { }
