@@ -11,17 +11,23 @@ import { MyMaterialModule } from './material';
 //Modulos internos
 import { LoginModule } from './components/login/login.module';
 import { RecuperarcontraseniaModule } from './components/recuperar-contrasenia/recuperar-contrasenia.module';
+import { InicioMainComponent } from './componentes/inicio/inicio-main/inicio-main.component';
+import { InicioDisponibilidadColaboradoresModule } from './componentes/inicio/inicio-disponibilidad-colaboradores/inicio-disponibilidad-colaboradores.module';
+
 
 @NgModule({
   declarations: [
-    AppComponent],
+    AppComponent,
+    InicioMainComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MyMaterialModule,
     LoginModule,
-    RecuperarcontraseniaModule
+    RecuperarcontraseniaModule,
+    InicioDisponibilidadColaboradoresModule
   ],
   providers: [],
   bootstrap: [AppComponent]

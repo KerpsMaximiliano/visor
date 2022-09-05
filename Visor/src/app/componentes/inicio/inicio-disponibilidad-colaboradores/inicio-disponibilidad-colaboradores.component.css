@@ -1,0 +1,24 @@
+#titulo {
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.header {
+    display: flex;
+}
+
+.menu-orden {
+    display: flex;
+    width: 150px;
+}
+
+/* .fecha-hasta {
+    position: relative;
+    float: right;
+} */
+
+.caja-fecha {
+    display: flex;
+    flex-direction: row;
+}

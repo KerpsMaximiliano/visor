@@ -1,0 +1,24 @@
+#titulo {
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.container {
+    display: flex;
+}
+
+.componente {
+    width: 50%;
+}
+
+.cuadro-fecha {
+    border: 1px solid black;
+    margin: 3px;
+    padding: 3px;
+}
+
+.division {
+    height: 700px;
+    background: linear-gradient(#000, #000) no-repeat center/2px 100%;
+}

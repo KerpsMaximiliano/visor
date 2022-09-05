@@ -4,12 +4,14 @@ import { RouterModule, Routes } from '@angular/router';
 //Componentes
 import { LoginComponent } from './components/login/login.component';
 import { RecuperarcontraseniaComponent } from './components/recuperar-contrasenia/recuperar-contrasenia.component';
+import { InicioMainComponent } from './componentes/inicio/inicio-main/inicio-main.component';
+import { InicioDisponibilidadColaboradoresComponent } from './componentes/inicio/inicio-disponibilidad-colaboradores/inicio-disponibilidad-colaboradores.component';
 
 const routes: Routes = [
   {
     path: "",
     pathMatch: "full",
-    redirectTo: "login"
+    redirectTo: "inicio-main"
   },
   {
     path: "login",
@@ -18,7 +20,9 @@ const routes: Routes = [
   {
     path: "recuperar-contraseña",
     component: RecuperarcontraseniaComponent
-  }
+  },
+  { path: 'inicio-main', component: InicioMainComponent },
+  { path: 'inicio-colaboradores', component: InicioDisponibilidadColaboradoresComponent }
 ];
 
 @NgModule({
