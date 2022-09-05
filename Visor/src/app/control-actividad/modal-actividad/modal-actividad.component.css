@@ -1,35 +1,115 @@
-.example-form {
+.content-container{
+  border: solid 2px black;
+    
+    display: grid;
+    grid-template-rows: 0.7fr 4fr 0.7fr 0.1fr;
+
+}
+.toolbar{
+  background-color: white;
+}
+.example-spacer {
+  flex: auto;
+}
+.form-container{
+  display: grid;
+  grid-template-rows: 1fr 1fr 0.8fr;
+  gap: 2%;
+}
+.table{
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr 2fr;
+  gap: 2%;
+  align-items: center;
+  font-size: medium;
+}
+.descripcion{
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  gap: 2px;
+  align-items: center;
+  font-size: medium;
+}
+.asunto{
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  gap: 2px;
+  align-items: center;
+  font-size: medium;
+}
+.tarea{
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  gap: 2px;
+  align-items: center;
+  font-size: medium;
+}
+.is-required:after{
+  content: '*';
+  margin-left: 3px;
+  color: red;
+  font-weight: bold;
+  top: 100%;
+}
+.is-complete:after{
+  content: '*Debe completar todos los campos obligatorios*';
+  right: 100%;
+  color: red;
+  font-weight: bold;
+}
+.mensajeError{
+  padding-left: 55%;
+}
+
+
+/*.example-form {
     min-width: 150px;
     max-width: 1500px;
     width: 100%;
-  }
+  }*/
   
-  .example-full-width {
+  /*.example-full-width {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr 2fr;
     width: 100%;
-  }
+  }*/
 
-  mat-label{
+  /*mat-label{
     display: inline-block;
     width: 80px;
-  }
+  }*/
 
   .pointer{
     cursor: pointer;
 }
-.modal-actividad-container #close-icon{
+/*.modal-actividad-container #close-icon{
   margin-left: auto;
   order: 2;
   font-weight: bolder;
 }
 .modal-actividad-container #close-icon:hover{
   cursor: pointer;
-  }
+  }*/
 
   /* for dialog pop-up */
-  .btn-dialog-close{
+  /*.btn-dialog-close{
     width: 45px;
     min-width: 0px !important;
     height: 40px;
     padding: 0px !important;
-  }
+  }*/
+
+  .actions{ 
+
+    display: flex;
+    justify-content:flex-end;
+      gap: 10%;
+    }
+    .actions #cancelar-button{
+      background-color:rgba(0,0,0,.1);
+    }
+    .actions #aceptar-button{
+      background-color:rgba(0,0,0,.1);
+      margin-right: 3px;
+    }
   

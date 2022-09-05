@@ -9,6 +9,7 @@ import { MyMaterialModule } from '../material';
 import { MatConfirmDialogComponent } from './mat-confirm-dialog/mat-confirm-dialog.component';
 
 
+
 @NgModule({
   declarations: [MatConfirmDialogComponent
   ],

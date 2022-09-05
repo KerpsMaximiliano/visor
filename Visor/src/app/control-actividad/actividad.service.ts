@@ -12,18 +12,23 @@ import { ModalActividadComponent } from './modal-actividad/modal-actividad.compo
 export class ActividadService {
 
 act!: Actividad;
+
+
   listActividades: Actividad[] = [
-    {fecha: new Date('01/10/21'), horas: 5, descripcion:'Descri´cion para la Actividad 1' , asunto:'XXXX', tareas:'tarea1'},
-    {fecha: new Date('01/10/21'), horas: 4, descripcion:'' ,asunto:'XXXX', tareas:'tarea1'},
-    {fecha: new Date('02/10/21'), horas: 3, descripcion:'' ,asunto:'XXXX', tareas:'tarea1'},
-    {fecha: new Date('03/10/21'), horas: 6, descripcion:'' ,asunto:'XXXX', tareas:'tarea1'},
-    {fecha: new Date('04/10/21'), horas: 34, descripcion:'' ,asunto:'XXXX', tareas:'tarea1'},
-    {fecha: new Date('05/10/21'), horas: 6, descripcion:'' ,asunto:'XXXX', tareas:'tarea1'},
-    {fecha: new Date('06/10/21'), horas: 2, descripcion:'' ,asunto:'XXXX', tareas:'tarea1'},
-    {fecha: new Date('07/10/21'), horas: 4, descripcion:'' ,asunto:'XXXX', tareas:'tarea1'},
-    {fecha: new Date('08/10/21'), horas: 5, descripcion:'' ,asunto:'XXXX', tareas:'tarea1'},
-    {fecha: new Date('09/10/21'), horas: 6, descripcion:'' ,asunto:'XXXX', tareas:'tarea1'},
+    {position: 0,fecha: new Date('01/10/21'), horas: 5, children:[{descripcion:'Descripcion para la Actividad 1'}], asunto:'XXXX', tareas:'tarea1'},
+    {position: 1,fecha: new Date('01/10/21'), horas: 4, children:[{descripcion:'Descripcion para la Actividad 1'}] ,asunto:'XXXX', tareas:'tarea1'},
+    {position: 2,fecha: new Date('02/10/21'), horas: 3, children:[{descripcion:'Descripcion para la Actividad 1'}] ,asunto:'XXXX', tareas:'tarea1'},
+    {position: 3,fecha: new Date('03/10/21'), horas: 6, children:[{descripcion:'Descripcion para la Actividad 1'}] ,asunto:'XXXX', tareas:'tarea1'},
+    {position: 4,fecha: new Date('04/10/21'), horas: 34, children:[{descripcion:'Descripcion para la Actividad 1'}] ,asunto:'XXXX', tareas:'tarea1'},
+    {position: 5,fecha: new Date('05/10/21'), horas: 6, children:[{descripcion:'Descripcion para la Actividad 1'}] ,asunto:'XXXX', tareas:'tarea1'},
+   {position: 6,fecha: new Date('06/10/21'), horas: 2, children:[{descripcion:'Descripcion para la Actividad 1'}] ,asunto:'XXXX', tareas:'tarea1'},
+    {position: 7,fecha: new Date('07/10/21'), horas: 4, children:[{descripcion:'Descripcion para la Actividad 1'}] ,asunto:'XXXX', tareas:'tarea1'},
+    {position: 8,fecha: new Date('08/10/21'), horas: 5, children:[{descripcion:'Descripcion para la Actividad 1'}] ,asunto:'XXXX', tareas:'tarea1'},
+    {position: 9,fecha: new Date('09/10/21'), horas: 6, children:[{descripcion:'Descripcion para la Actividad 1'}] ,asunto:'XXXX', tareas:'tarea1'},
   ];
+
+  
+  
 index!: number | undefined;
  /*form: FormGroup = new FormGroup({
     fecha: new FormControl(null),
@@ -55,7 +60,7 @@ index!: number | undefined;
       fecha: ['',Validators.required],
       horasEjecutadas: ['',Validators.required],
       asunto: ['',Validators.required],
-      descripcion: ['',Validators.required],
+      children: ['Esta actividad no tiene descripción'],
       tareaAsociada: ['',Validators.required],
     })
    }
@@ -66,14 +71,18 @@ index!: number | undefined;
    }
 
   getActividad(){
+    console.log('slice',this.listActividades.slice());
     return this.listActividades.slice();
   }
   
   eliminarActividad(index: number){
     this.listActividades.splice(index, 1);
+    console.log('eliminado',this.listActividades);
   }
 
-  editarActividad(index: number){
+  editarActividad(index: number, actividad: Actividad){
+    this.listActividades.splice(index,1,actividad);
+    console.log('editado',this.listActividades);
     return index;
   }
 
@@ -86,7 +95,9 @@ index!: number | undefined;
   }
 
   agregarActividad2(actividad: Actividad){
-    this.listActividades.unshift(actividad);
+    this.listActividades.push(actividad);
+    console.log('arreglo final',this.listActividades);
   }
+
   
 }

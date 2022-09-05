@@ -24,6 +24,7 @@ export class ActividadComponent implements OnInit {
   actividad!: Actividad;
   index! : number | undefined;
 
+  panelOpenState = false;
 
   //inyecto el servicio 
   constructor(private _actividadService: ActividadService,
@@ -40,6 +41,7 @@ export class ActividadComponent implements OnInit {
     this._actividadService.enviarIndexObservable.subscribe(response => {
       this.index = response;
     })
+    console.log('todas las actividades',this._actividadService.listActividades)
   }
 
   cargarActividades(){
@@ -50,7 +52,7 @@ export class ActividadComponent implements OnInit {
   //Expand Panel
   expandedRows: { [key: number]: boolean } = {};
   expand(element: Actividad) {
-    this.expandedRows[element.descripcion] = !this.expandedRows[element.descripcion]
+    this.expandedRows[element.position] = !this.expandedRows[element.position]
   }
 
 
@@ -78,13 +80,15 @@ export class ActividadComponent implements OnInit {
     
     this.cambioIndex(index);
     this.index = index;
-   this._actividadService.editarActividad(index);
+   /*this._actividadService.editarActividad(index);*/
    this.actividad= this._actividadService.listActividades[index];
+
+   console.log('actividad',this.actividad);
 
    this._actividadService.form.patchValue({
     fecha: this.actividad.fecha,
     horasEjecutadas: this.actividad.horas,
-    descripcion: this.actividad.descripcion,
+    descripcion: this.actividad.children,
     asunto: this.actividad.asunto,
     tareaAsociada: this.actividad.tareas
    })
@@ -112,10 +116,8 @@ export class ActividadComponent implements OnInit {
 
   //eseeeeee
   onAgregarActividad(){
-
-    
       // Agregamos una nueva Actividad
-
+      this._actividadService.form.reset();
       const dialogRef = this.dialog.open(ModalActividadComponent,{});
   // this.dialog.open(ModalActividadComponent);
     dialogRef.afterClosed().subscribe(res =>{
@@ -130,9 +132,6 @@ export class ActividadComponent implements OnInit {
       }
     });
     
-
-
-   
   }
 }
 

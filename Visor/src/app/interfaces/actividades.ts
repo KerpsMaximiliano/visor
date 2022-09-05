@@ -1,11 +1,12 @@
 import { DateAdapter } from "@angular/material/core";
 
 export interface Actividad{
-    [x: string]: any;
     //fecha: {Date:'dd/MM/yy'};
+    position: number;
     fecha: Date;
     horas: Number;
-    descripcion: any;
+    children: any[];
     asunto: String;
     tareas: String;
+   
 }

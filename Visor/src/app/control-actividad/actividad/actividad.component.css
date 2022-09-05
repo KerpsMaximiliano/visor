@@ -5,12 +5,18 @@ table {
 th {
     width: 20%;
 }
+td {
+    width: auto;
+}
 .pointer{
     cursor: pointer;
 }
 mat-expansion-panel{
-    width: 30%;
+    width: 80%;
+    height: 50%;
 }
-.mat-expansion-panel-body {
-    padding: 0 24px 16px;
-    }
+.mat-expansion-panel {
+    border-radius: 0;
+    box-shadow: none;
+  }
+

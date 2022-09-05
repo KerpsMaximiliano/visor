@@ -9,11 +9,47 @@
     <button mat-flat-button id="si-button" [mat-dialog-close]="true">Si</button>
 </div>-->
 
-<div>
-    <div class="content-container">
-      <mat-icon id="close-icon" (click)="closeDialog()">close</mat-icon>
-      <span class="content-span full-width">{{data.message}}</span>
+<!--<div class="content-container">
+    <div>
+        <mat-toolbar id="toolbar" style="margin-top: 0%;">
+        <mat-icon id="close-icon" (click)="closeDialog()" style="float: right;margin-top: 0%;">close</mat-icon>Confirmar Acción</mat-toolbar>
     </div>
-    <button mat-flat-button id="no-button" [mat-dialog-close]="false">NO</button>
-    <button mat-flat-button id="yes-button" [mat-dialog-close]="true">YES</button>
-  </div>
+    <div>
+        <span id="texto" class="content-span full-width">{{data.message}}</span>
+    </div>
+    <button mat-flat-button id="no-button" [mat-dialog-close]="false" style="float: left;margin-bottom: -5%;">NO</button>
+    <button mat-flat-button id="yes-button" [mat-dialog-close]="true" style="float: right;margin-bottom: -5%;">SI</button>
+</div>-->
+
+<div class="dialog-container">
+    <div class="toolbar">
+            <mat-toolbar >
+            <span>Confirmar acción</span>
+            <span class="example-spacer"></span>
+            <button mat-icon-button class="close-icon" tabIndex="-1" (click)="closeDialog()">
+             <mat-icon>close</mat-icon>
+           </button>
+          </mat-toolbar>
+          <mat-divider class="divider"></mat-divider>
+    </div>
+    
+    
+    
+    
+    <div class="content" style="text-align: center">
+        {{data.message}}
+        
+    </div>
+
+    <div class="actions" >
+        <button id="no-button" mat-stroked-button  [mat-dialog-close]="false">NO</button>
+        <button id="yes-button" mat-stroked-button [mat-dialog-close]="true">SI</button>
+    </div>
+
+</div>
+    
+
+    
+
+
+  

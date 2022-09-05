@@ -7,7 +7,6 @@ import { DialogService } from 'src/app/shared/dialog.service';
 import { ActividadService } from '../actividad.service';
 
 
-
 @Component({
   selector: 'app-modal-actividad',
   templateUrl: './modal-actividad.component.html',
@@ -20,6 +19,8 @@ export class ModalActividadComponent implements OnInit {
   type!: String;
   actividad!: Actividad;
   index! : number | undefined;
+  Show: boolean = true;
+  position!: number;
 
  
   constructor(
@@ -54,21 +55,23 @@ export class ModalActividadComponent implements OnInit {
     this.dialogRef.close(false);
   }
 
-  agregarActividad(){
-
+  /*agregarActividad(){
+    console.log('antes del if');
     if(this.index == undefined){
-      this.type = 'add';
+      console.log('dps del if');
     console.log(this.form);
     const actividad: Actividad = {
+      position: this._actividadService.listActividades.length,
       fecha: this._actividadService.form.value.fecha,
       horas: this._actividadService.form.value.horasEjecutadas,
-      descripcion: this._actividadService.form.value.descripcion,
+      children: this._actividadService.form.value.descripcion ,
       asunto: this._actividadService.form.value.asunto,
       tareas: this._actividadService.form.value.tareaAsociada,
   } 
-  console.log(actividad);
-  console.log(this.data);
-  console.log(this.form.value.fecha);
+  console.log('descripcion',this._actividadService.form.value.descripcion)
+  console.log('actividad',actividad);
+  console.log('data',this.data);
+  console.log('children',this.form.value.descripcion);
   //console.log('ver qu viene del injext',this.data.descripcion);
   //this._actividadService.initializeFormGroup();
   this._actividadService.form.reset();
@@ -76,14 +79,33 @@ export class ModalActividadComponent implements OnInit {
     }else{
       //this.editarActividad();
     }
-  
+  }*/
+  agregarActividad(){
+    if(this.index == undefined){
+    console.log(this._actividadService.listActividades.length);
+    const actividad: Actividad = {
+      position: this._actividadService.listActividades.length,
+      fecha: this._actividadService.form.value.fecha,
+      horas: this._actividadService.form.value.horasEjecutadas,
+      children: this._actividadService.form.value.children[0],
+      asunto: this._actividadService.form.value.asunto,
+      tareas: this._actividadService.form.value.tareaAsociada,
+  }
+
+  console.log('descripcion',actividad)
+    this._actividadService.form.reset();
+    
+  this._actividadService.agregarActividad2(actividad);
+}else{
+
+}
   }
 
   recibirIndex(){
     this.index = this._actividadService.index;
   }
   editarActividad(){
-    //console.log('actividad modal',this._actividadService.listActividades[this.index]);
+    
     console.log('cantidad',this._actividadService.listActividades.length);
     console.log('indexxxx',this.index);
     if(this.index != undefined){
@@ -92,26 +114,24 @@ export class ModalActividadComponent implements OnInit {
       console.log('el form',this.form)
 
       const actividad: Actividad = {
+        position: this._actividadService.listActividades.length + 1 ,
         fecha: this.form.value.fecha,
         horas: this.form.value.horasEjecutadas,
-        descripcion: this.form.value.descripcion,
+        children: this.form.value.children,
         asunto: this.form.value.asunto,
         tareas: this.form.value.tareaAsociada,
     } 
-
+    console.log('descripcion',actividad)
     console.log('la Actividad Seteada',actividad);
     this._actividadService.form.reset();
-    this._actividadService.eliminarActividad(this.index);
-    this._actividadService.agregarActividad2(actividad);
+    //this._actividadService.eliminarActividad(this.index);
+    //this._actividadService.agregarActividad2(actividad);
+    this._actividadService.editarActividad(this.index,actividad);
     }
     
-
     this._actividadService.index = undefined;
     //this._actividadService.form.reset();
-    
-    
   }
-  
   
 
 }
