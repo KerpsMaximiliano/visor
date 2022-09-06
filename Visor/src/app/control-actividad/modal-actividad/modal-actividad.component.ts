@@ -81,15 +81,20 @@ export class ModalActividadComponent implements OnInit {
     }
   }*/
   agregarActividad(){
+    console.log('aqui llega agregar ACtivifdd',this.index);
     if(this.index == undefined){
     console.log(this._actividadService.listActividades.length);
     const actividad: Actividad = {
       position: this._actividadService.listActividades.length,
       fecha: this._actividadService.form.value.fecha,
       horas: this._actividadService.form.value.horasEjecutadas,
-      children: this._actividadService.form.value.children[0],
+      children: this._actividadService.form.value.children,  
       asunto: this._actividadService.form.value.asunto,
       tareas: this._actividadService.form.value.tareaAsociada,
+  }
+
+  if (actividad.children == null || actividad.children.length < 1){
+    actividad.children = ['Esta actividad no tiene descripción'];
   }
 
   console.log('descripcion',actividad)
@@ -114,7 +119,8 @@ export class ModalActividadComponent implements OnInit {
       console.log('el form',this.form)
 
       const actividad: Actividad = {
-        position: this._actividadService.listActividades.length + 1 ,
+        //position: this._actividadService.listActividades.length + 1 ,
+        position: aux,
         fecha: this.form.value.fecha,
         horas: this.form.value.horasEjecutadas,
         children: this.form.value.children,
@@ -123,6 +129,11 @@ export class ModalActividadComponent implements OnInit {
     } 
     console.log('descripcion',actividad)
     console.log('la Actividad Seteada',actividad);
+
+    if (actividad.children == null || actividad.children.length < 1){
+      actividad.children = ['Esta actividad no tiene descripción'];
+    }
+
     this._actividadService.form.reset();
     //this._actividadService.eliminarActividad(this.index);
     //this._actividadService.agregarActividad2(actividad);

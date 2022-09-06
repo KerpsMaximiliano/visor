@@ -9,6 +9,7 @@ import { ModalActividadComponent } from '../modal-actividad/modal-actividad.comp
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 
+
 @Component({
   selector: 'app-actividad',
   templateUrl: './actividad.component.html',
@@ -56,6 +57,7 @@ export class ActividadComponent implements OnInit {
   }
 
 
+
   onEliminarActividad(index: number){
     this.dialogService.openConfirmDialog('¿Usted está seguro de que desea eliminar esa actividad?' )
     .afterClosed().subscribe(res =>{
@@ -86,9 +88,10 @@ export class ActividadComponent implements OnInit {
    console.log('actividad',this.actividad);
 
    this._actividadService.form.patchValue({
+    position: this.actividad.position,
     fecha: this.actividad.fecha,
     horasEjecutadas: this.actividad.horas,
-    descripcion: this.actividad.children,
+    children: this.actividad.children,
     asunto: this.actividad.asunto,
     tareaAsociada: this.actividad.tareas
    })
@@ -105,7 +108,12 @@ export class ActividadComponent implements OnInit {
         verticalPosition: 'bottom'
       })
     }
+    
+    this._actividadService.index = undefined;
   });
+  
+  this._actividadService.index = undefined;
+  
   }
 
   /*onAgregarActividad(){

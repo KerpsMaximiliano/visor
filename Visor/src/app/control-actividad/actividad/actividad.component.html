@@ -44,9 +44,12 @@
           <mat-expansion-panel hideToggle="false" [expanded]="expandedRows[element.position]" (click)="expand(element)">
             <mat-expansion-panel-header>  
             </mat-expansion-panel-header>
-            <div *ngFor="let child of element.children">
-              {{ child.descripcion }}
-            </div> 
+            <!--<div *ngFor="let child of element.children">
+              {{ child.children }}
+            </div> -->
+            <div >
+              {{ element.children }}
+            </div>
           </mat-expansion-panel>
         </mat-accordion>
       </td> 
@@ -63,7 +66,7 @@
       <ng-container matColumnDef="acciones">
         <th mat-header-cell *matHeaderCellDef>
           <a class="pointer" (click)="onAgregarActividad()" matTooltip="Agregar Actividad">
-          <button mat-icon-button style="right: -83%;">
+          <button mat-icon-button style="right: -78%;">
             <mat-icon>add_circle</mat-icon>
           </button>
         </a>

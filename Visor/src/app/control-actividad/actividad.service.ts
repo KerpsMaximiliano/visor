@@ -14,7 +14,7 @@ export class ActividadService {
 act!: Actividad;
 
 
-  listActividades: Actividad[] = [
+  /*listActividades: Actividad[] = [
     {position: 0,fecha: new Date('01/10/21'), horas: 5, children:[{descripcion:'Descripcion para la Actividad 1'}], asunto:'XXXX', tareas:'tarea1'},
     {position: 1,fecha: new Date('01/10/21'), horas: 4, children:[{descripcion:'Descripcion para la Actividad 1'}] ,asunto:'XXXX', tareas:'tarea1'},
     {position: 2,fecha: new Date('02/10/21'), horas: 3, children:[{descripcion:'Descripcion para la Actividad 1'}] ,asunto:'XXXX', tareas:'tarea1'},
@@ -25,7 +25,12 @@ act!: Actividad;
     {position: 7,fecha: new Date('07/10/21'), horas: 4, children:[{descripcion:'Descripcion para la Actividad 1'}] ,asunto:'XXXX', tareas:'tarea1'},
     {position: 8,fecha: new Date('08/10/21'), horas: 5, children:[{descripcion:'Descripcion para la Actividad 1'}] ,asunto:'XXXX', tareas:'tarea1'},
     {position: 9,fecha: new Date('09/10/21'), horas: 6, children:[{descripcion:'Descripcion para la Actividad 1'}] ,asunto:'XXXX', tareas:'tarea1'},
-  ];
+  ];*/
+
+  listActividades: Actividad[] = [
+    {position: 0,fecha: new Date('01/10/21'), horas: 5, children:['Descripcion para la Actividad 1'], asunto:'XXXX', tareas:'tarea1'},
+    {position: 1,fecha: new Date('01/10/21'), horas: 4, children:['Descripcion para la Actividad 1' ],asunto:'XXXX', tareas:'tarea1'},
+  ]
 
   
   
@@ -59,8 +64,9 @@ index!: number | undefined;
     this.form = this.fb.group({
       fecha: ['',Validators.required],
       horasEjecutadas: ['',Validators.required],
-      asunto: ['',Validators.required],
       children: ['Esta actividad no tiene descripción'],
+      asunto: ['',Validators.required],
+      
       tareaAsociada: ['',Validators.required],
     })
    }

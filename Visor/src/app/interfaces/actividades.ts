@@ -5,7 +5,7 @@ export interface Actividad{
     position: number;
     fecha: Date;
     horas: Number;
-    children: any[];
+    children: [String];
     asunto: String;
     tareas: String;
    
