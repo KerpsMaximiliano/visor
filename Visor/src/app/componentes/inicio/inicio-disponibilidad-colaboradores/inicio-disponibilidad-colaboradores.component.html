@@ -1,32 +1,58 @@
 <div id="titulo"><h1>Disponibilidad de Colaboradores</h1></div>
+
 <div class="header">
     
-    <div class="barraBusqueda">
-        <div mat-dialog-content class="form">
-            <mat-form-field appearance="outline">
-                <mat-label><mat-icon>search</mat-icon> Buscar colaborador...</mat-label>
-                <input matInput name="usuario" (keyup)="applyFilter($event)">
-            </mat-form-field>
-        </div>
-    </div>
-    <mat-icon>filter_alt</mat-icon><mat-icon>close_fullscreen</mat-icon>
-    <button mat-button [matMenuTriggerFor]="menuOrden"> Orden <i class="icon-general fa-solid fa-angle-down"></i></button>
-    <mat-menu #menuOrden="matMenu"><button mat-button *ngFor="let o of orden" class="menu-orden">{{o}}</button></mat-menu>
+    <mat-form-field appearance="outline" class="input-header">
+        <mat-label><mat-icon>search</mat-icon> Buscar colaborador...</mat-label>
+        <input matInput name="usuario" (keyup)="applyFilter($event)">
+    </mat-form-field>
+    <button mat-button (click)="abrirModalFiltro()"><mat-icon class="icon">filter_alt</mat-icon></button>
+    <button mat-button><mat-icon class="icon">close_fullscreen</mat-icon></button>
+    <button id="button-orden" mat-button [matMenuTriggerFor]="menuOrden"> {{ ordenSeleccion }} <mat-icon>expand_more</mat-icon></button>
+    <mat-menu #menuOrden="matMenu"><button mat-button *ngFor="let o of orden" class="menu-orden" (click)="cambiarOrden($event)">{{o}}</button></mat-menu>
     <div class="fecha-hasta">
-        <h3>Hasta</h3>
+        <!-- <h3>Hasta</h3>
         <div class='caja-fecha'>
             <div> {{ fechaHasta }} </div>
             <mat-icon>calendar_month</mat-icon>
-        </div>
+        </div> -->
+        <mat-form-field appearance="outline" class="input-header">
+            <mat-label>Fecha Hasta</mat-label>
+            <input matInput [matDatepicker]="picker" [min]="minDate" [(ngModel)]="fechaHasta">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker startView="year"></mat-datepicker>
+        </mat-form-field>
     </div>
 
 </div>
+
 <div class="disponibilidad-equipo">
-    <h3>Disponibilidad del Equipo</h3>
-    <div class="linea"></div>
-    <div id="porcentaje-disponibilidad-equipo"></div>
+    <h3>Disponibilidad del Equipo<mat-divider></mat-divider></h3>
+    <div id="porcentaje-disponibilidad-equipo" [ngClass]="{
+        'porcentaje-rojo': getPorcentajeRojo(disponibilidadEquipo),
+        'porcentaje-amarillo': getPorcentajeAmarillo(disponibilidadEquipo),
+        'porcentaje-verde-claro': getPorcentajeVerdeClaro(disponibilidadEquipo),
+        'porcentaje-verde-oscuro': getPorcentajeVerdeOscuro(disponibilidadEquipo) }"> {{ disponibilidadEquipo }}% </div>
 </div>
+
 <div class="equipo">
-    <div class="columna-equipo"></div>
-    <div class="columna-equipo"></div>
+    <div class="columna-equipo">
+        <mat-card>
+            <div *ngFor="let colaborador of colaboradores; let i = index">
+                <mat-accordion>
+                    <mat-expansion-panel hideToggle>
+                        <mat-divider></mat-divider>
+                        USUARIO DETALLES
+                        <mat-expansion-panel-header>
+                            <mat-panel-title> {{colaborador.nombre}} {{colaborador.apellido}}</mat-panel-title>
+                        </mat-expansion-panel-header>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+        </mat-card>
+        COLUMNA 1
+    </div>
+    <div class="columna-equipo">
+        COLUMNA 2
+    </div>
 </div>

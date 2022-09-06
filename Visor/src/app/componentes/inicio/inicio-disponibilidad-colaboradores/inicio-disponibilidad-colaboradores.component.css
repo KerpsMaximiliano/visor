@@ -1,11 +1,25 @@
 #titulo {
     text-align: center;
     margin-top: 40px;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
 }
 
 .header {
     display: flex;
+    height: 60px;
+}
+
+.input-header {
+    width: 180px;
+}
+
+.icon {
+    font-size: 24px;
+}
+
+#button-orden {
+    width: 170px;
+    height: 60px;
 }
 
 .menu-orden {
@@ -13,12 +27,54 @@
     width: 150px;
 }
 
-/* .fecha-hasta {
-    position: relative;
-    float: right;
-} */
+.fecha-hasta {
+    margin-left: auto;
+    margin-right: 20px;
+}
+
+h3 {
+    text-align: center;
+}
 
 .caja-fecha {
     display: flex;
     flex-direction: row;
+}
+
+.disponibilidad-equipo {
+    margin-top: 15px;
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#porcentaje-disponibilidad-equipo {
+    border-radius: 20px;
+    padding: 10px;
+}
+
+.porcentaje-rojo {
+    border: 2px solid red;
+}
+
+.porcentaje-amarillo {
+    border: 2px solid yellow;
+}
+
+.porcentaje-verde-claro {
+    border: 2px solid lightgreen;
+}
+
+.porcentaje-verde-oscuro {
+    border: 2px solid green;
+}
+
+.equipo {
+    display: flex;
+}
+
+.columna-equipo {
+    width: 50%;
+    text-align: center;
 }
