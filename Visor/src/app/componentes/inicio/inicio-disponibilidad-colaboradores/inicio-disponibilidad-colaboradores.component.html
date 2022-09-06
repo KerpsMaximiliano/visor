@@ -18,7 +18,7 @@
         </div> -->
         <mat-form-field appearance="outline" class="input-header">
             <mat-label>Fecha Hasta</mat-label>
-            <input matInput [matDatepicker]="picker" [min]="minDate" [(ngModel)]="fechaHasta">
+            <input matInput [matDatepicker]="picker" [min]="minDate" [(ngModel)]="fechaHastaDate" (dateChange)="cambioFechaHasta($event)">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker startView="year"></mat-datepicker>
         </mat-form-field>
@@ -38,21 +38,33 @@
 <div class="equipo">
     <div class="columna-equipo">
         <mat-card>
-            <div *ngFor="let colaborador of colaboradores; let i = index">
-                <mat-accordion>
-                    <mat-expansion-panel hideToggle>
-                        <mat-divider></mat-divider>
-                        USUARIO DETALLES
-                        <mat-expansion-panel-header>
-                            <mat-panel-title> {{colaborador.nombre}} {{colaborador.apellido}}</mat-panel-title>
-                        </mat-expansion-panel-header>
-                    </mat-expansion-panel>
-                </mat-accordion>
+            <div *ngFor="let colaborador of columna1">
+            <mat-accordion>
+                <mat-expansion-panel hideToggle>
+                    <mat-divider></mat-divider>
+                    USUARIO DETALLES
+                    <mat-expansion-panel-header>
+                        <mat-panel-title> {{colaborador.nombre}} {{colaborador.apellido}}</mat-panel-title>
+                    </mat-expansion-panel-header>
+                </mat-expansion-panel>
+            </mat-accordion>
             </div>
         </mat-card>
-        COLUMNA 1
     </div>
+
     <div class="columna-equipo">
-        COLUMNA 2
+        <mat-card>
+            <div *ngFor="let colaborador of columna2">
+            <mat-accordion>
+                <mat-expansion-panel hideToggle>
+                    <mat-divider></mat-divider>
+                    USUARIO DETALLES
+                    <mat-expansion-panel-header>
+                        <mat-panel-title> {{colaborador.nombre}} {{colaborador.apellido}}</mat-panel-title>
+                    </mat-expansion-panel-header>
+                </mat-expansion-panel>
+            </mat-accordion>
+            </div>
+        </mat-card>
     </div>
 </div>

@@ -13,9 +13,13 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
 
   colaboradores!: Colaborador[];
   dataSource!: any;
+  columna1!: Colaborador[];
+  columna2!: Colaborador[];
   orden: string[] = ['Alfabetico', 'Tiempo Disponible'];
   ordenSeleccion: string = 'Alfabetico';
+  fechaHoy = new Date();
   fechaHasta!: string;
+  fechaHastaDate!: Date;
   minDate = new Date();
   disponibilidadEquipo: number = 0;
 
@@ -27,9 +31,19 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
 
   ngOnInit(): void {
     this.colaboradores = this._colaboradorService.getColaboradores();
+    this.ordenarColaboradores();
     let fecha = new Date();
+    this.fechaHastaDate = fecha;
     fecha.toLocaleDateString();
     this.fechaHasta = fecha.getMonth()+1 + '-' + fecha.getFullYear();
+    /* console.log(this._colaboradorService.getHorasPlanificadas(1, fecha, this.fechaHastaDate)); */
+  }
+
+  ordenarColaboradores() {
+    let tamanioCol1:number;
+    tamanioCol1 = Math.round(tamanioCol1 = this.colaboradores.length / 2);
+    this.columna1 = this.colaboradores.slice(0, tamanioCol1);
+    this.columna2 = this.colaboradores.slice(tamanioCol1, this.colaboradores.length);
   }
 
   applyFilter(event: Event) {
@@ -74,6 +88,16 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
       this.apellido = result.apellido;
       this.funcion = result.funcion;
     });
+  }
+
+  cambioFechaHasta(event: any) {
+    this.fechaHastaDate = event.value;
+    /* console.log(event.value.getMonth()+1); */
+    this.getHorasPlanificadas(1, this.fechaHoy, this.fechaHastaDate)
+  }
+
+  getHorasPlanificadas(idUser: number, mesInicio: Date, mesFin: Date) {
+    console.log(mesFin.getMonth() - mesInicio.getMonth() + (12 * (mesFin.getFullYear() - mesInicio.getFullYear())));
   }
 
 }

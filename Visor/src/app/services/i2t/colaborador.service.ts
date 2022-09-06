@@ -30,7 +30,27 @@ export class ColaboradorService {
     { id: 16, nombre: 'Maximiliano', apellido: 'Reichert' },
     { id: 17, nombre: 'Lucas', apellido: 'Rios' }
 
-  ]
+  ];
+
+  tareasPlanificacion: any[] = [
+    { id:1, 9: 100, octubre: 70, noviembre: 18, diciembre: 5 },
+    { id:2, 9: 100, octubre: 70, noviembre: 18, diciembre: 5 },
+    { id:3, 9: 100, octubre: 70, noviembre: 18, diciembre: 5 },
+    { id:4, 9: 100, octubre: 70, noviembre: 18, diciembre: 5 },
+    { id:5, septiembre: 100, octubre: 70, noviembre: 18, diciembre: 5 },
+    { id:6, septiembre: 100, octubre: 70, noviembre: 18, diciembre: 5 },
+    { id:7, septiembre: 100, octubre: 70, noviembre: 18, diciembre: 5 },
+    { id:8, septiembre: 100, octubre: 70, noviembre: 18, diciembre: 5 },
+    { id:9, septiembre: 100, octubre: 70, noviembre: 18, diciembre: 5 },
+    { id:10, septiembre: 100, octubre: 70, noviembre: 18, diciembre: 5 },
+    { id:11, septiembre: 100, octubre: 70, noviembre: 18, diciembre: 5 },
+    { id:12, septiembre: 100, octubre: 70, noviembre: 18, diciembre: 5 },
+    { id:13, septiembre: 100, octubre: 70, noviembre: 18, diciembre: 5 },
+    { id:14, septiembre: 100, octubre: 70, noviembre: 18, diciembre: 5 },
+    { id:15, septiembre: 100, octubre: 70, noviembre: 18, diciembre: 5 },
+    { id:16, 9: 100, octubre: 70, noviembre: 18, diciembre: 5 },
+    { id:17, 9: 100, octubre: 70, noviembre: 18, diciembre: 5 },
+  ];
   
   getOrden() {
     return this.orden;
@@ -40,4 +60,15 @@ export class ColaboradorService {
     return this.colaboradores;
   }
 
+  // getTareasUsuario(idUsuario, cantMeses) { hsPlan, estado }
+  asdasd(idUser: number, mesInicio: Date, mesFin: Date) {
+    console.log(this.tareasPlanificacion[idUser-1]);
+  }
+
+  getHorasPlanificadas(idUser: number, mesInicio: Date, mesFin: Date) {
+    return mesFin.getMonth() - mesInicio.getMonth() + (12 * (mesFin.getFullYear() - mesInicio.getFullYear()))
+  }
+    /* if (mesFin-mesInicio == 0) {
+      this.tareasPlanificacion[idUser-1];
+    } */
 }
