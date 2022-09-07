@@ -1,0 +1,47 @@
+* {
+    text-decoration: none;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/*
+    Containers
+*/
+
+#container-all{
+    height: 100%;
+    width: 50%;
+    background-color: aqua;
+}
+
+#container-cabecera{
+    background-color: yellowgreen;
+    height: 25%;
+    text-align: left;
+}
+
+#container-body{
+    background-color: violet;
+    height: 75%;
+}
+
+/*
+    Cabecera
+*/
+
+
+/*
+    Body
+*/
+
+.container-datos{
+    margin: 5px;
+}
+
+.titulos{
+    font-size: 12px;
+}
+.datos{
+    font-size: 10px;
+}

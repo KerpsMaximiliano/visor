@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 //Componentes
 import { LoginComponent } from './components/login/login.component';
 import { RecuperarcontraseniaComponent } from './components/recuperar-contrasenia/recuperar-contrasenia.component';
+import { InicioEstadoProyectoComponent } from './componentes/inicio-estado-proyecto/inicio-estado-proyecto.component';
 
 const routes: Routes = [
   {
@@ -18,6 +19,10 @@ const routes: Routes = [
   {
     path: "recuperar-contraseña",
     component: RecuperarcontraseniaComponent
+  },
+  {
+    path: "inicio",
+    component: InicioEstadoProyectoComponent
   }
 ];
 

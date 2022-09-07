@@ -11,6 +11,7 @@ import { MyMaterialModule } from './material';
 //Modulos internos
 import { LoginModule } from './components/login/login.module';
 import { RecuperarcontraseniaModule } from './components/recuperar-contrasenia/recuperar-contrasenia.module';
+import { InicioEstadoModule } from './componentes/inicio-estado-proyecto/inicio-estado.module';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { RecuperarcontraseniaModule } from './components/recuperar-contrasenia/r
     BrowserAnimationsModule,
     MyMaterialModule,
     LoginModule,
-    RecuperarcontraseniaModule
+    RecuperarcontraseniaModule,
+    InicioEstadoModule
   ],
   providers: [],
   bootstrap: [AppComponent]

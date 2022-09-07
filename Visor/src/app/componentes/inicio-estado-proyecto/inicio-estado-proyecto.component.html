@@ -1,0 +1,37 @@
+<div id="container-all">
+    <div id="container-cabecera">
+        <input id="filtro">
+    </div>
+    <div id="container-body">
+        <table mat-table [dataSource]="data">
+            <!-- Proyecto Column -->
+            <ng-container matColumnDef="proyectos">
+              <th mat-header-cell *matHeaderCellDef> Proyectos </th>
+              <td mat-cell *matCellDef="let proyecto">
+                <mat-accordion>
+                    <mat-expansion-panel hideToggle>
+                      <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <div class="container-datos">
+                                <b class="titulos">Nombre: <div id="datoNombre">{{proyecto.nombre}}</div></b>
+                            </div>
+                            <div class="container-datos">
+                                <b class="titulos">Tareas a tiempo: <div id="datoTareasATiempo"></div></b>
+                            </div>
+                            <div class="container-datos">
+
+                            </div>
+                        </mat-panel-title>
+                      </mat-expansion-panel-header>
+                        <p>Barras</p>
+                    </mat-expansion-panel>
+                  </mat-accordion>
+              </td>
+            </ng-container>
+                 
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        
+          </table>
+    </div>
+</div>
