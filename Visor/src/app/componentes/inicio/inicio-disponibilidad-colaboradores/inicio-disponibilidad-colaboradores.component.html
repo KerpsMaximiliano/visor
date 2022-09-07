@@ -29,10 +29,10 @@
 <div class="disponibilidad-equipo">
     <h3>Disponibilidad del Equipo<mat-divider></mat-divider></h3>
     <div id="porcentaje-disponibilidad-equipo" [ngClass]="{
-        'porcentaje-rojo': getPorcentajeRojo(disponibilidadEquipo),
-        'porcentaje-amarillo': getPorcentajeAmarillo(disponibilidadEquipo),
-        'porcentaje-verde-claro': getPorcentajeVerdeClaro(disponibilidadEquipo),
-        'porcentaje-verde-oscuro': getPorcentajeVerdeOscuro(disponibilidadEquipo) }"> {{ disponibilidadEquipo }}% </div>
+        'porcentaje-rojo': getPorcentajeRojo(),
+        'porcentaje-amarillo': getPorcentajeAmarillo(),
+        'porcentaje-verde-claro': getPorcentajeVerdeClaro(),
+        'porcentaje-verde-oscuro': getPorcentajeVerdeOscuro() }"> {{ disponibilidadEquipo }}% </div>
 </div>
 
 <div class="equipo">
@@ -44,7 +44,8 @@
                     <mat-divider></mat-divider>
                     USUARIO DETALLES
                     <mat-expansion-panel-header>
-                        <mat-panel-title> {{colaborador.nombre}} {{colaborador.apellido}}</mat-panel-title>
+                        <mat-panel-title> {{colaborador.nombre}} {{colaborador.apellido}} <div class="tiempoDisponible">{{ colaborador.capacidad - colaborador.horasPlanificadas }}
+                        </div></mat-panel-title>
                     </mat-expansion-panel-header>
                 </mat-expansion-panel>
             </mat-accordion>

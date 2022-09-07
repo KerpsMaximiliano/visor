@@ -18,10 +18,12 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   orden: string[] = ['Alfabetico', 'Tiempo Disponible'];
   ordenSeleccion: string = 'Alfabetico';
   fechaHoy = new Date();
-  fechaHasta!: string;
-  fechaHastaDate!: Date;
+  fechaHastaDate = new Date();
   minDate = new Date();
+  mesesMostrados: number = 0;
   disponibilidadEquipo: number = 0;
+  capacidadTotal: number = 0;
+  planificadasTotal: number = 0;
 
   nombre?: string;
   apellido?: string;
@@ -32,11 +34,7 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   ngOnInit(): void {
     this.colaboradores = this._colaboradorService.getColaboradores();
     this.ordenarColaboradores();
-    let fecha = new Date();
-    this.fechaHastaDate = fecha;
-    fecha.toLocaleDateString();
-    this.fechaHasta = fecha.getMonth()+1 + '-' + fecha.getFullYear();
-    /* console.log(this._colaboradorService.getHorasPlanificadas(1, fecha, this.fechaHastaDate)); */
+    this.actualizarHorasPlanificadas();
   }
 
   ordenarColaboradores() {
@@ -46,6 +44,8 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     this.columna2 = this.colaboradores.slice(tamanioCol1, this.colaboradores.length);
   }
 
+  // revisar y agregar tabla para filtrar y devolver al array
+  // o usar metodo a,b
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -53,23 +53,39 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
 
   cambiarOrden(e: Event) {
     this.ordenSeleccion = (e.target as HTMLElement).innerText;
-    // Cambiar el orden mostrado
+    // agregar comportamiento para cambiar el orden mostrado
   }
 
-  getPorcentajeRojo(valor: number) {
-    return true;
+  getPorcentajeRojo() {
+    if (this.disponibilidadEquipo>=0 && this.disponibilidadEquipo<=25) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
-  getPorcentajeAmarillo(valor: number) {
-    return false;
+  getPorcentajeAmarillo() {
+    if (this.disponibilidadEquipo>=26 && this.disponibilidadEquipo<=50) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
-  getPorcentajeVerdeClaro(valor: number) {
-    return false;
+  getPorcentajeVerdeClaro() {
+    if (this.disponibilidadEquipo>=51 && this.disponibilidadEquipo<=75) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
-  getPorcentajeVerdeOscuro(valor: number) {
-    return false;
+  getPorcentajeVerdeOscuro() {
+    if (this.disponibilidadEquipo>=76 && this.disponibilidadEquipo<=100) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   abrirModalFiltro() {
@@ -92,12 +108,35 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
 
   cambioFechaHasta(event: any) {
     this.fechaHastaDate = event.value;
-    /* console.log(event.value.getMonth()+1); */
-    this.getHorasPlanificadas(1, this.fechaHoy, this.fechaHastaDate)
+    this.actualizarHorasPlanificadas();
   }
 
-  getHorasPlanificadas(idUser: number, mesInicio: Date, mesFin: Date) {
-    console.log(mesFin.getMonth() - mesInicio.getMonth() + (12 * (mesFin.getFullYear() - mesInicio.getFullYear())));
+  actualizarHorasPlanificadas() {
+    this.planificadasTotal = 0;
+    this.capacidadTotal = 0;
+    this.mesesMostrados = this.getDiferenciaMeses(this.fechaHoy, this.fechaHastaDate);
+    this.colaboradores.forEach(colab => {
+      colab.horasPlanificadas = this.getHorasPlanificadasUsuario(colab.id-1, this.mesesMostrados, this.fechaHoy.getMonth()+1);
+      this.planificadasTotal += colab.horasPlanificadas;
+      this.capacidadTotal += colab.capacidad*(this.mesesMostrados+1);
+    });
+    console.log(this.capacidadTotal, this.planificadasTotal)
+    this.disponibilidadEquipo = Math.round(this.disponibilidadEquipo = (this.capacidadTotal-this.planificadasTotal)/this.capacidadTotal*100);
+
+    // actualizar columnas con nuevos valors por colaborador
+
+  }
+
+  getDiferenciaMeses(mesInicio: Date, mesFin: Date) {
+    return mesFin.getMonth() - mesInicio.getMonth() + (12 * (mesFin.getFullYear() - mesInicio.getFullYear()));
+  }
+
+  getHorasPlanificadasUsuario(idUser: number, diferencia: number, inicio: number) {
+    return this._colaboradorService.getHorasPlanificadas(idUser, diferencia, inicio);
+  }
+
+  getDisponibilidadColaborador() {
+
   }
 
 }
