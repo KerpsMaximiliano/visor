@@ -12,17 +12,17 @@
 #container-all{
     height: 100%;
     width: 50%;
-    background-color: aqua;
+    
 }
 
 #container-cabecera{
-    background-color: yellowgreen;
+  
     height: 25%;
     text-align: left;
 }
 
 #container-body{
-    background-color: violet;
+  
     height: 75%;
 }
 
@@ -45,3 +45,121 @@
 .datos{
     font-size: 10px;
 }
+
+/*
+    Tabla
+*/
+
+table {
+    width: 100%;
+  }
+  
+tr.example-detail-row {
+    height: 0;
+  }
+  
+tr.example-element-row:not(.example-expanded-row):hover {
+    background: whitesmoke;
+  }
+  
+tr.example-element-row:not(.example-expanded-row):active {
+    background: #efefef;
+  }
+  
+.example-element-row td {
+    border-bottom-width: 0;
+  }
+  
+.example-element-detail {
+    overflow: hidden;
+    display: flex;
+  }
+  
+.example-element-diagram {
+    min-width: 80px;
+    border: 2px solid black;
+    padding: 8px;
+    font-weight: lighter;
+    margin: 8px 0;
+    height: 104px;
+  }
+  
+.example-element-symbol {
+    font-weight: bold;
+    font-size: 40px;
+    line-height: normal;
+  }
+  
+.example-element-description {
+    padding: 16px;
+  }
+  
+.example-element-description-attribution {
+    opacity: 0.5;
+  }
+
+#filtro{
+    margin: 15px;
+  }
+
+#tareasATiempo{
+    background-color: green;
+    text-align: center;
+    margin-right: 40%;
+    margin-left: 40%;
+    border-radius: 5px;
+    border: solid 1.50px black;
+    color: #efefef;
+  }
+
+#tareasAtrasadas{
+  background-color: red;
+  text-align: center;
+  margin-right: 40%;
+  margin-left: 40%;
+  border-radius: 5px;
+  border: solid 1.50px black;
+  color: #efefef;
+}
+
+#nombre{
+  text-align: center;
+}
+
+.columna{
+    padding: 10px;
+  }
+
+.tituloColumna{
+  text-align: center;
+}
+
+.contenido{
+  width: 100%;
+}
+
+.subtitulo{
+  text-align: center;
+  font-size: 12px;
+  font-style: italic;
+}
+
+#seccionAvance{
+  display: flexbox;
+  width: 100%;
+  background: gray;
+  border-radius: 5px;
+  border: solid 1px black;
+  height: 38%;
+}
+
+/*
+  Barra del avance del proyecto
+*/
+#progress{
+  max-width: 100%;
+}
+
+
+
+

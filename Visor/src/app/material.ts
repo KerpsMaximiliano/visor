@@ -6,6 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
 import {MatTableModule} from '@angular/material/table';
 import {MatDividerModule} from '@angular/material/divider';
+import {MatIconModule} from '@angular/material/icon';
 
 const MATERIALES = [
     MatButtonModule,
@@ -15,7 +16,9 @@ const MATERIALES = [
     MatCardModule,
     MatExpansionModule,
     MatTableModule,
-    MatDividerModule
+    MatDividerModule,
+    MatIconModule
+    
 ]
 
 
