@@ -51,43 +51,6 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  cambiarOrden(e: Event) {
-    this.ordenSeleccion = (e.target as HTMLElement).innerText;
-    // agregar comportamiento para cambiar el orden mostrado
-  }
-
-  getPorcentajeRojo() {
-    if (this.disponibilidadEquipo>=0 && this.disponibilidadEquipo<=25) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  getPorcentajeAmarillo() {
-    if (this.disponibilidadEquipo>=26 && this.disponibilidadEquipo<=50) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  getPorcentajeVerdeClaro() {
-    if (this.disponibilidadEquipo>=51 && this.disponibilidadEquipo<=75) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  getPorcentajeVerdeOscuro() {
-    if (this.disponibilidadEquipo>=76 && this.disponibilidadEquipo<=100) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   abrirModalFiltro() {
     const dialogRef = this.dialog.open(ModalFiltroComponent, {
       width: '400px',
@@ -106,6 +69,47 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     });
   }
 
+  contraerColaboradores() {
+    // agregar comportamiento para cerrar todos los expansion panel abiertos
+  }
+
+  cambiarOrden(e: Event) {
+    this.ordenSeleccion = (e.target as HTMLElement).innerText;
+    // agregar comportamiento para cambiar el orden mostrado
+  }
+
+  getPorcentajeRojo(valor: number) {
+    if (valor>=0 && valor<=25) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  getPorcentajeAmarillo(valor: number) {
+    if (valor>=26 && valor<=50) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  getPorcentajeVerdeClaro(valor: number) {
+    if (valor>=51 && valor<=75) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  getPorcentajeVerdeOscuro(valor: number) {
+    if (valor>=76 && valor<=100) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   cambioFechaHasta(event: any) {
     this.fechaHastaDate = event.value;
     this.actualizarHorasPlanificadas();
@@ -116,14 +120,15 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     this.capacidadTotal = 0;
     this.mesesMostrados = this.getDiferenciaMeses(this.fechaHoy, this.fechaHastaDate);
     this.colaboradores.forEach(colab => {
-      colab.horasPlanificadas = this.getHorasPlanificadasUsuario(colab.id-1, this.mesesMostrados, this.fechaHoy.getMonth()+1);
+      colab.horasPlanificadas = this.getHorasPlanificadasColaborador(colab.id-1, this.mesesMostrados, this.fechaHoy.getMonth()+1);
+      colab.tiempoDisponible = this.getTiempoDisponibleColaborador(colab);
+      colab.atrasadas = this.getHorasAtrasadas(colab);
       this.planificadasTotal += colab.horasPlanificadas;
       this.capacidadTotal += colab.capacidad*(this.mesesMostrados+1);
     });
-    console.log(this.capacidadTotal, this.planificadasTotal)
     this.disponibilidadEquipo = Math.round(this.disponibilidadEquipo = (this.capacidadTotal-this.planificadasTotal)/this.capacidadTotal*100);
 
-    // actualizar columnas con nuevos valors por colaborador
+    // actualizar columnas con nuevos valores por colaborador
 
   }
 
@@ -131,12 +136,16 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     return mesFin.getMonth() - mesInicio.getMonth() + (12 * (mesFin.getFullYear() - mesInicio.getFullYear()));
   }
 
-  getHorasPlanificadasUsuario(idUser: number, diferencia: number, inicio: number) {
+  getHorasPlanificadasColaborador(idUser: number, diferencia: number, inicio: number) {
     return this._colaboradorService.getHorasPlanificadas(idUser, diferencia, inicio);
   }
 
-  getDisponibilidadColaborador() {
+  getTiempoDisponibleColaborador(colaborador: Colaborador) {
+    return Math.round((colaborador.capacidad*(this.mesesMostrados+1) - colaborador.horasPlanificadas) / (colaborador.capacidad*(this.mesesMostrados+1)) * 100);
+  }
 
+  getHorasAtrasadas(colaborador: Colaborador) {
+    return this._colaboradorService.getTareasAtrasadas(colaborador.id, this.fechaHoy);
   }
 
 }

@@ -4,6 +4,8 @@ export interface Colaborador {
     nombre: string,
     apellido: string,
     capacidad: number,
-    horasPlanificadas: number
+    horasPlanificadas: number,
+    tiempoDisponible: number,
+    atrasadas: number;
 
 }

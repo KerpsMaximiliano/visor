@@ -11,11 +11,6 @@
     <button id="button-orden" mat-button [matMenuTriggerFor]="menuOrden"> {{ ordenSeleccion }} <mat-icon>expand_more</mat-icon></button>
     <mat-menu #menuOrden="matMenu"><button mat-button *ngFor="let o of orden" class="menu-orden" (click)="cambiarOrden($event)">{{o}}</button></mat-menu>
     <div class="fecha-hasta">
-        <!-- <h3>Hasta</h3>
-        <div class='caja-fecha'>
-            <div> {{ fechaHasta }} </div>
-            <mat-icon>calendar_month</mat-icon>
-        </div> -->
         <mat-form-field appearance="outline" class="input-header">
             <mat-label>Fecha Hasta</mat-label>
             <input matInput [matDatepicker]="picker" [min]="minDate" [(ngModel)]="fechaHastaDate" (dateChange)="cambioFechaHasta($event)">
@@ -29,10 +24,10 @@
 <div class="disponibilidad-equipo">
     <h3>Disponibilidad del Equipo<mat-divider></mat-divider></h3>
     <div id="porcentaje-disponibilidad-equipo" [ngClass]="{
-        'porcentaje-rojo': getPorcentajeRojo(),
-        'porcentaje-amarillo': getPorcentajeAmarillo(),
-        'porcentaje-verde-claro': getPorcentajeVerdeClaro(),
-        'porcentaje-verde-oscuro': getPorcentajeVerdeOscuro() }"> {{ disponibilidadEquipo }}% </div>
+        'porcentaje-rojo': getPorcentajeRojo(disponibilidadEquipo),
+        'porcentaje-amarillo': getPorcentajeAmarillo(disponibilidadEquipo),
+        'porcentaje-verde-claro': getPorcentajeVerdeClaro(disponibilidadEquipo),
+        'porcentaje-verde-oscuro': getPorcentajeVerdeOscuro(disponibilidadEquipo) }"> {{ disponibilidadEquipo }}% </div>
 </div>
 
 <div class="equipo">
@@ -42,10 +37,16 @@
             <mat-accordion>
                 <mat-expansion-panel hideToggle>
                     <mat-divider></mat-divider>
-                    USUARIO DETALLES
+                    <h3 class="atrasadas">Tareas Atrasadas: {{ colaborador.atrasadas }} </h3>
                     <mat-expansion-panel-header>
-                        <mat-panel-title> {{colaborador.nombre}} {{colaborador.apellido}} <div class="tiempoDisponible">{{ colaborador.capacidad - colaborador.horasPlanificadas }}
-                        </div></mat-panel-title>
+                        <mat-panel-title>
+                            {{colaborador.nombre}} {{colaborador.apellido}}
+                            <div class="tiempoDisponible" [ngClass]="{
+                                'porcentaje-rojo-colaborador': getPorcentajeRojo(colaborador.tiempoDisponible),
+                                'porcentaje-amarillo-colaborador': getPorcentajeAmarillo(colaborador.tiempoDisponible),
+                                'porcentaje-verde-claro-colaborador': getPorcentajeVerdeClaro(colaborador.tiempoDisponible),
+                                'porcentaje-verde-oscuro-colaborador': getPorcentajeVerdeOscuro(colaborador.tiempoDisponible) }"> {{ colaborador.tiempoDisponible }} </div>
+                        </mat-panel-title>
                     </mat-expansion-panel-header>
                 </mat-expansion-panel>
             </mat-accordion>
@@ -59,9 +60,16 @@
             <mat-accordion>
                 <mat-expansion-panel hideToggle>
                     <mat-divider></mat-divider>
-                    USUARIO DETALLES
+                    <h3 class="atrasadas">Tareas Atrasadas: {{ colaborador.atrasadas }} </h3>
                     <mat-expansion-panel-header>
-                        <mat-panel-title> {{colaborador.nombre}} {{colaborador.apellido}}</mat-panel-title>
+                        <mat-panel-title>
+                            {{colaborador.nombre}} {{colaborador.apellido}}
+                            <div class="tiempoDisponible" [ngClass]="{
+                                'porcentaje-rojo-colaborador': getPorcentajeRojo(colaborador.tiempoDisponible),
+                                'porcentaje-amarillo-colaborador': getPorcentajeAmarillo(colaborador.tiempoDisponible),
+                                'porcentaje-verde-claro-colaborador': getPorcentajeVerdeClaro(colaborador.tiempoDisponible),
+                                'porcentaje-verde-oscuro-colaborador': getPorcentajeVerdeOscuro(colaborador.tiempoDisponible) }"> {{ colaborador.tiempoDisponible }} </div>
+                        </mat-panel-title>
                     </mat-expansion-panel-header>
                 </mat-expansion-panel>
             </mat-accordion>

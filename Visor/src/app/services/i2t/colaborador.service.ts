@@ -12,44 +12,89 @@ export class ColaboradorService {
   ];
 
   colaboradores: Colaborador[] = [
-    { id: 1, nombre: 'Facundo', apellido: 'Ghio Serra', capacidad: 160, horasPlanificadas: 0 },
-    { id: 2, nombre: 'Patricio', apellido: 'Macagno', capacidad: 160, horasPlanificadas: 0 },
-    { id: 3, nombre: 'Gian', apellido: 'Laner', capacidad: 160, horasPlanificadas: 0 },
-    { id: 4, nombre: 'Franco', apellido: 'Friggeri', capacidad: 160, horasPlanificadas: 0 },
-    { id: 5, nombre: 'Franco', apellido: 'Corvalan', capacidad: 160, horasPlanificadas: 0 },
-    { id: 6, nombre: 'Jeremias', apellido: 'Garcia', capacidad: 160, horasPlanificadas: 0 },
-    { id: 7, nombre: 'Ignacio', apellido: 'Girod', capacidad: 80, horasPlanificadas: 0 },
-    { id: 8, nombre: 'Fabio', apellido: 'Olivera', capacidad: 160, horasPlanificadas: 0 },
-    { id: 9, nombre: 'Augusto', apellido: 'Escandon', capacidad: 160, horasPlanificadas: 0 },
-    { id: 10, nombre: 'Federico', apellido: 'Gauchat', capacidad: 160, horasPlanificadas: 0 },
-    { id: 11, nombre: 'Franco', apellido: 'Caldaroni', capacidad: 160, horasPlanificadas: 0 },
-    { id: 12, nombre: 'Luciano', apellido: 'De Giorgio', capacidad: 80, horasPlanificadas: 0 },
-    { id: 13, nombre: 'Lucio', apellido: 'Cocuccio', capacidad: 160, horasPlanificadas: 0 },
-    { id: 14, nombre: 'Pablo', apellido: 'Corujo', capacidad: 160, horasPlanificadas: 0 },
-    { id: 15, nombre: 'Leandro', apellido: 'Blodorn', capacidad: 160, horasPlanificadas: 0 },
-    { id: 16, nombre: 'Maximiliano', apellido: 'Reichert', capacidad: 160, horasPlanificadas: 0 },
-    { id: 17, nombre: 'Lucas', apellido: 'Rios', capacidad: 160, horasPlanificadas: 0 }
+    { id: 1, nombre: 'Facundo', apellido: 'Ghio Serra', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0 },
+    { id: 2, nombre: 'Patricio', apellido: 'Macagno', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0 },
+    { id: 3, nombre: 'Gian', apellido: 'Laner', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0 },
+    { id: 4, nombre: 'Franco', apellido: 'Friggeri', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0 },
+    { id: 5, nombre: 'Franco', apellido: 'Corvalan', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0 },
+    { id: 6, nombre: 'Jeremias', apellido: 'Garcia', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0 },
+    { id: 7, nombre: 'Ignacio', apellido: 'Girod', capacidad: 80, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0 },
+    { id: 8, nombre: 'Fabio', apellido: 'Olivera', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0 },
+    { id: 9, nombre: 'Augusto', apellido: 'Escandon', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0 },
+    { id: 10, nombre: 'Federico', apellido: 'Gauchat', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0 },
+    { id: 11, nombre: 'Franco', apellido: 'Caldaroni', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0 },
+    { id: 12, nombre: 'Luciano', apellido: 'De Giorgio', capacidad: 80, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0 },
+    { id: 13, nombre: 'Lucio', apellido: 'Cocuccio', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0 },
+    { id: 14, nombre: 'Pablo', apellido: 'Corujo', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0 },
+    { id: 15, nombre: 'Leandro', apellido: 'Blodorn', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0 },
+    { id: 16, nombre: 'Maximiliano', apellido: 'Reichert', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0 },
+    { id: 17, nombre: 'Lucas', apellido: 'Rios', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0 }
 
   ];
 
   planificacionHoras: any[] = [
-    { id:1, septiembre: 100, octubre: 70, noviembre: 18, diciembre: 5 },
-    { id:2, septiembre: 100, octubre: 70, noviembre: 18, diciembre: 5 },
-    { id:3, septiembre: 100, octubre: 70, noviembre: 18, diciembre: 5 },
-    { id:4, septiembre: 100, octubre: 70, noviembre: 18, diciembre: 5 },
-    { id:5, septiembre: 100, octubre: 70, noviembre: 18, diciembre: 5 },
-    { id:6, septiembre: 100, octubre: 70, noviembre: 18, diciembre: 5 },
-    { id:7, septiembre: 50, octubre: 30, noviembre: 8, diciembre: 3 },
-    { id:8, septiembre: 100, octubre: 70, noviembre: 18, diciembre: 5 },
-    { id:9, septiembre: 100, octubre: 70, noviembre: 18, diciembre: 5 },
-    { id:10, septiembre: 100, octubre: 70, noviembre: 18, diciembre: 5 },
-    { id:11, septiembre: 100, octubre: 70, noviembre: 18, diciembre: 5 },
-    { id:12, septiembre: 50, octubre: 30, noviembre: 8, diciembre: 3 },
-    { id:13, septiembre: 100, octubre: 70, noviembre: 18, diciembre: 5 },
-    { id:14, septiembre: 100, octubre: 70, noviembre: 18, diciembre: 5 },
-    { id:15, septiembre: 100, octubre: 70, noviembre: 18, diciembre: 5 },
-    { id:16, septiembre: 100, octubre: 70, noviembre: 18, diciembre: 5 },
-    { id:17, septiembre: 100, octubre: 70, noviembre: 18, diciembre: 5 },
+    { id:1, septiembre: 130, octubre: 46, noviembre: 15, diciembre: 0 },
+    { id:2, septiembre: 110, octubre: 50, noviembre: 8, diciembre: 0 },
+    { id:3, septiembre: 120, octubre: 49, noviembre: 7, diciembre: 0 },
+    { id:4, septiembre: 125, octubre: 45, noviembre: 19, diciembre: 0 },
+    { id:5, septiembre: 121, octubre: 50, noviembre: 0, diciembre: 0 },
+    { id:6, septiembre: 128, octubre: 45, noviembre: 0, diciembre: 0 },
+    { id:7, septiembre: 60, octubre: 40, noviembre: 0, diciembre: 0 },
+    { id:8, septiembre: 119, octubre: 45, noviembre: 0, diciembre: 0 },
+    { id:9, septiembre: 112, octubre: 40, noviembre: 7, diciembre: 0 },
+    { id:10, septiembre: 118, octubre: 34, noviembre: 8, diciembre: 0 },
+    { id:11, septiembre: 119, octubre: 29, noviembre: 0, diciembre: 0 },
+    { id:12, septiembre: 60, octubre: 10, noviembre: 6, diciembre: 0 },
+    { id:13, septiembre: 121, octubre: 39, noviembre: 0, diciembre: 0 },
+    { id:14, septiembre: 122, octubre: 37, noviembre: 15, diciembre: 0 },
+    { id:15, septiembre: 125, octubre: 34, noviembre: 0, diciembre: 0 },
+    { id:16, septiembre: 115, octubre: 38, noviembre: 18, diciembre: 0 },
+    { id:17, septiembre: 120, octubre: 40, noviembre: 0, diciembre: 0 },
+  ];
+
+  tareas: any[] = [
+    { idColab: 1, fechaPlanificacion: new Date(2022, 8, 5), completada: false },
+    { idColab: 1, fechaPlanificacion: new Date(2022, 8, 5), completada: false },
+    { idColab: 1, fechaPlanificacion: new Date(2022, 8, 9), completada: false },
+    { idColab: 2, fechaPlanificacion: new Date(2023, 11, 17), completada: false },
+    { idColab: 2, fechaPlanificacion: new Date(2023, 11, 17), completada: false },
+    { idColab: 2, fechaPlanificacion: new Date(2023, 11, 17), completada: false },
+    { idColab: 3, fechaPlanificacion: new Date(2023, 11, 17), completada: false },
+    { idColab: 3, fechaPlanificacion: new Date(2023, 11, 17), completada: false },
+    { idColab: 3, fechaPlanificacion: new Date(2023, 11, 17), completada: false },
+    { idColab: 4, fechaPlanificacion: new Date(2023, 11, 17), completada: false },
+    { idColab: 4, fechaPlanificacion: new Date(2023, 11, 17), completada: false },
+    { idColab: 5, fechaPlanificacion: new Date(2023, 11, 17), completada: false },
+    { idColab: 5, fechaPlanificacion: new Date(2023, 11, 17), completada: false },
+    { idColab: 5, fechaPlanificacion: new Date(2023, 11, 17), completada: false },
+    { idColab: 6, fechaPlanificacion: new Date(2023, 11, 17), completada: false },
+    { idColab: 6, fechaPlanificacion: new Date(2023, 11, 17), completada: false },
+    { idColab: 6, fechaPlanificacion: new Date(2023, 11, 17), completada: false },
+    { idColab: 7, fechaPlanificacion: new Date(2023, 11, 17), completada: false },
+    { idColab: 7, fechaPlanificacion: new Date(2023, 11, 17), completada: false },
+    { idColab: 8, fechaPlanificacion: new Date(2023, 11, 17), completada: false },
+    { idColab: 8, fechaPlanificacion: new Date(2023, 11, 17), completada: false },
+    { idColab: 9, fechaPlanificacion: new Date(2023, 11, 17), completada: false },
+    { idColab: 9, fechaPlanificacion: new Date(2023, 11, 17), completada: false },
+    { idColab: 9, fechaPlanificacion: new Date(2023, 11, 17), completada: false },
+    { idColab: 10, fechaPlanificacion: new Date(2023, 11, 17), completada: false },
+    { idColab: 10, fechaPlanificacion: new Date(2023, 11, 17), completada: false },
+    { idColab: 11, fechaPlanificacion: new Date(2023, 11, 17), completada: false },
+    { idColab: 11, fechaPlanificacion: new Date(2023, 11, 17), completada: false },
+    { idColab: 12, fechaPlanificacion: new Date(2023, 11, 17), completada: false },
+    { idColab: 12, fechaPlanificacion: new Date(2023, 11, 17), completada: false },
+    { idColab: 12, fechaPlanificacion: new Date(2023, 11, 17), completada: false },
+    { idColab: 13, fechaPlanificacion: new Date(2023, 11, 17), completada: false },
+    { idColab: 14, fechaPlanificacion: new Date(2023, 11, 17), completada: false },
+    { idColab: 15, fechaPlanificacion: new Date(2023, 11, 17), completada: false },
+    { idColab: 16, fechaPlanificacion: new Date(2023, 11, 17), completada: false },
+    { idColab: 17, fechaPlanificacion: new Date(2023, 11, 17), completada: false },
+    { idColab: 17, fechaPlanificacion: new Date(2023, 11, 17), completada: false },
+    { idColab: 16, fechaPlanificacion: new Date(2023, 11, 17), completada: false },
+    { idColab: 15, fechaPlanificacion: new Date(2023, 11, 17), completada: false },
+    { idColab: 14, fechaPlanificacion: new Date(2023, 11, 17), completada: false },
+    { idColab: 13, fechaPlanificacion: new Date(2023, 11, 17), completada: false },
+    { idColab: 13, fechaPlanificacion: new Date(2023, 11, 17), completada: false }
   ];
   
   getOrden() {
@@ -116,47 +161,14 @@ export class ColaboradorService {
     }
   }
 
-  /* seleccionarMes(mes: number) {
-    let mesInicio;
-    switch (mes) {
-      case 1:
-        mesInicio = 'enero';
-        break;
-      case 2:
-        mesInicio = 'febrero';
-        break;
-      case 3:
-        mesInicio = 'marzo';
-        break;
-      case 4:
-        mesInicio = 'abril';
-        break;
-      case 5:
-        mesInicio = 'mayo';
-        break;
-      case 6:
-        mesInicio = 'junio';
-        break;
-      case 7:
-        mesInicio = 'julio';
-        break;
-      case 8:
-        mesInicio = 'agosto';
-        break;
-      case 9:
-        mesInicio = 'septiembre';
-        break;
-      case 10:
-        mesInicio = 'octubre';
-        break;
-      case 11:
-        mesInicio = 'noviembre';
-        break;
-      case 12:
-        mesInicio = 'diciembre';
-        break;
-    }
-    return mesInicio;
-  } */
+  getTareasAtrasadas(id: number, fechaInicio: Date) {
+    let contadorAtrasadas = 0;
+    this.tareas.forEach(tarea => {
+      if (tarea.idColab == id && tarea.completada == false && fechaInicio > tarea.fechaPlanificacion) {
+        contadorAtrasadas += 1;
+      }
+    });
+    return contadorAtrasadas;
+  }
 
 }
