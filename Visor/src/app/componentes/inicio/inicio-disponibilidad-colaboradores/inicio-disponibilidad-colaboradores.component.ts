@@ -16,7 +16,7 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   columna1!: Colaborador[];
   columna2!: Colaborador[];
   orden: string[] = ['Alfabetico', 'Tiempo Disponible'];
-  ordenSeleccion: string = 'Alfabetico';
+  ordenSeleccion: string = 'Tiempo Disponible';
   fechaHoy = new Date();
   fechaHastaDate = new Date();
   minDate = new Date();
@@ -33,8 +33,8 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
 
   ngOnInit(): void {
     this.colaboradores = this._colaboradorService.getColaboradores();
-    this.ordenarColaboradores();
     this.actualizarHorasPlanificadas();
+    this.cambiarOrden();
   }
 
   ordenarColaboradores() {
@@ -73,9 +73,45 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     // agregar comportamiento para cerrar todos los expansion panel abiertos
   }
 
-  cambiarOrden(e: Event) {
+  dispararCambioOrden(e: Event) {
     this.ordenSeleccion = (e.target as HTMLElement).innerText;
-    // agregar comportamiento para cambiar el orden mostrado
+    this.cambiarOrden();
+  }
+
+  cambiarOrden() {
+    if (this.ordenSeleccion == 'Alfabetico') {
+      this.colaboradores.sort(function(a, b) {
+        if (a.apellido > b.apellido) {
+          return 1;
+        }
+        if (a.apellido < b.apellido) {
+          return -1;
+        }
+        return 0;
+      });
+      this.colaboradores.sort(function(a, b) {
+        if (a.nombre > b.nombre) {
+          return 1;
+        }
+        if (a.nombre < b.nombre) {
+          return -1;
+        }
+        return 0;
+      });
+      this.ordenarColaboradores();
+    }
+    if (this.ordenSeleccion == 'Tiempo Disponible') {
+      this.colaboradores.sort(function(a, b) {
+        if (a.tiempoDisponible < b.tiempoDisponible) {
+          return 1;
+        }
+        if (a.tiempoDisponible > b.tiempoDisponible) {
+          return -1;
+        }
+        return 0;
+      });
+      this.ordenarColaboradores();
+    }
   }
 
   getPorcentajeRojo(valor: number) {
@@ -119,10 +155,13 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     this.planificadasTotal = 0;
     this.capacidadTotal = 0;
     this.mesesMostrados = this.getDiferenciaMeses(this.fechaHoy, this.fechaHastaDate);
+    // meter en un array cuales son los meses en string
+    // let horas: any;
     this.colaboradores.forEach(colab => {
+      // horas = this.getHorasPlanificadasColaborador(colab.id-1, this.mesesMostrados, this.fechaHoy.getMonth()+1);
       colab.horasPlanificadas = this.getHorasPlanificadasColaborador(colab.id-1, this.mesesMostrados, this.fechaHoy.getMonth()+1);
       colab.tiempoDisponible = this.getTiempoDisponibleColaborador(colab);
-      colab.atrasadas = this.getHorasAtrasadas(colab);
+      colab.atrasadas = this.getTareasAtrasadas(colab);
       this.planificadasTotal += colab.horasPlanificadas;
       this.capacidadTotal += colab.capacidad*(this.mesesMostrados+1);
     });
@@ -144,7 +183,7 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     return Math.round((colaborador.capacidad*(this.mesesMostrados+1) - colaborador.horasPlanificadas) / (colaborador.capacidad*(this.mesesMostrados+1)) * 100);
   }
 
-  getHorasAtrasadas(colaborador: Colaborador) {
+  getTareasAtrasadas(colaborador: Colaborador) {
     return this._colaboradorService.getTareasAtrasadas(colaborador.id, this.fechaHoy);
   }
 

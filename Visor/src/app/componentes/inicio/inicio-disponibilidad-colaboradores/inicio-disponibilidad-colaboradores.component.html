@@ -9,7 +9,7 @@
     <button mat-button (click)="abrirModalFiltro()"><mat-icon class="icon">filter_alt</mat-icon></button>
     <button mat-button><mat-icon class="icon">close_fullscreen</mat-icon></button>
     <button id="button-orden" mat-button [matMenuTriggerFor]="menuOrden"> {{ ordenSeleccion }} <mat-icon>expand_more</mat-icon></button>
-    <mat-menu #menuOrden="matMenu"><button mat-button *ngFor="let o of orden" class="menu-orden" (click)="cambiarOrden($event)">{{o}}</button></mat-menu>
+    <mat-menu #menuOrden="matMenu"><button mat-button *ngFor="let o of orden" class="menu-orden" (click)="dispararCambioOrden($event)">{{o}}</button></mat-menu>
     <div class="fecha-hasta">
         <mat-form-field appearance="outline" class="input-header">
             <mat-label>Fecha Hasta</mat-label>
