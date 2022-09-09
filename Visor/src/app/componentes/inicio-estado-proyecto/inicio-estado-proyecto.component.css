@@ -105,8 +105,8 @@ tr.example-element-row:not(.example-expanded-row):active {
 #tareasATiempo{
     background-color: green;
     text-align: center;
-    margin-right: 40%;
-    margin-left: 40%;
+    margin-right: 20%;
+    margin-left: 20%;
     border-radius: 5px;
     border: solid 1.50px black;
     color: #efefef;
@@ -115,8 +115,8 @@ tr.example-element-row:not(.example-expanded-row):active {
 #tareasAtrasadas{
   background-color: red;
   text-align: center;
-  margin-right: 40%;
-  margin-left: 40%;
+  margin-right: 20%;
+  margin-left: 20%;
   border-radius: 5px;
   border: solid 1.50px black;
   color: #efefef;

@@ -22,8 +22,17 @@ export class InicioEstadoProyectoComponent implements OnInit {
   displayedColumns: string[] = ['nombre','tareasATiempo','tareasAtrasadas'];
   columnsToDisplayWithExpand = [...this.displayedColumns, 'expand'];
   expandedElement!: Proyecto | null;
+  porcentajeBarraVerde: number;
+  porcentajeBarraAmarilla: number;
+  porcentajeBarraRoja: number;
+  porcentajeTareasAtrasadas: number[];
 
   constructor(private dataProyecto: ProyectoDataService) {
+    this.porcentajeBarraAmarilla = 0;
+    this.porcentajeBarraVerde = 0;
+    this.porcentajeBarraRoja = 0;
+    this.porcentajeTareasAtrasadas = [];
+    this.rellenarPorcentajes()
   }
 
   ngOnInit(): void {
@@ -34,4 +43,16 @@ export class InicioEstadoProyectoComponent implements OnInit {
     this.data.filter = filterValue.trim().toLowerCase();
   }
 
+  calcularPorcentaje(index: number){
+    const divRojo = document.getElementById('barraRoja');
+    const divAmarilla = document.getElementById('barraAmarilla');
+    const divVerde = document.getElementById('barraVerde');
+    const porc = "%";
+  }
+
+  rellenarPorcentajes(){
+    for(let i = 0;i<this.porcentajeTareasAtrasadas.length;i++){
+      this.porcentajeTareasAtrasadas[i] = (this.dataProyecto.porcentajeAtrasadas[i] * 100);
+    }
+  }
 }

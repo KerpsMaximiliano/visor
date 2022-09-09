@@ -1,5 +1,6 @@
+import { Tarea } from "./tarea";
+
 export interface Proyecto {
     nombre: string,
-    tareasATiempo: number,
-    tareasAtrasadas: number
+    tareas: Tarea[]
 }
