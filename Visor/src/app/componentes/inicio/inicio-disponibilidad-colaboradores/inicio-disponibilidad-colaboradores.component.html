@@ -9,7 +9,7 @@
     <button mat-button (click)="abrirModalFiltro()"><mat-icon class="icon">filter_alt</mat-icon></button>
     <button mat-button><mat-icon class="icon">close_fullscreen</mat-icon></button>
     <button id="button-orden" mat-button [matMenuTriggerFor]="menuOrden"> {{ ordenSeleccion }} <mat-icon>expand_more</mat-icon></button>
-    <mat-menu #menuOrden="matMenu"><button mat-button *ngFor="let o of orden" class="menu-orden" (click)="dispararCambioOrden($event)">{{o}}</button></mat-menu>
+    <mat-menu #menuOrden="matMenu"><button mat-button *ngFor="let o of orden" class="menu-orden" (click)="dispararCambioOrdenDesdePlantilla($event)">{{o}}</button></mat-menu>
     <div class="fecha-hasta">
         <mat-form-field appearance="outline" class="input-header">
             <mat-label>Fecha Hasta</mat-label>
@@ -27,10 +27,12 @@
         'porcentaje-rojo': getPorcentajeRojo(disponibilidadEquipo),
         'porcentaje-amarillo': getPorcentajeAmarillo(disponibilidadEquipo),
         'porcentaje-verde-claro': getPorcentajeVerdeClaro(disponibilidadEquipo),
-        'porcentaje-verde-oscuro': getPorcentajeVerdeOscuro(disponibilidadEquipo) }"> {{ disponibilidadEquipo }}% </div>
+        'porcentaje-verde-oscuro': getPorcentajeVerdeOscuro(disponibilidadEquipo) }"> {{ disponibilidadEquipo }}%
+    </div>
 </div>
 
 <div class="equipo">
+
     <div class="columna-equipo">
         <mat-card>
             <div *ngFor="let colaborador of columna1">
@@ -38,6 +40,27 @@
                 <mat-expansion-panel hideToggle>
                     <mat-divider></mat-divider>
                     <h3 class="atrasadas">Tareas Atrasadas: {{ colaborador.atrasadas }} </h3>
+                    <mat-accordion *ngFor="let mes of mesesPlanificacion2">
+                        <mat-expansion-panel hideToggle>
+                            <mat-divider></mat-divider>
+                            <div class="div-mes" *ngFor="let proy of separarProyectosDelMes(colaborador.id, mesesPlanificacion.mes1)">
+                                <div> {{proy}} </div>
+                                <div> {{getPorcentajeOcupadoMensualProyecto(proy, colaborador.id, mesesPlanificacion.mes1)}}%</div>
+                            </div>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    <div class="div-mes"> <!-- *ngFor="let mes of mesesPlanificacion2" -->
+                                        <!-- <div>{{ mesesPlanificacion.mes1 }}</div>
+                                        <mat-icon>expand_more</mat-icon>
+                                        <div>{{getPorcentajeDisponibleMensual(colaborador.id, mesesPlanificacion.mes1)}}%</div> -->
+                                        <div>{{ mes.mes }}</div>
+                                        <mat-icon>expand_more</mat-icon>
+                                        <div>{{getPorcentajeDisponibleMensual(colaborador.id, mesesPlanificacion.mes1)}}%</div>
+                                    </div>
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+                        </mat-expansion-panel>
+                    </mat-accordion>
                     <mat-expansion-panel-header>
                         <mat-panel-title>
                             {{colaborador.nombre}} {{colaborador.apellido}}
@@ -45,7 +68,7 @@
                                 'porcentaje-rojo-colaborador': getPorcentajeRojo(colaborador.tiempoDisponible),
                                 'porcentaje-amarillo-colaborador': getPorcentajeAmarillo(colaborador.tiempoDisponible),
                                 'porcentaje-verde-claro-colaborador': getPorcentajeVerdeClaro(colaborador.tiempoDisponible),
-                                'porcentaje-verde-oscuro-colaborador': getPorcentajeVerdeOscuro(colaborador.tiempoDisponible) }"> {{ colaborador.tiempoDisponible }} </div>
+                                'porcentaje-verde-oscuro-colaborador': getPorcentajeVerdeOscuro(colaborador.tiempoDisponible) }"> {{ colaborador.tiempoDisponible }}% </div>
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                 </mat-expansion-panel>
@@ -61,6 +84,24 @@
                 <mat-expansion-panel hideToggle>
                     <mat-divider></mat-divider>
                     <h3 class="atrasadas">Tareas Atrasadas: {{ colaborador.atrasadas }} </h3>
+                    <mat-accordion>
+                        <mat-expansion-panel hideToggle>
+                            <mat-divider></mat-divider>
+                            <div class="div-mes" *ngFor="let proy of separarProyectosDelMes(colaborador.id, mesesPlanificacion.mes1)">
+                                <div> {{proy}} </div>
+                                <div> {{getPorcentajeOcupadoMensualProyecto(proy, colaborador.id, mesesPlanificacion.mes1)}}%</div>
+                            </div>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    <div class="div-mes">
+                                        <div>{{ mesesPlanificacion.mes1 }}</div>
+                                        <mat-icon>expand_more</mat-icon>
+                                        <div>{{getPorcentajeDisponibleMensual(colaborador.id, mesesPlanificacion.mes1)}}%</div>
+                                    </div>
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+                        </mat-expansion-panel>
+                    </mat-accordion>
                     <mat-expansion-panel-header>
                         <mat-panel-title>
                             {{colaborador.nombre}} {{colaborador.apellido}}
@@ -68,7 +109,7 @@
                                 'porcentaje-rojo-colaborador': getPorcentajeRojo(colaborador.tiempoDisponible),
                                 'porcentaje-amarillo-colaborador': getPorcentajeAmarillo(colaborador.tiempoDisponible),
                                 'porcentaje-verde-claro-colaborador': getPorcentajeVerdeClaro(colaborador.tiempoDisponible),
-                                'porcentaje-verde-oscuro-colaborador': getPorcentajeVerdeOscuro(colaborador.tiempoDisponible) }"> {{ colaborador.tiempoDisponible }} </div>
+                                'porcentaje-verde-oscuro-colaborador': getPorcentajeVerdeOscuro(colaborador.tiempoDisponible) }"> {{ colaborador.tiempoDisponible }}% </div>
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                 </mat-expansion-panel>
@@ -76,4 +117,5 @@
             </div>
         </mat-card>
     </div>
+
 </div>

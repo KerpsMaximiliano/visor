@@ -16,14 +16,15 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   columna1!: Colaborador[];
   columna2!: Colaborador[];
   orden: string[] = ['Alfabetico', 'Tiempo Disponible'];
-  ordenSeleccion: string = 'Tiempo Disponible';
+  ordenSeleccion: string = 'Tiempo Disponible'; // se tiene que guardar en las preferencias del usuario en sesion cuando este disponible
   fechaHoy = new Date();
   fechaHastaDate = new Date();
-  minDate = new Date();
+  minDate = this.fechaHoy;
   mesesMostrados: number = 0;
   disponibilidadEquipo: number = 0;
-  capacidadTotal: number = 0;
-  planificadasTotal: number = 0;
+  tareasColaboradores: any[] = [];
+  mesesPlanificacion = { mes1: '', mes2: '', mes3: '', mes4: '', mes5: '', mes6: '', mes7: '', mes8: '', mes9: '', mes10: '', mes11: '', mes12: '' };
+  mesesPlanificacion2 = [{mes: ''}];
 
   nombre?: string;
   apellido?: string;
@@ -32,9 +33,88 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   constructor(private _colaboradorService: ColaboradorService, private dialog: MatDialog) { }
 
   ngOnInit(): void {
+    this.mesesPlanificacion.mes1 = this._colaboradorService.getMesString(this.fechaHoy);
+    this.mesesPlanificacion2[0].mes = this._colaboradorService.getMesString(this.fechaHoy);
     this.colaboradores = this._colaboradorService.getColaboradores();
-    this.actualizarHorasPlanificadas();
+    this.getTareasColaboradores();
+    this.getTareasAtrasadas();
+    this.getTiempoDisponibleColaboradores();
+    this.actualizarDisponibilidadEquipo()
     this.cambiarOrden();
+  }
+
+  getTareasColaboradores() {
+    let tareasColaboradoresAux:any = [];
+    this.colaboradores.forEach(colab => {
+      tareasColaboradoresAux.push(this._colaboradorService.getTareasColaborador(colab.id, this.fechaHoy));
+    });
+    tareasColaboradoresAux.forEach((obj: any) => {
+      obj.forEach((element: any) => {
+        this.tareasColaboradores.push(element);
+      });
+    });
+  }
+
+  getTareasAtrasadas() {
+    let contadorAtrasadas = 0;
+    this.colaboradores.forEach(colab => {
+      this.tareasColaboradores.forEach(tarea => {
+        if (tarea.idColab == colab.id && tarea.fechaPlanificacion < this.fechaHoy) {
+          if (tarea.estado == 'No iniciada' || tarea.estado == 'En progreso' || tarea.estado == 'En prueba') {
+            contadorAtrasadas++;
+          }
+        }
+      });
+      colab.atrasadas = contadorAtrasadas;
+      contadorAtrasadas = 0;
+    });
+  }
+
+  separarProyectosDelMes(id: number, mes: string) {
+    let proyectos:any = [];
+    this.tareasColaboradores.forEach(tarea => {
+      if (tarea.idColab == id && tarea.fechaPlanificacion.getMonth() == this._colaboradorService.getMesDate(mes)) {
+        if (proyectos.indexOf(tarea.proyecto) == -1) {
+          proyectos.push(tarea.proyecto);
+        }
+      }
+    });
+    return proyectos;
+  }
+
+  getPorcentajeOcupadoMensualProyecto(proyecto: string, id: number, mes: string) {
+    let hp = 0;
+    this.tareasColaboradores.forEach(tarea => {
+      if (tarea.idColab == id && tarea.proyecto == proyecto && tarea.fechaPlanificacion.getMonth() == this._colaboradorService.getMesDate(mes)) {
+        hp += tarea.horasPlanificadas
+      }
+    });
+    return Math.round((hp/this.getCapacidadColaborador(id)*100));
+  }
+
+  getCapacidadColaborador(id: number) {
+    let cap = 0;
+    this.colaboradores.forEach(colab => {
+      if (colab.id == id) {
+        cap = colab.capacidad;
+      }
+    });
+    return cap;
+  }
+
+  getPorcentajeDisponibleMensual(id: number, mes: string) {
+    let hp = 0;
+    this.tareasColaboradores.forEach(tarea => {
+      if (tarea.idColab == id && tarea.fechaPlanificacion.getMonth() == this._colaboradorService.getMesDate(mes)) {
+        hp += tarea.horasPlanificadas;
+      }
+    });
+    this.colaboradores.forEach(colab => {
+      if (colab.id == id) {
+        colab.horasPlanificadas = hp;
+      }
+    });
+    return Math.round(((this.getCapacidadColaborador(id)-hp)/this.getCapacidadColaborador(id)*100));
   }
 
   ordenarColaboradores() {
@@ -73,7 +153,7 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     // agregar comportamiento para cerrar todos los expansion panel abiertos
   }
 
-  dispararCambioOrden(e: Event) {
+  dispararCambioOrdenDesdePlantilla(e: Event) {
     this.ordenSeleccion = (e.target as HTMLElement).innerText;
     this.cambiarOrden();
   }
@@ -114,6 +194,40 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     }
   }
 
+  cambioFechaHasta(event: any) {
+    this.fechaHastaDate = event.value;
+    this.mesesMostrados = this.getDiferenciaMeses(this.fechaHoy, this.fechaHastaDate);
+    // aca actualizar mesesPlanificacion
+    this.getTiempoDisponibleColaboradores();
+    this.actualizarDisponibilidadEquipo();
+    this.cambiarOrden();
+  }
+
+  actualizarDisponibilidadEquipo() {
+    let horasPlanificadasAcumuladas = 0;
+    let capacidadTotalAcumulada = 0;
+    this.colaboradores.forEach(colab => {
+      horasPlanificadasAcumuladas += colab.horasPlanificadas;
+      capacidadTotalAcumulada += colab.capacidad;
+    });
+    this.disponibilidadEquipo = Math.round(this.disponibilidadEquipo = (capacidadTotalAcumulada-horasPlanificadasAcumuladas)/capacidadTotalAcumulada*100);
+  }
+
+  getTiempoDisponibleColaboradores() {
+    this.colaboradores.forEach(colab => {
+      switch (this.mesesMostrados) {
+        case 0:
+          colab.tiempoDisponible = this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion.mes1);
+          break;
+        // agregar escenarios para mas meses mostrados
+      }
+    });
+  }  
+
+  getDiferenciaMeses(mesInicio: Date, mesFin: Date) {
+    return mesFin.getMonth() - mesInicio.getMonth() + (12 * (mesFin.getFullYear() - mesInicio.getFullYear()));
+  }
+
   getPorcentajeRojo(valor: number) {
     if (valor>=0 && valor<=25) {
       return true;
@@ -144,47 +258,6 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     } else {
       return false;
     }
-  }
-
-  cambioFechaHasta(event: any) {
-    this.fechaHastaDate = event.value;
-    this.actualizarHorasPlanificadas();
-  }
-
-  actualizarHorasPlanificadas() {
-    this.planificadasTotal = 0;
-    this.capacidadTotal = 0;
-    this.mesesMostrados = this.getDiferenciaMeses(this.fechaHoy, this.fechaHastaDate);
-    // meter en un array cuales son los meses en string
-    // let horas: any;
-    this.colaboradores.forEach(colab => {
-      // horas = this.getHorasPlanificadasColaborador(colab.id-1, this.mesesMostrados, this.fechaHoy.getMonth()+1);
-      colab.horasPlanificadas = this.getHorasPlanificadasColaborador(colab.id-1, this.mesesMostrados, this.fechaHoy.getMonth()+1);
-      colab.tiempoDisponible = this.getTiempoDisponibleColaborador(colab);
-      colab.atrasadas = this.getTareasAtrasadas(colab);
-      this.planificadasTotal += colab.horasPlanificadas;
-      this.capacidadTotal += colab.capacidad*(this.mesesMostrados+1);
-    });
-    this.disponibilidadEquipo = Math.round(this.disponibilidadEquipo = (this.capacidadTotal-this.planificadasTotal)/this.capacidadTotal*100);
-
-    // actualizar columnas con nuevos valores por colaborador
-
-  }
-
-  getDiferenciaMeses(mesInicio: Date, mesFin: Date) {
-    return mesFin.getMonth() - mesInicio.getMonth() + (12 * (mesFin.getFullYear() - mesInicio.getFullYear()));
-  }
-
-  getHorasPlanificadasColaborador(idUser: number, diferencia: number, inicio: number) {
-    return this._colaboradorService.getHorasPlanificadas(idUser, diferencia, inicio);
-  }
-
-  getTiempoDisponibleColaborador(colaborador: Colaborador) {
-    return Math.round((colaborador.capacidad*(this.mesesMostrados+1) - colaborador.horasPlanificadas) / (colaborador.capacidad*(this.mesesMostrados+1)) * 100);
-  }
-
-  getTareasAtrasadas(colaborador: Colaborador) {
-    return this._colaboradorService.getTareasAtrasadas(colaborador.id, this.fechaHoy);
   }
 
 }

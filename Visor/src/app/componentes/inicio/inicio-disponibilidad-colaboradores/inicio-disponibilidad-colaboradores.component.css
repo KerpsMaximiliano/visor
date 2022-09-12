@@ -109,3 +109,9 @@ h3 {
 .atrasadas {
     color: red;
 }
+
+.div-mes {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
