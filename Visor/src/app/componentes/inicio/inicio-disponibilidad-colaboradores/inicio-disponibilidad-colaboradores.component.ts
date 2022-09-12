@@ -27,7 +27,7 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   mesesMostrados: number = 0;
   disponibilidadEquipo: number = 0;
   tareasColaboradores: any[] = [];
-  mesesPlanificacion = [{mes: ''}];
+  mesesPlanificacion = [{mes: ''}]; // pushear obj con el mes a mostrar
   positionOptions: TooltipPosition[] = ['after', 'before', 'above', 'below', 'left', 'right'];
   position = new FormControl(this.positionOptions[0]);
   position2 = new FormControl(this.positionOptions[3]);
@@ -44,7 +44,7 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     this.getTareasColaboradores();
     this.getTareasAtrasadas();
     this.getTiempoDisponibleColaboradores();
-    this.actualizarDisponibilidadEquipo()
+    this.actualizarDisponibilidadEquipo();
     this.cambiarOrden();
   }
 
@@ -184,7 +184,7 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   }
 
   contraerColaboradores() {
-    
+    // agregar comportamiento para contraer todos los expansion panel abiertos
   }
 
   dispararCambioOrdenDesdePlantilla(e: Event) {
@@ -231,7 +231,7 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   cambioFechaHasta(event: any) {
     this.fechaHastaDate = event.value;
     this.mesesMostrados = this.getDiferenciaMeses(this.fechaHoy, this.fechaHastaDate);
-    // aca actualizar mesesPlanificacion
+    // aca actualizar variable global mesesPlanificacion (pushearle el obj con otros meses mostrados)
     this.getTiempoDisponibleColaboradores();
     this.actualizarDisponibilidadEquipo();
     this.cambiarOrden();
