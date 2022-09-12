@@ -1,119 +1,115 @@
 * {
-    text-decoration: none;
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  text-decoration: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 /*
-    Containers
+  Containers
 */
 
 #container-all{
-    height: 100%;
-    width: 50%;
-    
+  height: 100%;
+  width: 100%;
+  
 }
 
-#container-cabecera{
-  
-    height: 25%;
-    text-align: left;
-}
 
 #container-body{
-  
-    height: 75%;
+  height: 75%;
 }
 
 /*
-    Cabecera
+  Cabecera
 */
+
+#filtro{
+margin: 15px;
+}
+
+mat-label{
+font-size: 20px;
+}
+
+mat-icon{
+font-size: 20px;
+}
+
+
+
+
 
 
 /*
-    Body
+  Body
 */
 
 .container-datos{
-    margin: 5px;
+  margin: 5px;
 }
 
 .titulos{
-    font-size: 12px;
+  font-size: 12px;
 }
 .datos{
-    font-size: 10px;
+  font-size: 10px;
 }
 
 /*
-    Tabla
+  Tabla
 */
 
 table {
-    width: 100%;
-  }
-  
-tr.example-detail-row {
-    height: 0;
-  }
-  
-tr.example-element-row:not(.example-expanded-row):hover {
-    background: whitesmoke;
-  }
-  
-tr.example-element-row:not(.example-expanded-row):active {
-    background: #efefef;
-  }
-  
-.example-element-row td {
-    border-bottom-width: 0;
-  }
-  
-.example-element-detail {
-    overflow: hidden;
-    display: flex;
-  }
-  
-.example-element-diagram {
-    min-width: 80px;
-    border: 2px solid black;
-    padding: 8px;
-    font-weight: lighter;
-    margin: 8px 0;
-    height: 104px;
-  }
-  
-.example-element-symbol {
-    font-weight: bold;
-    font-size: 40px;
-    line-height: normal;
-  }
-  
-.example-element-description {
-    padding: 16px;
-  }
-  
-.example-element-description-attribution {
-    opacity: 0.5;
-  }
+  width: 100%;
+}
 
-#filtro{
-    margin: 15px;
-  }
+tr.example-detail-row {
+  height: 0;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+  background: #efefef;
+}
+
+.example-element-row td {
+  border-bottom-width: 0;
+}
+
+.example-element-detail {
+  overflow: hidden;
+  display: flex;
+}
+
+.example-element-diagram {
+  min-width: 80px;
+  border: 2px solid black;
+  padding: 8px;
+  font-weight: lighter;
+  margin: 8px 0;
+  height: 104px;
+}
+
+.example-element-symbol {
+  font-weight: bold;
+  font-size: 40px;
+  line-height: normal;
+}
+
+.example-element-description {
+  padding: 16px;
+}
+
+.example-element-description-attribution {
+  opacity: 0.5;
+}
 
 #tareasATiempo{
-    background-color: green;
-    text-align: center;
-    margin-right: 20%;
-    margin-left: 20%;
-    border-radius: 5px;
-    border: solid 1.50px black;
-    color: #efefef;
-  }
-
-#tareasAtrasadas{
-  background-color: red;
+  background-color: green;
   text-align: center;
   margin-right: 20%;
   margin-left: 20%;
@@ -122,42 +118,52 @@ tr.example-element-row:not(.example-expanded-row):active {
   color: #efefef;
 }
 
+#tareasAtrasadas{
+background-color: red;
+text-align: center;
+margin-right: 20%;
+margin-left: 20%;
+border-radius: 5px;
+border: solid 1.50px black;
+color: #efefef;
+}
+
 #nombre{
-  text-align: center;
+text-align: center;
 }
 
 .columna{
-    padding: 10px;
-  }
+  padding: 10px;
+}
 
 .tituloColumna{
-  text-align: center;
+text-align: center;
 }
 
 .contenido{
-  width: 100%;
+width: 100%;
 }
 
 .subtitulo{
-  text-align: center;
-  font-size: 12px;
-  font-style: italic;
+text-align: center;
+font-size: 12px;
+font-style: italic;
 }
 
 #seccionAvance{
-  display: flexbox;
-  width: 100%;
-  background: gray;
-  border-radius: 5px;
-  border: solid 1px black;
-  height: 38%;
+display: flexbox;
+width: 100%;
+background: gray;
+border-radius: 5px;
+border: solid 1px black;
+height: 38%;
 }
 
 /*
-  Barra del avance del proyecto
+Barra del avance del proyecto
 */
 #progress{
-  max-width: 100%;
+max-width: 100%;
 }
 
 

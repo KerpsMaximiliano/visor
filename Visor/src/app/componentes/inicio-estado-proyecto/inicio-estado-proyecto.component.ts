@@ -19,20 +19,19 @@ import { Proyecto } from '../../interfaces/proyecto';
 export class InicioEstadoProyectoComponent implements OnInit {
 
   data = new MatTableDataSource(this.dataProyecto.proyectos);
+  proyectos: Proyecto[];
   displayedColumns: string[] = ['nombre','tareasATiempo','tareasAtrasadas'];
   columnsToDisplayWithExpand = [...this.displayedColumns, 'expand'];
   expandedElement!: Proyecto | null;
   porcentajeBarraVerde: number;
   porcentajeBarraAmarilla: number;
   porcentajeBarraRoja: number;
-  porcentajeTareasAtrasadas: number[];
 
   constructor(private dataProyecto: ProyectoDataService) {
     this.porcentajeBarraAmarilla = 0;
     this.porcentajeBarraVerde = 0;
     this.porcentajeBarraRoja = 0;
-    this.porcentajeTareasAtrasadas = [];
-    this.rellenarPorcentajes()
+    this.proyectos = this.dataProyecto.proyectos;
   }
 
   ngOnInit(): void {
@@ -43,16 +42,24 @@ export class InicioEstadoProyectoComponent implements OnInit {
     this.data.filter = filterValue.trim().toLowerCase();
   }
 
-  calcularPorcentaje(index: number){
+  public calcularPorcentajeBarras(index: number){
     const divRojo = document.getElementById('barraRoja');
     const divAmarilla = document.getElementById('barraAmarilla');
     const divVerde = document.getElementById('barraVerde');
     const porc = "%";
+    this.porcentajeBarraAmarilla = this.dataProyecto.proyectos[index].porcentajeTareasEnProgreso;
+    this.porcentajeBarraRoja = this.dataProyecto.proyectos[index].porcentajeTareasAtrasadas
+    console.log(this.porcentajeBarraRoja)
+    if(divAmarilla != null)
+    {
+      divAmarilla.style.setProperty('width', (this.porcentajeBarraAmarilla.toString()).concat(porc));
+    }
+    if(divRojo != null){
+      divRojo.style.setProperty('width', (this.porcentajeBarraRoja.toString()).concat(porc))
+    }
   }
 
-  rellenarPorcentajes(){
-    for(let i = 0;i<this.porcentajeTareasAtrasadas.length;i++){
-      this.porcentajeTareasAtrasadas[i] = (this.dataProyecto.porcentajeAtrasadas[i] * 100);
-    }
+  cargarRojo(): number{
+    return this.porcentajeBarraRoja;
   }
 }
