@@ -6,6 +6,7 @@ export interface Colaborador {
     capacidad: number,
     horasPlanificadas: number,
     tiempoDisponible: number,
-    atrasadas: number;
+    atrasadas: number,
+    horasAtrasadas: number
 
 }

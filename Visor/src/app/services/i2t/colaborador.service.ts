@@ -7,23 +7,23 @@ import { Colaborador } from 'src/app/interfaces/colaborador';
 export class ColaboradorService {
 
   colaboradores: Colaborador[] = [
-    { id: 1, nombre: 'Facundo', apellido: 'Ghio Serra', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0 },
-    { id: 2, nombre: 'Patricio', apellido: 'Macagno', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0 },
-    { id: 3, nombre: 'Gian', apellido: 'Laner', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0 },
-    { id: 4, nombre: 'Franco', apellido: 'Friggeri', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0 },
-    { id: 5, nombre: 'Franco', apellido: 'Corvalan', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0 },
-    { id: 6, nombre: 'Jeremias', apellido: 'Garcia', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0 },
-    { id: 7, nombre: 'Ignacio', apellido: 'Girod', capacidad: 80, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0 },
-    { id: 8, nombre: 'Fabio', apellido: 'Olivera', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0 },
-    { id: 9, nombre: 'Augusto', apellido: 'Escandon', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0 },
-    { id: 10, nombre: 'Federico', apellido: 'Gauchat', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0 },
-    { id: 11, nombre: 'Franco', apellido: 'Caldaroni', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0 },
-    { id: 12, nombre: 'Luciano', apellido: 'De Giorgio', capacidad: 80, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0 },
-    { id: 13, nombre: 'Lucio', apellido: 'Cocuccio', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0 },
-    { id: 14, nombre: 'Pablo', apellido: 'Corujo', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0 },
-    { id: 15, nombre: 'Leandro', apellido: 'Blodorn', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0 },
-    { id: 16, nombre: 'Maximiliano', apellido: 'Reichert', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0 },
-    { id: 17, nombre: 'Lucas', apellido: 'Rios', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0 }
+    { id: 1, nombre: 'Facundo', apellido: 'Ghio Serra', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
+    { id: 2, nombre: 'Patricio', apellido: 'Macagno', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
+    { id: 3, nombre: 'Gian', apellido: 'Laner', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
+    { id: 4, nombre: 'Franco', apellido: 'Friggeri', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
+    { id: 5, nombre: 'Franco', apellido: 'Corvalan', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
+    { id: 6, nombre: 'Jeremias', apellido: 'Garcia', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
+    { id: 7, nombre: 'Ignacio', apellido: 'Girod', capacidad: 80, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
+    { id: 8, nombre: 'Fabio', apellido: 'Olivera', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
+    { id: 9, nombre: 'Augusto', apellido: 'Escandon', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
+    { id: 10, nombre: 'Federico', apellido: 'Gauchat', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
+    { id: 11, nombre: 'Franco', apellido: 'Caldaroni', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
+    { id: 12, nombre: 'Luciano', apellido: 'De Giorgio', capacidad: 80, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
+    { id: 13, nombre: 'Lucio', apellido: 'Cocuccio', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
+    { id: 14, nombre: 'Pablo', apellido: 'Corujo', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
+    { id: 15, nombre: 'Leandro', apellido: 'Blodorn', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
+    { id: 16, nombre: 'Maximiliano', apellido: 'Reichert', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
+    { id: 17, nombre: 'Lucas', apellido: 'Rios', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 }
 
   ];
 

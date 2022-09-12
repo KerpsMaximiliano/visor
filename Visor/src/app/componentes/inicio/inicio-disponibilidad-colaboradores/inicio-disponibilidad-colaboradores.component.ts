@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Colaborador } from 'src/app/interfaces/colaborador';
 import { ColaboradorService } from 'src/app/services/i2t/colaborador.service';
 import { ModalFiltroComponent } from '../modal-filtro/modal-filtro.component';
+import { TooltipPosition } from '@angular/material/tooltip';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-inicio-disponibilidad-colaboradores',
@@ -10,6 +12,8 @@ import { ModalFiltroComponent } from '../modal-filtro/modal-filtro.component';
   styleUrls: ['./inicio-disponibilidad-colaboradores.component.css']
 })
 export class InicioDisponibilidadColaboradoresComponent implements OnInit {
+
+  /* @ViewChild(MatAccordion) accordion: MatAccordion; */
 
   colaboradores!: Colaborador[];
   dataSource!: any;
@@ -23,8 +27,10 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   mesesMostrados: number = 0;
   disponibilidadEquipo: number = 0;
   tareasColaboradores: any[] = [];
-  mesesPlanificacion = { mes1: '', mes2: '', mes3: '', mes4: '', mes5: '', mes6: '', mes7: '', mes8: '', mes9: '', mes10: '', mes11: '', mes12: '' };
-  mesesPlanificacion2 = [{mes: ''}];
+  mesesPlanificacion = [{mes: ''}];
+  positionOptions: TooltipPosition[] = ['after', 'before', 'above', 'below', 'left', 'right'];
+  position = new FormControl(this.positionOptions[0]);
+  position2 = new FormControl(this.positionOptions[3]);
 
   nombre?: string;
   apellido?: string;
@@ -33,8 +39,7 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   constructor(private _colaboradorService: ColaboradorService, private dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.mesesPlanificacion.mes1 = this._colaboradorService.getMesString(this.fechaHoy);
-    this.mesesPlanificacion2[0].mes = this._colaboradorService.getMesString(this.fechaHoy);
+    this.mesesPlanificacion[0].mes = this._colaboradorService.getMesString(this.fechaHoy);
     this.colaboradores = this._colaboradorService.getColaboradores();
     this.getTareasColaboradores();
     this.getTareasAtrasadas();
@@ -57,16 +62,20 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
 
   getTareasAtrasadas() {
     let contadorAtrasadas = 0;
+    let acumuladorHoras = 0;
     this.colaboradores.forEach(colab => {
       this.tareasColaboradores.forEach(tarea => {
         if (tarea.idColab == colab.id && tarea.fechaPlanificacion < this.fechaHoy) {
           if (tarea.estado == 'No iniciada' || tarea.estado == 'En progreso' || tarea.estado == 'En prueba') {
             contadorAtrasadas++;
+            acumuladorHoras += tarea.horasPlanificadas;
           }
         }
       });
       colab.atrasadas = contadorAtrasadas;
+      colab.horasAtrasadas = acumuladorHoras;
       contadorAtrasadas = 0;
+      acumuladorHoras = 0;
     });
   }
 
@@ -92,6 +101,16 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     return Math.round((hp/this.getCapacidadColaborador(id)*100));
   }
 
+  getTooltipHsPlanProyecto(proyecto: string, id: number, mes: string) {
+    let hp = 0;
+    this.tareasColaboradores.forEach(tarea => {
+      if (tarea.idColab == id && tarea.proyecto == proyecto && tarea.fechaPlanificacion.getMonth() == this._colaboradorService.getMesDate(mes)) {
+        hp += tarea.horasPlanificadas
+      }
+    });
+    return hp;
+  }
+
   getCapacidadColaborador(id: number) {
     let cap = 0;
     this.colaboradores.forEach(colab => {
@@ -115,6 +134,21 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
       }
     });
     return Math.round(((this.getCapacidadColaborador(id)-hp)/this.getCapacidadColaborador(id)*100));
+  }
+
+  getTooltipHsPlanMensual(id: number, mes: string) {
+    let hp = 0;
+    this.tareasColaboradores.forEach(tarea => {
+      if (tarea.idColab == id && tarea.fechaPlanificacion.getMonth() == this._colaboradorService.getMesDate(mes)) {
+        hp += tarea.horasPlanificadas;
+      }
+    });
+    this.colaboradores.forEach(colab => {
+      if (colab.id == id) {
+        colab.horasPlanificadas = hp;
+      }
+    });
+    return hp;
   }
 
   ordenarColaboradores() {
@@ -150,7 +184,7 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   }
 
   contraerColaboradores() {
-    // agregar comportamiento para cerrar todos los expansion panel abiertos
+    
   }
 
   dispararCambioOrdenDesdePlantilla(e: Event) {
@@ -213,11 +247,29 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     this.disponibilidadEquipo = Math.round(this.disponibilidadEquipo = (capacidadTotalAcumulada-horasPlanificadasAcumuladas)/capacidadTotalAcumulada*100);
   }
 
+  getTooltipHsDispTotales() {
+    let horasPlanificadasAcumuladas = 0;
+    let capacidadTotalAcumulada = 0;
+    this.colaboradores.forEach(colab => {
+      horasPlanificadasAcumuladas += colab.horasPlanificadas;
+      capacidadTotalAcumulada += colab.capacidad;
+    });
+    return (capacidadTotalAcumulada-horasPlanificadasAcumuladas);
+  }
+  
+  getTooltipHsCapTotales() {
+    let capacidadTotalAcumulada = 0;
+    this.colaboradores.forEach(colab => {
+      capacidadTotalAcumulada += colab.capacidad;
+    });
+    return capacidadTotalAcumulada;
+  }
+
   getTiempoDisponibleColaboradores() {
     this.colaboradores.forEach(colab => {
       switch (this.mesesMostrados) {
         case 0:
-          colab.tiempoDisponible = this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion.mes1);
+          colab.tiempoDisponible = this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[0].mes);
           break;
         // agregar escenarios para mas meses mostrados
       }
