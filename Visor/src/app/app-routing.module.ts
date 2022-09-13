@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { InicioComponent } from './componentes/inicio/inicio/inicio.component';
 
 //Componentes
 import { LoginComponent } from './componentes/login/login.component';
@@ -18,7 +19,8 @@ const routes: Routes = [
   {
     path: "recuperar-contraseña",
     component: RecuperarcontraseniaComponent
-  }
+  },
+  { path: "inicio", component: InicioComponent }
 ];
 
 @NgModule({

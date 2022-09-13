@@ -17,10 +17,12 @@ import { LoginService } from './services/i2t/login.service';
 import { Config } from './services/i2t/config.service';
 import { SnackbarService } from './services/util/snackbar.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { InicioComponent } from './componentes/inicio/inicio/inicio.component';
 
 @NgModule({
   declarations: [
-    AppComponent],
+    AppComponent,
+    InicioComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
