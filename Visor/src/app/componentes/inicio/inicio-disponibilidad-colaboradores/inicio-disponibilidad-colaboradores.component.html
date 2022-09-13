@@ -88,8 +88,8 @@
                                 'porcentaje-amarillo-colaborador': getPorcentajeAmarillo(colaborador.tiempoDisponible),
                                 'porcentaje-verde-claro-colaborador': getPorcentajeVerdeClaro(colaborador.tiempoDisponible),
                                 'porcentaje-verde-oscuro-colaborador': getPorcentajeVerdeOscuro(colaborador.tiempoDisponible) }"
-                                matTooltip="{{getCapacidadColaborador(colaborador.id)-colaborador.horasPlanificadas}}
-                                Hs Disp / {{getCapacidadColaborador(colaborador.id)}} Hs Cap" 
+                                matTooltip="{{(getCapacidadColaborador(colaborador.id)*(getDiferenciaMeses(fechaHoy, fechaHastaDate)+1))-colaborador.horasPlanificadas}}
+                                Hs Disp / {{(getCapacidadColaborador(colaborador.id)*(getDiferenciaMeses(fechaHoy, fechaHastaDate)+1))}} Hs Cap" 
                                 [matTooltipPosition]="position.value!"> 
                                 {{ colaborador.tiempoDisponible }}% 
                             </div>
@@ -151,8 +151,8 @@
                                 'porcentaje-amarillo-colaborador': getPorcentajeAmarillo(colaborador.tiempoDisponible),
                                 'porcentaje-verde-claro-colaborador': getPorcentajeVerdeClaro(colaborador.tiempoDisponible),
                                 'porcentaje-verde-oscuro-colaborador': getPorcentajeVerdeOscuro(colaborador.tiempoDisponible) }"
-                                matTooltip="{{getCapacidadColaborador(colaborador.id)-colaborador.horasPlanificadas}}
-                                Hs Disp / {{getCapacidadColaborador(colaborador.id)}} Hs Cap" 
+                                matTooltip="{{(getCapacidadColaborador(colaborador.id)*(getDiferenciaMeses(fechaHoy, fechaHastaDate)+1))-colaborador.horasPlanificadas}}
+                                Hs Disp / {{(getCapacidadColaborador(colaborador.id)*(getDiferenciaMeses(fechaHoy, fechaHastaDate)+1))}} Hs Cap" 
                                 [matTooltipPosition]="position.value!"> 
                                 {{ colaborador.tiempoDisponible }}% 
                             </div>

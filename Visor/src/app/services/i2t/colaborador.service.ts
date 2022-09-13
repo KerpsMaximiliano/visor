@@ -48,11 +48,11 @@ export class ColaboradorService {
   ];
 
   tareas: any[] = [
-    { id: 1, idColab: 1, fechaPlanificacion: new Date(2022, 8, 5), horasPlanificadas: 24, estado: 'No iniciada', proyecto: 'Proyecto A' },
+    { id: 1, idColab: 1, fechaPlanificacion: new Date(2022, 9, 5), horasPlanificadas: 24, estado: 'No iniciada', proyecto: 'Proyecto A' },
     { id: 2, idColab: 1, fechaPlanificacion: new Date(2022, 8, 5), horasPlanificadas: 20, estado: 'En progreso', proyecto: 'Proyecto A' },
     { id: 3, idColab: 1, fechaPlanificacion: new Date(2022, 8, 9), horasPlanificadas: 14, estado: 'En progreso', proyecto: 'Proyecto A' },
     { id: 4, idColab: 2, fechaPlanificacion: new Date(2022, 8, 5), horasPlanificadas: 55, estado: 'No iniciada', proyecto: 'Proyecto A' },
-    { id: 5, idColab: 2, fechaPlanificacion: new Date(2022, 8, 5), horasPlanificadas: 37, estado: 'No iniciada', proyecto: 'Proyecto B' },
+    { id: 5, idColab: 2, fechaPlanificacion: new Date(2022, 9, 5), horasPlanificadas: 37, estado: 'No iniciada', proyecto: 'Proyecto B' },
     { id: 6, idColab: 2, fechaPlanificacion: new Date(2022, 8, 15), horasPlanificadas: 28, estado: 'No iniciada', proyecto: 'Proyecto C' },
     { id: 7, idColab: 3, fechaPlanificacion: new Date(2023, 11, 17), horasPlanificadas: 24, estado: 'No iniciada', proyecto: 'Proyecto A' },
     { id: 8, idColab: 3, fechaPlanificacion: new Date(2023, 11, 17), horasPlanificadas: 24, estado: 'No iniciada', proyecto: 'Proyecto A' },
@@ -110,9 +110,11 @@ export class ColaboradorService {
     return tareas;
   }
 
-  getMesString(fecha: Date) {
-    const mes = fecha.getMonth();
-    switch (mes) {
+  getMesString(fecha: number) {
+    if (fecha>11) {
+      fecha -= 12;
+    }
+    switch (fecha) {
       case 0:
         return 'Enero';
       case 1:

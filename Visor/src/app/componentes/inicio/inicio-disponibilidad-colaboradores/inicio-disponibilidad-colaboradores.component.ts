@@ -39,7 +39,7 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   constructor(private _colaboradorService: ColaboradorService, private dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.mesesPlanificacion[0].mes = this._colaboradorService.getMesString(this.fechaHoy);
+    this.mesesPlanificacion[0].mes = this._colaboradorService.getMesString(this.fechaHoy.getMonth());
     this.colaboradores = this._colaboradorService.getColaboradores();
     this.getTareasColaboradores();
     this.getTareasAtrasadas();
@@ -121,6 +121,16 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     return cap;
   }
 
+  getHorasPlanColab(id: number, mes: string) {
+    let hp = 0;
+    this.tareasColaboradores.forEach(tarea => {
+      if (tarea.idColab == id && tarea.fechaPlanificacion.getMonth() == this._colaboradorService.getMesDate(mes)) {
+        hp += tarea.horasPlanificadas;
+      }
+    });
+    return hp;
+  }
+
   getPorcentajeDisponibleMensual(id: number, mes: string) {
     let hp = 0;
     this.tareasColaboradores.forEach(tarea => {
@@ -130,7 +140,9 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     });
     this.colaboradores.forEach(colab => {
       if (colab.id == id) {
-        colab.horasPlanificadas = hp;
+        if (colab.horasPlanificadas == 0) {
+          colab.horasPlanificadas += hp;
+        }
       }
     });
     return Math.round(((this.getCapacidadColaborador(id)-hp)/this.getCapacidadColaborador(id)*100));
@@ -145,7 +157,9 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     });
     this.colaboradores.forEach(colab => {
       if (colab.id == id) {
-        colab.horasPlanificadas = hp;
+        if (colab.horasPlanificadas == 0) {
+          colab.horasPlanificadas += hp;
+        }
       }
     });
     return hp;
@@ -229,9 +243,10 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   }
 
   cambioFechaHasta(event: any) {
+    // llamar a contraerColaboradores() antes de cambiar los datos
     this.fechaHastaDate = event.value;
     this.mesesMostrados = this.getDiferenciaMeses(this.fechaHoy, this.fechaHastaDate);
-    // aca actualizar variable global mesesPlanificacion (pushearle el obj con otros meses mostrados)
+    this.actualizarMesesPlanificacion();
     this.getTiempoDisponibleColaboradores();
     this.actualizarDisponibilidadEquipo();
     this.cambiarOrden();
@@ -267,17 +282,64 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
 
   getTiempoDisponibleColaboradores() {
     this.colaboradores.forEach(colab => {
+      colab.horasPlanificadas = 0;
       switch (this.mesesMostrados) {
         case 0:
           colab.tiempoDisponible = this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[0].mes);
+          colab.horasPlanificadas = this.getHorasPlanColab(colab.id, this.mesesPlanificacion[0].mes);
           break;
-        // agregar escenarios para mas meses mostrados
+        case 1:
+          colab.tiempoDisponible = this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[0].mes);
+          colab.horasPlanificadas = this.getHorasPlanColab(colab.id, this.mesesPlanificacion[0].mes);
+          colab.tiempoDisponible += this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[1].mes);
+          colab.horasPlanificadas += this.getHorasPlanColab(colab.id, this.mesesPlanificacion[1].mes);
+          colab.tiempoDisponible = Math.round(colab.tiempoDisponible /= 2);
+          break;
       }
     });
   }  
 
   getDiferenciaMeses(mesInicio: Date, mesFin: Date) {
     return mesFin.getMonth() - mesInicio.getMonth() + (12 * (mesFin.getFullYear() - mesInicio.getFullYear()));
+  }
+
+  actualizarMesesPlanificacion() {
+    this.mesesPlanificacion = [];
+    switch (this.mesesMostrados) {
+      case 0:
+        this.mesesPlanificacion[0] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()) };
+        break;
+      case 1:
+        this.mesesPlanificacion[0] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()) };
+        this.mesesPlanificacion[1] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+1) };
+        break;
+      case 2:
+        this.mesesPlanificacion[0] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()) };
+        this.mesesPlanificacion[1] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+1) };
+        this.mesesPlanificacion[2] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+2) };
+        break;
+      case 3:
+        this.mesesPlanificacion[0] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()) };
+        this.mesesPlanificacion[1] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+1) };
+        this.mesesPlanificacion[2] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+2) };
+        this.mesesPlanificacion[3] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+3) };
+        break;
+      case 4:
+        this.mesesPlanificacion[0] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()) };
+        this.mesesPlanificacion[1] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+1) };
+        this.mesesPlanificacion[2] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+2) };
+        this.mesesPlanificacion[3] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+3) };
+        this.mesesPlanificacion[4] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+4) };
+        break;
+      case 5:
+        this.mesesPlanificacion[0] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()) };
+        this.mesesPlanificacion[1] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+1) };
+        this.mesesPlanificacion[2] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+2) };
+        this.mesesPlanificacion[3] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+3) };
+        this.mesesPlanificacion[4] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+4) };
+        this.mesesPlanificacion[5] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+5) };
+        break;
+    }
   }
 
   getPorcentajeRojo(valor: number) {
