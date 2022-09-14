@@ -27,7 +27,7 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   mesesMostrados: number = 0;
   disponibilidadEquipo: number = 0;
   tareasColaboradores: any[] = [];
-  mesesPlanificacion = [{mes: ''}]; // pushear obj con el mes a mostrar
+  mesesPlanificacion = [{mes: ''}];
   positionOptions: TooltipPosition[] = ['after', 'before', 'above', 'below', 'left', 'right'];
   position = new FormControl(this.positionOptions[0]);
   position2 = new FormControl(this.positionOptions[3]);
@@ -138,13 +138,6 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
         hp += tarea.horasPlanificadas;
       }
     });
-    this.colaboradores.forEach(colab => {
-      if (colab.id == id) {
-        if (colab.horasPlanificadas == 0) {
-          colab.horasPlanificadas += hp;
-        }
-      }
-    });
     return Math.round(((this.getCapacidadColaborador(id)-hp)/this.getCapacidadColaborador(id)*100));
   }
 
@@ -153,13 +146,6 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     this.tareasColaboradores.forEach(tarea => {
       if (tarea.idColab == id && tarea.fechaPlanificacion.getMonth() == this._colaboradorService.getMesDate(mes)) {
         hp += tarea.horasPlanificadas;
-      }
-    });
-    this.colaboradores.forEach(colab => {
-      if (colab.id == id) {
-        if (colab.horasPlanificadas == 0) {
-          colab.horasPlanificadas += hp;
-        }
       }
     });
     return hp;
@@ -257,7 +243,7 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     let capacidadTotalAcumulada = 0;
     this.colaboradores.forEach(colab => {
       horasPlanificadasAcumuladas += colab.horasPlanificadas;
-      capacidadTotalAcumulada += colab.capacidad;
+      capacidadTotalAcumulada += colab.capacidad*(this.getDiferenciaMeses(this.fechaHoy, this.fechaHastaDate)+1);
     });
     this.disponibilidadEquipo = Math.round(this.disponibilidadEquipo = (capacidadTotalAcumulada-horasPlanificadasAcumuladas)/capacidadTotalAcumulada*100);
   }
@@ -267,9 +253,9 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     let capacidadTotalAcumulada = 0;
     this.colaboradores.forEach(colab => {
       horasPlanificadasAcumuladas += colab.horasPlanificadas;
-      capacidadTotalAcumulada += colab.capacidad;
+      capacidadTotalAcumulada += colab.capacidad*(this.getDiferenciaMeses(this.fechaHoy, this.fechaHastaDate)+1);
     });
-    return (capacidadTotalAcumulada-horasPlanificadasAcumuladas);
+    return (capacidadTotalAcumulada - horasPlanificadasAcumuladas);
   }
   
   getTooltipHsCapTotales() {
@@ -277,12 +263,11 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     this.colaboradores.forEach(colab => {
       capacidadTotalAcumulada += colab.capacidad;
     });
-    return capacidadTotalAcumulada;
+    return capacidadTotalAcumulada * (this.getDiferenciaMeses(this.fechaHoy, this.fechaHastaDate)+1);
   }
 
   getTiempoDisponibleColaboradores() {
     this.colaboradores.forEach(colab => {
-      colab.horasPlanificadas = 0;
       switch (this.mesesMostrados) {
         case 0:
           colab.tiempoDisponible = this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[0].mes);
@@ -294,6 +279,88 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
           colab.tiempoDisponible += this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[1].mes);
           colab.horasPlanificadas += this.getHorasPlanColab(colab.id, this.mesesPlanificacion[1].mes);
           colab.tiempoDisponible = Math.round(colab.tiempoDisponible /= 2);
+          break;
+        case 2:
+          colab.tiempoDisponible = this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[0].mes);
+          colab.horasPlanificadas = this.getHorasPlanColab(colab.id, this.mesesPlanificacion[0].mes);
+          colab.tiempoDisponible += this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[1].mes);
+          colab.horasPlanificadas += this.getHorasPlanColab(colab.id, this.mesesPlanificacion[1].mes);
+          colab.tiempoDisponible += this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[2].mes);
+          colab.horasPlanificadas += this.getHorasPlanColab(colab.id, this.mesesPlanificacion[2].mes);
+          colab.tiempoDisponible = Math.round(colab.tiempoDisponible /= 3);
+          console.log(colab)
+          break;
+        case 3:
+          colab.tiempoDisponible = this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[0].mes);
+          colab.horasPlanificadas = this.getHorasPlanColab(colab.id, this.mesesPlanificacion[0].mes);
+          let repeater = [{x:1},{x:2},{x:3}]; repeater.forEach(it => {
+            colab.tiempoDisponible += this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[it.x].mes);
+            colab.horasPlanificadas += this.getHorasPlanColab(colab.id, this.mesesPlanificacion[it.x].mes);});
+          colab.tiempoDisponible = Math.round(colab.tiempoDisponible /= 4);
+          break;
+        case 4:
+          colab.tiempoDisponible = this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[0].mes);
+          colab.horasPlanificadas = this.getHorasPlanColab(colab.id, this.mesesPlanificacion[0].mes);
+          let repeater2 = [{x:1},{x:2},{x:3},{x:4}]; repeater2.forEach(it => {
+            colab.tiempoDisponible += this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[it.x].mes);
+            colab.horasPlanificadas += this.getHorasPlanColab(colab.id, this.mesesPlanificacion[it.x].mes);});
+          colab.tiempoDisponible = Math.round(colab.tiempoDisponible /= 5);
+          break;
+        case 5:
+          colab.tiempoDisponible = this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[0].mes);
+          colab.horasPlanificadas = this.getHorasPlanColab(colab.id, this.mesesPlanificacion[0].mes);
+          let repeater3 = [{x:1},{x:2},{x:3},{x:4},{x:5}]; repeater3.forEach(it => {
+            colab.tiempoDisponible += this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[it.x].mes);
+            colab.horasPlanificadas += this.getHorasPlanColab(colab.id, this.mesesPlanificacion[it.x].mes);});
+          colab.tiempoDisponible = Math.round(colab.tiempoDisponible /= 6);
+          break;
+        case 6:
+          colab.tiempoDisponible = this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[0].mes);
+          colab.horasPlanificadas = this.getHorasPlanColab(colab.id, this.mesesPlanificacion[0].mes);
+          let repeater4 = [{x:1},{x:2},{x:3},{x:4},{x:5},{x:6}]; repeater4.forEach(it => {
+            colab.tiempoDisponible += this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[it.x].mes);
+            colab.horasPlanificadas += this.getHorasPlanColab(colab.id, this.mesesPlanificacion[it.x].mes);});
+          colab.tiempoDisponible = Math.round(colab.tiempoDisponible /= 7);
+          break;
+        case 7:
+          colab.tiempoDisponible = this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[0].mes);
+          colab.horasPlanificadas = this.getHorasPlanColab(colab.id, this.mesesPlanificacion[0].mes);
+          let repeater5 = [{x:1},{x:2},{x:3},{x:4},{x:5},{x:6},{x:7}]; repeater5.forEach(it => {
+            colab.tiempoDisponible += this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[it.x].mes);
+            colab.horasPlanificadas += this.getHorasPlanColab(colab.id, this.mesesPlanificacion[it.x].mes);});
+          colab.tiempoDisponible = Math.round(colab.tiempoDisponible /= 8);
+          break;
+        case 8:
+          colab.tiempoDisponible = this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[0].mes);
+          colab.horasPlanificadas = this.getHorasPlanColab(colab.id, this.mesesPlanificacion[0].mes);
+          let repeater6 = [{x:1},{x:2},{x:3},{x:4},{x:5},{x:6},{x:7},{x:8}]; repeater6.forEach(it => {
+            colab.tiempoDisponible += this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[it.x].mes);
+            colab.horasPlanificadas += this.getHorasPlanColab(colab.id, this.mesesPlanificacion[it.x].mes);});
+          colab.tiempoDisponible = Math.round(colab.tiempoDisponible /= 9);
+          break;        
+        case 9:
+          colab.tiempoDisponible = this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[0].mes);
+          colab.horasPlanificadas = this.getHorasPlanColab(colab.id, this.mesesPlanificacion[0].mes);
+          let repeater7 = [{x:1},{x:2},{x:3},{x:4},{x:5},{x:6},{x:7},{x:8},{x:9}]; repeater7.forEach(it => {
+            colab.tiempoDisponible += this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[it.x].mes);
+            colab.horasPlanificadas += this.getHorasPlanColab(colab.id, this.mesesPlanificacion[it.x].mes);});
+          colab.tiempoDisponible = Math.round(colab.tiempoDisponible /= 10);          
+          break;
+        case 10:
+          colab.tiempoDisponible = this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[0].mes);
+          colab.horasPlanificadas = this.getHorasPlanColab(colab.id, this.mesesPlanificacion[0].mes);
+          let repeater8 = [{x:1},{x:2},{x:3},{x:4},{x:5},{x:6},{x:7},{x:8},{x:9},{x:10}]; repeater8.forEach(it => {
+            colab.tiempoDisponible += this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[it.x].mes);
+            colab.horasPlanificadas += this.getHorasPlanColab(colab.id, this.mesesPlanificacion[it.x].mes);});
+          colab.tiempoDisponible = Math.round(colab.tiempoDisponible /= 11);
+          break;
+        case 11:
+          colab.tiempoDisponible = this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[0].mes);
+          colab.horasPlanificadas = this.getHorasPlanColab(colab.id, this.mesesPlanificacion[0].mes);
+          let repeater9 = [{x:1},{x:2},{x:3},{x:4},{x:5},{x:6},{x:7},{x:8},{x:9},{x:10},{x:11}]; repeater9.forEach(it => {
+            colab.tiempoDisponible += this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[it.x].mes);
+            colab.horasPlanificadas += this.getHorasPlanColab(colab.id, this.mesesPlanificacion[it.x].mes);});
+          colab.tiempoDisponible = Math.round(colab.tiempoDisponible /= 12);
           break;
       }
     });
@@ -310,34 +377,37 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
         this.mesesPlanificacion[0] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()) };
         break;
       case 1:
-        this.mesesPlanificacion[0] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()) };
-        this.mesesPlanificacion[1] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+1) };
+        for (let x=0;x<2;x++) { this.mesesPlanificacion[x] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+x)} };
         break;
       case 2:
-        this.mesesPlanificacion[0] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()) };
-        this.mesesPlanificacion[1] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+1) };
-        this.mesesPlanificacion[2] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+2) };
+        for (let x=0;x<3;x++) { this.mesesPlanificacion[x] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+x)} };
         break;
       case 3:
-        this.mesesPlanificacion[0] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()) };
-        this.mesesPlanificacion[1] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+1) };
-        this.mesesPlanificacion[2] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+2) };
-        this.mesesPlanificacion[3] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+3) };
+        for (let x=0;x<4;x++) { this.mesesPlanificacion[x] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+x)} };
         break;
       case 4:
-        this.mesesPlanificacion[0] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()) };
-        this.mesesPlanificacion[1] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+1) };
-        this.mesesPlanificacion[2] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+2) };
-        this.mesesPlanificacion[3] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+3) };
-        this.mesesPlanificacion[4] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+4) };
+        for (let x=0;x<5;x++) { this.mesesPlanificacion[x] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+x)} };
         break;
       case 5:
-        this.mesesPlanificacion[0] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()) };
-        this.mesesPlanificacion[1] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+1) };
-        this.mesesPlanificacion[2] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+2) };
-        this.mesesPlanificacion[3] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+3) };
-        this.mesesPlanificacion[4] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+4) };
-        this.mesesPlanificacion[5] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+5) };
+        for (let x=0;x<6;x++) { this.mesesPlanificacion[x] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+x)} };
+        break;
+      case 6:
+        for (let x=0;x<7;x++) { this.mesesPlanificacion[x] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+x)} };
+        break;
+      case 7:
+        for (let x=0;x<8;x++) { this.mesesPlanificacion[x] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+x)} };
+        break;
+      case 8:
+        for (let x=0;x<9;x++) { this.mesesPlanificacion[x] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+x)} };
+        break;
+      case 9:
+        for (let x=0;x<10;x++) { this.mesesPlanificacion[x] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+x)} };
+        break;
+      case 10:
+        for (let x=0;x<11;x++) { this.mesesPlanificacion[x] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+x)} };
+        break;
+      case 11:
+        for (let x=0;x<12;x++) { this.mesesPlanificacion[x] = { mes: this._colaboradorService.getMesString(this.fechaHoy.getMonth()+x)} };
         break;
     }
   }

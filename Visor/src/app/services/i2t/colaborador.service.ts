@@ -9,7 +9,7 @@ export class ColaboradorService {
   colaboradores: Colaborador[] = [
     { id: 1, nombre: 'Facundo', apellido: 'Ghio Serra', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
     { id: 2, nombre: 'Patricio', apellido: 'Macagno', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
-    { id: 3, nombre: 'Gian', apellido: 'Laner', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
+    /* { id: 3, nombre: 'Gian', apellido: 'Laner', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
     { id: 4, nombre: 'Franco', apellido: 'Friggeri', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
     { id: 5, nombre: 'Franco', apellido: 'Corvalan', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
     { id: 6, nombre: 'Jeremias', apellido: 'Garcia', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
@@ -23,7 +23,7 @@ export class ColaboradorService {
     { id: 14, nombre: 'Pablo', apellido: 'Corujo', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
     { id: 15, nombre: 'Leandro', apellido: 'Blodorn', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
     { id: 16, nombre: 'Maximiliano', apellido: 'Reichert', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
-    { id: 17, nombre: 'Lucas', apellido: 'Rios', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 }
+    { id: 17, nombre: 'Lucas', apellido: 'Rios', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 } */
 
   ];
 
@@ -50,8 +50,8 @@ export class ColaboradorService {
   tareas: any[] = [
     { id: 1, idColab: 1, fechaPlanificacion: new Date(2022, 9, 5), horasPlanificadas: 24, estado: 'No iniciada', proyecto: 'Proyecto A' },
     { id: 2, idColab: 1, fechaPlanificacion: new Date(2022, 8, 5), horasPlanificadas: 20, estado: 'En progreso', proyecto: 'Proyecto A' },
-    { id: 3, idColab: 1, fechaPlanificacion: new Date(2022, 8, 9), horasPlanificadas: 14, estado: 'En progreso', proyecto: 'Proyecto A' },
-    { id: 4, idColab: 2, fechaPlanificacion: new Date(2022, 8, 5), horasPlanificadas: 55, estado: 'No iniciada', proyecto: 'Proyecto A' },
+    { id: 3, idColab: 1, fechaPlanificacion: new Date(2022, 11, 9), horasPlanificadas: 14, estado: 'En progreso', proyecto: 'Proyecto A' },
+    { id: 4, idColab: 2, fechaPlanificacion: new Date(2022, 11, 5), horasPlanificadas: 55, estado: 'No iniciada', proyecto: 'Proyecto A' },
     { id: 5, idColab: 2, fechaPlanificacion: new Date(2022, 9, 5), horasPlanificadas: 37, estado: 'No iniciada', proyecto: 'Proyecto B' },
     { id: 6, idColab: 2, fechaPlanificacion: new Date(2022, 8, 15), horasPlanificadas: 28, estado: 'No iniciada', proyecto: 'Proyecto C' },
     { id: 7, idColab: 3, fechaPlanificacion: new Date(2023, 11, 17), horasPlanificadas: 24, estado: 'No iniciada', proyecto: 'Proyecto A' },
