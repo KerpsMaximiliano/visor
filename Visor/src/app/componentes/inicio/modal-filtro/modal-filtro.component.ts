@@ -1,18 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-modal-filtro',
   templateUrl: './modal-filtro.component.html',
   styleUrls: ['./modal-filtro.component.css']
 })
-export class ModalFiltroComponent implements OnInit {
+export class ModalFiltroComponent {
 
-  funciones: string[] = [ 'Analista Funcional', 'Analista Técnico', 'Desarrollador', 'Tester', 'Project Manager' ]
-  seleccion?: string;
+  funciones: string[] = [ 'Analista Funcional', 'Analista Técnico', 'Desarrollador', 'Tester', 'Project Manager' ];
+  result = {nombre: '', apellido: '', seleccion: ''};
 
-  constructor() { }
+  constructor(public dialogRef: MatDialogRef<ModalFiltroComponent>) { }
 
-  ngOnInit(): void {
+  limpiarCampos() {
+    this.result.nombre = '';
+    this.result.apellido = '';
+    this.result.seleccion = '';
+  }
+
+  cancelarBusqueda(): void {
+    this.dialogRef.close('');
   }
 
 }

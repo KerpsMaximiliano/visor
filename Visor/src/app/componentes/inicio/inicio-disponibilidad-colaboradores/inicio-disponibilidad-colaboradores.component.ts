@@ -5,6 +5,7 @@ import { ColaboradorService } from 'src/app/services/i2t/colaborador.service';
 import { ModalFiltroComponent } from '../modal-filtro/modal-filtro.component';
 import { TooltipPosition } from '@angular/material/tooltip';
 import { FormControl } from '@angular/forms';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-inicio-disponibilidad-colaboradores',
@@ -19,6 +20,7 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   dataSource!: any;
   columna1!: Colaborador[];
   columna2!: Colaborador[];
+  noHayColaboradores: boolean = false;
   orden: string[] = ['Alfabetico', 'Tiempo Disponible'];
   ordenSeleccion: string = 'Tiempo Disponible'; // se tiene que guardar en las preferencias del usuario en sesion cuando este disponible
   fechaHoy = new Date();
@@ -32,15 +34,16 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   position = new FormControl(this.positionOptions[0]);
   position2 = new FormControl(this.positionOptions[3]);
 
-  nombre?: string;
-  apellido?: string;
-  funcion?: string;
+  nombre: string = '';
+  apellido: string = '';
+  funcion: string = '';
 
   constructor(private _colaboradorService: ColaboradorService, private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.mesesPlanificacion[0].mes = this._colaboradorService.getMesString(this.fechaHoy.getMonth());
     this.colaboradores = this._colaboradorService.getColaboradores();
+    this.dataSource = new MatTableDataSource(this.colaboradores);
     this.getTareasColaboradores();
     this.getTareasAtrasadas();
     this.getTiempoDisponibleColaboradores();
@@ -158,30 +161,45 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     this.columna2 = this.colaboradores.slice(tamanioCol1, this.colaboradores.length);
   }
 
-  // revisar y agregar tabla para filtrar y devolver al array
-  // o usar metodo a,b
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.colaboradores = this.dataSource.filteredData;
+    if (this.colaboradores.length == 0) {
+      this.noHayColaboradores = true;
+      this.disponibilidadEquipo = 0;
+    } else {
+      this.noHayColaboradores = false;
+      this.actualizarDisponibilidadEquipo();
+      this.cambiarOrden();
+    }
   }
 
   abrirModalFiltro() {
     const dialogRef = this.dialog.open(ModalFiltroComponent, {
       width: '400px',
-      data: {
-        nombre: this.nombre,
-        apellido: this.apellido,
-        funcion: this.funcion
-      }
+      disableClose: true
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('Filtro cerrado: ', result);
       this.nombre = result.nombre;
       this.apellido = result.apellido;
-      this.funcion = result.funcion;
+      this.funcion = result.seleccion;
+      if (this.funcion === '' && this.apellido === '' && this.nombre === '') {
+        console.log("Esta no")
+      } else if (this.nombre != '' && this.apellido != '' && this.funcion != '') {
+        console.log('No se filtra')
+      } else {
+        console.log("Filtro")
+        // filtrar
+      }
     });
   }
+
+  llamar() {
+    console.log(this.nombre, this.apellido, this.funcion);
+  }
+  
 
   contraerColaboradores() {
     // agregar comportamiento para contraer todos los expansion panel abiertos

@@ -7,7 +7,7 @@
         <input matInput name="usuario" (keyup)="applyFilter($event)">
     </mat-form-field>
     <button mat-button (click)="abrirModalFiltro()"><mat-icon class="icon">filter_alt</mat-icon></button>
-    <button mat-button><mat-icon class="icon">close_fullscreen</mat-icon></button>
+    <button mat-button (click)="contraerColaboradores()"><mat-icon class="icon">close_fullscreen</mat-icon></button>
     <!-- (click)="accordion.closeAll()" -->
     <button id="button-orden" mat-button [matMenuTriggerFor]="menuOrden"> {{ ordenSeleccion }} <mat-icon>expand_more</mat-icon></button>
     <mat-menu #menuOrden="matMenu"><button mat-button *ngFor="let o of orden" class="menu-orden" (click)="dispararCambioOrdenDesdePlantilla($event)">{{o}}</button></mat-menu>
@@ -35,7 +35,9 @@
     </div>
 </div>
 
-<div class="equipo">
+<div class="mensaje-no-colaboradores" *ngIf="noHayColaboradores"><h1>No coinciden colaboradores con la busqueda</h1></div>
+
+<div class="equipo" *ngIf="!noHayColaboradores">
 
     <div class="columna-equipo">
         <mat-card>
