@@ -8,8 +8,8 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class ModalFiltroComponent {
 
-  funciones: string[] = [ 'Analista Funcional', 'Analista Técnico', 'Desarrollador', 'Tester', 'Project Manager' ];
-  result = {nombre: '', apellido: '', seleccion: ''};
+  funciones: string[] = [ 'Analista Funcional', 'Analista Tecnico', 'Desarrollador', 'Tester', 'Project Manager' ];
+  result = {nombre: '', apellido: '', seleccion: '', filtrar: true};
 
   constructor(public dialogRef: MatDialogRef<ModalFiltroComponent>) { }
 
@@ -20,7 +20,8 @@ export class ModalFiltroComponent {
   }
 
   cancelarBusqueda(): void {
-    this.dialogRef.close('');
+    this.result.filtrar = false;
+    this.dialogRef.close(this.result);
   }
 
 }
