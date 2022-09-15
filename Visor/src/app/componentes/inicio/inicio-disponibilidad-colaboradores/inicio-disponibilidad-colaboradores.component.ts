@@ -180,7 +180,8 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     // this.dataSource = new MatTableDataSource(this.colaboradores);
     const dialogRef = this.dialog.open(ModalFiltroComponent, {
       width: '400px',
-      disableClose: true
+      disableClose: true,
+      data: { nombre: this.nombre, apellido: this.apellido, funcion: this.funcion }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -189,10 +190,11 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
       this.funcion = result.seleccion;
       let filtrar = result.filtrar;
       if (filtrar) {
-        // agregar condicional para saber si se usó el filtro, y ver si llamar al metodo o no
-        this.filtroAvanzado(1, this.nombre);
-        this.filtroAvanzado(2, this.apellido);
-        this.filtroAvanzado(3, this.funcion);
+          let filtroNombre = this.filtroAvanzado(1, this.nombre);
+          let filtroApellido = this.filtroAvanzado(2, this.apellido);
+          let filtroFuncion = this.filtroAvanzado(3, this.funcion);
+          this.buscarCoincidencias(filtroNombre, filtroApellido, filtroFuncion);
+        // final con filtro resuleto
         if (this.colaboradores.length == 0) {
           this.noHayColaboradores = true;
           this.disponibilidadEquipo = 0;
@@ -205,26 +207,42 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     });
   }
 
-  // almacenar del array de colab por tipo de valor a filtrar en arrayTemp (solo obj ese dato y el id de colab)
-  // pasar arrayTemp a tabla y filtrar por el valor que viene del modal
-  // los resultados almacenarlos en el arrayTipo
-  // repetir para los otros 2 tipos
-  // comparar en los 3 array id coincidentes
-  // los id que figuran en los filtros usados, buscarlos en array de colab y filtrarlos
+  buscarCoincidencias(arrayNombre: any, arrayApellido: any, arrayFuncion: any) {
+    // comparar en los 3 array id coincidentes los id que figuran en los filtros usados, buscarlos en array de colab y filtrarlos
+  }
 
   filtroAvanzado(tipo: number, valor: string) {
-    /* let arrayTemp = [];
+    let arrayTemp: any = [];
+    let arrayTabla: any;
     switch (tipo) {
       case 1:
         this.colaboradores.forEach(colab => {
-        arrayTemp.push(colab.id, colab.nombre);
-      });
-    } */
-
-    // esto es viejo, se borra cdo este el metodo
-    this.dataSource = new MatTableDataSource(this.colaboradores);
-    this.dataSource.filter = valor.trim().toLowerCase();
-    this.colaboradores = this.dataSource.filteredData;
+          let obj = { id: colab.id, nombre: colab.nombre };
+          arrayTemp.push(obj);
+        });
+        arrayTabla = new MatTableDataSource(arrayTemp);
+        arrayTabla.filter = valor.trim().toLowerCase();
+        arrayTemp = arrayTabla.filteredData;
+        return arrayTemp;
+      case 2:
+        this.colaboradores.forEach(colab => {
+          let obj = { id: colab.id, apellido: colab.apellido };
+          arrayTemp.push(obj);
+        });
+        arrayTabla = new MatTableDataSource(arrayTemp);
+        arrayTabla.filter = valor.trim().toLowerCase();
+        arrayTemp = arrayTabla.filteredData;
+        return arrayTemp;
+      case 3:
+        this.colaboradores.forEach(colab => {
+          let obj = { id: colab.id, funcion: colab.funcion };
+          arrayTemp.push(obj);
+        });
+        arrayTabla = new MatTableDataSource(arrayTemp);
+        arrayTabla.filter = valor.trim().toLowerCase();
+        arrayTemp = arrayTabla.filteredData;
+        return arrayTemp;
+    }
   }
   
 
