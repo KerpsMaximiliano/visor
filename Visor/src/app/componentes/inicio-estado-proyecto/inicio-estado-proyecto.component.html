@@ -42,16 +42,12 @@
         <div id="seccionAvance">
           <p class="subtitulo">Avance del proyecto</p>
         </div>
-        <!--<div class="progress">
-          <div id="barraRoja" class="progress-bar progress-bar bg-danger" aria-valuenow="cargarRojo()" role="progressbar" aria-valuemax="100">{{cargarRojo()}}</div>
-          <div id="barraAmarilla" class="progress-bar progress-bar bg-warning" role="progressbar" aria-valuemax="100">{{cargarRojo()}}</div>
-          <div id="barraVerde" class="progress-bar progress-bar bg-success" role="progressbar" aria-valuemax="100"></div>
-        </div>-->
-        <div class="progress container-barra">
-          <div id="barraRoja" class="progress-bar bg-danger" role="progressbar" aria-label="Segment one" aria-valuenow="cargarRojo()" aria-valuemin="0" aria-valuemax="100"><p class="porcentajes">{{cargarRojo()}}%</p></div>
-          <!--<div id="barraAmarilla" class="progress-bar bg-warning" role="progressbar" aria-label="Segment two" aria-valuenow="cargarBarraAmarilla()" aria-valuemin="0" aria-valuemax="100"><p id="porcentajeAmarillo" class="porcentajes">{{cargarBarraAmarilla()}}%</p></div>
-          <div id="barraVerde" class="progress-bar bg-success" role="progressbar" aria-label="Segment one" aria-valuenow="cargarBarraVerde()" aria-valuemin="0" aria-valuemax="100"><p class="porcentajes">{{cargarBarraVerde()}}%</p></div>-->
-      </div>
+        <div class="progress">
+          <div class="progress-bar bg-warning" role="progressbar" aria-label="Segment one" aria-valuenow="cargarAmarilla(i)" aria-valuemax="100"><p>{{cargarAmarilla(i)}}</p></div>
+          <div class="progress-bar bg-success" role="progressbar" aria-label="Segment two" aria-valuenow="cargarVerde(i)" aria-valuemin="0" aria-valuemax="100"><p>{{cargarVerde(i)}}</p></div>
+          <div class="progress-bar bg-danger" role="progressbar" aria-label="Segment one" aria-valuenow="cargarRojo(i)" aria-valuemax="100">{{cargarRojo(i)}}</div>
+        </div>
+       
         </div>
       </div>
       </td>

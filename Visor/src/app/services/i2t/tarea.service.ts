@@ -94,7 +94,7 @@ tareas: Tarea[] = [
         tareasPrecondicion: "Tarea 1",
         notas: "",
         tipoTarea: "Relevamiento Requerimientos",
-        estado: "En Progreso",
+        estado: "En Prueba",
         sprint: ""
     },
     {
@@ -112,7 +112,7 @@ tareas: Tarea[] = [
         tareasPrecondicion: "Tarea 1",
         notas: "",
         tipoTarea: "Relevamiento Requerimientos",
-        estado: "No Iniciada",
+        estado: "No Prueba",
         sprint: ""
     },
     {
@@ -130,7 +130,7 @@ tareas: Tarea[] = [
         tareasPrecondicion: "Tarea 1",
         notas: "",
         tipoTarea: "Relevamiento Requerimientos",
-        estado: "No Iniciada",
+        estado: "No Prueba",
         sprint: ""
     },
     {
@@ -202,7 +202,7 @@ tareas: Tarea[] = [
         tareasPrecondicion: "Tarea 1",
         notas: "",
         tipoTarea: "Relevamiento Requerimientos",
-        estado: "Completada",
+        estado: "No Iniciada",
         sprint: "124192-ETAPA 5 ANGULAR"
     },
     {
@@ -220,7 +220,7 @@ tareas: Tarea[] = [
         tareasPrecondicion: "Tarea 1",
         notas: "",
         tipoTarea: "Relevamiento Requerimientos",
-        estado: "Completada",
+        estado: "No Iniciada",
         sprint: "124192-ETAPA 5 ANGULAR"
     },
     {

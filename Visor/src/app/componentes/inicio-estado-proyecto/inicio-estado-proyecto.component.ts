@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Renderer2, ViewChild, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ProyectoDataService } from '../../services/i2t/proyecto-data.service';
 import {animate, state, style, transition, trigger} from '@angular/animations';
@@ -22,19 +22,14 @@ export class InicioEstadoProyectoComponent implements OnInit {
   proyectos: Proyecto[];
   displayedColumns: string[] = ['nombre','tareasATiempo','tareasAtrasadas'];
   columnsToDisplayWithExpand = [...this.displayedColumns, 'expand'];
-  expandedElement!: Proyecto | null;
-  porcentajeBarraVerde: number;
-  porcentajeBarraAmarilla: number;
-  porcentajeBarraRoja: number;
+  expandedElement!: Proyecto;
 
-  constructor(private dataProyecto: ProyectoDataService) {
-    this.porcentajeBarraAmarilla = 0;
-    this.porcentajeBarraVerde = 0;
-    this.porcentajeBarraRoja = 0;
+  constructor(private dataProyecto: ProyectoDataService, private renderer: Renderer2) {
     this.proyectos = this.dataProyecto.proyectos;
   }
 
   ngOnInit(): void {
+
   }
 
   applyFilter(event: Event) {
@@ -42,24 +37,15 @@ export class InicioEstadoProyectoComponent implements OnInit {
     this.data.filter = filterValue.trim().toLowerCase();
   }
 
-  public calcularPorcentajeBarras(index: number){
-    const divRojo = document.getElementById('barraRoja');
-    const divAmarilla = document.getElementById('barraAmarilla');
-    const divVerde = document.getElementById('barraVerde');
-    const porc = "%";
-    this.porcentajeBarraAmarilla = this.dataProyecto.proyectos[index].porcentajeTareasEnProgreso;
-    this.porcentajeBarraRoja = this.dataProyecto.proyectos[index].porcentajeTareasAtrasadas
-    console.log(this.porcentajeBarraRoja)
-    if(divAmarilla != null)
-    {
-      divAmarilla.style.setProperty('width', (this.porcentajeBarraAmarilla.toString()).concat(porc));
-    }
-    if(divRojo != null){
-      divRojo.style.setProperty('width', (this.porcentajeBarraRoja.toString()).concat(porc))
-    }
+  cargarAmarilla(index: number): number{  
+    return this.dataProyecto.proyectos[index].porcentajeHPEnProgreso;
   }
 
-  cargarRojo(): number{
-    return this.porcentajeBarraRoja;
+  cargarVerde(index: number): number{
+    return this.dataProyecto.proyectos[index].porcentajeHPCompletadas;
+  }
+
+  cargarRojo(index: number): number{
+    return this.dataProyecto.proyectos[index].porcentajeHPNoIniciadas;
   }
 }

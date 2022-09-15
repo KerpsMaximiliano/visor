@@ -5,7 +5,8 @@ export interface Proyecto {
     tareas: Tarea[],
     porcentajeTareasAtrasadas: number,
     porcentajeTareasATiempo: number,
-    porcentajeTareasCompletadas: number,
-    porcentajeTareasEnProgreso: number,
-    porcentajeTareasEnPrueba: number
+    porcentajeHPCompletadas: number,
+    porcentajeHPEnProgreso: number,
+    porcentajeHPEnPrueba: number
+    porcentajeHPNoIniciadas: number
 }

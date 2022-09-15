@@ -24,22 +24,25 @@ export class ProyectoDataService {
         tareas: [],
         porcentajeTareasAtrasadas: 0,
         porcentajeTareasATiempo: 0,
-        porcentajeTareasEnPrueba: 0,
-        porcentajeTareasEnProgreso: 0,
-        porcentajeTareasCompletadas: 0
+        porcentajeHPEnPrueba: 0,
+        porcentajeHPEnProgreso: 0,
+        porcentajeHPCompletadas: 0,
+        porcentajeHPNoIniciadas: 0
       },
       {
         nombre: "Sala de Sorteos - Extractos Digitales",
         tareas: [],
         porcentajeTareasAtrasadas: 0,
         porcentajeTareasATiempo: 0,
-        porcentajeTareasEnPrueba: 0,
-        porcentajeTareasEnProgreso: 0,
-        porcentajeTareasCompletadas: 0
+        porcentajeHPEnPrueba: 0,
+        porcentajeHPEnProgreso: 0,
+        porcentajeHPCompletadas: 0,
+        porcentajeHPNoIniciadas: 0
       }
     ]
     this.rellenarTareasProyecto();
     this.calcularPorcentajeTareas();
+    this.calcularAvanceHorasPlanificadas();
   }
 
   /**
@@ -72,10 +75,7 @@ export class ProyectoDataService {
 
   private calcularPorcentajeTareas(){
     let contadorAtrasadas = 0;
-    let contadorIniciadas = 0;
     let contadorTareasTotales = 0;
-    let contadorCompletadas = 0;
-    let contadorEnProgreso = 0;
     for(let i = 0;i<this.proyectos.length;i++){
       for(let r = 0;r<this.proyectos[i].tareas.length;r++){
         let date = new Date(this.proyectos[i].tareas[r].fechaPlanificacion);
@@ -83,36 +83,14 @@ export class ProyectoDataService {
         
           contadorAtrasadas++;
         }
-        else{
-          contadorIniciadas++;
-        }
-        switch (this.proyectos[i].tareas[r].estado)
-        {
-          case "Completada": {
-            contadorCompletadas++;
-            console.log("pase por aca je");
-            break;
-          }
-          case "En Progreso": {
-            contadorEnProgreso++;
-            console.log("viva el progreso");
-            break;
-          }
-        }
-        
         contadorTareasTotales++;
       }
       this.proyectos[i].porcentajeTareasAtrasadas = Math.round((contadorAtrasadas / contadorTareasTotales) * 100);
       this.proyectos[i].porcentajeTareasATiempo = Math.round(((contadorTareasTotales - contadorAtrasadas ) / contadorTareasTotales) * 100);
-      this.tareasPorcentajeTareasCompleatadas = Math.round(((contadorTareasTotales - contadorCompletadas)/ contadorTareasTotales) * 100);
-      this.tareasPorcentajeTareasEnProgreso = Math.round(((contadorTareasTotales - contadorEnProgreso) / contadorTareasTotales) * 100);
       contadorAtrasadas = 0;
-      contadorIniciadas = 0;
       contadorTareasTotales = 0;
-      contadorCompletadas = 0;
-      contadorEnProgreso = 0;
     }
-    this.verificasPorcentajesNulos();
+    this.verificasPorcentajesNulos(); 
   }
 
   /**
@@ -129,4 +107,50 @@ export class ProyectoDataService {
       }
     }
   } 
+
+  /**
+   * Método que sirve para calcular el porcentaje de las horas planificadas en los 4 estados.
+   */
+  private calcularAvanceHorasPlanificadas(){
+    //Contadores.
+    let contadorHPTareasTotales = 0;
+    let contadorHPCompletadas = 0;
+    let contadorHPEnProgreso = 0;
+    let contadorHPNoIniciadas = 0;
+    let contadorHPEnPrueba = 0;
+    for(let i = 0;i<this.proyectos.length;i++){
+      for(let r = 0;r<this.proyectos[i].tareas.length;r++){
+        switch (this.proyectos[i].tareas[r].estado)
+        {
+          case "Completada": {
+            contadorHPCompletadas = contadorHPCompletadas + this.proyectos[i].tareas[r].horasPlanificadas;
+            break;
+          }
+          case "En Progreso": {
+            contadorHPEnProgreso = contadorHPEnProgreso + this.proyectos[i].tareas[r].horasPlanificadas;
+            console.log(contadorHPEnProgreso);
+            break;
+          }
+          case "No Iniciada": {
+            contadorHPNoIniciadas = contadorHPNoIniciadas + this.proyectos[i].tareas[r].horasPlanificadas;
+            break;
+          }
+          case "En Prueba": {
+            contadorHPEnPrueba = contadorHPEnPrueba + this.proyectos[i].tareas[r].horasPlanificadas;
+            break;
+          }
+        }
+        contadorHPTareasTotales = contadorHPTareasTotales + this.proyectos[i].tareas[r].horasPlanificadas;
+      }
+      this.proyectos[i].porcentajeHPEnProgreso = Math.round((contadorHPEnProgreso / contadorHPTareasTotales) * 100);
+      this.proyectos[i].porcentajeHPCompletadas = Math.round((contadorHPCompletadas / contadorHPTareasTotales * 100));
+      this.proyectos[i].porcentajeHPNoIniciadas = Math.round((contadorHPNoIniciadas / contadorHPTareasTotales) * 100);
+      this.proyectos[i].porcentajeHPEnPrueba = Math.round((contadorHPEnPrueba / contadorHPTareasTotales) * 100);
+      contadorHPCompletadas = 0;
+      contadorHPEnProgreso = 0;
+      contadorHPNoIniciadas = 0;
+      contadorHPEnPrueba = 0;
+      contadorHPTareasTotales = 0;
+    }
+  }
 }
