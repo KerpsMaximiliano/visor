@@ -15,6 +15,7 @@ import { InicioMainComponent } from './componentes/inicio/inicio-main/inicio-mai
 import { InicioDisponibilidadColaboradoresModule } from './componentes/inicio/inicio-disponibilidad-colaboradores/inicio-disponibilidad-colaboradores.module';
 import { FormsModule } from '@angular/forms';
 import { ModalFiltroComponent } from './componentes/inicio/modal-filtro/modal-filtro.component';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 
 @NgModule({
@@ -33,7 +34,7 @@ import { ModalFiltroComponent } from './componentes/inicio/modal-filtro/modal-fi
     InicioDisponibilidadColaboradoresModule,
     FormsModule
   ],
-  providers: [],
+  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'en-GB' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -7,6 +7,7 @@
 .header {
     display: flex;
     height: 60px;
+    justify-content: space-evenly;
 }
 
 .input-header {
@@ -17,18 +18,23 @@
     font-size: 24px;
 }
 
+.boton-icono {
+    margin-top: 10px;
+    margin-left: 3px;
+    margin-right: 3px;
+}
+
 #button-orden {
-    width: 170px;
+    min-width: 170px;
     height: 60px;
 }
 
 .menu-orden {
     display: flex;
-    width: 150px;
+    width: 170px;
 }
 
 .fecha-hasta {
-    margin-left: auto;
     margin-right: 20px;
 }
 
@@ -69,9 +75,22 @@ h3 {
 .porcentaje-verde-oscuro {
     border: 2px solid green;
 }
+.accordion {
+    display: flex;
+    width: 100%;
+}
 
 .equipo {
     display: flex;
+}
+
+.colaborador-unico {
+    display: flex;
+    justify-content: center;
+}
+
+.esconder {
+    display: none;
 }
 
 .columna-equipo {

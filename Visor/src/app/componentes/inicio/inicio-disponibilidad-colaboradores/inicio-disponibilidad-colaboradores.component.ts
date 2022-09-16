@@ -6,6 +6,7 @@ import { ModalFiltroComponent } from '../modal-filtro/modal-filtro.component';
 import { TooltipPosition } from '@angular/material/tooltip';
 import { FormControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatAccordion } from '@angular/material/expansion';
 
 @Component({
   selector: 'app-inicio-disponibilidad-colaboradores',
@@ -14,13 +15,14 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 export class InicioDisponibilidadColaboradoresComponent implements OnInit {
 
-  /* @ViewChild(MatAccordion) accordion: MatAccordion; */
+  @ViewChild(MatAccordion) accordion!: MatAccordion;
 
   colaboradores!: Colaborador[];
   dataSource!: any;
   columna1!: Colaborador[];
   columna2!: Colaborador[];
   noHayColaboradores: boolean = false;
+  colaboradorUnico: boolean = false;
   orden: string[] = ['Alfabetico', 'Tiempo Disponible'];
   ordenSeleccion: string = 'Tiempo Disponible'; // se tiene que guardar en las preferencias del usuario en sesion cuando este disponible
   fechaHoy = new Date();
@@ -40,8 +42,6 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   funcion: string = '';
 
   constructor(private _colaboradorService: ColaboradorService, private dialog: MatDialog) { }
-
-  // cuando se vea solo 1 colaborador despues de filtrar, que se esconda la columna 2 y la columna 1 se acomode al centro
 
   // cambiar formato para mostrar la fecha hasta en el input
 
@@ -167,22 +167,35 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   }
 
   applyFilter(event: Event) {
+    this.contraerColaboradores();
     this.colaboradores = this._colaboradorService.getColaboradores();
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource = new MatTableDataSource(this.colaboradores);
     this.dataSource.filter = filterValue.trim().toLowerCase();
     this.colaboradores = this.dataSource.filteredData;
+    this.aplicarFiltros();
+  }
+
+  aplicarFiltros() {
     if (this.colaboradores.length == 0) {
+      this.colaboradorUnico = false;
       this.noHayColaboradores = true;
       this.disponibilidadEquipo = 0;
+    } else if (this.colaboradores.length == 1) {
+      this.colaboradorUnico = true;
+      this.noHayColaboradores = false;
+      this.actualizarDisponibilidadEquipo();
+      this.cambiarOrden();
     } else {
+      this.colaboradorUnico = false;
       this.noHayColaboradores = false;
       this.actualizarDisponibilidadEquipo();
       this.cambiarOrden();
     }
   }
 
-  abrirModalFiltro() { // llamar a contraerColaboradores() antes de filtrar
+  abrirModalFiltro() {
+    this.contraerColaboradores();
     this.colaboradores = this._colaboradorService.getColaboradores();
     const dialogRef = this.dialog.open(ModalFiltroComponent, {
       width: '400px',
@@ -197,48 +210,13 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
       let filtrar = result.filtrar;
       if (result.limpiar) { this.inputIzq = '', filtrar = true }
       if (filtrar) {
-          const filtroNombre = this.filtroAvanzado(1, this.nombre);
-          const filtroApellido = this.filtroAvanzado(2, this.apellido);
-          const filtroFuncion = this.filtroAvanzado(3, this.funcion);
-          this.colaboradores = this.buscarCoincidencias(filtroNombre, filtroApellido, filtroFuncion);
-        if (this.colaboradores.length == 0) {
-          this.noHayColaboradores = true;
-          this.disponibilidadEquipo = 0;
-        } else {
-          this.noHayColaboradores = false;
-          this.actualizarDisponibilidadEquipo();
-          this.cambiarOrden();
-        }
+        const filtroNombre = this.filtroAvanzado(1, this.nombre);
+        const filtroApellido = this.filtroAvanzado(2, this.apellido);
+        const filtroFuncion = this.filtroAvanzado(3, this.funcion);
+        this.colaboradores = this.buscarCoincidencias(filtroNombre, filtroApellido, filtroFuncion);
+        this.aplicarFiltros();
       }
     });
-  }
-
-  buscarCoincidencias(arrayNombre: any, arrayApellido: any, arrayFuncion: any) {
-    let encontrados: any = [];
-    this.colaboradores.forEach(colab => {
-      let encontradoNombre = false;
-      let encontradoApellido = false;
-      let encontradoFuncion = false;
-      arrayNombre.forEach((element: any) => {
-        if (element.id === colab.id) {
-          encontradoNombre = true;
-        }
-      });
-      arrayApellido.forEach((element: any) => {
-        if (element.id === colab.id) {
-          encontradoApellido = true;
-        }
-      });
-      arrayFuncion.forEach((element: any) => {
-        if (element.id === colab.id) {
-          encontradoFuncion = true;
-        }
-      });
-      if (encontradoNombre && encontradoApellido && encontradoFuncion) {
-        encontrados.push(colab);
-      }
-    });
-    return encontrados;
   }
 
   filtroAvanzado(tipo: number, valor: string) {
@@ -274,10 +252,37 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
         return arrayTemp;
     }
   }
-  
 
+  buscarCoincidencias(arrayNombre: any, arrayApellido: any, arrayFuncion: any) {
+    let encontrados: any = [];
+    this.colaboradores.forEach(colab => {
+      let encontradoNombre = false;
+      let encontradoApellido = false;
+      let encontradoFuncion = false;
+      arrayNombre.forEach((element: any) => {
+        if (element.id === colab.id) {
+          encontradoNombre = true;
+        }
+      });
+      arrayApellido.forEach((element: any) => {
+        if (element.id === colab.id) {
+          encontradoApellido = true;
+        }
+      });
+      arrayFuncion.forEach((element: any) => {
+        if (element.id === colab.id) {
+          encontradoFuncion = true;
+        }
+      });
+      if (encontradoNombre && encontradoApellido && encontradoFuncion) {
+        encontrados.push(colab);
+      }
+    });
+    return encontrados;
+  }
+  
   contraerColaboradores() {
-    // agregar comportamiento para contraer todos los expansion panel abiertos
+    this.accordion.closeAll();
   }
 
   dispararCambioOrdenDesdePlantilla(e: Event) {
@@ -322,7 +327,7 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   }
 
   cambioFechaHasta(event: any) {
-    // llamar a contraerColaboradores() antes de cambiar los datos
+    this.contraerColaboradores();
     this.fechaHastaDate = event.value;
     this.mesesMostrados = this.getDiferenciaMeses(this.fechaHoy, this.fechaHastaDate);
     this.actualizarMesesPlanificacion();

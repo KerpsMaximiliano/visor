@@ -6,9 +6,8 @@
         <mat-label><mat-icon>search</mat-icon> Buscar colaborador...</mat-label>
         <input matInput name="usuario" (keyup)="applyFilter($event)" [(ngModel)]="inputIzq">
     </mat-form-field>
-    <button mat-button (click)="abrirModalFiltro()"><mat-icon class="icon">filter_alt</mat-icon></button>
-    <button mat-button (click)="contraerColaboradores()"><mat-icon class="icon">close_fullscreen</mat-icon></button>
-    <!-- (click)="accordion.closeAll()" -->
+    <button class="boton-icono" mat-mini-fab color="primary" mat-button (click)="abrirModalFiltro()" matTooltip="Filtro Avanzado"><mat-icon class="icon">filter_alt</mat-icon></button>
+    <button class="boton-icono" mat-mini-fab color="primary" mat-button (click)="contraerColaboradores()" matTooltip="Cerrar Colaboradores"><mat-icon class="icon">close_fullscreen</mat-icon></button>
     <button id="button-orden" mat-button [matMenuTriggerFor]="menuOrden"> {{ ordenSeleccion }} <mat-icon>expand_more</mat-icon></button>
     <mat-menu #menuOrden="matMenu"><button mat-button *ngFor="let o of orden" class="menu-orden" (click)="dispararCambioOrdenDesdePlantilla($event)">{{o}}</button></mat-menu>
     <div class="fecha-hasta">
@@ -37,16 +36,14 @@
 
 <div class="mensaje-no-colaboradores" *ngIf="noHayColaboradores"><h1>No coinciden colaboradores con la busqueda</h1></div>
 
-<div class="equipo" *ngIf="!noHayColaboradores">
-
+<mat-accordion [multi]="true" [ngClass]="{'equipo': !colaboradorUnico, 'colaborador-unico': colaboradorUnico}" *ngIf="!noHayColaboradores">
     <div class="columna-equipo">
         <mat-card>
             <div *ngFor="let colaborador of columna1">
-            <mat-accordion>
                 <mat-expansion-panel hideToggle>
                     <mat-divider></mat-divider>
                     <h3 class="atrasadas" matTooltip="{{colaborador.horasAtrasadas}} Hs" [matTooltipPosition]="position2.value!">Tareas Atrasadas: {{ colaborador.atrasadas }} </h3>
-                    <mat-accordion *ngFor="let mes of mesesPlanificacion">
+                    <div *ngFor="let mes of mesesPlanificacion">
                         <mat-expansion-panel hideToggle>
                             <div class="div-caja" *ngFor="let proy of separarProyectosDelMes(colaborador.id, mes.mes)">
                                 <mat-divider></mat-divider>
@@ -83,7 +80,7 @@
                                 </mat-panel-title>
                             </mat-expansion-panel-header>
                         </mat-expansion-panel>
-                    </mat-accordion>
+                    </div>
                     <mat-expansion-panel-header>
                         <mat-panel-title>
                             {{colaborador.nombre}} {{colaborador.apellido}}
@@ -100,19 +97,17 @@
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                 </mat-expansion-panel>
-            </mat-accordion>
             </div>
         </mat-card>
     </div>
 
-    <div class="columna-equipo">
+    <div class="columna-equipo" [ngClass]="{'esconder': colaboradorUnico}">
         <mat-card>
             <div *ngFor="let colaborador of columna2">
-            <mat-accordion>
                 <mat-expansion-panel hideToggle>
                     <mat-divider></mat-divider>
                     <h3 class="atrasadas" matTooltip="{{colaborador.horasAtrasadas}} HS" [matTooltipPosition]="position2.value!">Tareas Atrasadas: {{ colaborador.atrasadas }} </h3>
-                    <mat-accordion *ngFor="let mes of mesesPlanificacion">
+                    <div *ngFor="let mes of mesesPlanificacion">
                         <mat-expansion-panel hideToggle>
                             <mat-divider></mat-divider>
                             <div class="div-caja caja-proyecto" *ngFor="let proy of separarProyectosDelMes(colaborador.id, mes.mes)">
@@ -146,7 +141,7 @@
                                 </mat-panel-title>
                             </mat-expansion-panel-header>
                         </mat-expansion-panel>
-                    </mat-accordion>
+                    </div>
                     <mat-expansion-panel-header>
                         <mat-panel-title>
                             {{colaborador.nombre}} {{colaborador.apellido}}
@@ -163,9 +158,7 @@
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                 </mat-expansion-panel>
-            </mat-accordion>
             </div>
         </mat-card>
     </div>
-
-</div>
+</mat-accordion>
