@@ -34,11 +34,16 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   position = new FormControl(this.positionOptions[0]);
   position2 = new FormControl(this.positionOptions[3]);
 
+  inputIzq: string = '';
   nombre: string = '';
   apellido: string = '';
   funcion: string = '';
 
   constructor(private _colaboradorService: ColaboradorService, private dialog: MatDialog) { }
+
+  // cuando se vea solo 1 colaborador despues de filtrar, que se esconda la columna 2 y la columna 1 se acomode al centro
+
+  // cambiar formato para mostrar la fecha hasta en el input
 
   ngOnInit(): void {
     this.mesesPlanificacion[0].mes = this._colaboradorService.getMesString(this.fechaHoy.getMonth());
@@ -162,7 +167,9 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   }
 
   applyFilter(event: Event) {
+    this.colaboradores = this._colaboradorService.getColaboradores();
     const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource = new MatTableDataSource(this.colaboradores);
     this.dataSource.filter = filterValue.trim().toLowerCase();
     this.colaboradores = this.dataSource.filteredData;
     if (this.colaboradores.length == 0) {
@@ -175,9 +182,8 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     }
   }
 
-  abrirModalFiltro() {
+  abrirModalFiltro() { // llamar a contraerColaboradores() antes de filtrar
     this.colaboradores = this._colaboradorService.getColaboradores();
-    // this.dataSource = new MatTableDataSource(this.colaboradores);
     const dialogRef = this.dialog.open(ModalFiltroComponent, {
       width: '400px',
       disableClose: true,
@@ -189,12 +195,12 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
       this.apellido = result.apellido;
       this.funcion = result.seleccion;
       let filtrar = result.filtrar;
+      if (result.limpiar) { this.inputIzq = '', filtrar = true }
       if (filtrar) {
-          let filtroNombre = this.filtroAvanzado(1, this.nombre);
-          let filtroApellido = this.filtroAvanzado(2, this.apellido);
-          let filtroFuncion = this.filtroAvanzado(3, this.funcion);
-          this.buscarCoincidencias(filtroNombre, filtroApellido, filtroFuncion);
-        // final con filtro resuleto
+          const filtroNombre = this.filtroAvanzado(1, this.nombre);
+          const filtroApellido = this.filtroAvanzado(2, this.apellido);
+          const filtroFuncion = this.filtroAvanzado(3, this.funcion);
+          this.colaboradores = this.buscarCoincidencias(filtroNombre, filtroApellido, filtroFuncion);
         if (this.colaboradores.length == 0) {
           this.noHayColaboradores = true;
           this.disponibilidadEquipo = 0;
@@ -208,7 +214,31 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   }
 
   buscarCoincidencias(arrayNombre: any, arrayApellido: any, arrayFuncion: any) {
-    // comparar en los 3 array id coincidentes los id que figuran en los filtros usados, buscarlos en array de colab y filtrarlos
+    let encontrados: any = [];
+    this.colaboradores.forEach(colab => {
+      let encontradoNombre = false;
+      let encontradoApellido = false;
+      let encontradoFuncion = false;
+      arrayNombre.forEach((element: any) => {
+        if (element.id === colab.id) {
+          encontradoNombre = true;
+        }
+      });
+      arrayApellido.forEach((element: any) => {
+        if (element.id === colab.id) {
+          encontradoApellido = true;
+        }
+      });
+      arrayFuncion.forEach((element: any) => {
+        if (element.id === colab.id) {
+          encontradoFuncion = true;
+        }
+      });
+      if (encontradoNombre && encontradoApellido && encontradoFuncion) {
+        encontrados.push(colab);
+      }
+    });
+    return encontrados;
   }
 
   filtroAvanzado(tipo: number, valor: string) {
@@ -351,7 +381,6 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
           colab.tiempoDisponible += this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[2].mes);
           colab.horasPlanificadas += this.getHorasPlanColab(colab.id, this.mesesPlanificacion[2].mes);
           colab.tiempoDisponible = Math.round(colab.tiempoDisponible /= 3);
-          console.log(colab)
           break;
         case 3:
           colab.tiempoDisponible = this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[0].mes);

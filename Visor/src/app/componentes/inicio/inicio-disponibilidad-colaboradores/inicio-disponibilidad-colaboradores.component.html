@@ -4,7 +4,7 @@
     
     <mat-form-field appearance="outline" class="input-header">
         <mat-label><mat-icon>search</mat-icon> Buscar colaborador...</mat-label>
-        <input matInput name="usuario" (keyup)="applyFilter($event)">
+        <input matInput name="usuario" (keyup)="applyFilter($event)" [(ngModel)]="inputIzq">
     </mat-form-field>
     <button mat-button (click)="abrirModalFiltro()"><mat-icon class="icon">filter_alt</mat-icon></button>
     <button mat-button (click)="contraerColaboradores()"><mat-icon class="icon">close_fullscreen</mat-icon></button>

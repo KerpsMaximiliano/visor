@@ -9,7 +9,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 export class ModalFiltroComponent implements OnInit {
 
   funciones: string[] = [ 'Analista Funcional', 'Analista Tecnico', 'Desarrollador', 'Tester', 'Project Manager' ];
-  result = {nombre: '', apellido: '', seleccion: '', filtrar: true};
+  result = {nombre: '', apellido: '', seleccion: '', filtrar: true, limpiar: false};
   // esta configuracion tienen que quedar guardada en la sesion del usuario ena actividad
 
   constructor(public dialogRef: MatDialogRef<ModalFiltroComponent>, @Inject(MAT_DIALOG_DATA) public data:any) { }
@@ -24,6 +24,7 @@ export class ModalFiltroComponent implements OnInit {
     this.result.nombre = '';
     this.result.apellido = '';
     this.result.seleccion = '';
+    this.result.limpiar = true;
   }
 
   cancelarBusqueda(): void {
