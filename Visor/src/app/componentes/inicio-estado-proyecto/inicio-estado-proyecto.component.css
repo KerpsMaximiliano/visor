@@ -111,8 +111,8 @@ tr.example-element-row:not(.example-expanded-row):active {
 #tareasATiempo{
   background-color: green;
   text-align: center;
-  margin-right: 40%;
-  margin-left: 40%;
+  margin-right: 35%;
+  margin-left: 35%;
   border-radius: 5px;
   border: solid 1.50px black;
   color: #efefef;
@@ -121,8 +121,8 @@ tr.example-element-row:not(.example-expanded-row):active {
 #tareasAtrasadas{
 background-color: red;
 text-align: center;
-margin-right: 40%;
-margin-left: 40%;
+margin-right: 35%;
+margin-left: 35%;
 border-radius: 5px;
 border: solid 1.50px black;
 color: #efefef;
@@ -138,49 +138,152 @@ text-align: center;
 
 .tituloColumna{
 text-align: center;
+font-size: 15px;
 }
 
 .subtitulo{
 text-align: center;
-font-size: 12px;
-font-style: italic;
+font-size: 15px;
+margin-top: 10px;
 }
 
 #seccionAvance{
 display: flexbox;
-background: gray;
-border-radius: 5px;
-border: solid 1px black;
-height: 38%;
+max-height: 30%;
+}
+
+#seccionAvanceArea{
+  border-radius: 3px;
+}
+
+#seccionAvanceArea p{
+  padding-top: 8px;
+  font-size: 15px;
 }
 
 .contenido{
   width: 100%;
 }
 
-.barra{
-  display: flex;
+#vacio{
+  margin-bottom: 5px;
 }
 
+/*
+  Barra
+*/
 .barra{
+  display: flex;
   width: 100%;
 }
 
 .barra div{
-  margin: 5px;
+  margin: 0.1%;
 }
 
-#divRojo{
-  background-color: red;
+#nombre{
+  font-size: 15px;
 }
 
-#divAmarilla{
-  background-color: yellow;
-}
-
-#divVerde{
+#barraVerde{
   background-color: green;
+  width: 25%;
+  text-align: center;
+  color: white;
+  border: solid 0.5px black;
+  font-size: 15px;
+  border-radius: 3px;
+  padding-top: 10px;
 }
+
+#barraRoja{
+  background-color: red;
+  width: 25%;
+  text-align: center;
+  color: white;
+  border: solid 0.5px black;
+  font-size: 15px;
+  border-radius: 3px;
+  padding-top: 10px;
+}
+
+#barraAmarilla{
+  background-color: rgb(221, 221, 27);
+  width: 25%;
+  text-align: center;
+  border: solid 0.5px black;
+  font-size: 15px;
+  border-radius: 3px;
+  padding-top: 10px;
+}
+
+#barraEnPrueba{
+  background-color: rgb(1, 181, 1);
+  width: 25%;
+  text-align: center;
+  color: white;
+  border: solid 0.5px black;
+  font-size: 15px;
+  border-radius: 3px;
+  padding-top: 10px;
+} 
+
+.barraAvance{
+  display: flex;
+}
+
+.barraAvance div{
+  margin: 1px;
+}
+
+#espacio{
+  padding-right: 10px;
+}
+
+#espacioTecnico{
+  padding-right: 12px;
+}
+
+.barraAreaVerde{
+  background-color: green;
+  width: 20%;
+  text-align: center;
+  color: white;
+  border: solid 0.5px black;
+  font-size: 15px;
+  border-radius: 3px;
+}
+
+.barraAreaRoja{
+  background-color: red;
+  width: 20%;
+  text-align: center;
+  color: white;
+  border: solid 0.5px black;
+  font-size: 15px;
+  border-radius: 3px;
+}
+
+.barraAreaAmarilla{
+  background-color: rgb(221, 221, 27);
+  width: 20%;
+  text-align: center;
+  border: solid 0.5px black;
+  font-size: 15px;
+  border-radius: 3px;
+}
+
+.barraAreaEnPrueba{
+  background-color: rgb(1, 181, 1);
+  width: 20%;
+  text-align: center;
+  color: white;
+  border: solid 0.5px black;
+  font-size: 15px;
+  border-radius: 3px;
+}
+
+
 
 
 

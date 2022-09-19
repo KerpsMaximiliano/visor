@@ -37,4 +37,36 @@ export class InicioEstadoProyectoComponent implements OnInit {
     const filterValue = (event.target as HTMLInputElement).value;
     this.data.filter = filterValue.trim().toLowerCase();
   }
+
+  retornarPorcentajeCompletadas(index: number): number{
+    return this.dataProyecto.proyectos[index].porcentajeHPCompletadas;
+  }
+
+  retornarPorcentajeNoIniciadas(index: number){
+    return this.dataProyecto.proyectos[index].porcentajeHPNoIniciadas;
+  }
+
+  retornarPorcentajeEnProgreso(index: number){
+    return this.dataProyecto.proyectos[index].porcentajeHPEnProgreso;
+  }
+
+  retornarPorcentajeEnPrueba(index: number): number{
+    return this.dataProyecto.proyectos[index].porcentajeHPEnPrueba;
+  }
+
+  retornarPorcentajeAvanceFuncionalCompletadas(index: number): number{
+    return this.dataProyecto.proyectos[index].avanceDisenioFuncional.porcentajeCompletadas  
+  }
+
+  retornarPorcentajeAvanceFuncionalNoIniciadas(index: number): number{
+    return this.dataProyecto.proyectos[index].avanceDisenioFuncional.porcentajeNoIniciadas;
+  }
+
+  retornarPorcentajeAvanceFuncionalEnProgreso(index: number): number{
+    return this.dataProyecto.proyectos[index].avanceDisenioFuncional.porcentajeEnProgreso;
+  }
+
+  retornarPorcentajeAvanceFuncionalEnPrueba(index: number): number{
+    return this.dataProyecto.proyectos[index].avanceDisenioFuncional.porcentajeEnPrueba;
+  }
 }

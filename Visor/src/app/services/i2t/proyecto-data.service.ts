@@ -21,13 +21,28 @@ export class ProyectoDataService {
     this.proyectos = [
       {
         nombre: "Chavarini",
+        //Implementa la interfaz de tarea.
         tareas: [],
         porcentajeTareasAtrasadas: 0,
         porcentajeTareasATiempo: 0,
         porcentajeHPEnPrueba: 0,
         porcentajeHPEnProgreso: 0,
         porcentajeHPCompletadas: 0,
-        porcentajeHPNoIniciadas: 0
+        porcentajeHPNoIniciadas: 0,
+        //Implementa la interfaz de diseño funcional.
+        avanceDisenioFuncional: {
+          porcentajeCompletadas: 0,
+          porcentajeEnProgreso: 0,
+          porcentajeNoIniciadas: 0,
+          porcentajeEnPrueba: 0
+        },
+        //Implementa la interfaz de diseño tecnico.
+        avanceDisenioTecnico: {
+          porcentajeCompletadas: 0,
+          porcentajeEnProgreso: 0,
+          porcentajeNoIniciadas: 0,
+          porcentajeEnPrueba: 0
+        }
       },
       {
         nombre: "Sala de Sorteos - Extractos Digitales",
@@ -37,12 +52,25 @@ export class ProyectoDataService {
         porcentajeHPEnPrueba: 0,
         porcentajeHPEnProgreso: 0,
         porcentajeHPCompletadas: 0,
-        porcentajeHPNoIniciadas: 0
+        porcentajeHPNoIniciadas: 0,
+        avanceDisenioFuncional: {
+          porcentajeCompletadas: 0,
+          porcentajeEnProgreso: 0,
+          porcentajeNoIniciadas: 0,
+          porcentajeEnPrueba: 0
+        },
+        avanceDisenioTecnico: {
+          porcentajeCompletadas: 0,
+          porcentajeEnProgreso: 0,
+          porcentajeNoIniciadas: 0,
+          porcentajeEnPrueba: 0
+        }
       }
     ]
     this.rellenarTareasProyecto();
     this.calcularPorcentajeTareas();
     this.calcularAvanceHorasPlanificadas();
+    this.calcularAvancePorArea();
   }
 
   /**
@@ -145,6 +173,52 @@ export class ProyectoDataService {
       this.proyectos[i].porcentajeHPCompletadas = Math.round((contadorHPCompletadas / contadorHPTareasTotales * 100));
       this.proyectos[i].porcentajeHPNoIniciadas = Math.round((contadorHPNoIniciadas / contadorHPTareasTotales) * 100);
       this.proyectos[i].porcentajeHPEnPrueba = Math.round((contadorHPEnPrueba / contadorHPTareasTotales) * 100);
+      contadorHPCompletadas = 0;
+      contadorHPEnProgreso = 0;
+      contadorHPNoIniciadas = 0;
+      contadorHPEnPrueba = 0;
+      contadorHPTareasTotales = 0;
+    }
+  }
+
+  /**
+   * Método que sirve para calcular el avance por área.
+   */
+  private calcularAvancePorArea(){
+    let contadorHPTareasTotales = 0;
+    let contadorHPCompletadas = 0;
+    let contadorHPEnProgreso = 0;
+    let contadorHPNoIniciadas = 0;
+    let contadorHPEnPrueba = 0;
+    for(let i = 0;i<this.proyectos.length;i++){
+      for(let r = 0;r<this.proyectos[i].tareas.length;r++){
+        if (this.proyectos[i].tareas[r].tipoTarea == "Relevamiento Requerimientos"){
+            switch (this.proyectos[i].tareas[r].estado)
+            {
+              case "Completada": {
+                contadorHPCompletadas = contadorHPCompletadas + this.proyectos[i].tareas[r].horasPlanificadas;
+                break;
+              }
+              case "En Progreso": {
+                contadorHPEnProgreso = contadorHPEnProgreso + this.proyectos[i].tareas[r].horasPlanificadas;
+                break;
+              }
+              case "No Iniciada": {
+                contadorHPNoIniciadas = contadorHPNoIniciadas + this.proyectos[i].tareas[r].horasPlanificadas;
+                break;
+              }
+              case "En Prueba": {
+                contadorHPEnPrueba = contadorHPEnPrueba + this.proyectos[i].tareas[r].horasPlanificadas;
+                break;
+            }
+          }
+        }
+        contadorHPTareasTotales = contadorHPTareasTotales + this.proyectos[i].tareas[r].horasPlanificadas;
+      }
+      this.proyectos[i].avanceDisenioFuncional.porcentajeEnProgreso = Math.round((contadorHPEnProgreso / contadorHPTareasTotales) * 100);
+      this.proyectos[i].avanceDisenioFuncional.porcentajeCompletadas = Math.round((contadorHPCompletadas / contadorHPTareasTotales) * 100);
+      this.proyectos[i].avanceDisenioFuncional.porcentajeNoIniciadas = Math.round((contadorHPNoIniciadas / contadorHPTareasTotales) * 100);
+      this.proyectos[i].avanceDisenioFuncional.porcentajeEnPrueba = Math.round((contadorHPEnPrueba / contadorHPTareasTotales) * 100);
       contadorHPCompletadas = 0;
       contadorHPEnProgreso = 0;
       contadorHPNoIniciadas = 0;
