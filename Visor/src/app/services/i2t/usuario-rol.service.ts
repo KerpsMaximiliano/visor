@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Usuario } from '../../interfaces/usuario';
+import { UsuarioRol } from '../../interfaces/usuario-rol';
+import { RestService } from './rest.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsuarioService {
 
-  usuarios: Usuario[] = [
+  constructor(private rest: RestService) { }
+
+  colaboradores: UsuarioRol[] = [
     { id: 1, usuario: 'igirod', nombre: 'Ignacio Girod', rol: 'Administrador' },
     { id: 2, usuario: 'fghio', nombre: 'Facundo Ghio Serra', rol: 'Supervisor' },
     { id: 3, usuario: 'folivera', nombre: 'Fabio Daniel Olivera', rol: 'Operativo' },
@@ -33,15 +36,23 @@ export class UsuarioService {
   ];
 
   getUsuarios() {
-    return this.usuarios;
-}
+    return this.roles;
+  }
+
+  getUsuariosPostman() {
+    return this.rest.callQueryVisor('', 'roles');
+  }
+
+  get() {
+    return this.rest.callQueryVisor('', 'v_funciones_por_rol');
+  }
 
   getRoles() {
     return this.roles;
   }
 
   cambiarRol(index: number) {
-    console.log(this.usuarios[index-1]);
+    console.log(this.colaboradores[index-1]);
   }
 
 }

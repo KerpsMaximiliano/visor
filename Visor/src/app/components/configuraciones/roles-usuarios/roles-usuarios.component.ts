@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
-import { Usuario } from 'src/app/interfaces/usuario';
+import { UsuarioRol } from 'src/app/interfaces/usuario-rol';
 import { DialogService } from 'src/app/services/i2t/dialog.service';
-import { UsuarioService } from 'src/app/services/i2t/usuario.service';
+import { UsuarioService } from 'src/app/services/i2t/usuario-rol.service';
 
 @Component({
   selector: 'app-roles-usuarios',
@@ -12,7 +12,7 @@ import { UsuarioService } from 'src/app/services/i2t/usuario.service';
 })
 export class RolesUsuariosComponent implements OnInit {
 
-  usuarios: Usuario[] = [];
+  usuarios: UsuarioRol[] = [];
   dataSource!: MatTableDataSource<any>;
   displayedColumns: string[] = ['usuario', 'nombre', 'rol'];
   roles: any[] = [];
@@ -35,9 +35,11 @@ export class RolesUsuariosComponent implements OnInit {
     this.dataSource = new MatTableDataSource(this.usuarios);
     this.roles = this._usuarioService.getRoles();
     this.roles.forEach(rol => { rol.check = true; });
+    console.log(this._usuarioService.getUsuariosPostman());
+    console.log(this._usuarioService.get());
   }
 
-  ordenAlfabetico(lista: Array<Usuario>) {
+  ordenAlfabetico(lista: Array<UsuarioRol>) {
     lista.sort(function(a, b) {
       if (a.usuario > b.usuario) {
         return 1;
