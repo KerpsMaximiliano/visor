@@ -37,13 +37,11 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   position2 = new FormControl(this.positionOptions[3]);
 
   inputIzq: string = '';
-  nombre: string = '';
-  apellido: string = '';
-  funcion: string = '';
+  nombre: string = ''; // se tiene que guardar en las preferencias del usuario en sesion cuando este disponible
+  apellido: string = ''; // se tiene que guardar en las preferencias del usuario en sesion cuando este disponible
+  funcion: string = ''; // se tiene que guardar en las preferencias del usuario en sesion cuando este disponible
 
   constructor(private _colaboradorService: ColaboradorService, private dialog: MatDialog) { }
-
-  // cambiar formato para mostrar la fecha hasta en el input
 
   ngOnInit(): void {
     this.mesesPlanificacion[0].mes = this._colaboradorService.getMesString(this.fechaHoy.getMonth());
@@ -282,7 +280,7 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   }
   
   contraerColaboradores() {
-    this.accordion.closeAll();
+    if (!this.noHayColaboradores) { this.accordion.closeAll(); }
   }
 
   dispararCambioOrdenDesdePlantilla(e: Event) {
