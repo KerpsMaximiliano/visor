@@ -128,7 +128,6 @@ export class ProyectoDataService {
           }
           case "En Progreso": {
             contadorHPEnProgreso = contadorHPEnProgreso + this.proyectos[i].tareas[r].horasPlanificadas;
-            console.log(contadorHPEnProgreso);
             break;
           }
           case "No Iniciada": {

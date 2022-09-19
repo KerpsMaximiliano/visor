@@ -140,10 +140,6 @@ text-align: center;
 text-align: center;
 }
 
-.contenido{
-width: 100%;
-}
-
 .subtitulo{
 text-align: center;
 font-size: 12px;
@@ -157,6 +153,37 @@ border-radius: 5px;
 border: solid 1px black;
 height: 38%;
 }
+
+.contenido{
+  width: 100%;
+}
+
+.barra{
+  display: flex;
+}
+
+.barra{
+  width: 100%;
+}
+
+.barra div{
+  margin: 5px;
+}
+
+#divRojo{
+  background-color: red;
+}
+
+#divAmarilla{
+  background-color: yellow;
+}
+
+#divVerde{
+  background-color: green;
+}
+
+
+
 
 
 

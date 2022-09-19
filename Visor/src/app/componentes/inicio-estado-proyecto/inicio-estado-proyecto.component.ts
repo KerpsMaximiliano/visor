@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Renderer2, ViewChild, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ProyectoDataService } from '../../services/i2t/proyecto-data.service';
 import {animate, state, style, transition, trigger} from '@angular/animations';
@@ -18,13 +18,14 @@ import { Proyecto } from '../../interfaces/proyecto';
 })
 export class InicioEstadoProyectoComponent implements OnInit {
 
+  lala: string = 'hola';
   data = new MatTableDataSource(this.dataProyecto.proyectos);
   proyectos: Proyecto[];
   displayedColumns: string[] = ['nombre','tareasATiempo','tareasAtrasadas'];
   columnsToDisplayWithExpand = [...this.displayedColumns, 'expand'];
   expandedElement!: Proyecto;
 
-  constructor(private dataProyecto: ProyectoDataService, private renderer: Renderer2) {
+  constructor(private dataProyecto: ProyectoDataService) {
     this.proyectos = this.dataProyecto.proyectos;
   }
 
@@ -35,17 +36,5 @@ export class InicioEstadoProyectoComponent implements OnInit {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.data.filter = filterValue.trim().toLowerCase();
-  }
-
-  cargarAmarilla(index: number): number{  
-    return this.dataProyecto.proyectos[index].porcentajeHPEnProgreso;
-  }
-
-  cargarVerde(index: number): number{
-    return this.dataProyecto.proyectos[index].porcentajeHPCompletadas;
-  }
-
-  cargarRojo(index: number): number{
-    return this.dataProyecto.proyectos[index].porcentajeHPNoIniciadas;
   }
 }
