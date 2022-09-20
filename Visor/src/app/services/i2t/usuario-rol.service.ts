@@ -9,7 +9,7 @@ export class UsuarioService {
 
   constructor(private rest: RestService) { }
 
-  colaboradores: UsuarioRol[] = [
+  usuarios: UsuarioRol[] = [
     { id: 1, usuario: 'igirod', nombre: 'Ignacio Girod', rol: 'Administrador' },
     { id: 2, usuario: 'fghio', nombre: 'Facundo Ghio Serra', rol: 'Supervisor' },
     { id: 3, usuario: 'folivera', nombre: 'Fabio Daniel Olivera', rol: 'Operativo' },
@@ -29,30 +29,23 @@ export class UsuarioService {
     { id: 17, usuario: 'lrios', nombre: 'Lucas Rios', rol: 'Operativo' }
   ];
 
-  roles: any[] = [
-    { id: 1, nombre: 'Administrador', check: true },
-    { id: 2, nombre: 'Supervisor', check: true },
-    { id: 3, nombre: 'Operativo', check: true }
-  ];
-
   getUsuarios() {
-    return this.roles;
+    let jsbody: string = JSON.stringify({
+      par_modo : 'G'
+    });
+    return this.rest.callProcedimientoVisor(jsbody, "RolesUsuario");
   }
 
-  getUsuariosPostman() {
-    return this.rest.callQueryVisor('', 'roles');
-  }
-
-  get() {
-    return this.rest.callQueryVisor('', 'v_funciones_por_rol');
+  getUsuariosold() {
+    return this.usuarios;
   }
 
   getRoles() {
-    return this.roles;
+    return this.rest.callQueryVisor('roles');
   }
 
-  cambiarRol(index: number) {
-    console.log(this.colaboradores[index-1]);
+  getFuncionesPorRol() {
+    return this.rest.callQueryVisor('v_funciones_por_rol');
   }
 
 }

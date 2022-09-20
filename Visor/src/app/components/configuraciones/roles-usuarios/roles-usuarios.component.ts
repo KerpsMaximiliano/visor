@@ -12,7 +12,7 @@ import { UsuarioService } from 'src/app/services/i2t/usuario-rol.service';
 })
 export class RolesUsuariosComponent implements OnInit {
 
-  usuarios: UsuarioRol[] = [];
+  usuarios: any[] = [];
   dataSource!: MatTableDataSource<any>;
   displayedColumns: string[] = ['usuario', 'nombre', 'rol'];
   roles: any[] = [];
@@ -28,18 +28,32 @@ export class RolesUsuariosComponent implements OnInit {
               private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
-    this.usuarios = this._usuarioService.getUsuarios();
-    this.arrayBack = this._usuarioService.getUsuarios();
+    this.getUsuarios();
     this.ordenAlfabetico(this.usuarios);
     this.ordenAlfabetico(this.arrayBack);
     this.dataSource = new MatTableDataSource(this.usuarios);
-    this.roles = this._usuarioService.getRoles();
-    this.roles.forEach(rol => { rol.check = true; });
-    console.log(this._usuarioService.getUsuariosPostman());
-    console.log(this._usuarioService.get());
+    this.getRoles();
+    const b = this._usuarioService.getFuncionesPorRol().subscribe(
+      (response: any) => {
+        console.log("ESTO DEVUELVE EL DATASET = ", response.dataset);
+    });
   }
 
-  ordenAlfabetico(lista: Array<UsuarioRol>) {
+  getUsuarios() {
+    this._usuarioService.getUsuarios().subscribe(
+      (response: any) => {
+        const usuarios = response.dataset;
+        let cont = 0;
+        usuarios.forEach((user: any) => {
+          cont++;
+          this.usuarios.push({id: cont, id_usuario: user.id_usuario, usuario: user.nombre_usuario, nombre: user.nombre+" "+user.apellido, rol: user.nombre_rol});
+          this.arrayBack.push({id: cont, id_usuario: user.id_usuario, usuario: user.nombre_usuario, nombre: user.name+" "+user.apellido, rol: user.nombre_rol});
+        });
+    });
+    console.log(this.usuarios)
+  }
+
+  ordenAlfabetico(lista: Array<any>) {
     lista.sort(function(a, b) {
       if (a.usuario > b.usuario) {
         return 1;
@@ -49,6 +63,20 @@ export class RolesUsuariosComponent implements OnInit {
       }
       return 0;
     });
+  }
+
+  getRoles() {
+    this._usuarioService.getRoles().subscribe(
+      (response: any) => {
+        console.log("ESTO DEVUELVE EL DATASET = ", response.dataset);
+        const roles = response.dataset;
+        let cont = 0;
+        roles.forEach((rol: any) => {
+          cont++;
+          this.roles.push({id: cont, nombre: rol.name, check: true});
+        });
+    });
+    console.log(this.roles)
   }
 
   applyFilter(event: Event) {

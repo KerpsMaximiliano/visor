@@ -13,7 +13,7 @@ import { SnackbarService } from 'src/app/services/util/snackbar.service';
 })
 export class RestService {
   preUrl: string;
-  preUrlExtractos: string;
+  preUrlVisor: string;
 
 
 
@@ -23,7 +23,7 @@ export class RestService {
     private snackBar: SnackbarService,
   ){
     this.preUrl = this.config.getConfig('api_url');
-    this.preUrlExtractos = this.config.getConfig('api_visor_url');
+    this.preUrlVisor = this.config.getConfig('api_visor_url');
   }
 
 
@@ -70,24 +70,27 @@ export class RestService {
 
   /** El webservice ejecuta un SP **/
   doProcedimientoVisor(body: string, query: string){
-    let token = localStorage.getItem('TOKEN')!; //con el ! le digo a typescript que token nunca va a ser nulo o vacio, ojo! asegurar este comportamiento sino buscar otra forma
+    let token = localStorage.getItem('auth_token')!; //con el ! le digo a typescript que token nunca va a ser nulo o vacio, ojo! asegurar este comportamiento sino buscar otra forma
     const headers = new HttpHeaders({
-      'x-access-token': token,
-      'Content-Type': 'application/json'
-    });
-
-    let url = this.preUrlExtractos + 'api/proc/' + query;
-    return this.http.post(url, body, { headers });
-  }
-
-  doQueryVisor(body: string, query: string){
-    let token = localStorage.getItem('TOKEN')!; //con el ! le digo a typescript que token nunca va a ser nulo o vacio, ojo! asegurar este comportamiento sino buscar otra forma
-    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
       'x-access-token': token
     });
 
-    let url = this.preUrlExtractos + 'api/' + query;
-    return this.http.get(url , { headers });
+    // let url = this.preUrlVisor + 'api/proc/' + query;
+    let url = 'http://tstvar.i2tsa.com.ar:3001/api/proc/' + query;
+    return this.http.post(url, body, { headers });
+  }
+
+  doQueryVisor(query: string){
+    let token = localStorage.getItem('auth_token')!; //con el ! le digo a typescript que token nunca va a ser nulo o vacio, ojo! asegurar este comportamiento sino buscar otra forma
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'x-access-token': token
+    });
+
+    // let url = this.preUrlVisor + 'api/' + query;
+    let url = 'http://tstvar.i2tsa.com.ar:3001/api/' + query;
+    return this.http.get(url, { headers });
   }
 
   /** Wrapper para manejo de errores http y rcode **/
@@ -108,13 +111,12 @@ export class RestService {
             throw data.returnset[0];
           }
         }));
-
     return result;
   }
 
   /** Wrapper para manejo de errores http y rcode **/
-  callQueryVisor(body: string, query: string, showSnack: boolean = true){
-    let result = this.doQueryVisor(body, query)
+  callQueryVisor(query: string, showSnack: boolean = true){
+    let result = this.doQueryVisor(query)
     .pipe(catchError( (e: any) => {
         this.snackBar.restException(e);
         return throwError({RTxt: e.message});
@@ -130,7 +132,6 @@ export class RestService {
             throw data.returnset[0];
           }
         }));
-
     return result;
   }
 
