@@ -4,7 +4,25 @@ import { ConfiguracionesComponent } from './components/configuraciones/configura
 import { PermisosRolesComponent } from './components/configuraciones/permisos-roles/permisos-roles.component';
 import { RolesUsuariosComponent } from './components/configuraciones/roles-usuarios/roles-usuarios.component';
 
+//Componentes
+import { LoginComponent } from './componentes/login/login.component';
+import { RecuperarcontraseniaComponent } from './componentes/recuperar-contrasenia/recuperar-contrasenia.component';
+
 const routes: Routes = [
+  {
+    path: "",
+    pathMatch: "full",
+    redirectTo: "login"
+  },
+  {
+    path: "login",
+    component: LoginComponent
+  },
+  {
+    path: "recuperar-contraseña",
+    component: RecuperarcontraseniaComponent
+  }
+
   { path: 'configuraciones-main', component: ConfiguracionesComponent,
     children: [
       { path: 'roles-usuarios', component: RolesUsuariosComponent },
