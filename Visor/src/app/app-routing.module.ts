@@ -21,8 +21,7 @@ const routes: Routes = [
   {
     path: "recuperar-contraseña",
     component: RecuperarcontraseniaComponent
-  }
-
+  },
   { path: 'configuraciones-main', component: ConfiguracionesComponent,
     children: [
       { path: 'roles-usuarios', component: RolesUsuariosComponent },

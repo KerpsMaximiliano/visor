@@ -20,9 +20,6 @@ import { LoginService } from './services/i2t/login.service';
 import { Config } from './services/i2t/config.service';
 import { HttpClientModule } from '@angular/common/http';
 import { SnackbarService } from './services/util/snackbar.service';
-import { LoginComponent } from './components/login/login.component';
-import { RecuperarContraseniaComponent } from './components/recuperar-contrasenia/recuperar-contrasenia.component';
-import { ModalContraseniaComponent } from './shared/modal-contrasenia/modalcontrasenia.component';
 import { ModalcontraseniaComponent } from './shared/modal-contrasenia/modalcontrasenia.component';
 
 @NgModule({
@@ -30,9 +27,6 @@ import { ModalcontraseniaComponent } from './shared/modal-contrasenia/modalcontr
     AppComponent,
     ConfiguracionesComponent,
     MatConfirmDialogComponent,
-    LoginComponent,
-    RecuperarContraseniaComponent,
-    ModalContraseniaComponent,
     ModalcontraseniaComponent
   ],
   imports: [
