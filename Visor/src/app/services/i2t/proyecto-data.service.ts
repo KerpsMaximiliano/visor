@@ -20,7 +20,9 @@ export class ProyectoDataService {
     this.tareasPorcentajeTareasEnProgreso = 0;
     this.proyectos = [
       {
+        numero: 0,
         nombre: "Chavarini",
+        cliente: "Chavarini y asociados",
         //Implementa la interfaz de tarea.
         tareas: [],
         porcentajeTareasAtrasadas: 0,
@@ -45,7 +47,9 @@ export class ProyectoDataService {
         }
       },
       {
+        numero: 1,
         nombre: "Sala de Sorteos - Extractos Digitales",
+        cliente: "Loteria",
         tareas: [],
         porcentajeTareasAtrasadas: 0,
         porcentajeTareasATiempo: 0,
@@ -226,4 +230,30 @@ export class ProyectoDataService {
       contadorHPTareasTotales = 0;
     }
   }
+
+  getCantidadTareasAbiertas(): number{
+    let acumuladorTareasAbiertas = 0;
+    for(let i = 0; i < this.proyectos.length; i++){
+      for(let r = 0; r < this.proyectos[i].tareas.length; r++){
+        if(this.proyectos[i].tareas[r].estado == "En Progreso")
+        acumuladorTareasAbiertas++;
+      }
+    }
+    return acumuladorTareasAbiertas;
+  }
+
+  getCantidadTareasAnteriores(): number{
+    let contadorAtrasadas = 0;
+    for(let i = 0;i<this.proyectos.length;i++){
+      for(let r = 0;r<this.proyectos[i].tareas.length;r++){
+        let date = new Date(this.proyectos[i].tareas[r].fechaPlanificacion);
+        if(this.proyectos[i].tareas[r].estado == "En Progreso" && date < this._fechaActual){
+        
+          contadorAtrasadas++;
+        }
+      }
+    }
+    return contadorAtrasadas;
+  }
+
 }

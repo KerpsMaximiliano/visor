@@ -3,7 +3,9 @@ import { AvanceDisenioFuncional } from './avance-disenio-funcional';
 import { AvanceDisenioTecnico } from './avance-disenio-tecnico';
 
 export interface Proyecto {
+    numero: number,
     nombre: string,
+    cliente: string,
     tareas: Tarea[],
     porcentajeTareasAtrasadas: number,
     porcentajeTareasATiempo: number,

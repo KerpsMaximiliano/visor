@@ -1,9 +1,28 @@
 <div id="container-all">
-      <mat-form-field appearance="outline" id="filtro">
-        <mat-icon>search</mat-icon><mat-label>Buscar proyectos...</mat-label>
-        <input matInput (keyup)="applyFilter($event)" #input autocomplete="off">
+  <div id="header">
+      <div id="titulo"><h1>Estado de proyectos</h1></div>
+      <mat-form-field appearance="outline" class="input-header">
+        <mat-label><mat-icon>search</mat-icon>Buscar proyectos...</mat-label>
+        <input matInput name="proyecto" (keyup)="applyFilter($event)" #input autocomplete="off">
       </mat-form-field>
+      <button class="boton-icono" (click)="openFiltro()" mat-mini-fab color="primary" mat-button matTooltip="Filtro Avanzado"><mat-icon class="icon">filter_alt</mat-icon></button>
+      <button class="boton-icono" mat-mini-fab color="primary" (click)="contraerProyectos()" mat-button matTooltip="Cerrar Proyectos"><mat-icon class="icon">close_fullscreen</mat-icon></button>
+      
+      <div class="disponibilidad-proyectos">
+        <h3>Tareas atrasadas<mat-divider></mat-divider></h3>
+        <div id="porcentaje-disponibilidad-proyectos" [ngClass]="{
+            'porcentaje-rojo': getPorcentajeRojo(disponibilidadProyectos),
+            'porcentaje-amarillo': getPorcentajeAmarillo(disponibilidadProyectos),
+            'porcentaje-verde-claro': getPorcentajeVerdeClaro(disponibilidadProyectos),
+            'porcentaje-verde-oscuro': getPorcentajeVerdeOscuro(disponibilidadProyectos) }"
+            matTooltip="{{getTooltipTareasAnteriores()}} Tareas totales con fecha planificada anterior / 
+            {{getTooltipTareasAbiertasTotales()}} Tareas totales"   
+            [matTooltipPosition]="position.value!"> {{ disponibilidadProyectos }}%
+      </div>
+    </div>
+  </div>
 
+ 
     <div id="container-body">
       <table mat-table [dataSource]="data" multiTemplateDataRows class="mat-elevation-z8">
       <!-- Nombre Column -->
@@ -23,7 +42,6 @@
           <th mat-header-cell *matHeaderCellDef class="tituloColumna"> Tareas atrasadas </th>
           <td mat-cell *matCellDef="let element"><div id="tareasAtrasadas">{{element.porcentajeTareasAtrasadas}}%</div></td>
         </ng-container>
-
       <ng-container matColumnDef="expand">
         <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
         <td mat-cell *matCellDef="let element">
@@ -34,7 +52,7 @@
       </td>
     </ng-container>
 
-    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+    <!-- Columna expandible -->
     <ng-container matColumnDef="expandedDetail">
       <td mat-cell *matCellDef="let proyecto; let i = dataIndex" [attr.colspan]="columnsToDisplayWithExpand.length">
       <div class="example-element-detail" [@detailExpand]="proyecto == expandedElement ? 'expanded' : 'collapsed'">
@@ -111,7 +129,6 @@
       </div>
       </td>
       </ng-container>
-
       <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
       <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;" class="example-element-row" [class.example-expanded-row]="expandedElement === element" (click)="expandedElement = expandedElement === element ? null : element"></tr>
       <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>

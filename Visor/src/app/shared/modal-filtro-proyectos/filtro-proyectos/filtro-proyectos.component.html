@@ -1,0 +1,28 @@
+<h1>Filtrar Proyectos</h1>
+<div class="form">
+    <mat-form-field appearance="outline">
+        <mat-label>Número</mat-label>
+        <input matInput name="numero" [(ngModel)]="result.numero">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Nombre</mat-label>
+        <input matInput name="nombre" [(ngModel)]="result.nombre">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Cliente</mat-label>
+        <input matInput name="nombre" [(ngModel)]="result.cliente">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Asignado a</mat-label>
+        <input matInput name="nombre" [(ngModel)]="result.asignadoA">
+    </mat-form-field>
+    <section class="example-section">
+        <mat-checkbox class="example-margin" [disabled]="activarBoton">Mis proyectos</mat-checkbox>
+        <mat-checkbox class="example-margin" [disabled]="activarBoton">Proyectos Abiertos</mat-checkbox>
+    </section>
+</div>
+<div class="botonera">
+    <button mat-button class="blue" (click)="limpiarCampos()">Limpiar</button>
+    <button mat-button class="red" (click)="cancelarBusqueda()">Cancelar</button>
+    <button mat-button class="green" [mat-dialog-close]="result">Filtrar</button>
+</div>

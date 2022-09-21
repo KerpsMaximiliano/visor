@@ -3,6 +3,12 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ProyectoDataService } from '../../services/i2t/proyecto-data.service';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import { Proyecto } from '../../interfaces/proyecto';
+import { TooltipPosition } from '@angular/material/tooltip';
+import { FormControl } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { FiltroProyectosComponent } from '../../shared/modal-filtro-proyectos/filtro-proyectos/filtro-proyectos.component';
+import { MatAccordion } from '@angular/material/expansion';
+import { ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-inicio-estado-proyecto',
@@ -18,19 +24,30 @@ import { Proyecto } from '../../interfaces/proyecto';
 })
 export class InicioEstadoProyectoComponent implements OnInit {
 
-  lala: string = 'hola';
+  @ViewChild(MatAccordion) accordion!: MatAccordion;
+
   data = new MatTableDataSource(this.dataProyecto.proyectos);
   proyectos: Proyecto[];
   displayedColumns: string[] = ['nombre','tareasATiempo','tareasAtrasadas'];
   columnsToDisplayWithExpand = [...this.displayedColumns, 'expand'];
   expandedElement!: Proyecto;
+  disponibilidadProyectos: number = 0;
+  positionOptions: TooltipPosition[] = ['after', 'before', 'above', 'below', 'left', 'right'];
+  position = new FormControl(this.positionOptions[0]);
+  
+  //Variables del filtro
+  numero: string = "";
+  cliente: string = "";
+  asignadoA: string = "";
+  nombre: string = "";
 
-  constructor(private dataProyecto: ProyectoDataService) {
+
+  constructor(private dataProyecto: ProyectoDataService, private dialog: MatDialog) {
     this.proyectos = this.dataProyecto.proyectos;
   }
 
   ngOnInit(): void {
-
+    this.actualizarDisponibilidadProyecto();
   }
 
   applyFilter(event: Event) {
@@ -68,5 +85,61 @@ export class InicioEstadoProyectoComponent implements OnInit {
 
   retornarPorcentajeAvanceFuncionalEnPrueba(index: number): number{
     return this.dataProyecto.proyectos[index].avanceDisenioFuncional.porcentajeEnPrueba;
+  }
+
+  getPorcentajeRojo(valor: number) {
+    if (valor>=0 && valor<=25) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  getPorcentajeAmarillo(valor: number) {
+    if (valor>=26 && valor<=50) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  getPorcentajeVerdeClaro(valor: number) {
+    if (valor>=51 && valor<=75) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  getPorcentajeVerdeOscuro(valor: number) {
+    if (valor>=76 && valor<=100) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  getTooltipTareasAbiertasTotales(){
+    return this.dataProyecto.getCantidadTareasAbiertas();
+  }
+
+  getTooltipTareasAnteriores(){
+    return this.dataProyecto.getCantidadTareasAnteriores();
+  }
+
+  actualizarDisponibilidadProyecto(){
+    this.disponibilidadProyectos = Math.round((this.getTooltipTareasAnteriores() / this.getTooltipTareasAbiertasTotales()) * 100);
+  }
+
+  openFiltro(){
+    const dialogRef = this.dialog.open(FiltroProyectosComponent, {
+      width: '400px',
+      disableClose: true,
+      data: { numero: this.numero, nombre: this.nombre, cliente: this.cliente, asignadoA: this.asignadoA}
+    });
+  }
+
+  contraerProyectos(){
+    this.accordion.closeAll();
   }
 }
