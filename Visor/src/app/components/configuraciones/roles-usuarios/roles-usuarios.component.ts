@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
 import { UsuarioRol } from 'src/app/interfaces/usuario-rol';
 import { DialogService } from 'src/app/services/i2t/dialog.service';
 import { UsuarioService } from 'src/app/services/i2t/usuario-rol.service';
@@ -12,14 +12,14 @@ import { UsuarioService } from 'src/app/services/i2t/usuario-rol.service';
 })
 export class RolesUsuariosComponent implements OnInit {
 
-  usuarios: any[] = [];
+  usuarios: UsuarioRol[] = [];
   dataSource!: MatTableDataSource<any>;
   displayedColumns: string[] = ['usuario', 'nombre', 'rol'];
   roles: any[] = [];
   rolesFaltantes: any[] = [];
-  tempArray: any[] = [];
+  tempArray: UsuarioRol[] = [];
   newArray: any[] = [];
-  arrayBack: any[] = [];
+  arrayBack: UsuarioRol[] = [];
   auxUser: any;
   auxEvent: any;
 
@@ -29,14 +29,11 @@ export class RolesUsuariosComponent implements OnInit {
 
   ngOnInit(): void {
     this.usuarios = this._usuarioService.getUsuarios();
+    console.log(this.usuarios)
     this.ordenAlfabetico(this.usuarios);
     this.arrayBack = this.usuarios;
     this.cargarTabla();
     this.getRoles();
-    const b = this._usuarioService.getFuncionesPorRol().subscribe(
-      (response: any) => {
-        console.log("ESTO DEVUELVE EL DATASET = ", response.dataset);
-    });
   }
 
   ordenAlfabetico(lista: Array<any>) {
@@ -64,14 +61,12 @@ export class RolesUsuariosComponent implements OnInit {
       (response: any) => {
         console.log("ESTO DEVUELVE EL DATASET = ", response.dataset);
         const roles = response.dataset;
-        let cont = 0;
-        console.log(this.roles)
         roles.forEach((rol: any) => {
-          cont++;
-          this.roles.push({id: cont, nombre: rol.name, check: true});
+          if (rol.name != 'Analista Funcional') {
+            this.roles.push({id_rol: rol.id, nombre: rol.name, check: true});
+          }
         });
     });
-    console.log(this.roles)
   }
 
   applyFilter(event: Event) {
@@ -137,8 +132,10 @@ filtrarRoles() {
                 contador++;
               }
             });
-            if (contador == 1 && this.auxUser.rol == 'Administrador') {
-              this.mensajeCambio('No se pudo cambiar el rol (Debe haber 1 Administrador)');
+            if (contador == 2 && this.auxUser.rol == 'Administrador') {
+              this.mensajeCambio('No se pudo cambiar el rol (Debe haber 2 Administradores)');
+            } else if (this.auxUser.usuario == 'lmariotti') {
+              this.mensajeCambio('No se puede cambiar el rol de este Usuario');
             } else {
               this.cambioExitoso(rolCambio);
             }
@@ -149,16 +146,26 @@ filtrarRoles() {
           if (input != null) {
             input.value = "";
           }
-          this.ngOnInit();
         }
     })
   }
 
   cambioExitoso(rolCambio: string) {
     this.usuarios.forEach(user => {
-      if (user.id == this.auxUser.id) {
+      if (user.usuario == this.auxUser.usuario) {
+        const idUsuario = user.id_usuario;
+        let idRol = '';
         user.rol = rolCambio;
         this.cargarTabla();
+        this.roles.forEach(rol => {
+          if (rol.nombre == rolCambio) {
+            idRol = rol.id_rol;
+          }
+        });
+        this._usuarioService.setRolUsuario(idRol, idUsuario).subscribe(
+          (response: any) => {
+            console.log("RESPUESTA DEL BACKEND = ", response);
+        });
       }
     });
     this.mensajeCambio('El cambio de rol fue realizado con éxito');

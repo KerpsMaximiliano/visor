@@ -12,18 +12,33 @@ import { PermisoService } from 'src/app/services/i2t/permiso.service';
 })
 export class PermisosRolesComponent implements OnInit {
 
+  permisosSP: any[] = [];
   permisos: Permiso[] = [];
+  permisos2: Permiso[] = [];
   dataSource!: MatTableDataSource<any>;
   displayedColumns: string[] = ['permiso', 'operativo', 'supervisor', 'administrador'];
 
-  constructor(private _permisoSerivce: PermisoService,
+  constructor(private _permisoService: PermisoService,
               private dialogService: DialogService,
               private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
-    this.permisos = this._permisoSerivce.getPermisos();
+    this.permisosSP = this._permisoService.getPermisosSP();
+    this.permisos = this._permisoService.getPermisos();
+    this.organizarPermisos();
     this.ordenAlfabetico(this.permisos);
     this.dataSource = new MatTableDataSource(this.permisos);
+  }
+
+  organizarPermisos() {
+    this.permisosSP.forEach(permiso => {
+      this.permisos.forEach(element => {
+        if (permiso.funcion != element.nombre) {
+          this.permisos2.push(permiso);
+        }
+      });
+    });
+    console.log(this.permisos)
   }
 
   ordenAlfabetico(lista: Array<Permiso>) {

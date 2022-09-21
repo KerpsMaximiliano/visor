@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Permiso } from 'src/app/interfaces/permiso';
+import { RestService } from './rest.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PermisoService {
 
-  permisos: Permiso[] = [
+  constructor(private rest: RestService) { }
+
+  permisosOld: Permiso[] = [
     { id: 1, nombre: 'Cambiar permisos de roles', supervisor: false, operativo: false, administrador: true },
     { id: 2, nombre: 'Cambiar roles de usuarios', supervisor: false, operativo: false, administrador: true },
     { id: 3, nombre: 'Agregar tareas', supervisor: true, operativo: false, administrador: true },
@@ -35,8 +38,54 @@ export class PermisoService {
     { id: 26, nombre: 'Vista project manager', supervisor: true, operativo: false, administrador: true }
   ];
 
+  permisosSP: any[] = [];
+
+  permisos: Permiso[] = [];
+
+  iniciarPermisos() {
+    this.permisosSP = [];
+    this.getPermisosRefact().subscribe(
+      (response: any) => {
+        let cont = 0;
+        console.log(response.dataset)
+        response.dataset.forEach((permiso: any) => {
+          cont++;
+          this.permisosSP.push({
+            id: cont,
+            id_rol: permiso.id_rol,
+            nombre_rol: permiso.nombre_rol,
+            codigo_funcion: permiso.codigo_funcion,
+            funcion: permiso.funcion
+          });
+          /* this.permisos.push({
+            id: cont,
+            nombre: permiso.funcion,
+            supervisor: false,
+            operativo: false,
+            administrador: false
+          }); */
+        });
+    });
+    /* this.permisosSP.forEach(permiso => {
+      this.permisos.forEach(element => {
+        if (permiso.funcion != element.nombre) {
+          this.permisos.push(permiso);
+        }
+      });
+    });
+    console.log(this.permisos) */
+  }
+  
+  getPermisosRefact() {
+    return this.rest.callQueryVisor('v_funciones_por_rol');
+  }
+
+  getPermisosSP() {
+    return this.permisosSP;
+  }
+
   getPermisos() {
-    return this.permisos;
-}
+    return this.permisosOld;
+  }
 
 }
