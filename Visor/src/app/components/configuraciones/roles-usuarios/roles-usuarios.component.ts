@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { UsuarioRol } from 'src/app/interfaces/usuario-rol';
 import { DialogService } from 'src/app/services/i2t/dialog.service';
 import { UsuarioService } from 'src/app/services/i2t/usuario-rol.service';
@@ -28,29 +28,15 @@ export class RolesUsuariosComponent implements OnInit {
               private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
-    this.getUsuarios();
+    this.usuarios = this._usuarioService.getUsuarios();
     this.ordenAlfabetico(this.usuarios);
-    this.ordenAlfabetico(this.arrayBack);
-    this.dataSource = new MatTableDataSource(this.usuarios);
+    this.arrayBack = this.usuarios;
+    this.cargarTabla();
     this.getRoles();
     const b = this._usuarioService.getFuncionesPorRol().subscribe(
       (response: any) => {
         console.log("ESTO DEVUELVE EL DATASET = ", response.dataset);
     });
-  }
-
-  getUsuarios() {
-    this._usuarioService.getUsuarios().subscribe(
-      (response: any) => {
-        const usuarios = response.dataset;
-        let cont = 0;
-        usuarios.forEach((user: any) => {
-          cont++;
-          this.usuarios.push({id: cont, id_usuario: user.id_usuario, usuario: user.nombre_usuario, nombre: user.nombre+" "+user.apellido, rol: user.nombre_rol});
-          this.arrayBack.push({id: cont, id_usuario: user.id_usuario, usuario: user.nombre_usuario, nombre: user.name+" "+user.apellido, rol: user.nombre_rol});
-        });
-    });
-    console.log(this.usuarios)
   }
 
   ordenAlfabetico(lista: Array<any>) {
@@ -65,12 +51,21 @@ export class RolesUsuariosComponent implements OnInit {
     });
   }
 
+  cargarTabla() {
+    let arrayAux:any = [];
+    this.usuarios.forEach(user => {
+      arrayAux.push({usuario: user.usuario, nombre: user.nombre, rol: user.rol});
+    });
+    this.dataSource = new MatTableDataSource(arrayAux);
+  }
+
   getRoles() {
     this._usuarioService.getRoles().subscribe(
       (response: any) => {
         console.log("ESTO DEVUELVE EL DATASET = ", response.dataset);
         const roles = response.dataset;
         let cont = 0;
+        console.log(this.roles)
         roles.forEach((rol: any) => {
           cont++;
           this.roles.push({id: cont, nombre: rol.name, check: true});
@@ -102,8 +97,7 @@ export class RolesUsuariosComponent implements OnInit {
       this.newArray = [];
       this.filtrarRoles();
     }
-
-    this.dataSource = new MatTableDataSource(this.usuarios);
+    this.cargarTabla();
 }
 
 filtrarRoles() {
@@ -114,7 +108,7 @@ filtrarRoles() {
     for (let i=0;i<firstArray.length;i++) {
       let obj = firstArray[i];
       this.usuarios.push(obj);
-      this.dataSource = new MatTableDataSource(this.usuarios);
+      this.cargarTabla();
     }
   });
 }
@@ -164,7 +158,7 @@ filtrarRoles() {
     this.usuarios.forEach(user => {
       if (user.id == this.auxUser.id) {
         user.rol = rolCambio;
-        this.dataSource = new MatTableDataSource(this.usuarios);
+        this.cargarTabla();
       }
     });
     this.mensajeCambio('El cambio de rol fue realizado con éxito');

@@ -29,15 +29,28 @@ export class UsuarioService {
     { id: 17, usuario: 'lrios', nombre: 'Lucas Rios', rol: 'Operativo' }
   ];
 
-  getUsuarios() {
+  usuariosSP: any[] = [];
+
+  getUsuariosRefact() {
     let jsbody: string = JSON.stringify({
       par_modo : 'G'
     });
     return this.rest.callProcedimientoVisor(jsbody, "RolesUsuario");
   }
 
-  getUsuariosold() {
-    return this.usuarios;
+  iniciarUsuarios() {
+    this.getUsuariosRefact().subscribe(
+      (response: any) => {
+        let cont = 0;
+        response.dataset.forEach((user: any) => {
+          cont++;
+          this.usuariosSP.push({id: cont, id_usuario: user.id_usuario, usuario: user.nombre_usuario, nombre: user.nombre+" "+user.apellido, rol: user.nombre_rol});
+        });
+    });
+  }
+
+  getUsuarios() {
+    return this.usuariosSP;
   }
 
   getRoles() {
