@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Proyecto } from '../../interfaces/proyecto';
 import { TareaService } from './tarea.service';
+import { RestService } from './rest.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,16 +14,17 @@ export class ProyectoDataService {
   public tareasPorcentajeTareasAtrasadas: number;
   public tareasPorcentajeTareasEnProgreso: number;
 
-  constructor(private tareaService: TareaService) { 
+  constructor(private tareaService: TareaService, private restService: RestService) { 
     this._fechaActual = new Date(Date.now());
     this.tareasPorcentajeTareasAtrasadas = 0;
     this.tareasPorcentajeTareasCompleatadas = 0;
     this.tareasPorcentajeTareasEnProgreso = 0;
     this.proyectos = [
       {
-        numero: 0,
+        numero: "0",
         nombre: "Chavarini",
         cliente: "Chavarini y asociados",
+        asignado: "Patuco Macaco",
         //Implementa la interfaz de tarea.
         tareas: [],
         porcentajeTareasAtrasadas: 0,
@@ -47,9 +49,10 @@ export class ProyectoDataService {
         }
       },
       {
-        numero: 1,
+        numero: "1",
         nombre: "Sala de Sorteos - Extractos Digitales",
         cliente: "Loteria",
+        asignado: "Chichefri",
         tareas: [],
         porcentajeTareasAtrasadas: 0,
         porcentajeTareasATiempo: 0,
@@ -85,6 +88,15 @@ export class ProyectoDataService {
   {
     return this.proyectos;
   }
+
+  /*private calcularPorcentajeTareas(){
+    let body = {
+      "nivel": "2",
+      "id_caso": "d31cfdaa-049e-e6e3-999d-62b5b2f778b7"
+    }
+    this.restService.requestPost(body, "EstadosProyectos")
+  }*/
+
 
   /**
    * Método privado que sive para rellenar las tareas asignadas a cada proyecto.

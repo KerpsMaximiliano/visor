@@ -12,6 +12,12 @@ import { MyMaterialModule } from './material';
 import { LoginModule } from './components/login/login.module';
 import { RecuperarcontraseniaModule } from './components/recuperar-contrasenia/recuperar-contrasenia.module';
 import { InicioEstadoModule } from './componentes/inicio-estado-proyecto/inicio-estado.module';
+import { HttpClientModule } from '@angular/common/http';
+import { RestService } from './services/i2t/rest.service';
+import { Config } from './services/i2t/config.service';
+import { SnackbarService } from './services/util/snackbar.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 @NgModule({
   declarations: [
@@ -23,9 +29,10 @@ import { InicioEstadoModule } from './componentes/inicio-estado-proyecto/inicio-
     MyMaterialModule,
     LoginModule,
     RecuperarcontraseniaModule,
-    InicioEstadoModule
+    InicioEstadoModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [Config, RestService, MatSnackBar, SnackbarService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

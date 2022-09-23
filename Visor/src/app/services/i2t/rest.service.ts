@@ -14,8 +14,7 @@ import { SnackbarService } from 'src/app/services/util/snackbar.service';
 export class RestService {
   preUrl: string;
   preUrlExtractos: string;
-
-
+  urlPost: string = "http://tstvar.i2tsa.com.ar:3001/api/proc";
 
   constructor(
     private http: HttpClient,
@@ -138,4 +137,15 @@ export class RestService {
   //   let result = this.doProcedimientoExt(body, query);
   //   return result;
   // }
+
+  requestPost(body: any, tipoDePost: string){
+    //Falta mergear para traer los ultimos cambios del CU LOGIN!!!
+    //let token = localStorage.getItem('TOKEN')!; //con el ! le digo a typescript que token nunca va a ser nulo o vacio, ojo! asegurar este comportamiento sino buscar otra forma
+    const headers = new HttpHeaders({
+      'x-access-token': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjdW5xMmkwZDU4OGoxN2Q1aTNoczcyYnQzIiwiaWF0IjoxNjYzOTMzNDQ3LCJleHAiOjE2NjM5NTE0NDd9._TdiDQWXWOM3hOAZ0jNvhucCqZkpTbN4LyzGx-EK0C8"
+    });
+
+    let url = this.urlPost + "/proc/" + tipoDePost;
+    return this.http.post(url , body, {headers});
+  }  
 }
