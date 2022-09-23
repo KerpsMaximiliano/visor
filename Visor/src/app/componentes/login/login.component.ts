@@ -42,6 +42,7 @@ export class LoginComponent implements OnInit {
       if(resp.returnset[0].RCode == 1){
         //Se almacena el token en el LocalStorage.
         localStorage.setItem('auth_token', resp.dataset[0].jwt);
+        localStorage.setItem('usuario', this.user.value);
         this.visibilidadMensaje = false;
         this._router.navigate(['configuraciones-main']);
       }

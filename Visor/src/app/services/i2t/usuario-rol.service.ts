@@ -15,7 +15,6 @@ export class UsuarioService {
     this.usuariosSP = [];
     this.getUsuariosRefact().subscribe(
       (response: any) => {
-        console.log(response.dataset)
         let cont = 0;
         response.dataset.forEach((user: any) => {
           cont++;
@@ -49,6 +48,14 @@ export class UsuarioService {
       id_usuario : idUsuario
     });
     return this.rest.callProcedimientoVisor(jsbody, "RolesUsuario");
+  }
+
+  verificarUsuario(codigoFuncion: string, usuario: string) {
+    let jsbody: string = JSON.stringify({
+      Pnombreusuario : usuario,
+      Pcodigofuncion : codigoFuncion
+    });
+    return this.rest.callProcedimientoVisor(jsbody, "SP_ET_verificafuncion");
   }
 
 }

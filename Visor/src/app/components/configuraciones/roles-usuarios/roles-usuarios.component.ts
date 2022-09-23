@@ -29,7 +29,6 @@ export class RolesUsuariosComponent implements OnInit {
 
   ngOnInit(): void {
     this.usuarios = this._usuarioService.getUsuarios();
-    console.log(this.usuarios)
     this.ordenAlfabetico(this.usuarios);
     this.arrayBack = this.usuarios;
     this.cargarTabla();
