@@ -7,6 +7,7 @@ import { ModalActividadComponent } from './modal-actividad/modal-actividad.compo
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogService } from '../shared/dialog.service';
+import { HttpClientModule } from '@angular/common/http';
 
 
 
@@ -19,6 +20,7 @@ import { DialogService } from '../shared/dialog.service';
   imports: [
     CommonModule,
     MyMaterialModule,
+    HttpClientModule,
     SharedModule,
     ReactiveFormsModule
   ],

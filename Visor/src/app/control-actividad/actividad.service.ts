@@ -5,6 +5,8 @@ import { MatTableDataSource } from '@angular/material/table/table-data-source';
 import { Subject } from 'rxjs';
 import { Actividad } from 'src/app/interfaces/actividades';
 import { ModalActividadComponent } from './modal-actividad/modal-actividad.component';
+import { HttpClient } from '@angular/common/http';
+import { ActividadSuite } from 'src/app/interfaces/actividadesSuite';
 
 @Injectable({
   providedIn: 'root'
@@ -13,23 +15,17 @@ export class ActividadService {
 
 act!: Actividad;
 
-
-  /*listActividades: Actividad[] = [
-    {position: 0,fecha: new Date('01/10/21'), horas: 5, children:[{descripcion:'Descripcion para la Actividad 1'}], asunto:'XXXX', tareas:'tarea1'},
-    {position: 1,fecha: new Date('01/10/21'), horas: 4, children:[{descripcion:'Descripcion para la Actividad 1'}] ,asunto:'XXXX', tareas:'tarea1'},
-    {position: 2,fecha: new Date('02/10/21'), horas: 3, children:[{descripcion:'Descripcion para la Actividad 1'}] ,asunto:'XXXX', tareas:'tarea1'},
-    {position: 3,fecha: new Date('03/10/21'), horas: 6, children:[{descripcion:'Descripcion para la Actividad 1'}] ,asunto:'XXXX', tareas:'tarea1'},
-    {position: 4,fecha: new Date('04/10/21'), horas: 34, children:[{descripcion:'Descripcion para la Actividad 1'}] ,asunto:'XXXX', tareas:'tarea1'},
-    {position: 5,fecha: new Date('05/10/21'), horas: 6, children:[{descripcion:'Descripcion para la Actividad 1'}] ,asunto:'XXXX', tareas:'tarea1'},
-   {position: 6,fecha: new Date('06/10/21'), horas: 2, children:[{descripcion:'Descripcion para la Actividad 1'}] ,asunto:'XXXX', tareas:'tarea1'},
-    {position: 7,fecha: new Date('07/10/21'), horas: 4, children:[{descripcion:'Descripcion para la Actividad 1'}] ,asunto:'XXXX', tareas:'tarea1'},
-    {position: 8,fecha: new Date('08/10/21'), horas: 5, children:[{descripcion:'Descripcion para la Actividad 1'}] ,asunto:'XXXX', tareas:'tarea1'},
-    {position: 9,fecha: new Date('09/10/21'), horas: 6, children:[{descripcion:'Descripcion para la Actividad 1'}] ,asunto:'XXXX', tareas:'tarea1'},
-  ];*/
-
   listActividades: Actividad[] = [
-    {position: 0,fecha: new Date('01/10/21'), horas: 5, children:['Descripcion para la Actividad 1'], asunto:'XXXX', tareas:'tarea1'},
-    {position: 1,fecha: new Date('01/10/21'), horas: 4, children:['Descripcion para la Actividad 1' ],asunto:'XXXX', tareas:'tarea1'},
+    {position: 0,fecha: new Date('01/10/21'), horas: 5, children:['Descripcion para la Actividad 1'], asunto:'XXXX', tareas:'tarea1',toggle:0},
+    {position: 1,fecha: new Date('01/10/21'), horas: 4, children:['Descripcion para la Actividad 1' ],asunto:'XXXX', tareas:'tarea1',toggle:0},
+    {position: 2,fecha: new Date('02/10/21'), horas: 3, children:['Descripcion para la Actividad 1'] ,asunto:'XXXX', tareas:'tarea1',toggle:0},
+    {position: 3,fecha: new Date('03/10/21'), horas: 6, children:['Descripcion para la Actividad 1'] ,asunto:'XXXX', tareas:'tarea1',toggle:0},
+    {position: 4,fecha: new Date('04/10/21'), horas: 34, children:['Descripcion para la Actividad 1'] ,asunto:'XXXX', tareas:'tarea1',toggle:0},
+    {position: 5,fecha: new Date('05/10/21'), horas: 6, children:['Descripcion para la Actividad 1'] ,asunto:'XXX1', tareas:'tarea1',toggle:0},
+    {position: 6,fecha: new Date('06/10/21'), horas: 2, children:['Descripcion para la Actividad 1'] ,asunto:'XXXX', tareas:'tarea1',toggle:0},
+    {position: 7,fecha: new Date('07/10/21'), horas: 4, children:['Descripcion para la Actividad 1'] ,asunto:'XXXX', tareas:'tarea1',toggle:0},
+    {position: 8,fecha: new Date('08/10/21'), horas: 5, children:['Descripcion para la Actividad 1'] ,asunto:'XXXX', tareas:'tarea1',toggle:0},
+    {position: 9,fecha: new Date('09/10/21'), horas: 6, children:['Descripcion para la Actividad 1'] ,asunto:'XXXX', tareas:'tarea1',toggle:0}
   ]
 
   
@@ -60,6 +56,7 @@ index!: number | undefined;
   constructor(private dialog: MatDialog,
               private fb: FormBuilder,
               public dialogRef: MatDialogRef<ModalActividadComponent>,
+              private http: HttpClient,
               @Inject(MAT_DIALOG_DATA) public data: Actividad,) {
     this.form = this.fb.group({
       fecha: ['',Validators.required],
@@ -105,5 +102,15 @@ index!: number | undefined;
     console.log('arreglo final',this.listActividades);
   }
 
+  public get(url: string){
+    return this.http.get(url);
+  }
+
+
+  public getAllActividadesSuite(){
+    const path = 'http://tstvar.i2tsa.com.ar:3001/api/proc/AbmActividades';
+    return this.http.get<ActividadSuite[]>(path);
+  }
+ 
   
 }

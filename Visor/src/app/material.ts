@@ -14,6 +14,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatListModule} from '@angular/material/list';
+import {MatGridListModule} from '@angular/material/grid-list';
 
 const MATERIALES = [
     MatButtonModule,
@@ -31,7 +32,8 @@ const MATERIALES = [
     MatDatepickerModule,
     MatNativeDateModule,
     MatDividerModule,
-    MatListModule
+    MatListModule,
+    MatGridListModule
 ]
 
 

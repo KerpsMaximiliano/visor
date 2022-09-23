@@ -6,7 +6,8 @@ export interface Actividad{
     fecha: Date;
     horas: Number;
     children: [String];
-    asunto: String;
+    asunto: string;
     tareas: String;
+    toggle: number;
    
 }
