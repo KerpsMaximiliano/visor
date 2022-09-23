@@ -23,5 +23,5 @@
               </mat-form-field>
     </form>
     <div id="separador-2"></div>
-    <button type="submit" class="correoButton" (click)="enviarCorreo()"><span>Enviar correo</span></button>
+    <button *ngIf="!email.hasError('email') && !email.hasError('required')" type="submit" class="correoButton" (click)="enviarCorreo()"><span>Enviar correo</span></button>
 </div>

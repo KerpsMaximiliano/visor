@@ -9,15 +9,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MyMaterialModule } from './material';
 
 //Modulos internos
-import { LoginModule } from './components/login/login.module';
-import { RecuperarcontraseniaModule } from './components/recuperar-contrasenia/recuperar-contrasenia.module';
-import { InicioEstadoModule } from './componentes/inicio-estado-proyecto/inicio-estado.module';
+import { LoginModule } from './componentes/login/login.module';
+import { RecuperarcontraseniaModule } from './componentes/recuperar-contrasenia/recuperar-contrasenia.module';
 import { HttpClientModule } from '@angular/common/http';
 import { RestService } from './services/i2t/rest.service';
+import { LoginService } from './services/i2t/login.service';
 import { Config } from './services/i2t/config.service';
 import { SnackbarService } from './services/util/snackbar.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
+import { InicioEstadoModule } from './componentes/inicio-estado-proyecto/inicio-estado.module';
 
 @NgModule({
   declarations: [
@@ -29,10 +29,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     MyMaterialModule,
     LoginModule,
     RecuperarcontraseniaModule,
+    HttpClientModule,
     InicioEstadoModule,
     HttpClientModule
   ],
-  providers: [Config, RestService, MatSnackBar, SnackbarService],
+
+  //Proveedores agregados
+  providers: [RestService, LoginService, Config, SnackbarService, MatSnackBar],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

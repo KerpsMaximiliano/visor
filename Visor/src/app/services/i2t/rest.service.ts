@@ -27,14 +27,14 @@ export class RestService {
 
 
   /** Caso especial para login(), no requiere token **/
-  doLogin(body: string){
+  doLogin(body: any){
     const headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
 
-    let query = "login/";
-    let url = this.preUrl + query;
-    return this.http.post( url, body, { headers } );
+    //let query = "login/";
+    //let url = this.preUrl + query;
+    return this.http.post( 'http://tstvar.i2tsa.com.ar:3001/login/', body, { headers } );
   }
 
 
