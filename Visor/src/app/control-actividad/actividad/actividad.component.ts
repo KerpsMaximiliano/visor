@@ -9,6 +9,9 @@ import { ModalActividadComponent } from '../modal-actividad/modal-actividad.comp
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { CdkNoDataRow } from '@angular/cdk/table';
+import { LoginService } from 'src/app/services/i2t/login.service';
+import { Usuario } from 'src/app/interfaces/usuario';
+import { userInfo } from 'os';
 
 
 
@@ -41,6 +44,7 @@ export class ActividadComponent implements OnInit {
   actividad!: Actividad;
   index! : number | undefined;
   expandedElement!: Actividad | null;
+  user!: Usuario;
   
 
   panelOpenState = false;
@@ -53,9 +57,11 @@ export class ActividadComponent implements OnInit {
               public dialogRef: MatDialogRef<ActividadComponent>,
               public dialogRefModal: MatDialogRef<ModalActividadComponent>,
               @Inject(MAT_DIALOG_DATA) public data:Actividad,
+              private _loginService: LoginService,
                ) { }
 
   ngOnInit(): void {
+    this._loginService.obtenerToken(this.user);
     this.cargarActividades();
     console.log('aqui va la carga de http',this.cargarTabla());
     this.cargarTabla();
