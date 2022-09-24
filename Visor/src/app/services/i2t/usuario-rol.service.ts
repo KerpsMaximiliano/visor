@@ -55,7 +55,7 @@ export class UsuarioService {
       Pnombreusuario : usuario,
       Pcodigofuncion : codigoFuncion
     });
-    return this.rest.callProcedimientoVisor(jsbody, "SP_ET_verificafuncion");
+    return this.rest.doProcedimientoVisor(jsbody, "SP_ET_verificafuncion");
   }
 
 }

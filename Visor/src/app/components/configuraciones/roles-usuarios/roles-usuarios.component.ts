@@ -22,6 +22,7 @@ export class RolesUsuariosComponent implements OnInit {
   arrayBack: UsuarioRol[] = [];
   auxUser: any;
   auxEvent: any;
+  privilegio: boolean = false;
 
   constructor(private _usuarioService: UsuarioService,
               private dialogService: DialogService,
@@ -33,6 +34,11 @@ export class RolesUsuariosComponent implements OnInit {
     this.arrayBack = this.usuarios;
     this.cargarTabla();
     this.getRoles();
+    this._usuarioService.verificarUsuario('F001', localStorage.getItem('usuario')!).subscribe((response: any) => {
+      if (response.returnset[0].RCode == 200) {
+        this.privilegio = true;
+      }
+    });
   }
 
   ordenAlfabetico(lista: Array<any>) {
@@ -131,15 +137,23 @@ filtrarRoles() {
                 contador++;
               }
             });
-            if (contador == 2 && this.auxUser.rol == 'Administrador') {
-              this.mensajeCambio('No se pudo cambiar el rol (Debe haber 2 Administradores)');
-            } else if (this.auxUser.usuario == 'lmariotti') {
+            if (contador == 2 && this.auxUser.rol == 'Administrador') {  // cambiar el numero 2 a 1 antes de terminar el componente
+              this.mensajeCambio('No se pudo cambiar el rol (Debe haber 1 Administrador)');
+            } else if (this.auxUser.usuario == 'lmariotti') {  // chequear que no exista en la bd
               this.mensajeCambio('No se puede cambiar el rol de este Usuario');
             } else {
-              this.cambioExitoso(rolCambio);
+              if (this.privilegio == true) {
+                this.cambioExitoso(rolCambio);
+              } else {
+                this.mensajeCambio('Su usuario no tiene los privilegios para cambiar roles');
+              }
             }
           } else {
-            this.cambioExitoso(rolCambio);
+            if (this.privilegio == true) {
+              this.cambioExitoso(rolCambio);
+            } else {
+              this.mensajeCambio('Su usuario no tiene los privilegios para cambiar roles');
+            }
           }
           let input = document.querySelector('input');
           if (input != null) {
