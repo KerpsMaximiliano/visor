@@ -4,6 +4,7 @@ import {MatDialog} from '@angular/material/dialog'
 import { LoginService } from '../../services/i2t/login.service';
 import { ModalenviarcorreoComponent } from '../../shared/modal-enviar-correo/modal-enviar-correo.component';
 import { Usuario } from '../../interfaces/usuario';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,7 @@ export class LoginComponent implements OnInit {
   visibilidadMensaje: boolean;
 
 
-  constructor(private _dialog: MatDialog, private _loginService: LoginService) {
+  constructor(private _dialog: MatDialog, private _loginService: LoginService, private _router: Router) {
     this.mensajeError= "El usuario y/o contraseña no son correctos"; //Mensaje rojo
     this.visibilidadMensaje = false;
   }
@@ -42,6 +43,7 @@ export class LoginComponent implements OnInit {
         //Se almacena el token en el LocalStorage.
         localStorage.setItem('auth_token', resp.dataset[0].jwt);
         this.visibilidadMensaje = false;
+        this._router.navigate(['vista-diseño-tecnico']);
       }
       else{
         this.visibilidadMensaje = true;

@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 //Componentes
 import { LoginComponent } from './componentes/login/login.component';
 import { RecuperarcontraseniaComponent } from './componentes/recuperar-contrasenia/recuperar-contrasenia.component';
+import { VistaDisenioTecnicoComponent } from './componentes/vista-disenio-tecnico/vista-disenio-tecnico.component';
 
 const routes: Routes = [
   {
@@ -18,6 +19,10 @@ const routes: Routes = [
   {
     path: "recuperar-contraseña",
     component: RecuperarcontraseniaComponent
+  },
+  {
+    path: "vista-diseño-tecnico",
+    component: VistaDisenioTecnicoComponent
   }
 ];
 

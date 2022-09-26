@@ -17,10 +17,13 @@ import { LoginService } from './services/i2t/login.service';
 import { Config } from './services/i2t/config.service';
 import { SnackbarService } from './services/util/snackbar.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { VistaDisenioTecnicoModule } from './componentes/vista-disenio-tecnico/vista-disenio-tecnico.module';
+
 
 @NgModule({
   declarations: [
-    AppComponent],
+    AppComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -28,7 +31,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     MyMaterialModule,
     LoginModule,
     RecuperarcontraseniaModule,
-    HttpClientModule
+    HttpClientModule,
+    VistaDisenioTecnicoModule
   ],
 
   //Proveedores agregados
