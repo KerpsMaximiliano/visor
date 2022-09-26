@@ -70,23 +70,23 @@ export class RestService {
 
   /** El webservice ejecuta un SP **/
   doProcedimientoVisor(body: string, query: string){
-    let token = localStorage.getItem('TOKEN')!; //con el ! le digo a typescript que token nunca va a ser nulo o vacio, ojo! asegurar este comportamiento sino buscar otra forma
+    let token = localStorage.getItem('auth_token')!; //con el ! le digo a typescript que token nunca va a ser nulo o vacio, ojo! asegurar este comportamiento sino buscar otra forma
     const headers = new HttpHeaders({
-      'x-access-token': token,
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'x-access-token': token
     });
 
-    let url = this.preUrlExtractos + 'api/proc/' + query;
+    let url = 'http://tstvar.i2tsa.com.ar:3001/api/proc/' + query;
     return this.http.post(url, body, { headers });
   }
 
   doQueryVisor(body: string, query: string){
-    let token = localStorage.getItem('TOKEN')!; //con el ! le digo a typescript que token nunca va a ser nulo o vacio, ojo! asegurar este comportamiento sino buscar otra forma
+    let token = localStorage.getItem('auth_token')!; //con el ! le digo a typescript que token nunca va a ser nulo o vacio, ojo! asegurar este comportamiento sino buscar otra forma
     const headers = new HttpHeaders({
       'x-access-token': token
     });
 
-    let url = this.preUrlExtractos + 'api/' + query;
+    let url = 'http://tstvar.i2tsa.com.ar:3001/api/' + query;
     return this.http.get(url , { headers });
   }
 

@@ -9,6 +9,9 @@ import { TareaService } from 'src/app/services/i2t/tarea.service';
 })
 export class VistaDisenioTecnicoComponent implements OnInit{
 
+  proyectoId: any;
+  tareasSP: any;
+  tareasOrg: any[]=[];
   tareasNoIniciadas: Tarea[]=[];
   tareasEnProgreso: Tarea[]=[];
   tareasCompletadas: Tarea[]=[];
@@ -24,19 +27,82 @@ export class VistaDisenioTecnicoComponent implements OnInit{
   constructor(private _tareaService: TareaService) {  }
 
   ngOnInit(): void {
-    this.cargarTareas();
-    this.poseeTareas();
-    if (!this.noHayProyecto) {
-      this.setearBarraProgreso();
-      this.ordenarListas();
-    }
+    this.proyectoId = "d31cfdaa-049e-e6e3-999d-62b5b2f778b7"; // este dato viene del commponente tareas
+    this._tareaService.getTareasDeProyecto(this.proyectoId).subscribe((response: any) => {
+      this.tareasSP = response.dataset;
+      this.organizarTareas();
+      console.log(this.tareasOrg);
+      this.cargarTareas();
+      this.poseeTareas();
+      if (!this.noHayProyecto) {
+        this.setearBarraProgreso();
+        this.ordenarListas();
+      }
+    });;
+  }
+
+  organizarTareas() {
+    this.tareasSP.forEach((tarea: any) => {
+      this.tareasOrg.push({
+        titulo: tarea.nombre_tarea,
+        proyecto: tarea.nombre_proyecto,
+        prioridad: tarea.prioridad,
+        asignado: tarea.usuario_asignado,
+        facilitador: tarea.facilitador,
+        fechaInicio: null,                 // revisar request para este campo
+        fechaFin: null,                    // revisar request para este campo
+        fechaPlanificacion: tarea.fecha_planificada,
+        horasPlanificadas: tarea.horas_planificadas,
+        horasEjecutadas: tarea.horas_ejecutadas,
+        documento: tarea.nombre_documento,
+        tareasPrecondicion: null,          // para esta entrega queda asi
+        notas: tarea.nota,
+        tipoTarea: tarea.tipo_tarea,
+        estado: tarea.estado,
+        sprint: this.calcularSprint(tarea.fecha_planificada)
+      })
+    });
+  };
+
+  calcularSprint(fechaPlan: string) {
+    return (fechaPlan.slice(0,4).concat(fechaPlan.slice(5,7)));
   }
 
   // Inyecto las tareas desde el servicio
   cargarTareas(){
-    this.tareasNoIniciadas = this._tareaService.getTareasNoIniciadas();
-    this.tareasEnProgreso = this._tareaService.getTareasEnProgreso();
-    this.tareasCompletadas = this._tareaService.getTareasCompletadas();
+    this.tareasNoIniciadas = this.getTareasNoIniciadas();
+    this.tareasEnProgreso = this.getTareasEnProgreso();
+    this.tareasCompletadas = this.getTareasCompletadas();
+  }
+
+  getTareasNoIniciadas() {
+    const respuesta: Tarea[] = [];
+    this.tareasOrg.forEach(tarea => {
+      if(tarea.estado == "Not Started") {
+        respuesta.push(tarea);
+      }
+    });
+    return respuesta;
+  }
+
+  getTareasEnProgreso() {
+    const respuesta: Tarea[] = [];
+    this.tareasOrg.forEach(tarea => {
+      if(tarea.estado == "In Progress") {
+        respuesta.push(tarea);
+      }
+    });
+    return respuesta;
+  }
+    
+  getTareasCompletadas() {
+    const respuesta: Tarea[] = [];
+    this.tareasOrg.forEach(tarea => {
+      if(tarea.estado == "Completed") {
+          respuesta.push(tarea);
+      }
+    });
+    return respuesta;
   }
 
   // Si no hay tareas, no se visualiza el proyecto
@@ -149,7 +215,7 @@ export class VistaDisenioTecnicoComponent implements OnInit{
       arrayOrdenado.push(tarea);
     }});
     lista.forEach(tarea => {
-    if (tarea.prioridad == '') {
+    if (tarea.prioridad == null) {
       arrayOrdenado.push(tarea);
     }});
     console.log(arrayOrdenado);

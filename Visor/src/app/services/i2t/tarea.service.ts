@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Tarea } from 'src/app/interfaces/tarea';
+import { RestService } from './rest.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TareaService {
+
+constructor(private rest: RestService) { }
 
 tareas: Tarea[] = [
     {
@@ -188,6 +191,15 @@ tareas: Tarea[] = [
         sprint: "124192-ETAPA 5 ANGULAR"
     }
 ];
+
+getTareasDeProyecto(id_caso: string) {
+    let jsbody: string = JSON.stringify({
+        par_modo : 'G',
+        id_caso : id_caso,
+        tipo_tarea : 'RelevamientoReq'
+    });
+    return this.rest.callProcedimientoVisor(jsbody, "TareasProyecto");
+}
 
 getTareasNoIniciadas() {
     const respuesta: Tarea[] = [];
