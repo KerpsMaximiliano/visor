@@ -11,7 +11,7 @@ const routes: Routes = [
   {
     path: "",
     pathMatch: "full",
-    redirectTo: "inicio-main"
+    redirectTo: "login"
   },
   {
     path: "login",
@@ -21,8 +21,11 @@ const routes: Routes = [
     path: "recuperar-contraseña",
     component: RecuperarcontraseniaComponent
   },
-  { path: 'inicio-main', component: InicioMainComponent },
-  { path: 'inicio-colaboradores', component: InicioDisponibilidadColaboradoresComponent }
+  { path: 'inicio-main', component: InicioMainComponent,
+    children: [
+      { path: 'inicio-colaboradores', component: InicioDisponibilidadColaboradoresComponent }
+    ]
+  },
 ];
 
 @NgModule({

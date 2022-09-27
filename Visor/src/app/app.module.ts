@@ -43,7 +43,7 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
   ],
 
   //Proveedores agregados
-  providers: [RestService, LoginService, Config, SnackbarService, MatSnackBar{ provide: MAT_DATE_LOCALE, useValue: 'en-GB' }],
+  providers: [RestService, LoginService, Config, SnackbarService, MatSnackBar, { provide: MAT_DATE_LOCALE, useValue: 'en-GB' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
