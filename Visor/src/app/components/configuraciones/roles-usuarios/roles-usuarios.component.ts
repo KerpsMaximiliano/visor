@@ -64,7 +64,6 @@ export class RolesUsuariosComponent implements OnInit {
   getRoles() {
     this._usuarioService.getRoles().subscribe(
       (response: any) => {
-        console.log("ESTO DEVUELVE EL DATASET = ", response.dataset);
         const roles = response.dataset;
         roles.forEach((rol: any) => {
           if (rol.name != 'Analista Funcional') {

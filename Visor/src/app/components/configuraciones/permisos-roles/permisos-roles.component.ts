@@ -85,7 +85,6 @@ export class PermisosRolesComponent implements OnInit {
   }
 
   marcarCheckbox(event: any, rol: string, funcion: string) {
-    console.log(this.privilegio)
     this.dialogService.openConfirmDialog(
       '¿Está seguro de que desea cambiar el permiso de este rol?'
       ).afterClosed().subscribe(res => {
@@ -165,10 +164,8 @@ export class PermisosRolesComponent implements OnInit {
                 }
               });
               if (event.checked) {
-                console.log("insert", id_rol, id_funcion);
                 if (this.privilegio == true) {
                   this._permisoService.insertPermiso(id_funcion, id_rol).subscribe((response: any) => {
-                    console.log("INSERT EXITOSO", response);
                   });
                   permiso.supervisor = event.checked;
                   this.mensajeCambio('El permiso para el rol ' + rol + ' fue modificado correctamente');
@@ -177,10 +174,8 @@ export class PermisosRolesComponent implements OnInit {
                   this.mensajeCambio('Su usuario no tiene los privilegios para cambiar permisos');
                 }
               } else {
-                console.log("delete", id_funcion_rol);
                 if (this.privilegio == true) {
                   this._permisoService.deletePermiso(id_funcion_rol).subscribe((response: any) => {
-                    console.log("DELETE EXITOSO", response);
                   });
                   permiso.supervisor = event.checked;
                   this.mensajeCambio('El permiso para el rol ' + rol + ' fue modificado correctamente');
