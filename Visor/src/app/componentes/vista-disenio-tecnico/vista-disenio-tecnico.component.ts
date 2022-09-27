@@ -10,6 +10,7 @@ import { TareaService } from 'src/app/services/i2t/tarea.service';
 export class VistaDisenioTecnicoComponent implements OnInit{
 
   proyectoId: any;
+  proyectoNombre?: string;
   tareasSP: any;
   tareasOrg: any[]=[];
   tareasNoIniciadas: Tarea[]=[];
@@ -30,6 +31,7 @@ export class VistaDisenioTecnicoComponent implements OnInit{
     this.proyectoId = "d31cfdaa-049e-e6e3-999d-62b5b2f778b7"; // este dato viene del commponente tareas
     this._tareaService.getTareasDeProyecto(this.proyectoId).subscribe((response: any) => {
       this.tareasSP = response.dataset;
+      this.proyectoNombre = this.tareasSP[0].nombre_proyecto;
       this.organizarTareas();
       console.log(this.tareasOrg);
       this.cargarTareas();
@@ -49,9 +51,9 @@ export class VistaDisenioTecnicoComponent implements OnInit{
         prioridad: tarea.prioridad,
         asignado: tarea.usuario_asignado,
         facilitador: tarea.facilitador,
-        fechaInicio: null,                 // revisar request para este campo
-        fechaFin: null,                    // revisar request para este campo
-        fechaPlanificacion: tarea.fecha_planificada,
+        fechaInicio: this.calcularFecha(tarea.fecha_inicio),
+        fechaFin: this.calcularFecha(tarea.fecha_fin),
+        fechaPlanificacion: this.calcularFecha(tarea.fecha_planificada),
         horasPlanificadas: tarea.horas_planificadas,
         horasEjecutadas: tarea.horas_ejecutadas,
         documento: tarea.nombre_documento,
@@ -63,6 +65,14 @@ export class VistaDisenioTecnicoComponent implements OnInit{
       })
     });
   };
+
+  calcularFecha(fecha: string) {
+    if (fecha != null) {
+      return (fecha.slice(8,10)+'-'+fecha.slice(5,7)+'-'+fecha.slice(0,4));
+    } else {
+      return null;
+    }
+  }
 
   calcularSprint(fechaPlan: string) {
     return (fechaPlan.slice(0,4).concat(fechaPlan.slice(5,7)));
@@ -118,6 +128,14 @@ export class VistaDisenioTecnicoComponent implements OnInit{
     }
     if (this.poseeTareasNoIniciadas == false && this.poseeTareasEnProgreso == false && this.poseeTareasCompletadas == false) {
       this.noHayProyecto = true;
+    }
+  }
+
+  numeroNulo(numero: number) {
+    if (numero == null) {
+      return 0;
+    } else {
+      return numero;
     }
   }
 
