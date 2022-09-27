@@ -18,6 +18,10 @@ import { Config } from './services/i2t/config.service';
 import { SnackbarService } from './services/util/snackbar.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+export function initConfig(config: Config) {
+  return () => config.load();
+}
+
 @NgModule({
   declarations: [
     AppComponent],

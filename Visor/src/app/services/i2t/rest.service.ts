@@ -7,13 +7,13 @@ import { catchError, map, tap } from 'rxjs/operators';
 
 import { Config } from './config.service';
 import { SnackbarService } from 'src/app/services/util/snackbar.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RestService {
   preUrl: string;
-  preUrlExtractos: string;
 
 
 
@@ -22,8 +22,7 @@ export class RestService {
     private config: Config,
     private snackBar: SnackbarService,
   ){
-    this.preUrl = this.config.getConfig('api_url');
-    this.preUrlExtractos = this.config.getConfig('api_visor_url');
+    this.preUrl = environment.baseUrl;
   }
 
 
@@ -35,7 +34,7 @@ export class RestService {
 
     //let query = "login/";
     //let url = this.preUrl + query;
-    return this.http.post( 'http://tstvar.i2tsa.com.ar:3001/login/', body, { headers } );
+    return this.http.post( this.preUrl + 'login/', body, { headers } );
   }
 
 
@@ -70,23 +69,23 @@ export class RestService {
 
   /** El webservice ejecuta un SP **/
   doProcedimientoVisor(body: string, query: string){
-    let token = localStorage.getItem('TOKEN')!; //con el ! le digo a typescript que token nunca va a ser nulo o vacio, ojo! asegurar este comportamiento sino buscar otra forma
+    let token = localStorage.getItem('auth_token')!; //con el ! le digo a typescript que token nunca va a ser nulo o vacio, ojo! asegurar este comportamiento sino buscar otra forma
     const headers = new HttpHeaders({
       'x-access-token': token,
       'Content-Type': 'application/json'
     });
 
-    let url = this.preUrlExtractos + 'api/proc/' + query;
+    let url = this.preUrl + 'api/proc/' + query;
     return this.http.post(url, body, { headers });
   }
 
   doQueryVisor(body: string, query: string){
-    let token = localStorage.getItem('TOKEN')!; //con el ! le digo a typescript que token nunca va a ser nulo o vacio, ojo! asegurar este comportamiento sino buscar otra forma
+    let token = localStorage.getItem('auth_token')!; //con el ! le digo a typescript que token nunca va a ser nulo o vacio, ojo! asegurar este comportamiento sino buscar otra forma
     const headers = new HttpHeaders({
       'x-access-token': token
     });
 
-    let url = this.preUrlExtractos + 'api/' + query;
+    let url = this.preUrl + 'api/' + query;
     return this.http.get(url , { headers });
   }
 
