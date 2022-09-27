@@ -9,8 +9,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MyMaterialModule } from './material';
 
 //Modulos internos
-import { LoginModule } from './components/login/login.module';
-import { RecuperarcontraseniaModule } from './components/recuperar-contrasenia/recuperar-contrasenia.module';
+import { LoginModule } from './componentes/login/login.module';
+import { RecuperarcontraseniaModule } from './componentes/recuperar-contrasenia/recuperar-contrasenia.module';
+import { HttpClientModule } from '@angular/common/http';
+import { RestService } from './services/i2t/rest.service';
+import { LoginService } from './services/i2t/login.service';
+import { Config } from './services/i2t/config.service';
+import { SnackbarService } from './services/util/snackbar.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { InicioMainComponent } from './componentes/inicio/inicio-main/inicio-main.component';
 import { InicioDisponibilidadColaboradoresModule } from './componentes/inicio/inicio-disponibilidad-colaboradores/inicio-disponibilidad-colaboradores.module';
 import { FormsModule } from '@angular/forms';
@@ -31,10 +37,13 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     MyMaterialModule,
     LoginModule,
     RecuperarcontraseniaModule,
+    HttpClientModule,
     InicioDisponibilidadColaboradoresModule,
     FormsModule
   ],
-  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'en-GB' }],
+
+  //Proveedores agregados
+  providers: [RestService, LoginService, Config, SnackbarService, MatSnackBar{ provide: MAT_DATE_LOCALE, useValue: 'en-GB' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

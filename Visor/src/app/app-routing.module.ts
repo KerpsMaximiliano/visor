@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 //Componentes
-import { LoginComponent } from './components/login/login.component';
-import { RecuperarcontraseniaComponent } from './components/recuperar-contrasenia/recuperar-contrasenia.component';
+import { LoginComponent } from './componentes/login/login.component';
+import { RecuperarcontraseniaComponent } from './componentes/recuperar-contrasenia/recuperar-contrasenia.component';
 import { InicioMainComponent } from './componentes/inicio/inicio-main/inicio-main.component';
 import { InicioDisponibilidadColaboradoresComponent } from './componentes/inicio/inicio-disponibilidad-colaboradores/inicio-disponibilidad-colaboradores.component';
 
