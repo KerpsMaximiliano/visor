@@ -8,15 +8,23 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 //Material
 import { MyMaterialModule } from './material';
 
-//Modulos internos
+// Componentes
 import { LoginModule } from './componentes/login/login.module';
 import { RecuperarcontraseniaModule } from './componentes/recuperar-contrasenia/recuperar-contrasenia.module';
-import { HttpClientModule } from '@angular/common/http';
+import { ConfiguracionesComponent } from './components/configuraciones/configuraciones-main/configuraciones-main.component';
+import { RolesUsuariosModule } from './components/configuraciones/roles-usuarios/roles-usuarios.module';
+import { PermisosRolesModule } from './components/configuraciones/permisos-roles/permisos-roles.module';
+import { MatConfirmDialogComponent } from './shared/mat-confirm-dialog/mat-confirm-dialog.component';
 import { RestService } from './services/i2t/rest.service';
 import { LoginService } from './services/i2t/login.service';
 import { Config } from './services/i2t/config.service';
+import { HttpClientModule } from '@angular/common/http';
 import { SnackbarService } from './services/util/snackbar.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { ModalcontraseniaComponent } from './shared/modal-contrasenia/modalcontrasenia.component';
+
+export function initConfig(config: Config) {
+  return () => config.load();
+}
 import { InicioMainComponent } from './componentes/inicio/inicio-main/inicio-main.component';
 import { InicioDisponibilidadColaboradoresModule } from './componentes/inicio/inicio-disponibilidad-colaboradores/inicio-disponibilidad-colaboradores.module';
 import { FormsModule } from '@angular/forms';
@@ -27,6 +35,10 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 @NgModule({
   declarations: [
     AppComponent,
+    ConfiguracionesComponent,
+    MatConfirmDialogComponent,
+    ModalcontraseniaComponent
+  ,
     InicioMainComponent,
     ModalFiltroComponent
   ],
@@ -37,6 +49,8 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     MyMaterialModule,
     LoginModule,
     RecuperarcontraseniaModule,
+    RolesUsuariosModule,
+    PermisosRolesModule,
     HttpClientModule,
     InicioDisponibilidadColaboradoresModule,
     FormsModule
