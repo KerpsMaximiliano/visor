@@ -22,8 +22,9 @@ import { Config } from './services/i2t/config.service';
 import { HttpClientModule } from '@angular/common/http';
 import { SnackbarService } from './services/util/snackbar.service';
 import { ModalcontraseniaComponent } from './shared/modal-contrasenia/modalcontrasenia.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { VistaDisenioTecnicoModule } from './componentes/vista-disenio-tecnico/vista-disenio-tecnico.module';
+import { TareasModule } from './components/tareas/tareas.module';
+import { DialogModule } from './components/dialog/dialog.module';
 
 
 @NgModule({
@@ -32,8 +33,6 @@ import { VistaDisenioTecnicoModule } from './componentes/vista-disenio-tecnico/v
     ConfiguracionesComponent,
     MatConfirmDialogComponent,
     ModalcontraseniaComponent,
-    TareasComponent,
-    DialogComponent
   ],
   imports: [
     BrowserModule,
@@ -46,7 +45,9 @@ import { VistaDisenioTecnicoModule } from './componentes/vista-disenio-tecnico/v
     RolesUsuariosModule,
     PermisosRolesModule,
     HttpClientModule,
-    VistaDisenioTecnicoModule
+    VistaDisenioTecnicoModule,
+    TareasModule,
+    DialogModule
   ],
   providers: [RestService, LoginService, Config, SnackbarService],
   bootstrap: [AppComponent]

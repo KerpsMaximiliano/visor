@@ -32,7 +32,12 @@ const routes: Routes = [
   {
     path: "vista-diseño-tecnico",
     component: VistaDisenioTecnicoComponent
-  }
+  },
+  {
+    path: 'tareas' ,
+    component:TareasComponent
+  },
+
 ];
 
 @NgModule({
