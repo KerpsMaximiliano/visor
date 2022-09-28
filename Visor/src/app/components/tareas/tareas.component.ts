@@ -7,8 +7,21 @@ import {
   MatSnackBarHorizontalPosition,
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
+import { MatTableDataSource } from '@angular/material/table';
 
 
+export interface PropiedadesProyecto{
+  id: number,
+  nombre: string, 
+  planificadas: number
+  noIniciadas: number,
+  enProgreso: number,
+  enPrueba: number, 
+  completadas: number, 
+  tieneTareasUsuario: boolean, 
+  cliente: string, 
+  asignadoA: string
+}
 @Component({
   selector: 'app-tareas',
   templateUrl: './tareas.component.html',
@@ -16,29 +29,75 @@ import {
 })
 
 export class TareasComponent implements OnInit {
-
+  listaProyectos: PropiedadesProyecto[] = [];
+  dataSource: MatTableDataSource<PropiedadesProyecto>;
   nombreProyecto='';
+  estiloListaProyectos: string = 'ocultarTabla';
   seleccionoProyecto = '';
   horizontalPosition: MatSnackBarHorizontalPosition = 'start';
   verticalPosition: MatSnackBarVerticalPosition = 'bottom';
   subtituloProyecto: string ='';
-  filtrosBusquedaProyecto: Object[] = []
+  filtrosBusquedaProyecto: Object[] = [
+    {numeroProyecto: ''},
+    {nombreProyecto: ''},
+    {clienteProyecto: ''},
+    {asignadoAproyecto: ''}
+  ]
+  filtrosBusquedaTareas: Object[] = [
+    {nombreTarea: ''},
+    {prioridadTarea: ''},
+    {facilitadorTarea: ''},
+    {asignadoAtarea: ''},
+    {tecnologiatarea: ''}
+  ]
+
+  columnas: string[] = ['nombre'];
 
 
   constructor(public dialog: MatDialog, private _snackBar: MatSnackBar) {
+    const proyectos: PropiedadesProyecto[] = [
+      { id: 128109, nombre: 'Entrenamiento en Drupal y Symfony', planificadas: 448, noIniciadas: 424, enProgreso: 24, enPrueba: 0, completadas: 0, tieneTareasUsuario: false, cliente: 'Factory', asignadoA: 'Adrian Enrico' },
+      { id: 125029, nombre: 'Restyling y Migración de Portal PAC', planificadas: 3600, noIniciadas: 500, enProgreso: 0, enPrueba: 0, completadas: 2400, tieneTareasUsuario: false, cliente: 'Factory', asignadoA: 'Patricio Hernán Macagno' },
+      { id: 124192, nombre: 'Sala de Sorteos - Extractos Digitales', planificadas: 2400, noIniciadas: 492, enProgreso: 200, enPrueba: 0, completadas: 1640, tieneTareasUsuario: true, cliente: 'Factory', asignadoA: 'Adrian Enrico' },
+      { id: 888888, nombre: 'Visorrr - Panel de control', planificadas: 1040, noIniciadas: 394, enProgreso: 126, enPrueba: 0, completadas: 184, tieneTareasUsuario: true, cliente: 'Factory', asignadoA: 'Patricio Hernán Macagno' },
+      { id: 127230, nombre: 'Visor - Panel de control', planificadas: 1040, noIniciadas: 394, enProgreso: 126, enPrueba: 0, completadas: 144, tieneTareasUsuario: false, cliente: 'Factory', asignadoA: 'Patricio Hernán Macagno' },
+      { id: 127230, nombre: 'Visor - Panel de control', planificadas: 1040, noIniciadas: 394, enProgreso: 126, enPrueba: 0, completadas: 184, tieneTareasUsuario: false, cliente: 'Factory', asignadoA: 'Patricio Hernán Macagno' },
+      { id: 127230, nombre: 'Visor - Panel de control', planificadas: 1040, noIniciadas: 394, enProgreso: 126, enPrueba: 0, completadas: 184, tieneTareasUsuario: false, cliente: 'Factory', asignadoA: 'Patricio Hernán Macagno' },
+      { id: 127230, nombre: 'Visor - Panel de control', planificadas: 1040, noIniciadas: 394, enProgreso: 126, enPrueba: 0, completadas: 184, tieneTareasUsuario: false, cliente: 'Factory', asignadoA: 'Patricio Hernán Macagno' },
+      { id: 127230, nombre: 'Visor - Panel de control', planificadas: 1040, noIniciadas: 394, enProgreso: 126, enPrueba: 0, completadas: 184, tieneTareasUsuario: false, cliente: 'Factory', asignadoA: 'Patricio Hernán Macagno' }
+    ]
+    this.listaProyectos = proyectos;
+    
+    this.dataSource = new MatTableDataSource(this.listaProyectos);
   }
 
   ngOnInit(): void {
   }
 
-  applyFilter(event: Event) {
+  buscarProyectos(event: Event) {    
+                                             
     const filterValue = (event.target as HTMLInputElement).value;
-    //this.tableDataSource.filter = filterValue.trim().toLowerCase();
+    
+    if(this.nombreProyecto == ''){
+      this.estiloListaProyectos = 'ocultarTabla';
+      console.log("vacio")
+    }
+    else{
+      this.estiloListaProyectos = 'mostrarTabla'
+      this.dataSource.filter = filterValue.trim().toLowerCase();
+      console.log("No vacio")
+
+    }
+  }
+  seleccionarProyecto(unProyecto: any){
+    this.nombreProyecto = unProyecto;
+    this.estiloListaProyectos = 'ocultarTabla'; //nombre clase css
+    console.log(this.nombreProyecto)
   }
 
-  buscarProyecto(event: Event){
+  abrirDialogProyecto(event: Event){
     event.preventDefault();
-    
+    console.log(this.filtrosBusquedaProyecto)
     const dialogRef = this.dialog.open(DialogComponent,{width:'600px', data:{buscaProyectos: true, filtros: this.filtrosBusquedaProyecto}});
     dialogRef.afterClosed().pipe(
       finalize(() => {
@@ -46,45 +105,30 @@ export class TareasComponent implements OnInit {
       })
     )
     .subscribe(result => {
-      
-      //this.filtrosBusquedaProyecto = result;
-      
-      if(result != false){
-        console.log(result)
-        //Pregunto si utilizó filtros
-        if(result.filtros.length == 0){
-          
-          //No utilizó filtros para encontrar el proyecto
-          this.nombreProyecto = result.proyectoSeleccionado
-          console.log(this.nombreProyecto)
-        }
-        else{
-          if(result.filtros[0].nombreProyecto == ''){
-            this.nombreProyecto = "Proyecto prueba";
-          }
-          else{
-            this.nombreProyecto = result.filtros[0].nombreProyecto;
-          }
-        }
+      console.log(result)
+
+      if (result.proyectoSeleccionado !== undefined) {
+
+        this.nombreProyecto = result.proyectoSeleccionado
+        //No utilizó filtros para encontrar el proyecto
+        console.log(this.nombreProyecto)
+      }
         
-      }
-      else{
-        //this.nombreProyecto = 'cancelar';
-        this.nombreProyecto = '';
-      }
+      
     })
   }
 
   buscarTarea(){
-    
-    const dialogRef = this.dialog.open(DialogComponent,{width:'72%', data:{buscaTareas: true}});
+    console.log(this.filtrosBusquedaTareas)
+    const dialogRef = this.dialog.open(DialogComponent,{width:'72%', data:{buscaTareas: true, filtros:this.filtrosBusquedaTareas}});
     dialogRef.afterClosed().pipe(
       finalize(() => {
           console.log("Actualiza autoridades")
       })
     )
     .subscribe(result => {
-      //filaEditar.name = result.name;
+      this.filtrosBusquedaTareas = result;
+      console.log(result)
          
     })
   }

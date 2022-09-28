@@ -19,3 +19,10 @@ h1, h3{
     display: flex;
     justify-content: space-between;
 }
+.ocultarTabla{
+    display: none;
+}
+.mostrarTabla{
+    display: block;
+    position: absolute;
+}

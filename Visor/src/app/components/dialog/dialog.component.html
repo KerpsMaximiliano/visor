@@ -2,7 +2,7 @@
     <mat-dialog-content class="header">
         <h2 mat-dialog-title>Buscar proyecto</h2>
         <!-- <button id="close" mat-button [mat-dialog-close]="false"><mat-icon >close</mat-icon></button> -->
-        <mat-icon [mat-dialog-close]="false">close</mat-icon>
+        <mat-icon (click)="cerrarDialog()">close</mat-icon>
     </mat-dialog-content>
     <mat-divider></mat-divider>
     <div class="filtros">
@@ -10,10 +10,7 @@
             <mat-label class="label">Numero</mat-label>
         
             <mat-form-field class="example-form-field" appearance="fill">
-                <input matInput type="number" placeholder="1234" [(ngModel)]="numeroProyecto">
-                <button *ngIf="numeroProyecto" matSuffix mat-icon-button aria-label="Clear" (click)="numeroProyecto=''">
-                    <mat-icon>close</mat-icon>
-                </button>
+                <input matInput type="number" placeholder="1234" [(ngModel)]="numeroProyecto"  [ngModelOptions]="{standalone: true}"  id="nroProyecto" (keyup)="applyFilter($event)">
             </mat-form-field>
         </mat-dialog-content>
 
@@ -21,20 +18,17 @@
             <mat-label class="label">Nombre</mat-label>
             
             <mat-form-field class="example-form-field" appearance="fill">
-                <input matInput type="text" placeholder="Asunto" [(ngModel)]="nombreProyecto">
-                <button *ngIf="nombreProyecto" matSuffix mat-icon-button aria-label="Clear" (click)="nombreProyecto='' ">
-                    <mat-icon>close</mat-icon>
-                </button>
+                <input matInput type="text" placeholder="Asunto" [(ngModel)]="nombreProyecto" [ngModelOptions]="{standalone: true}" (keyup)="applyFilter($event)" id="nombreProyecto">
             </mat-form-field>
         </mat-dialog-content>
 
         <mat-dialog-content>
             <mat-label class="label">Cliente</mat-label>
             <mat-form-field appearance="fill">
-                <mat-label>Proyecto</mat-label>
-                <mat-select  placeholder="Proyecto">
+                <mat-select placeholder="Proyecto" [(value)]="clienteProyecto" id="clienteProyecto" (selectionChange)="changeClient($event)"  >
                     <mat-option></mat-option>
-                    <mat-option (click)="getCliente(option)" [value]="option.value" *ngFor="let option of clientes">{{ option.viewValue }}</mat-option>
+                    <!-- <mat-option (click)="getClienteProyecto(cliente)" [value]="cliente.viewValue" *ngFor="let cliente of clientes">{{ cliente.viewValue }}</mat-option> -->
+                    <mat-option [value]="cliente"  *ngFor="let cliente of clientes">{{ cliente.viewValue }} </mat-option>
                 </mat-select>
             </mat-form-field>
             <!-- <p>You selected: {{selectedFood}}</p> -->
@@ -44,9 +38,9 @@
             <mat-label class="label">Asignado a</mat-label>
             <mat-form-field appearance="fill">
                 <mat-label>Asignado a</mat-label>
-                <mat-select [(value)]="selectedProgramador" >
+                <mat-select [(value)]="asignadoAproyecto" >
                     <mat-option></mat-option>
-                    <mat-option (click)="getAsignadoA(programador)" [value]="programador.value"  *ngFor="let programador of programadores">{{ programador.viewValue }}</mat-option>
+                    <mat-option (click)="getAsignadoAProyecto(programador)" [value]="programador.viewValue"  *ngFor="let programador of programadores">{{ programador.viewValue }}</mat-option>
                 </mat-select>
             </mat-form-field>
             <!-- <p>You selected: {{selectedFood}}</p> -->
@@ -60,27 +54,38 @@
             </section> -->
         </section>
           
-
-        <mat-selection-list  [multiple]="false" class="lista_proyectos" >
-            <mat-list-option  *ngFor="let unProyecto of listaProyectos" [value]="unProyecto">
+        <mat-selection-list  [multiple]="false" class="lista_proyectos"  >
+            <mat-list-option  *ngFor="let unProyecto of listaProyectos" [value]="unProyecto" >
               <mat-option (click)="getNombreProyecto(unProyecto.nombre)">{{unProyecto.nombre}}</mat-option>
             </mat-list-option>
         </mat-selection-list>
+
+        <div class="resultados">
+            <div>
+                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                    <ng-container matColumnDef="nombre" >
+                        <th mat-header-cell *matHeaderCellDef >Proyectossss</th>
+                        <td mat-cell *matCellDef="let unProyecto" (click)="getNombreProyecto(unProyecto.nombre)"> {{ unProyecto.nombre }} </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+                    <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
+                </table>
+            </div>
+        </div>
+    
         
         <mat-dialog-actions align="end" class="accionesBotones">
-            <button mat-raised-button [mat-dialog-close]="false"> Limpiar </button>
-            <button mat-raised-button color="primary" type="submit" [mat-dialog-close]="false"> Cancelar </button>
-            <button mat-raised-button color="primary" type="submit" cdkFocusInitial (click)="guardarValoresDeFiltro()"> Filtrar </button>
+            <button mat-raised-button color="primary" type="submit" (click)="limpiarValoresDeFiltros()"> Limpiar </button>
+            <button mat-raised-button color="primary" type="submit" (click)="cerrarDialog()"> Cancelar </button>
+            
         </mat-dialog-actions>
     
     </div>
-</mat-dialog-content>
+    </mat-dialog-content>
 
 <mat-dialog-content *ngIf="buscarTareas" class="mat-typography">
     <mat-dialog-content class="header">
         <h2 mat-dialog-title>Buscar Tarea</h2>
-        <!-- <button id="close" mat-button [mat-dialog-close]="false"><mat-icon >close</mat-icon></button> -->
-        <mat-icon [mat-dialog-close]="false">close</mat-icon>
     </mat-dialog-content>
     <mat-divider></mat-divider>
     <div class="filtros">
@@ -88,10 +93,7 @@
             <mat-label class="label">Nombre</mat-label>
 
             <mat-form-field class="example-form-field" appearance="fill">
-                <input matInput type="text" placeholder="nombreTarea" [(ngModel)]="nombreProyecto">
-                <button *ngIf="nombreTarea" matSuffix mat-icon-button aria-label="Clear" (click)="nombreTarea='' ">
-                    <mat-icon>close</mat-icon>
-                </button>
+                <input matInput type="text" placeholder="nombreTarea" [(ngModel)]="nombreTarea">
             </mat-form-field>
         </mat-dialog-content>
 
@@ -99,9 +101,9 @@
             <mat-label class="label">Prioridad</mat-label>
             <mat-form-field appearance="fill">
                 <mat-label>Prioridad</mat-label>
-                <mat-select [(value)]="seleccionado">
+                <mat-select [(value)]="prioridadTarea">
                     <mat-option></mat-option>
-                    <mat-option [value]="prioridad.valor" *ngFor="let prioridad of prioridades">{{ prioridad.valor }}</mat-option>
+                    <mat-option (click)="getPrioridadTarea(prioridad.valor)" [value]="prioridad.valor" *ngFor="let prioridad of prioridades">{{ prioridad.valor }}</mat-option>
                 </mat-select>
             </mat-form-field>
             <!-- <p>You selected: {{selectedFood}}</p> -->
@@ -111,9 +113,9 @@
             <mat-label class="label">Facilitador</mat-label>
             <mat-form-field appearance="fill">
                 <mat-label>Facilitador</mat-label>
-                <mat-select>
+                <mat-select [(value)]="facilitadorTarea">
                     <mat-option></mat-option>
-                    <mat-option [value]="facilitador.nombre" *ngFor="let facilitador of facilitadores">{{ facilitador.nombre }}</mat-option>
+                    <mat-option (click)="getFacilitadorTarea(facilitador.nombre)" [value]="facilitador.nombre" *ngFor="let facilitador of facilitadores">{{ facilitador.nombre }}</mat-option>
                 </mat-select>
             </mat-form-field>
             <!-- <p>You selected: {{selectedFood}}</p> -->
@@ -122,10 +124,9 @@
         <mat-dialog-content>
             <mat-label class="label">Asignado a</mat-label>
             <mat-form-field appearance="fill">
-                <mat-label>Asignado a</mat-label>
-                <mat-select [(value)]="selectedProgramador">
+                <mat-select [(value)]="asignadoAtarea">
                     <mat-option></mat-option>
-                    <mat-option (click)="getAsignadoA(programador)" [value]="programador.value"  *ngFor="let programador of programadores">{{ programador.viewValue }}</mat-option>
+                    <mat-option (click)="getAsignadoAtarea(programador)" [value]="programador.viewValue"  *ngFor="let programador of programadores">{{ programador.viewValue }}</mat-option>
                 </mat-select>
             </mat-form-field>
             <!-- <p>You selected: {{selectedFood}}</p> -->
@@ -134,10 +135,9 @@
         <mat-dialog-content>
             <mat-label class="label">Tecnologia</mat-label>
             <mat-form-field appearance="fill">
-                <mat-label>Tecnologia</mat-label>
-                <mat-select >
+                <mat-select [(value)]="tecnologiatarea">
                     <mat-option></mat-option>
-                    <mat-option (click)="tecnologiaElegida(tecnologia)" [value]="tecnologia.nombre"  *ngFor="let tecnologia of tecnologias">{{ tecnologia.nombre }}</mat-option>
+                    <mat-option (click)="tecnologiaElegidaTarea(tecnologia)" [value]="tecnologia.nombre"  *ngFor="let tecnologia of tecnologias">{{ tecnologia.nombre }}</mat-option>
                 </mat-select>
             </mat-form-field>
             <!-- <p>You selected: {{selectedFood}}</p> -->
@@ -203,9 +203,10 @@
         
         
         
-        <mat-dialog-actions align="end">
-            <button mat-raised-button [mat-dialog-close]="false"> Cancelar </button>
-            <button mat-raised-button color="primary" type="submit" cdkFocusInitial [mat-dialog-close]="true"> Buscar </button>
+        <mat-dialog-actions align="end" class="accionesBotones">
+            <button mat-raised-button color="primary" type="submit" (click)="limpiarValoresDeFiltros()"> Limpiar </button>
+            <button mat-raised-button color="primary" type="submit" (click)="cerrarDialog()"> Cancelar </button>
+            <button mat-raised-button color="primary" type="submit" cdkFocusInitial (click)="guardarValoresDeFiltro()"> Filtrar </button>
         </mat-dialog-actions>
     
     </div>

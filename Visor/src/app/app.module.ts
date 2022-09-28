@@ -28,6 +28,8 @@ import { FormsModule } from '@angular/forms';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatTableModule} from '@angular/material/table';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
  
 
 
@@ -58,7 +60,11 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     FormsModule,
     MatGridListModule,
     MatCheckboxModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatTableModule,
+    MatAutocompleteModule
+    
+      
   ],
   providers: [],
   bootstrap: [AppComponent]
