@@ -21,10 +21,9 @@ import { Config } from './services/i2t/config.service';
 import { HttpClientModule } from '@angular/common/http';
 import { SnackbarService } from './services/util/snackbar.service';
 import { ModalcontraseniaComponent } from './shared/modal-contrasenia/modalcontrasenia.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { VistaDisenioTecnicoModule } from './componentes/vista-disenio-tecnico/vista-disenio-tecnico.module';
 
-export function initConfig(config: Config) {
-  return () => config.load();
-}
 
 @NgModule({
   declarations: [
@@ -42,7 +41,8 @@ export function initConfig(config: Config) {
     RecuperarcontraseniaModule,
     RolesUsuariosModule,
     PermisosRolesModule,
-    HttpClientModule
+    HttpClientModule,
+    VistaDisenioTecnicoModule
   ],
   providers: [RestService, LoginService, Config, SnackbarService],
   bootstrap: [AppComponent]
