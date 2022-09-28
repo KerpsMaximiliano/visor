@@ -60,7 +60,21 @@
               "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
-              "namedChunks": true
+              "namedChunks": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.develop.ts"
+                }
+              ]
+            },
+            "test": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.test.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -73,6 +87,9 @@
             },
             "development": {
               "browserTarget": "Visor:build:development"
+            },
+            "test":{
+              "browserTarget": "Visor:build:test"
             }
           },
           "defaultConfiguration": "development"

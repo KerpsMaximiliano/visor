@@ -8,35 +8,30 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 //Material
 import { MyMaterialModule } from './material';
-import { TareasComponent } from './components/tareas/tareas.component';
-import { DialogComponent } from './components/dialog/dialog.component';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatIconModule} from '@angular/material/icon';
-import {MatDialogModule} from '@angular/material/dialog';
-import {MatDividerModule} from '@angular/material/divider';
-import {MatSelectModule} from '@angular/material/select';
-import {MatListModule} from '@angular/material/list';
-import {MatMenuModule} from '@angular/material/menu';
 
-import { ReactiveFormsModule } from '@angular/forms';
-
-
-import { MatInputModule } from '@angular/material/input';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
-import { FormsModule } from '@angular/forms';
-import {MatGridListModule} from '@angular/material/grid-list';
-import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {MatTableModule} from '@angular/material/table';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
- 
-
+// Componentes
+import { LoginModule } from './componentes/login/login.module';
+import { RecuperarcontraseniaModule } from './componentes/recuperar-contrasenia/recuperar-contrasenia.module';
+import { ConfiguracionesComponent } from './components/configuraciones/configuraciones-main/configuraciones-main.component';
+import { RolesUsuariosModule } from './components/configuraciones/roles-usuarios/roles-usuarios.module';
+import { PermisosRolesModule } from './components/configuraciones/permisos-roles/permisos-roles.module';
+import { MatConfirmDialogComponent } from './shared/mat-confirm-dialog/mat-confirm-dialog.component';
+import { RestService } from './services/i2t/rest.service';
+import { LoginService } from './services/i2t/login.service';
+import { Config } from './services/i2t/config.service';
+import { HttpClientModule } from '@angular/common/http';
+import { SnackbarService } from './services/util/snackbar.service';
+import { ModalcontraseniaComponent } from './shared/modal-contrasenia/modalcontrasenia.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { VistaDisenioTecnicoModule } from './componentes/vista-disenio-tecnico/vista-disenio-tecnico.module';
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    ConfiguracionesComponent,
+    MatConfirmDialogComponent,
+    ModalcontraseniaComponent,
     TareasComponent,
     DialogComponent
   ],
@@ -46,27 +41,14 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     RouterModule,
     BrowserAnimationsModule,
     MyMaterialModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatDialogModule,
-    MatDividerModule,
-    MatSelectModule,
-    MatListModule,
-    MatMenuModule,
-    ReactiveFormsModule,
-    MatNativeDateModule,
-    MatInputModule,
-    MatDatepickerModule,
-    FormsModule,
-    MatGridListModule,
-    MatCheckboxModule,
-    MatSnackBarModule,
-    MatTableModule,
-    MatAutocompleteModule
-    
-      
+    LoginModule,
+    RecuperarcontraseniaModule,
+    RolesUsuariosModule,
+    PermisosRolesModule,
+    HttpClientModule,
+    VistaDisenioTecnicoModule
   ],
-  providers: [],
+  providers: [RestService, LoginService, Config, SnackbarService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
