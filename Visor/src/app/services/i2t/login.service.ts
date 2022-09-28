@@ -19,10 +19,10 @@ export class LoginService {
    */
   obtenerToken(usuarioRecibido: Usuario){
     
-    let body: string = JSON.stringify({
+    let jsbody: string = JSON.stringify ({
       "usuario": usuarioRecibido.usuario,
       "pass": usuarioRecibido.password
-    })
-    return this._restService.callLogin(body);
+    });
+    return this._restService.callLogin(jsbody);
   }
 }
