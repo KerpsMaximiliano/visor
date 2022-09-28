@@ -30,6 +30,7 @@ import { InicioDisponibilidadColaboradoresModule } from './componentes/inicio/in
 import { FormsModule } from '@angular/forms';
 import { ModalFiltroComponent } from './componentes/inicio/modal-filtro/modal-filtro.component';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { InicioDisponibilidadColaboradores2Module } from './componentes/inicio/inicio-disponibilidad-colaboradores2/inicio-disponibilidad-colaboradores2.module';
 
 
 @NgModule({
@@ -37,8 +38,7 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     AppComponent,
     ConfiguracionesComponent,
     MatConfirmDialogComponent,
-    ModalcontraseniaComponent
-  ,
+    ModalcontraseniaComponent,
     InicioMainComponent,
     ModalFiltroComponent
   ],
@@ -53,7 +53,8 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     PermisosRolesModule,
     HttpClientModule,
     InicioDisponibilidadColaboradoresModule,
-    FormsModule
+    FormsModule,
+    InicioDisponibilidadColaboradores2Module
   ],
 
   //Proveedores agregados

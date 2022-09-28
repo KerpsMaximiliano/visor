@@ -8,7 +8,6 @@ import { RolesUsuariosComponent } from './components/configuraciones/roles-usuar
 import { LoginComponent } from './componentes/login/login.component';
 import { RecuperarcontraseniaComponent } from './componentes/recuperar-contrasenia/recuperar-contrasenia.component';
 import { InicioMainComponent } from './componentes/inicio/inicio-main/inicio-main.component';
-import { InicioDisponibilidadColaboradoresComponent } from './componentes/inicio/inicio-disponibilidad-colaboradores/inicio-disponibilidad-colaboradores.component';
 
 const routes: Routes = [
   {
@@ -24,16 +23,12 @@ const routes: Routes = [
     path: "recuperar-contraseña",
     component: RecuperarcontraseniaComponent
   },
+  { path: 'inicio-main', component: InicioMainComponent },
   { path: 'configuraciones-main', component: ConfiguracionesComponent,
     children: [
       { path: 'roles-usuarios', component: RolesUsuariosComponent },
       { path: 'permisos-roles', component: PermisosRolesComponent }
-    ] },
-  { path: 'inicio-main', component: InicioMainComponent,
-    children: [
-      { path: 'inicio-colaboradores', component: InicioDisponibilidadColaboradoresComponent }
-    ]
-  },
+    ] }
 ];
 
 @NgModule({

@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Colaborador } from 'src/app/interfaces/colaborador';
+import { RestService } from './rest.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ColaboradorService {
+
+  constructor(private rest: RestService) { }
 
   colaboradores: Colaborador[] = [
     { id: 1, nombre: 'Facundo', apellido: 'Ghio Serra', funcion: 'Analista Funcional', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
@@ -152,6 +155,15 @@ export class ColaboradorService {
       default:
         return -1;
     }
+  }
+
+  iniciarColaboradores(fecha: string) {
+    let jsbody: string = JSON.stringify({
+      nivel : 1,
+      cant_meses : 1,
+      fecha_fin : fecha
+    });
+    return this.rest.callProcedimientoVisor(jsbody, "DisponibilidadUsuario");
   }
 
 }
