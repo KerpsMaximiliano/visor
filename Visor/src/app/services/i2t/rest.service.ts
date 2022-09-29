@@ -76,7 +76,7 @@ export class RestService {
       'Content-Type': 'application/json'
     });
 
-    let url = this.preUrlExtractos + 'api/proc/' + query;
+    let url =  'http://tstvar.i2tsa.com.ar:3001/api/proc/' + query;
     return this.http.post(url, body, { headers });
   }
 

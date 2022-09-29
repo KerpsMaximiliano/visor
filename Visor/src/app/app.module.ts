@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { ControlActividadModule } from './control-actividad/control-actividad.module';
+import { ControlActividadModule } from 'src/app/componentes/control-actividad/control-actividad.module';
 
 //Material
 import { MyMaterialModule } from './material';
@@ -20,6 +20,7 @@ import { LoginService } from './services/i2t/login.service';
 import { Config } from './services/i2t/config.service';
 import { SnackbarService } from './services/util/snackbar.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     SharedModule,
     LoginModule,
     RecuperarcontraseniaModule,
-    HttpClientModule
+    HttpClientModule,
+    RouterModule
   ],
 
   //Proveedores agregados
