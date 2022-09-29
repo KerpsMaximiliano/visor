@@ -21,6 +21,8 @@ import { Config } from './services/i2t/config.service';
 import { HttpClientModule } from '@angular/common/http';
 import { SnackbarService } from './services/util/snackbar.service';
 import { ModalcontraseniaComponent } from './shared/modal-contrasenia/modalcontrasenia.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { VistaDisenioTecnicoModule } from './componentes/vista-disenio-tecnico/vista-disenio-tecnico.module';
 
 export function initConfig(config: Config) {
   return () => config.load();
@@ -52,6 +54,7 @@ import { InicioDisponibilidadColaboradores2Module } from './componentes/inicio/i
     RolesUsuariosModule,
     PermisosRolesModule,
     HttpClientModule,
+    VistaDisenioTecnicoModule,
     InicioDisponibilidadColaboradoresModule,
     FormsModule,
     InicioDisponibilidadColaboradores2Module

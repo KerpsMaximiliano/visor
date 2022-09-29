@@ -7,6 +7,7 @@ import { RolesUsuariosComponent } from './components/configuraciones/roles-usuar
 //Componentes
 import { LoginComponent } from './componentes/login/login.component';
 import { RecuperarcontraseniaComponent } from './componentes/recuperar-contrasenia/recuperar-contrasenia.component';
+import { VistaDisenioTecnicoComponent } from './componentes/vista-disenio-tecnico/vista-disenio-tecnico.component';
 import { InicioMainComponent } from './componentes/inicio/inicio-main/inicio-main.component';
 
 const routes: Routes = [
@@ -28,7 +29,11 @@ const routes: Routes = [
     children: [
       { path: 'roles-usuarios', component: RolesUsuariosComponent },
       { path: 'permisos-roles', component: PermisosRolesComponent }
-    ] }
+    ] },
+  {
+    path: "vista-diseño-tecnico",
+    component: VistaDisenioTecnicoComponent
+  }
 ];
 
 @NgModule({
