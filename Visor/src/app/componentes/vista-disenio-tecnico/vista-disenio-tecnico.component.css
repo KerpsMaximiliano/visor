@@ -59,9 +59,17 @@ h4 {
     display: flex;
 }
 
+.caja-fecha {
+    width: 100px;
+}
+
 .datos strong {
     padding-right: 4px;
     font-size: 12px;
+}
+
+.strong-horas {
+    width: 45px;
 }
 
 .datos p {

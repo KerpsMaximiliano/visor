@@ -8,6 +8,7 @@ import { RolesUsuariosComponent } from './components/configuraciones/roles-usuar
 import { LoginComponent } from './componentes/login/login.component';
 import { RecuperarcontraseniaComponent } from './componentes/recuperar-contrasenia/recuperar-contrasenia.component';
 import { InicioEstadoProyectoComponent } from './componentes/inicio-estado-proyecto/inicio-estado-proyecto.component';
+import { VistaDisenioTecnicoComponent } from './componentes/vista-disenio-tecnico/vista-disenio-tecnico.component';
 
 const routes: Routes = [
   {
@@ -32,6 +33,10 @@ const routes: Routes = [
   {
     path: "inicio",
     component: InicioEstadoProyectoComponent
+  },
+  {
+    path: "vista-diseño-tecnico",
+    component: VistaDisenioTecnicoComponent
   }
 ];
 
