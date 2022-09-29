@@ -9,7 +9,6 @@ import {MatDividerModule} from '@angular/material/divider';
 import {MatIconModule} from '@angular/material/icon';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatCheckboxModule} from '@angular/material/checkbox';
-import { MatExpansionModule } from '@angular/material/expansion';
 
 const MATERIALES = [
     MatButtonModule,

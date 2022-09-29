@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { FiltroProyectosComponent } from '../../shared/modal-filtro-proyectos/filtro-proyectos/filtro-proyectos.component';
 import { ViewChild } from '@angular/core';
 import { MatAccordion } from '@angular/material/expansion';
+import { TareaService } from '../../services/i2t/tarea.service';
 
 @Component({
   selector: 'app-inicio-estado-proyecto',
@@ -44,69 +45,130 @@ export class InicioEstadoProyectoComponent implements OnInit {
   inputIzq: string = "";
 
 
-  constructor(private dataProyecto: ProyectoDataService, private dialog: MatDialog) {
+  constructor(private _dataProyecto: ProyectoDataService, private _dialog: MatDialog, private _tareaService: TareaService) {
   }
 
   ngOnInit(): void {
-    this.dataProyecto.getProyectos().subscribe((resp: any) => {
+    this._dataProyecto.getProyectos().subscribe((resp: any) => {
       if(resp.returnset[0].RCode == 1){
+        let contadorHorasTotalesPlanificadas = 0;
+        let contadorHPTotalAreaFuncional = 0;
         for(let i = 0;i<resp.dataset.length;i++){
           let objetoTemporal: Proyecto = {
             numero: resp.dataset[i].Id_Caso,
             nombre: resp.dataset[i].Caso,
-            cliente: "",
-            asignado: "",
-            porcentajeTareasAtrasadas: 0,
-            porcentajeTareasATiempo: 0,
+            cliente: resp.dataset[i].Cliente,
+            asignado: resp.dataset[i].Asignado_a,
+            cantidadTareasTotales: resp.dataset[i].Tareas_totales,
+            cantidadTareasAtrasadas: resp.dataset[i].Tareas_atrasadas,
+            porcentajeTareasAtrasadas: Math.round((resp.dataset[i].Tareas_atrasadas / resp.dataset[i].Tareas_totales) * 100),
+            porcentajeTareasATiempo: Math.round(((resp.dataset[i].Tareas_totales - resp.dataset[i].Tareas_atrasadas) / resp.dataset[i].Tareas_totales) * 100),
             porcentajeHPCompletadas: 0,
             porcentajeHPEnProgreso: 0,
             porcentajeHPEnPrueba: 0,
-            porcentajeHPNoIniciadas: 0
+            porcentajeHPNoIniciadas: 0,
+            porcentajeHPEnPruebaDiseñoFuncional: 0,
+            porcentajeHPNoIniciadasDiseñoFuncional: 0,
+            porcentajeHPCompletadasDiseñoFuncional: 0,
+            porcentajeHPEnProgresoDiseñoFuncional: 0,
+            porcentajeHPEnPruebaDiseñoTecnico: 0,
+            porcentajeHPNoIniciadasDiseñoTecnico: 0,
+            porcentajeHPCompletadasDiseñoTecnico: 0,
+            porcentajeHPEnProgresoDiseñoTecnico: 0,
+            porcentajeHPEnPruebaDesarrollo: 0,
+            porcentajeHPNoIniciadasDesarrollo: 0,
+            porcentajeHPCompletadasDesarrollo: 0,
+            porcentajeHPEnProgresoDesarrollo: 0,
+            porcentajeHPEnPruebaTesting: 0,
+            porcentajeHPNoIniciadasTesting: 0,
+            porcentajeHPCompletadasTesting: 0,
+            porcentajeHPEnProgresoTesting: 0
           }
           this.proyectos.push(objetoTemporal);
+          this._dataProyecto.getPorcentajeHP(this.proyectos[i].numero).subscribe((resp: any) => {
+            contadorHorasTotalesPlanificadas = contadorHorasTotalesPlanificadas + resp.dataset[0].Horas + resp.dataset[1].Horas + resp.dataset[2].Horas;
+            this.proyectos[i].porcentajeHPEnProgreso = Math.round((resp.dataset[1].Horas / contadorHorasTotalesPlanificadas) * 100);
+            this.proyectos[i].porcentajeHPCompletadas = Math.round((resp.dataset[0].Horas / contadorHorasTotalesPlanificadas) * 100);
+            this.proyectos[i].porcentajeHPNoIniciadas = Math.round((resp.dataset[2].Horas / contadorHorasTotalesPlanificadas) * 100);
+          });
+          contadorHorasTotalesPlanificadas = 0;
+          
+          //Contadores reutilizables.
+          let contadorHPCompletadas = 0;
+          let contadorHPEnProgreso = 0;
+          let contadorHPNoIniciadas = 0;
+          let contadorHPEnPrueba = 0;
+          
+          this._dataProyecto.getPorcentajeHPAreas(this.proyectos[i].numero).subscribe((resp: any) => {
+            for(let r = 0;r<resp.dataset.length;r++)
+            {
+              switch (resp.dataset[r].Area){
+                case "Design": {
+                  switch (resp.dataset[r].Estado){
+                    case "Completed": {
+                      contadorHPTotalAreaFuncional = contadorHPTotalAreaFuncional + resp.dataset[r].Horas;
+                      contadorHPCompletadas = resp.dataset[r].Horas;
+                      break;
+                    }
+                    case "In Progress": {
+                      contadorHPTotalAreaFuncional = contadorHPTotalAreaFuncional + resp.dataset[r].Horas;
+                      contadorHPEnProgreso = resp.dataset[r].Horas;
+                      break;
+                    }
+                    case "Not Started": {
+                      contadorHPTotalAreaFuncional = contadorHPTotalAreaFuncional + resp.dataset[r].Horas;
+                      contadorHPNoIniciadas = resp.dataset[r].Horas;
+                      break;
+                    }
+                  }
+                  break;
+                }
+              }
+              this.proyectos[i].porcentajeHPCompletadasDiseñoFuncional = Math.round(( contadorHPCompletadas /contadorHPTotalAreaFuncional) * 100);
+            }
+          });
         }
         this.data = new MatTableDataSource(this.proyectos);
+        this.actualizarDisponibilidadProyecto();  
       }
-      });
-    /* this.actualizarDisponibilidadProyecto(); */
+    });
   }
-
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.data.filter = filterValue.trim().toLowerCase();
   }
 
-  /* retornarPorcentajeCompletadas(index: number): number{
-    return this.dataProyecto.proyectos[index].porcentajeHPCompletadas;
+  retornarPorcentajeCompletadas(index: number): number{
+    return this.proyectos[index].porcentajeHPCompletadas;
   }
 
   retornarPorcentajeNoIniciadas(index: number){
-    return this.dataProyecto.proyectos[index].porcentajeHPNoIniciadas;
+    return this.proyectos[index].porcentajeHPNoIniciadas;
   }
 
   retornarPorcentajeEnProgreso(index: number){
-    return this.dataProyecto.proyectos[index].porcentajeHPEnProgreso;
+    return this.proyectos[index].porcentajeHPEnProgreso;
   }
 
   retornarPorcentajeEnPrueba(index: number): number{
-    return this.dataProyecto.proyectos[index].porcentajeHPEnPrueba;
-  } */
+    return this.proyectos[index].porcentajeHPEnPrueba;
+  }
 
-  /* retornarPorcentajeAvanceFuncionalCompletadas(index: number): number{
-    return this.dataProyecto.proyectos[index].avanceDisenioFuncional.porcentajeCompletadas  
+ retornarPorcentajeAvanceFuncionalCompletadas(index: number): number{
+    return this.proyectos[index].porcentajeHPCompletadasDiseñoFuncional;
   }
 
   retornarPorcentajeAvanceFuncionalNoIniciadas(index: number): number{
-    return this.dataProyecto.proyectos[index].avanceDisenioFuncional.porcentajeNoIniciadas;
+    return this.proyectos[index].porcentajeHPNoIniciadasDiseñoFuncional;
   }
 
   retornarPorcentajeAvanceFuncionalEnProgreso(index: number): number{
-    return this.dataProyecto.proyectos[index].avanceDisenioFuncional.porcentajeEnProgreso;
+    return this.proyectos[index].porcentajeHPEnProgresoDiseñoFuncional;
   }
 
-  retornarPorcentajeAvanceFuncionalEnPrueba(index: number): number{
-    return this.dataProyecto.proyectos[index].avanceDisenioFuncional.porcentajeEnPrueba;
+ /*  retornarPorcentajeAvanceFuncionalEnPrueba(index: number): number{
+    return this.proyectos[index].porcentajeHPCompletadasDiseñoFuncional
   } */
 
   getPorcentajeRojo(valor: number) {
@@ -141,21 +203,29 @@ export class InicioEstadoProyectoComponent implements OnInit {
     }
   }
 
- /*  getTooltipTareasAbiertasTotales(){
-    return this.dataProyecto.getCantidadTareasAbiertas();
+  getTooltipTareasAbiertasTotales(){
+    let cantidadTareasTotales = 0;
+    for(let i = 0; i<this.proyectos.length;i++){
+      cantidadTareasTotales+=this.proyectos[i].cantidadTareasTotales
+    }
+    return cantidadTareasTotales;
   }
 
-  getTooltipTareasAnteriores(){
-    return this.dataProyecto.getCantidadTareasAnteriores();
+  getTooltipTareasAtrasadas(){
+    let cantidadTareasAtrasadas = 0;
+    for(let i = 0; i<this.proyectos.length;i++){
+      cantidadTareasAtrasadas+=this.proyectos[i].cantidadTareasAtrasadas
+    }
+    return cantidadTareasAtrasadas;
   }
- */
-  /* actualizarDisponibilidadProyecto(){
-    this.disponibilidadProyectos = Math.round((this.getTooltipTareasAnteriores() / this.getTooltipTareasAbiertasTotales()) * 100);
-  } */
+
+  actualizarDisponibilidadProyecto(){
+    this.disponibilidadProyectos = Math.round((this.getTooltipTareasAtrasadas() / this.getTooltipTareasAbiertasTotales()) * 100);
+  }
 
   openFiltro(){
     //this.proyectos = this.dataProyecto.proyectos;
-    const dialogRef = this.dialog.open(FiltroProyectosComponent, {
+    const dialogRef = this._dialog.open(FiltroProyectosComponent, {
       width: '400px',
       disableClose: true,
       data: { numero: this.numero, nombre: this.nombre, cliente: this.cliente, asignadoA: this.asignadoA}

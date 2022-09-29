@@ -134,15 +134,4 @@ export class RestService {
   //   let result = this.doProcedimientoExt(body, query);
   //   return result;
   // }
-
-  requestPost(body: any, tipoDePost: string){
-    //Falta mergear para traer los ultimos cambios del CU LOGIN!!!
-    //let token = localStorage.getItem('TOKEN')!; //con el ! le digo a typescript que token nunca va a ser nulo o vacio, ojo! asegurar este comportamiento sino buscar otra forma
-    const headers = new HttpHeaders({
-      'x-access-token': this.token
-    });
-
-    let url = this.urlPost + "proc/" + tipoDePost;
-    return this.http.post(url , body, {headers});
-  }  
 }

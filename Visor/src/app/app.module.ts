@@ -22,7 +22,6 @@ import { PermisosRolesModule } from './components/configuraciones/permisos-roles
 import { RolesUsuariosModule } from './components/configuraciones/roles-usuarios/roles-usuarios.module';
 import { ConfiguracionesComponent } from './components/configuraciones/configuraciones-main/configuraciones-main.component';
 import { MatConfirmDialogComponent } from './shared/mat-confirm-dialog/mat-confirm-dialog.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { VistaDisenioTecnicoModule } from './componentes/vista-disenio-tecnico/vista-disenio-tecnico.module';
 
 

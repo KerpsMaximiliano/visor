@@ -7,18 +7,23 @@
       </mat-form-field>
       <button class="boton-icono" (click)="openFiltro()" mat-mini-fab color="primary" mat-button matTooltip="Filtro Avanzado"><mat-icon class="icon">filter_alt</mat-icon></button>
       <button class="boton-icono" mat-mini-fab color="primary" (click)="contraerProyectos()" mat-button matTooltip="Cerrar Proyectos"><mat-icon class="icon">close_fullscreen</mat-icon></button>
-      
+      <div id="container-indicadores">
+        <div>a</div>
+        <div>a</div>
+        <div>a</div>
+        <div>a</div>
+      </div>
       <div class="disponibilidad-proyectos">
         <h3>Tareas atrasadas<mat-divider></mat-divider></h3>
-        <!-- <div id="porcentaje-disponibilidad-proyectos" [ngClass]="{
+        <div id="porcentaje-disponibilidad-proyectos" [ngClass]="{
             'porcentaje-rojo': getPorcentajeRojo(disponibilidadProyectos),
             'porcentaje-amarillo': getPorcentajeAmarillo(disponibilidadProyectos),
             'porcentaje-verde-claro': getPorcentajeVerdeClaro(disponibilidadProyectos),
             'porcentaje-verde-oscuro': getPorcentajeVerdeOscuro(disponibilidadProyectos) }"
-            matTooltip="{{getTooltipTareasAnteriores()}} Tareas totales con fecha planificada anterior / 
+            matTooltip="{{getTooltipTareasAtrasadas()}} Tareas totales con fecha planificada anterior / 
             {{getTooltipTareasAbiertasTotales()}} Tareas totales"   
             [matTooltipPosition]="position.value!"> {{ disponibilidadProyectos }}%
-      </div> -->
+      </div>
     </div>
   </div>
 
@@ -61,7 +66,7 @@
           <div id="seccionAvance">
             <b><p class="subtitulo">Avance del proyecto</p></b>
           </div>
-          <!-- <div class="barra">
+          <div class="barra">
             <div id="barraRoja">
               <p>{{retornarPorcentajeNoIniciadas(i)}}%</p>
             </div>
@@ -74,7 +79,7 @@
             <div id="barraVerde">
               <p>{{retornarPorcentajeCompletadas(i)}}%</p>
             </div>
-          </div> -->
+          </div>
           <div id="vacio">
           </div>
           <div class="seccionAvanceArea">
@@ -89,15 +94,15 @@
                   </mat-panel-description>
                 </mat-expansion-panel-header>
                   <div class="containerBarrasArea">
-                  <!--
                     <div class="barraAvance">
                       <div style="font-style: italic;">Diseño funcional:</div>
                       <div class="espacio"></div>
                       <div class="barraAreaRoja">{{retornarPorcentajeAvanceFuncionalNoIniciadas(i)}}%</div>
                       <div class="barraAreaAmarilla">{{retornarPorcentajeAvanceFuncionalEnProgreso(i)}}%</div>
-                      <div class="barraAreaEnPrueba">{{retornarPorcentajeAvanceFuncionalEnPrueba(i)}}%</div>
+                     <!--  <div class="barraAreaEnPrueba">{{retornarPorcentajeAvanceFuncionalEnPrueba(i)}}%</div> -->
                       <div class="barraAreaVerde">{{retornarPorcentajeAvanceFuncionalCompletadas(i)}}%</div>
                     </div>
+                    <!--
                     <div class="barraAvance">
                       <div style="font-style: italic;">Diseño técnico:</div>
                       <div id="espacioTecnico"></div>
