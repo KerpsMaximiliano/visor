@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+/* import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Colaborador } from 'src/app/interfaces/colaborador';
 import { ColaboradorService } from 'src/app/services/i2t/colaborador.service';
@@ -539,4 +539,4 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     }
   }
 
-}
+} */

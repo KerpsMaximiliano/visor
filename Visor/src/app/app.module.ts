@@ -28,7 +28,7 @@ export function initConfig(config: Config) {
   return () => config.load();
 }
 import { InicioMainComponent } from './componentes/inicio/inicio-main/inicio-main.component';
-import { InicioDisponibilidadColaboradoresModule } from './componentes/inicio/inicio-disponibilidad-colaboradores/inicio-disponibilidad-colaboradores.module';
+//import { InicioDisponibilidadColaboradoresModule } from './componentes/inicio/inicio-disponibilidad-colaboradores/inicio-disponibilidad-colaboradores.module';
 import { FormsModule } from '@angular/forms';
 import { ModalFiltroComponent } from './componentes/inicio/modal-filtro/modal-filtro.component';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
@@ -55,7 +55,7 @@ import { InicioDisponibilidadColaboradores2Module } from './componentes/inicio/i
     PermisosRolesModule,
     HttpClientModule,
     VistaDisenioTecnicoModule,
-    InicioDisponibilidadColaboradoresModule,
+    //InicioDisponibilidadColaboradoresModule,
     FormsModule,
     InicioDisponibilidadColaboradores2Module
   ],

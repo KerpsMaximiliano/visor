@@ -1,10 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { ModalFiltroComponent } from '../modal-filtro/modal-filtro.component';
 import { MatAccordion } from '@angular/material/expansion';
 import { MatTableDataSource } from '@angular/material/table';
 import { TooltipPosition } from '@angular/material/tooltip';
 import { Colaborador } from 'src/app/interfaces/colaborador';
 import { ColaboradorService } from 'src/app/services/i2t/colaborador.service';
+import { FiltroService } from 'src/app/services/i2t/filtro.service';
 
 @Component({
   selector: 'app-inicio-disponibilidad-colaboradores2',
@@ -22,6 +25,10 @@ export class InicioDisponibilidadColaboradores2Component implements OnInit {
   columna2!: Colaborador[];
   noHayColaboradores: boolean = false;
   colaboradorUnico: boolean = false;
+  inputIzq: string = '';
+  nombre: string = ''; // se tiene que guardar en las preferencias del usuario en sesion cuando este disponible
+  apellido: string = ''; // se tiene que guardar en las preferencias del usuario en sesion cuando este disponible
+  funcion: string = ''; // se tiene que guardar en las preferencias del usuario en sesion cuando este disponible
   orden: string[] = ['Alfabetico', 'Tiempo Disponible'];
   ordenSeleccion: string = 'Tiempo Disponible'; // se tiene que guardar en las preferencias del usuario en sesion cuando este disponible
   fechaHoy = new Date();
@@ -33,17 +40,28 @@ export class InicioDisponibilidadColaboradores2Component implements OnInit {
   position = new FormControl(this.positionOptions[0]);
   position2 = new FormControl(this.positionOptions[3]);
 
-  constructor(private _colaboradorService: ColaboradorService) { }
+  constructor(private _colaboradorService: ColaboradorService, private dialog: MatDialog, private _filtroService: FiltroService) { }
 
   ngOnInit(): void {
+    this._filtroService.getUserId(localStorage.getItem('usuario')!).subscribe((response: any) => {
+      localStorage.setItem('userId', response.dataset[0].id);
+
+    });
     this.mesesPlanificacion[0].mes = this._colaboradorService.getMesString(this.fechaHoy.getMonth());
-    this._colaboradorService.iniciarColaboradores(this.formatearFecha(this.fechaHoy)).subscribe((response: any) => {
+    this._colaboradorService.disponibilidadUsuario(1, 1, '2022-10-29' /* this.formatearFecha(this.fechaHoy) */).subscribe((response: any) => {
       this.colaboradoresSP = response.dataset;
       this.organizarColaboradores();
       this.dataSource = new MatTableDataSource(this.colaboradores);
+      this.getTareasAtrasadas();
+      this.servicio3();
+      this.servicio5();
       this.actualizarDisponibilidadEquipo();
       this.cambiarOrden();
     });
+    const encodedData = btoa("Hello, world");
+    console.log(encodedData);
+    const decodedData = atob(encodedData);
+    console.log(decodedData);
   }
 
   formatearFecha(fecha: Date) {
@@ -58,18 +76,73 @@ export class InicioDisponibilidadColaboradores2Component implements OnInit {
   }
 
   organizarColaboradores() {
+    this.colaboradores = [];
     this.colaboradoresSP.forEach(colab => {
       this.colaboradores.push({
         id: colab.id_usuario,
         nombre: colab.nombre,
         apellido: colab.apellido,
-        funcion: colab.funcion_usuario,
-        capacidad: colab.capacidad_total,
+        funcion: this.funcionCheck(colab.funcion_usuario),
+        capacidad: this.nullCheck(colab.capacidad_total),
         horasPlanificadas: colab.horas_asignadas,
         tiempoDisponible: 0,
         atrasadas: 0,
         horasAtrasadas: 0
       });
+    });
+    this.colaboradores.push({
+      id: "b3f81a92-c3a6-0f6a-8ffe-5fecc55a882b",
+      nombre: "Federico",
+      apellido: "Gauchat",
+      funcion: "Desarrollador",
+      capacidad: 150,
+      horasPlanificadas: 60,
+      tiempoDisponible: 0,
+      atrasadas: 0,
+      horasAtrasadas: 0
+    });
+  }
+
+  nullCheck(check: any) {
+    if (check == null) { return 120 } else { return check }
+  }
+
+  funcionCheck(funcion: string) {  // agregar comportamiento para otras funciones, no hay datos de como vienen
+    let func = funcion;
+    switch (funcion) {
+      case 'Operativo':
+        func = 'Desarrollador'
+        break;
+    }
+    return func;
+  }
+
+  getTareasAtrasadas() {
+    this._colaboradorService.disponibilidadUsuario(2, 1, this.formatearFecha(this.fechaHoy)).subscribe((response: any) => {
+      response.dataset.forEach((obj: any) => {
+        this.colaboradores.forEach(colab => {
+          if (obj.id_usuario == colab.id) { colab.atrasadas = obj.tareas_atrasadas }
+        });
+      });
+    });
+    this._colaboradorService.disponibilidadUsuario(4, 1, this.formatearFecha(this.fechaHoy)).subscribe((response: any) => {
+      response.dataset.forEach((obj: any) => {
+        this.colaboradores.forEach(colab => {
+          if (obj.id_usuario == colab.id) { colab.horasAtrasadas = obj.horas }
+        });
+      });
+    });
+  }
+
+  servicio3() {
+    this._colaboradorService.disponibilidadUsuario(3, 1, '2022-10-29' /* this.formatearFecha(this.fechaHoy) */).subscribe((response: any) => {
+      console.log(response.dataset);
+    });
+  }
+
+  servicio5() {
+    this._colaboradorService.disponibilidadUsuario(5, 1, '2022-10-29' /* this.formatearFecha(this.fechaHoy) */).subscribe((response: any) => {
+      console.log(response.dataset);
     });
   }
 
@@ -99,6 +172,7 @@ export class InicioDisponibilidadColaboradores2Component implements OnInit {
   dispararCambioOrdenDesdePlantilla(e: Event) {
     this.ordenSeleccion = (e.target as HTMLElement).innerText;
     this.cambiarOrden();
+    this.contraerColaboradores();
   }
 
   cambiarOrden() {
@@ -144,12 +218,146 @@ export class InicioDisponibilidadColaboradores2Component implements OnInit {
     this.columna2 = this.colaboradores.slice(tamanioCol1, this.colaboradores.length);
   }
 
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.contraerColaboradores();
+    this._colaboradorService.disponibilidadUsuario(1, this.mesesMostrados+1, '2022-10-29' /* this.formatearFecha(this.fechaHastaDate) */).subscribe((response: any) => {
+      this.colaboradoresSP = response.dataset;
+      this.organizarColaboradores();
+      let colaboradoresFiltro: any[] = [];
+      this.colaboradores.forEach(colab => {
+        colaboradoresFiltro.push({ nombre: colab.nombre, apellido: colab.apellido });
+      });
+      this.dataSource = new MatTableDataSource(colaboradoresFiltro);
+      this.dataSource.filter = filterValue.trim().toLowerCase();
+    colaboradoresFiltro = this.dataSource.filteredData;
+    let arrayAux: Colaborador[] = [];
+    this.colaboradores.forEach(colab => {
+      colaboradoresFiltro.forEach(user => {
+        if (colab.nombre == user.nombre && colab.apellido == user.apellido) {
+          arrayAux.push(colab);
+        }
+      });
+    });
+    this.colaboradores = arrayAux;
+    this.getTareasAtrasadas();
+    this.aplicarFiltros();
+    });
+  }
+
+  aplicarFiltros() {
+    if (this.colaboradores.length == 0) {
+      this.colaboradorUnico = false;
+      this.noHayColaboradores = true;
+      this.disponibilidadEquipo = 0;
+    } else if (this.colaboradores.length == 1) {
+      this.colaboradorUnico = true;
+      this.noHayColaboradores = false;
+      this.actualizarDisponibilidadEquipo();
+      this.cambiarOrden();
+    } else {
+      this.colaboradorUnico = false;
+      this.noHayColaboradores = false;
+      this.actualizarDisponibilidadEquipo();
+      this.cambiarOrden();
+    }
+  }
+
+  abrirModalFiltro() {
+    this.contraerColaboradores();
+    this._colaboradorService.disponibilidadUsuario(1, this.mesesMostrados+1, '2022-10-29' /* this.formatearFecha(this.fechaHastaDate) */).subscribe((response: any) => {
+      this.colaboradoresSP = response.dataset;
+      this.organizarColaboradores();
+      const dialogRef = this.dialog.open(ModalFiltroComponent, {
+        width: '400px',
+        disableClose: true,
+        data: { nombre: this.nombre, apellido: this.apellido, funcion: this.funcion }
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        this.nombre = result.nombre;
+        this.apellido = result.apellido;
+        this.funcion = result.seleccion;
+        let filtrar = result.filtrar;
+        if (result.limpiar) { this.inputIzq = '', filtrar = true }
+        if (filtrar) {
+          const filtroNombre = this.filtroAvanzado(1, this.nombre);
+          const filtroApellido = this.filtroAvanzado(2, this.apellido);
+          const filtroFuncion = this.filtroAvanzado(3, this.funcion);
+          this.colaboradores = this.buscarCoincidencias(filtroNombre, filtroApellido, filtroFuncion);
+          this.aplicarFiltros();
+        }
+      });
+    });
+  }
+
+  filtroAvanzado(tipo: number, valor: string) {
+    let arrayTemp: any = [];
+    let arrayTabla: any;
+    switch (tipo) {
+      case 1:
+        this.colaboradores.forEach(colab => {
+          let obj = { id: colab.id, nombre: colab.nombre };
+          arrayTemp.push(obj);
+        });
+        arrayTabla = new MatTableDataSource(arrayTemp);
+        arrayTabla.filter = valor.trim().toLowerCase();
+        arrayTemp = arrayTabla.filteredData;
+        return arrayTemp;
+      case 2:
+        this.colaboradores.forEach(colab => {
+          let obj = { id: colab.id, apellido: colab.apellido };
+          arrayTemp.push(obj);
+        });
+        arrayTabla = new MatTableDataSource(arrayTemp);
+        arrayTabla.filter = valor.trim().toLowerCase();
+        arrayTemp = arrayTabla.filteredData;
+        return arrayTemp;
+      case 3:
+        this.colaboradores.forEach(colab => {
+          let obj = { id: colab.id, funcion: colab.funcion };
+          arrayTemp.push(obj);
+        });
+        arrayTabla = new MatTableDataSource(arrayTemp);
+        arrayTabla.filter = valor.trim().toLowerCase();
+        arrayTemp = arrayTabla.filteredData;
+        return arrayTemp;
+    }
+  }
+
+  buscarCoincidencias(arrayNombre: any, arrayApellido: any, arrayFuncion: any) {
+    let encontrados: any = [];
+    this.colaboradores.forEach(colab => {
+      let encontradoNombre = false;
+      let encontradoApellido = false;
+      let encontradoFuncion = false;
+      arrayNombre.forEach((element: any) => {
+        if (element.id === colab.id) {
+          encontradoNombre = true;
+        }
+      });
+      arrayApellido.forEach((element: any) => {
+        if (element.id === colab.id) {
+          encontradoApellido = true;
+        }
+      });
+      arrayFuncion.forEach((element: any) => {
+        if (element.id === colab.id) {
+          encontradoFuncion = true;
+        }
+      });
+      if (encontradoNombre && encontradoApellido && encontradoFuncion) {
+        encontrados.push(colab);
+      }
+    });
+    return encontrados;
+  }
+
   cambioFechaHasta(event: any) {
     this.contraerColaboradores();
     this.fechaHastaDate = event.value;
     this.mesesMostrados = this.getDiferenciaMeses(this.fechaHoy, this.fechaHastaDate);
     this.actualizarMesesPlanificacion();
-    //this.getTiempoDisponibleColaboradores();  // servicio nivel 3
+    // this.getTiempoDisponibleColaboradores();  // servicio nivel 3
     this.actualizarDisponibilidadEquipo();
     this.cambiarOrden();
   }

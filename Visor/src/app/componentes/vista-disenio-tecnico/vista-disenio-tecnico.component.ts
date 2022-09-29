@@ -29,7 +29,7 @@ export class VistaDisenioTecnicoComponent implements OnInit{
 
   ngOnInit(): void {
     this.proyectoId = "d31cfdaa-049e-e6e3-999d-62b5b2f778b7"; // este dato viene del commponente tareas
-    this._tareaService.getTareasDeProyecto(this.proyectoId).subscribe((response: any) => {
+    this._tareaService.getTareasDeProyecto(this.proyectoId, 'RelevamientoReq').subscribe((response: any) => {
       this.tareasSP = response.dataset;
       this.proyectoNombre = this.tareasSP[0].nombre_proyecto;
       this.organizarTareas();

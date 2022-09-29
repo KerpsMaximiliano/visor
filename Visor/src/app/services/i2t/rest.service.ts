@@ -83,7 +83,7 @@ export class RestService {
       'x-access-token': token
     });
 
-     let url = this.preUrl + 'api/' + query;
+    let url = this.preUrl + 'api/' + query;
     return this.http.get(url, { headers });
   }
 

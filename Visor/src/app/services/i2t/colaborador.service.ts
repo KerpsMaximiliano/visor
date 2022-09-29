@@ -10,23 +10,23 @@ export class ColaboradorService {
   constructor(private rest: RestService) { }
 
   colaboradores: Colaborador[] = [
-    { id: 1, nombre: 'Facundo', apellido: 'Ghio Serra', funcion: 'Analista Funcional', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
-    { id: 2, nombre: 'Patricio', apellido: 'Macagno', funcion: 'Analista Funcional', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
-    { id: 3, nombre: 'Gian', apellido: 'Laner', funcion: 'Analista Funcional', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
-    { id: 4, nombre: 'Franco', apellido: 'Friggeri', funcion: 'Analista Tecnico', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
-    { id: 5, nombre: 'Franco', apellido: 'Corvalan', funcion: 'Analista Tecnico', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
-    { id: 6, nombre: 'Jeremias', apellido: 'Garcia', funcion: 'Desarrollador', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
-    { id: 7, nombre: 'Ignacio', apellido: 'Girod', funcion: 'Desarrollador', capacidad: 80, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
-    { id: 8, nombre: 'Fabio', apellido: 'Olivera', funcion: 'Desarrollador', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
-    { id: 9, nombre: 'Augusto', apellido: 'Escandon', funcion: 'Desarrollador', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
-    { id: 10, nombre: 'Federico', apellido: 'Gauchat', funcion: 'Desarrollador', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
-    { id: 11, nombre: 'Franco', apellido: 'Caldaroni', funcion: 'Analista Funcional', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
-    { id: 12, nombre: 'Luciano', apellido: 'De Giorgio', funcion: 'Desarrollador', capacidad: 80, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
-    { id: 13, nombre: 'Lucio', apellido: 'Cocuccio', funcion: 'Desarrollador', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
-    { id: 14, nombre: 'Pablo', apellido: 'Corujo', funcion: 'Desarrollador', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
-    { id: 15, nombre: 'Leandro', apellido: 'Blodorn', funcion: 'Desarrollador', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
-    { id: 16, nombre: 'Maximiliano', apellido: 'Reichert', funcion: 'Analista Tecnico', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
-    { id: 17, nombre: 'Lucas', apellido: 'Rios', funcion: 'Desarrollador', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 }
+    { id: '1', nombre: 'Facundo', apellido: 'Ghio Serra', funcion: 'Analista Funcional', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
+    { id: '2', nombre: 'Patricio', apellido: 'Macagno', funcion: 'Analista Funcional', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
+    { id: '3', nombre: 'Gian', apellido: 'Laner', funcion: 'Analista Funcional', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
+    { id: '4', nombre: 'Franco', apellido: 'Friggeri', funcion: 'Analista Tecnico', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
+    { id: '5', nombre: 'Franco', apellido: 'Corvalan', funcion: 'Analista Tecnico', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
+    { id: '6', nombre: 'Jeremias', apellido: 'Garcia', funcion: 'Desarrollador', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
+    { id: '7', nombre: 'Ignacio', apellido: 'Girod', funcion: 'Desarrollador', capacidad: 80, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
+    { id: '8', nombre: 'Fabio', apellido: 'Olivera', funcion: 'Desarrollador', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
+    { id: '9', nombre: 'Augusto', apellido: 'Escandon', funcion: 'Desarrollador', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
+    { id: '10', nombre: 'Federico', apellido: 'Gauchat', funcion: 'Desarrollador', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
+    { id: '11', nombre: 'Franco', apellido: 'Caldaroni', funcion: 'Analista Funcional', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
+    { id: '12', nombre: 'Luciano', apellido: 'De Giorgio', funcion: 'Desarrollador', capacidad: 80, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
+    { id: '13', nombre: 'Lucio', apellido: 'Cocuccio', funcion: 'Desarrollador', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
+    { id: '14', nombre: 'Pablo', apellido: 'Corujo', funcion: 'Desarrollador', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
+    { id: '15', nombre: 'Leandro', apellido: 'Blodorn', funcion: 'Desarrollador', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
+    { id: '16', nombre: 'Maximiliano', apellido: 'Reichert', funcion: 'Analista Tecnico', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 },
+    { id: '17', nombre: 'Lucas', apellido: 'Rios', funcion: 'Desarrollador', capacidad: 160, horasPlanificadas: 0, tiempoDisponible: 0, atrasadas: 0, horasAtrasadas: 0 }
   ];
 
   tareas: any[] = [
@@ -157,10 +157,10 @@ export class ColaboradorService {
     }
   }
 
-  iniciarColaboradores(fecha: string) {
+  disponibilidadUsuario(nivel: number, cant_meses: number, fecha: string) {
     let jsbody: string = JSON.stringify({
-      nivel : 1,
-      cant_meses : 1,
+      nivel : nivel,
+      cant_meses : cant_meses,
       fecha_fin : fecha
     });
     return this.rest.callProcedimientoVisor(jsbody, "DisponibilidadUsuario");

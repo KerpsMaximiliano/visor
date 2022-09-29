@@ -12,12 +12,16 @@
     width: 50%;
 }
 
+.fecha-hoy {
+    text-align: center;
+}
+
 .cuadro-fecha {
     border: 2px solid black;
     border-radius: 5px;
     margin: 3px;
     padding: 3px;
-    width: 70px;
+    width: 100px;
     text-align: center;
 }
 

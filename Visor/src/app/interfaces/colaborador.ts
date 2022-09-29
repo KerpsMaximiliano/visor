@@ -1,6 +1,6 @@
 export interface Colaborador {
 
-    id: number,
+    id: string,
     nombre: string,
     apellido: string,
     funcion: string,
