@@ -14,7 +14,8 @@ import { environment } from 'src/environments/environment';
 })
 export class RestService {
   preUrl: string;
-
+  urlPost: string = "http://tstvar.i2tsa.com.ar:3001/api/";
+  token: any = localStorage.getItem('auth_token');
 
 
   constructor(
@@ -138,10 +139,10 @@ export class RestService {
     //Falta mergear para traer los ultimos cambios del CU LOGIN!!!
     //let token = localStorage.getItem('TOKEN')!; //con el ! le digo a typescript que token nunca va a ser nulo o vacio, ojo! asegurar este comportamiento sino buscar otra forma
     const headers = new HttpHeaders({
-      'x-access-token': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjdW5xMmkwZDU4OGoxN2Q1aTNoczcyYnQzIiwiaWF0IjoxNjYzOTMzNDQ3LCJleHAiOjE2NjM5NTE0NDd9._TdiDQWXWOM3hOAZ0jNvhucCqZkpTbN4LyzGx-EK0C8"
+      'x-access-token': this.token
     });
 
-    let url = this.urlPost + "/proc/" + tipoDePost;
+    let url = this.urlPost + "proc/" + tipoDePost;
     return this.http.post(url , body, {headers});
   }  
 }

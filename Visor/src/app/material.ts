@@ -1,48 +1,37 @@
 import { MatButtonModule } from '@angular/material/button';
-import { MatSliderModule } from '@angular/material/slider';
-import { MatIconModule } from '@angular/material/icon';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatCardModule } from '@angular/material/card';
-import { MatGridListModule } from '@angular/material/grid-list';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatListModule } from '@angular/material/list';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatTableModule } from '@angular/material/table';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatCardModule } from '@angular/material/card';
+import { MatExpansionModule } from '@angular/material/expansion';
+import {MatTableModule} from '@angular/material/table';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatIconModule} from '@angular/material/icon';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 const MATERIALES = [
-  MatButtonModule,
-  MatSliderModule,
-  MatIconModule,
-  MatAutocompleteModule,
-  MatProgressBarModule,
-  MatFormFieldModule,
-  MatInputModule,
-  MatCardModule,
-  MatGridListModule,
-  MatTooltipModule,
-  MatDialogModule,
-  MatCheckboxModule,
-  MatListModule,
-  MatDividerModule,
-  MatTableModule,
-  MatMenuModule,
-  MatSnackBarModule,
-  MatPaginatorModule
+    MatButtonModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatDialogModule,
+    MatCardModule,
+    MatExpansionModule,
+    MatTableModule,
+    MatDividerModule,
+    MatIconModule,
+    MatTooltipModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    MatMenuModule
 ]
 
 
 import { NgModule } from '@angular/core';
-import { MatOption, MatOptionModule, MatPseudoCheckboxModule } from '@angular/material/core';
-import { MatSelect, MatSelectModule } from '@angular/material/select';
-import { MatCheckboxHarness } from '@angular/material/checkbox/testing';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   imports: [

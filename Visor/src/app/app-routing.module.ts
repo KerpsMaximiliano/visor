@@ -27,7 +27,12 @@ const routes: Routes = [
     children: [
       { path: 'roles-usuarios', component: RolesUsuariosComponent },
       { path: 'permisos-roles', component: PermisosRolesComponent }
-    ] }
+    ] 
+  },
+  {
+    path: "inicio",
+    component: InicioEstadoProyectoComponent
+  }
 ];
 
 @NgModule({

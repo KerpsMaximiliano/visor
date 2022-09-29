@@ -7,8 +7,8 @@ import { TooltipPosition } from '@angular/material/tooltip';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { FiltroProyectosComponent } from '../../shared/modal-filtro-proyectos/filtro-proyectos/filtro-proyectos.component';
-import { MatAccordion } from '@angular/material/expansion';
 import { ViewChild } from '@angular/core';
+import { MatAccordion } from '@angular/material/expansion';
 
 @Component({
   selector: 'app-inicio-estado-proyecto',
@@ -26,8 +26,8 @@ export class InicioEstadoProyectoComponent implements OnInit {
 
   @ViewChild(MatAccordion) accordion!: MatAccordion;
 
-  data = new MatTableDataSource(this.dataProyecto.proyectos);
-  proyectos: Proyecto[];
+  data: any;
+  proyectos: Proyecto[] = [];
   displayedColumns: string[] = ['nombre','tareasATiempo','tareasAtrasadas'];
   columnsToDisplayWithExpand = [...this.displayedColumns, 'expand'];
   expandedElement!: Proyecto;
@@ -45,19 +45,39 @@ export class InicioEstadoProyectoComponent implements OnInit {
 
 
   constructor(private dataProyecto: ProyectoDataService, private dialog: MatDialog) {
-    this.proyectos = this.dataProyecto.proyectos;
   }
 
   ngOnInit(): void {
-    this.actualizarDisponibilidadProyecto();
+    this.dataProyecto.getProyectos().subscribe((resp: any) => {
+      if(resp.returnset[0].RCode == 1){
+        for(let i = 0;i<resp.dataset.length;i++){
+          let objetoTemporal: Proyecto = {
+            numero: resp.dataset[i].Id_Caso,
+            nombre: resp.dataset[i].Caso,
+            cliente: "",
+            asignado: "",
+            porcentajeTareasAtrasadas: 0,
+            porcentajeTareasATiempo: 0,
+            porcentajeHPCompletadas: 0,
+            porcentajeHPEnProgreso: 0,
+            porcentajeHPEnPrueba: 0,
+            porcentajeHPNoIniciadas: 0
+          }
+          this.proyectos.push(objetoTemporal);
+        }
+        this.data = new MatTableDataSource(this.proyectos);
+      }
+      });
+    /* this.actualizarDisponibilidadProyecto(); */
   }
+
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.data.filter = filterValue.trim().toLowerCase();
   }
 
-  retornarPorcentajeCompletadas(index: number): number{
+  /* retornarPorcentajeCompletadas(index: number): number{
     return this.dataProyecto.proyectos[index].porcentajeHPCompletadas;
   }
 
@@ -71,9 +91,9 @@ export class InicioEstadoProyectoComponent implements OnInit {
 
   retornarPorcentajeEnPrueba(index: number): number{
     return this.dataProyecto.proyectos[index].porcentajeHPEnPrueba;
-  }
+  } */
 
-  retornarPorcentajeAvanceFuncionalCompletadas(index: number): number{
+  /* retornarPorcentajeAvanceFuncionalCompletadas(index: number): number{
     return this.dataProyecto.proyectos[index].avanceDisenioFuncional.porcentajeCompletadas  
   }
 
@@ -87,7 +107,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
 
   retornarPorcentajeAvanceFuncionalEnPrueba(index: number): number{
     return this.dataProyecto.proyectos[index].avanceDisenioFuncional.porcentajeEnPrueba;
-  }
+  } */
 
   getPorcentajeRojo(valor: number) {
     if (valor>=0 && valor<=25) {
@@ -121,20 +141,20 @@ export class InicioEstadoProyectoComponent implements OnInit {
     }
   }
 
-  getTooltipTareasAbiertasTotales(){
+ /*  getTooltipTareasAbiertasTotales(){
     return this.dataProyecto.getCantidadTareasAbiertas();
   }
 
   getTooltipTareasAnteriores(){
     return this.dataProyecto.getCantidadTareasAnteriores();
   }
-
-  actualizarDisponibilidadProyecto(){
+ */
+  /* actualizarDisponibilidadProyecto(){
     this.disponibilidadProyectos = Math.round((this.getTooltipTareasAnteriores() / this.getTooltipTareasAbiertasTotales()) * 100);
-  }
+  } */
 
   openFiltro(){
-    this.proyectos = this.dataProyecto.proyectos;
+    //this.proyectos = this.dataProyecto.proyectos;
     const dialogRef = this.dialog.open(FiltroProyectosComponent, {
       width: '400px',
       disableClose: true,

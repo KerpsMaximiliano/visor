@@ -8,43 +8,40 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 //Material
 import { MyMaterialModule } from './material';
 
-// Componentes
+//Modulos internos
 import { LoginModule } from './componentes/login/login.module';
 import { RecuperarcontraseniaModule } from './componentes/recuperar-contrasenia/recuperar-contrasenia.module';
-import { ConfiguracionesComponent } from './components/configuraciones/configuraciones-main/configuraciones-main.component';
-import { RolesUsuariosModule } from './components/configuraciones/roles-usuarios/roles-usuarios.module';
-import { PermisosRolesModule } from './components/configuraciones/permisos-roles/permisos-roles.module';
-import { MatConfirmDialogComponent } from './shared/mat-confirm-dialog/mat-confirm-dialog.component';
-import { RestService } from './services/i2t/rest.service';
-import { LoginService } from './services/i2t/login.service';
-import { Config } from './services/i2t/config.service';
+import { InicioEstadoModule } from './componentes/inicio-estado-proyecto/inicio-estado.module';
 import { HttpClientModule } from '@angular/common/http';
+import { RestService } from './services/i2t/rest.service';
+import { Config } from './services/i2t/config.service';
 import { SnackbarService } from './services/util/snackbar.service';
-import { ModalcontraseniaComponent } from './shared/modal-contrasenia/modalcontrasenia.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormsModule } from '@angular/forms';
+import { PermisosRolesModule } from './components/configuraciones/permisos-roles/permisos-roles.module';
+import { RolesUsuariosModule } from './components/configuraciones/roles-usuarios/roles-usuarios.module';
+import { ConfiguracionesComponent } from './components/configuraciones/configuraciones-main/configuraciones-main.component';
+import { MatConfirmDialogComponent } from './shared/mat-confirm-dialog/mat-confirm-dialog.component';
 
-export function initConfig(config: Config) {
-  return () => config.load();
-}
 
 @NgModule({
   declarations: [
-    AppComponent,
-    ConfiguracionesComponent,
-    MatConfirmDialogComponent,
-    ModalcontraseniaComponent
-  ],
+    AppComponent, ConfiguracionesComponent, MatConfirmDialogComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MyMaterialModule,
     LoginModule,
+    InicioEstadoModule,
+    HttpClientModule,
     RecuperarcontraseniaModule,
-    RolesUsuariosModule,
+    FormsModule,
     PermisosRolesModule,
-    HttpClientModule
+    RolesUsuariosModule
   ],
-  providers: [RestService, LoginService, Config, SnackbarService],
+  providers: [Config, RestService, MatSnackBar, SnackbarService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
