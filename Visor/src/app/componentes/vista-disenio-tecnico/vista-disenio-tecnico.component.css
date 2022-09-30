@@ -1,0 +1,175 @@
+* {
+    padding: 0;
+    margin: 0;
+    text-decoration: none;
+    list-style: none;
+}
+
+.oculto {
+    display: none;
+}
+
+.container-all {
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
+}  
+
+.container-barra {
+    margin-right: 20%;
+    margin-left: 20%;
+    border: 1px solid black;
+}
+
+.porcentajes {
+    margin-top: 13px;
+    color: white;
+    font-weight: 700;
+}
+
+#progress {
+    color: black;
+}
+
+#porcentajeAmarillo {
+    color: black;
+}
+
+.cabecera {
+    text-align: center;
+}
+
+#titulo-proyecto {
+    font-size: 25px;
+    margin-top: 20px;
+    font-weight: 700;
+}
+
+#subtitulo-disenio {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+h4 {
+    font-weight: 700;
+    color: white;
+}
+
+.datos {
+    display: flex;
+}
+
+.caja-fecha {
+    width: 100px;
+}
+
+.datos strong {
+    padding-right: 4px;
+    font-size: 12px;
+}
+
+.strong-horas {
+    width: 45px;
+}
+
+.datos p {
+    font-size: 12px;
+}
+
+.fecha p {
+    margin-left: 13px;
+}
+
+.descripcion-tarea {
+    padding-top: 10px;
+}
+
+.container-all-tareas {
+    margin-top: 10px;
+}
+
+mat-accordion mat-expansion-panel {
+    background-color: rgba(255, 255, 255, .7);
+    border: solid 1px black;
+}
+
+mat-accordion mat-expansion-panel-header {
+    height: 45px;
+}
+
+.card-columna {
+    width: 100%;
+    margin-left: 0.25%;
+    margin-right: 0.25%;
+}
+
+.card {
+    border: 1.5px solid black;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.titulo-container {
+    height: 25px;
+    text-align: center;
+    border: 1.5px solid black;
+    border-radius: 4px;
+}
+
+#no-iniciadas {
+    background-color: rgb(170, 0, 0);
+}
+
+#en-progreso {
+    background-color: yellow;
+}
+
+#completadas {
+    background-color: green;
+}
+
+.container-vacio {
+    border: 1.5px solid black;
+    height: 60px;
+}
+
+.horas {
+    padding-right: 5px;
+}
+
+.desvioNegativo {
+    color: red;
+    font-weight: 700;
+}
+
+.desvioPositivo {
+    color: green;
+    font-weight: 700;
+}
+
+.iconos-superior {
+    margin-top: 10px;
+    text-align: right;
+}
+
+.icon-edit {
+    margin-right: 5px;
+    cursor: pointer;
+    color: blue;
+}
+
+.icon-x {
+    cursor: pointer;
+    color: red;
+}
+
+.icon-general {
+    margin-top: 2px;
+    margin-right: 5px;
+    color: black;
+}
+
+.actividades-desplegable {
+    width: 100%;
+    margin-top: 5px;
+}

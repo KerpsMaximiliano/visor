@@ -7,22 +7,44 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 //Material
 import { MyMaterialModule } from './material';
-import { VistaAnalistaModule } from './vista-analista-funcional/modules/vista-analista.module';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+
+// Componentes
+import { LoginModule } from './componentes/login/login.module';
+import { RecuperarcontraseniaModule } from './componentes/recuperar-contrasenia/recuperar-contrasenia.module';
+import { ConfiguracionesComponent } from './components/configuraciones/configuraciones-main/configuraciones-main.component';
+import { RolesUsuariosModule } from './components/configuraciones/roles-usuarios/roles-usuarios.module';
+import { PermisosRolesModule } from './components/configuraciones/permisos-roles/permisos-roles.module';
+import { MatConfirmDialogComponent } from './shared/mat-confirm-dialog/mat-confirm-dialog.component';
+import { RestService } from './services/i2t/rest.service';
+import { LoginService } from './services/i2t/login.service';
+import { Config } from './services/i2t/config.service';
+import { HttpClientModule } from '@angular/common/http';
+import { SnackbarService } from './services/util/snackbar.service';
+import { ModalcontraseniaComponent } from './shared/modal-contrasenia/modalcontrasenia.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { VistaDisenioTecnicoModule } from './componentes/vista-disenio-tecnico/vista-disenio-tecnico.module';
+
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ConfiguracionesComponent,
+    MatConfirmDialogComponent,
+    ModalcontraseniaComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MyMaterialModule,
-    VistaAnalistaModule,
-    HttpClientModule
+    LoginModule,
+    RecuperarcontraseniaModule,
+    RolesUsuariosModule,
+    PermisosRolesModule,
+    HttpClientModule,
+    VistaDisenioTecnicoModule
   ],
-  providers: [],
+  providers: [RestService, LoginService, Config, SnackbarService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
