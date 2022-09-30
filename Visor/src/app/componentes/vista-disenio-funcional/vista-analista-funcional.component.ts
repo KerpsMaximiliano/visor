@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Tarea } from './interfaces/tarea';
-import { TareaService } from '../services/i2t/tarea.service';
+import { TareaService } from 'src/app/services/i2t/tarea.service';
+import { Tarea } from 'src/app/interfaces/tarea';
 
 @Component({
   selector: 'app-vista-analista-funcional',
