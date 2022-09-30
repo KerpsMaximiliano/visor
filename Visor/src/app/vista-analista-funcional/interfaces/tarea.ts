@@ -1,4 +1,4 @@
-export interface Actividad {
+export interface Tarea {
     titulo: string,
     proyecto: string,
     prioridad: string,

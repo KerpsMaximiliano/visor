@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 //Material
 import { MyMaterialModule } from './material';
 import { VistaAnalistaModule } from './vista-analista-funcional/modules/vista-analista.module';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { VistaAnalistaModule } from './vista-analista-funcional/modules/vista-an
     AppRoutingModule,
     BrowserAnimationsModule,
     MyMaterialModule,
-    VistaAnalistaModule
+    VistaAnalistaModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
