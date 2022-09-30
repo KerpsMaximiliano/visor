@@ -9,7 +9,7 @@ export class FiltroService {
 constructor(private _restService: RestService) { }
 
 getUserId(userName: string) {
-  return this._restService.callQueryVisor('users?user_name='+userName)
+  return this._restService.callQueryVisor('users?user_name='+userName);
 }
 
 selectFiltro(user_id: string, modulo_busqueda: string) {

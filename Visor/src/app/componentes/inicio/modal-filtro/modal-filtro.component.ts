@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ColaboradorService } from 'src/app/services/i2t/colaborador.service';
+import { FiltroService } from 'src/app/services/i2t/filtro.service';
 
 @Component({
   selector: 'app-modal-filtro',
@@ -11,15 +11,17 @@ export class ModalFiltroComponent implements OnInit {
 
   funciones: string[] = [ 'Analista Funcional', 'Analista Tecnico', 'Desarrollador', 'Tester', 'Project Manager' ];
   result = {nombre: '', apellido: '', seleccion: '', filtrar: true, limpiar: false};
-  // esta configuracion tienen que quedar guardada en la sesion del usuario en actividad
+  saved_search_id = '';
   resultTemp = {nombre: '', apellido: '', seleccion: '', filtrar: true, limpiar: false};
 
-  constructor(public dialogRef: MatDialogRef<ModalFiltroComponent>, @Inject(MAT_DIALOG_DATA) public data:any) { }
+  constructor(public dialogRef: MatDialogRef<ModalFiltroComponent>, @Inject(MAT_DIALOG_DATA) public data:any,
+              private _filtroService: FiltroService) { }
 
   ngOnInit(): void {
     this.result.nombre = this.data.nombre;
     this.result.apellido = this.data.apellido;
     this.result.seleccion = this.data.funcion;
+    this.saved_search_id = this.data.search_id
     this.resultTemp = this.result;
   }
 
@@ -28,11 +30,37 @@ export class ModalFiltroComponent implements OnInit {
     this.result.apellido = '';
     this.result.seleccion = '';
     this.result.limpiar = true;
+    this._filtroService.deleteFiltro(this.saved_search_id).subscribe((rsp: any) => {
+      console.log('Filtro eliminado: ', rsp);
+    });
   }
 
   cancelarBusqueda(): void {
     this.result.filtrar = false;
     this.dialogRef.close(this.resultTemp);
+  }
+
+  guardarFiltro() {
+    const contenido: string = JSON.stringify({
+      nombre : this.result.nombre,
+      apellido : this.result.apellido,
+      funcion : this.result.seleccion
+    });
+    const encodedData = btoa(contenido);
+    if (this.saved_search_id == '') {
+      this._filtroService.insertFiltro(
+        localStorage.getItem('userId')!,
+        'disponibilidad',
+        'filtro_nombre_apellido_funcion',
+        encodedData,
+        'Filtra los colaboradores combinando las 3 caracteristicas').subscribe((rsp: any) => {
+          console.log('Filtro guardado: ', rsp);
+        });
+    } else {
+      this._filtroService.updateFiltro(this.saved_search_id, encodedData).subscribe((rsp: any) => {
+        console.log('Filtro actualizado: ', rsp);
+      });
+    }
   }
 
 }

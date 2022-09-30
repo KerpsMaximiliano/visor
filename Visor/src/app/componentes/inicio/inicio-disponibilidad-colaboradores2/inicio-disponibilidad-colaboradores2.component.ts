@@ -19,22 +19,25 @@ export class InicioDisponibilidadColaboradores2Component implements OnInit {
   @ViewChild(MatAccordion) accordion!: MatAccordion;
 
   colaboradoresSP: any[] = [];
+  planificacion: any[] = [];
   colaboradores: Colaborador[] = [];
-  dataSource!: any;
   columna1!: Colaborador[];
   columna2!: Colaborador[];
-  noHayColaboradores: boolean = false;
-  colaboradorUnico: boolean = false;
-  inputIzq: string = '';
-  nombre: string = ''; // se tiene que guardar en las preferencias del usuario en sesion cuando este disponible
-  apellido: string = ''; // se tiene que guardar en las preferencias del usuario en sesion cuando este disponible
-  funcion: string = ''; // se tiene que guardar en las preferencias del usuario en sesion cuando este disponible
-  orden: string[] = ['Alfabetico', 'Tiempo Disponible'];
-  ordenSeleccion: string = 'Tiempo Disponible'; // se tiene que guardar en las preferencias del usuario en sesion cuando este disponible
+  dataSource!: any;
+  noHayColaboradores = false;
+  colaboradorUnico = false;
+  inputIzq = '';
+  nombre = '';
+  apellido = '';
+  funcion = '';
+  modal_saved_search_id = '';
+  orden = ['Alfabetico', 'Tiempo Disponible'];
+  ordenSeleccion = 'Tiempo Disponible';
+  orden_saved_search_id = '';
   fechaHoy = new Date();
   fechaHastaDate = new Date();
-  mesesMostrados: number = 0;
-  disponibilidadEquipo: number = 0;
+  mesesMostrados = 0;
+  disponibilidadEquipo = 0;
   mesesPlanificacion = [{mes: ''}];
   positionOptions: TooltipPosition[] = ['after', 'before', 'above', 'below', 'left', 'right'];
   position = new FormControl(this.positionOptions[0]);
@@ -45,23 +48,36 @@ export class InicioDisponibilidadColaboradores2Component implements OnInit {
   ngOnInit(): void {
     this._filtroService.getUserId(localStorage.getItem('usuario')!).subscribe((response: any) => {
       localStorage.setItem('userId', response.dataset[0].id);
-
+      this._filtroService.selectFiltro(response.dataset[0].id, 'disponibilidad').subscribe((resp: any) => {
+        if (resp.dataset.length == 0 ) {
+        } else {
+          console.log('hay datos', resp);
+          resp.dataset.forEach((filtro: any) => {
+            if (filtro.nombre == 'filtro_orden') {
+              this.orden_saved_search_id = filtro.saved_search_id;
+              const contenido = JSON.parse(atob(filtro.contenido));
+              this.ordenSeleccion = contenido.ordenSeleccion; 
+            }
+            if (filtro.nombre == 'filtro_nombre_apellido_funcion') {
+              this.modal_saved_search_id = filtro.saved_search_id;
+              const contenido = JSON.parse(atob(filtro.contenido));
+              this.nombre = contenido.nombre;
+              this.apellido = contenido.apellido;
+              this.funcion = contenido.funcion;
+            }
+          });
+        }
+      this.mesesPlanificacion[0].mes = this._colaboradorService.getMesString(this.fechaHoy.getMonth());
+      this._colaboradorService.disponibilidadUsuario(1, 1, '2022-10-29' /* this.formatearFecha(this.fechaHoy) */).subscribe((response: any) => {
+        this.colaboradoresSP = response.dataset;
+        this.organizarColaboradores();
+        this.dataSource = new MatTableDataSource(this.colaboradores);
+        this.getTareasAtrasadas();
+        this.getPlanificacionColaboradores();
+        this.prepararFiltro();
+      });
+      });
     });
-    this.mesesPlanificacion[0].mes = this._colaboradorService.getMesString(this.fechaHoy.getMonth());
-    this._colaboradorService.disponibilidadUsuario(1, 1, '2022-10-29' /* this.formatearFecha(this.fechaHoy) */).subscribe((response: any) => {
-      this.colaboradoresSP = response.dataset;
-      this.organizarColaboradores();
-      this.dataSource = new MatTableDataSource(this.colaboradores);
-      this.getTareasAtrasadas();
-      this.servicio3();
-      this.servicio5();
-      this.actualizarDisponibilidadEquipo();
-      this.cambiarOrden();
-    });
-    const encodedData = btoa("Hello, world");
-    console.log(encodedData);
-    const decodedData = atob(encodedData);
-    console.log(decodedData);
   }
 
   formatearFecha(fecha: Date) {
@@ -101,6 +117,17 @@ export class InicioDisponibilidadColaboradores2Component implements OnInit {
       atrasadas: 0,
       horasAtrasadas: 0
     });
+    this.colaboradores.push({
+      id: "b3f81a92-c3a6-0f6a-4ffe-5fecc55a882e",
+      nombre: "Patricio",
+      apellido: "McCaño",
+      funcion: "Analista Funcional",
+      capacidad: 150,
+      horasPlanificadas: 80,
+      tiempoDisponible: 0,
+      atrasadas: 0,
+      horasAtrasadas: 0
+    });
   }
 
   nullCheck(check: any) {
@@ -134,15 +161,11 @@ export class InicioDisponibilidadColaboradores2Component implements OnInit {
     });
   }
 
-  servicio3() {
-    this._colaboradorService.disponibilidadUsuario(3, 1, '2022-10-29' /* this.formatearFecha(this.fechaHoy) */).subscribe((response: any) => {
-      console.log(response.dataset);
-    });
-  }
-
-  servicio5() {
-    this._colaboradorService.disponibilidadUsuario(5, 1, '2022-10-29' /* this.formatearFecha(this.fechaHoy) */).subscribe((response: any) => {
-      console.log(response.dataset);
+  getPlanificacionColaboradores() {
+    this._colaboradorService.disponibilidadUsuario(5, 1, '2022-10-29' /* this.formatearFecha(this.fechaHoy) */).subscribe((resp: any) => {
+      resp.dataset.forEach((colab: any) => {
+        this.planificacion.push({ id: colab.id_usuario, proyecto: colab.nombre_proyecto, mes: colab.mes-1, horas_planificadas: colab.horas_planificadas });
+      });
     });
   }
 
@@ -171,8 +194,26 @@ export class InicioDisponibilidadColaboradores2Component implements OnInit {
 
   dispararCambioOrdenDesdePlantilla(e: Event) {
     this.ordenSeleccion = (e.target as HTMLElement).innerText;
-    this.cambiarOrden();
-    this.contraerColaboradores();
+    const contenido: string = JSON.stringify({ ordenSeleccion : this.ordenSeleccion });
+    const encodedData = btoa(contenido);
+    if (this.orden_saved_search_id == '') {
+      this._filtroService.insertFiltro(
+        localStorage.getItem('userId')!,
+        'disponibilidad',
+        'filtro_orden',
+        encodedData,
+        'Filtra los colaboradores por orden alfabetico o tiempo disponible').subscribe((rsp: any) => {
+          console.log('Filtro guardado: ', rsp);
+          this.cambiarOrden();
+          this.contraerColaboradores();
+        });
+    } else {
+      this._filtroService.updateFiltro(this.orden_saved_search_id, encodedData).subscribe((rsp: any) => {
+        console.log('Filtro actualizado: ', rsp);
+        this.cambiarOrden();
+        this.contraerColaboradores();
+      });
+    }
   }
 
   cambiarOrden() {
@@ -271,7 +312,7 @@ export class InicioDisponibilidadColaboradores2Component implements OnInit {
       const dialogRef = this.dialog.open(ModalFiltroComponent, {
         width: '400px',
         disableClose: true,
-        data: { nombre: this.nombre, apellido: this.apellido, funcion: this.funcion }
+        data: { nombre: this.nombre, apellido: this.apellido, funcion: this.funcion, search_id: this.modal_saved_search_id }
       });
       dialogRef.afterClosed().subscribe(result => {
         this.nombre = result.nombre;
@@ -280,14 +321,18 @@ export class InicioDisponibilidadColaboradores2Component implements OnInit {
         let filtrar = result.filtrar;
         if (result.limpiar) { this.inputIzq = '', filtrar = true }
         if (filtrar) {
-          const filtroNombre = this.filtroAvanzado(1, this.nombre);
-          const filtroApellido = this.filtroAvanzado(2, this.apellido);
-          const filtroFuncion = this.filtroAvanzado(3, this.funcion);
-          this.colaboradores = this.buscarCoincidencias(filtroNombre, filtroApellido, filtroFuncion);
-          this.aplicarFiltros();
+          this.prepararFiltro();
         }
       });
     });
+  }
+
+  prepararFiltro() {
+    const filtroNombre = this.filtroAvanzado(1, this.nombre);
+    const filtroApellido = this.filtroAvanzado(2, this.apellido);
+    const filtroFuncion = this.filtroAvanzado(3, this.funcion);
+    this.colaboradores = this.buscarCoincidencias(filtroNombre, filtroApellido, filtroFuncion);
+    this.aplicarFiltros();
   }
 
   filtroAvanzado(tipo: number, valor: string) {
@@ -357,7 +402,7 @@ export class InicioDisponibilidadColaboradores2Component implements OnInit {
     this.fechaHastaDate = event.value;
     this.mesesMostrados = this.getDiferenciaMeses(this.fechaHoy, this.fechaHastaDate);
     this.actualizarMesesPlanificacion();
-    // this.getTiempoDisponibleColaboradores();  // servicio nivel 3
+    // this.getTiempoDisponibleColaboradores();  // servicio nivel 3 y 5
     this.actualizarDisponibilidadEquipo();
     this.cambiarOrden();
   }
@@ -456,6 +501,58 @@ export class InicioDisponibilidadColaboradores2Component implements OnInit {
       capacidadTotalAcumulada += colab.capacidad;
     });
     return capacidadTotalAcumulada;
+  }
+
+  getPorcentajeDisponibleMensual(id: string, mes: string, capacidad: number) {
+    let hp = 0;
+    this.planificacion.forEach(tarea => {
+      if (tarea.id == id && tarea.mes == this._colaboradorService.getMesDate(mes)) {
+        hp += tarea.horas_planificadas;
+      }
+    });
+    return Math.round(((capacidad-hp)/capacidad*100));
+  }
+
+  getTooltipHsPlanMensual(id: string, mes: string) {
+    let hp = 0;
+    this.planificacion.forEach(tarea => {
+      if (tarea.id == id && tarea.mes == this._colaboradorService.getMesDate(mes)) {
+        hp += tarea.horas_planificadas;
+      }
+    });
+    return hp;
+  }
+
+  separarProyectosDelMes(id: string, mes: string) {
+    let proyectos:any = [];
+    this.planificacion.forEach(tarea => {
+      if (tarea.id == id && tarea.mes == this._colaboradorService.getMesDate(mes)) {
+        if (proyectos.indexOf(tarea.proyecto) == -1) {
+          proyectos.push(tarea.proyecto);
+        }
+      }
+    });
+    return proyectos;
+  }
+
+  getPorcentajeOcupadoMensualProyecto(proyecto: string, id: string, mes: string, capacidad: number) {
+    let hp = 0;
+    this.planificacion.forEach(tarea => {
+      if (tarea.id == id && tarea.proyecto == proyecto && tarea.mes == this._colaboradorService.getMesDate(mes)) {
+        hp = tarea.horas_planificadas;
+      }
+    });
+    return Math.round(hp/capacidad*100);
+  }
+
+  getTooltipHsPlanProyecto(proyecto: string, id: string, mes: string) {
+    let hp = 0;
+    this.planificacion.forEach(tarea => {
+      if (tarea.id == id && tarea.proyecto == proyecto && tarea.mes == this._colaboradorService.getMesDate(mes)) {
+        hp = tarea.horas_planificadas;
+      }
+    });
+    return hp;
   }
 
   getDiferenciaMeses(mesInicio: Date, mesFin: Date) {
