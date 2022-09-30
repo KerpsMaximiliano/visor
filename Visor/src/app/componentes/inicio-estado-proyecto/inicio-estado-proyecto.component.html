@@ -7,11 +7,26 @@
       </mat-form-field>
       <button class="boton-icono" (click)="openFiltro()" mat-mini-fab color="primary" mat-button matTooltip="Filtro Avanzado"><mat-icon class="icon">filter_alt</mat-icon></button>
       <button class="boton-icono" mat-mini-fab color="primary" (click)="contraerProyectos()" mat-button matTooltip="Cerrar Proyectos"><mat-icon class="icon">close_fullscreen</mat-icon></button>
-      <div id="container-indicadores">
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
+      <div class="container-informacion">
+        <div id="seccion-informacion">
+          <div id="seccion-completadas">
+            <div class="cc-no-iniciadas"></div>
+            <p class="letrasSeccionInformacion">No iniciadas</p>
+          </div>
+          <div id="seccion-en-progreso">
+            <div class="cc-en-progreso"></div>
+            <p class="letrasSeccionInformacion">En progreso</p>
+          </div>
+          <div id="seccion-en-prueba">
+            <div class="cc-en-prueba"></div>
+            <p class="letrasSeccionInformacion">En prueba</p>
+          </div>
+          <div id="seccion-completadas">
+            <div class="cc-completadas"></div>
+            <p class="letrasSeccionInformacion">Completadas</p>
+          </div>
+        </div>
+        <button class="boton-informacion" mat-mini-fab color="primary"><mat-icon class="icony">info</mat-icon></button>
       </div>
       <div class="disponibilidad-proyectos">
         <h3>Tareas atrasadas<mat-divider></mat-divider></h3>
@@ -99,35 +114,34 @@
                       <div class="espacio"></div>
                       <div class="barraAreaRoja">{{retornarPorcentajeAvanceFuncionalNoIniciadas(i)}}%</div>
                       <div class="barraAreaAmarilla">{{retornarPorcentajeAvanceFuncionalEnProgreso(i)}}%</div>
-                     <!--  <div class="barraAreaEnPrueba">{{retornarPorcentajeAvanceFuncionalEnPrueba(i)}}%</div> -->
+                      <div class="barraAreaEnPrueba">{{retornarPorcentajeAvanceFuncionalEnPrueba(i)}}%</div>
                       <div class="barraAreaVerde">{{retornarPorcentajeAvanceFuncionalCompletadas(i)}}%</div>
                     </div>
-                    <!--
                     <div class="barraAvance">
                       <div style="font-style: italic;">Diseño técnico:</div>
                       <div id="espacioTecnico"></div>
-                      <div class="barraAreaRoja">{{retornarPorcentajeAvanceFuncionalNoIniciadas(i)}}%</div>
-                      <div class="barraAreaAmarilla">{{retornarPorcentajeAvanceFuncionalEnProgreso(i)}}%</div>
-                      <div class="barraAreaEnPrueba">{{retornarPorcentajeAvanceFuncionalEnPrueba(i)}}%</div>
-                      <div class="barraAreaVerde">{{retornarPorcentajeAvanceFuncionalCompletadas(i)}}%</div>
+                      <div class="barraAreaRoja">{{retornarPorcentajeAvanceTecnicoNoIniciadas(i)}}%</div>
+                      <div class="barraAreaAmarilla">{{retornarPorcentajeAvanceTecnicoEnProgreso(i)}}%</div>
+                      <div class="barraAreaEnPrueba">{{retornarPorcentajeAvanceTecnicoEnPrueba(i)}}%</div>
+                      <div class="barraAreaVerde">{{retornarPorcentajeAvanceTecnicoCompletadas(i)}}%</div>
                     </div>
                     <div class="barraAvance">
-                      <div style="font-style: italic;">Diseño funcional:</div>
-                      <div class="espacio"></div>
-                      <div class="barraAreaRoja">{{retornarPorcentajeAvanceFuncionalNoIniciadas(i)}}%</div>
-                      <div class="barraAreaAmarilla">{{retornarPorcentajeAvanceFuncionalEnProgreso(i)}}%</div>
-                      <div class="barraAreaEnPrueba">{{retornarPorcentajeAvanceFuncionalEnPrueba(i)}}%</div>
-                      <div class="barraAreaVerde">{{retornarPorcentajeAvanceFuncionalCompletadas(i)}}%</div>
+                      <div style="font-style: italic;">Desarrollo:</div>
+                      <div id="espacioDesarrollo"></div>
+                      <div class="barraAreaRoja">{{retornarPorcentajeAvanceDesarrolloNoIniciadas(i)}}%</div>
+                      <div class="barraAreaAmarilla">{{retornarPorcentajeAvanceDesarrolloEnProgreso(i)}}%</div>
+                      <div class="barraAreaEnPrueba">{{retornarPorcentajeAvanceDesarrolloEnPrueba(i)}}%</div>
+                      <div class="barraAreaVerde">{{retornarPorcentajeAvanceDesarrolloCompletadas(i)}}%</div>
                     </div>
+
                     <div class="barraAvance">
-                      <div style="font-style: italic;">Diseño funcional:</div>
-                      <div class="espacio"></div>
-                      <div class="barraAreaRoja">{{retornarPorcentajeAvanceFuncionalNoIniciadas(i)}}%</div>
-                      <div class="barraAreaAmarilla">{{retornarPorcentajeAvanceFuncionalEnProgreso(i)}}%</div>
-                      <div class="barraAreaEnPrueba">{{retornarPorcentajeAvanceFuncionalEnPrueba(i)}}%</div>
-                      <div class="barraAreaVerde">{{retornarPorcentajeAvanceFuncionalCompletadas(i)}}%</div>
+                      <div style="font-style: italic;">Testing:</div>
+                      <div id="espacioTesting"></div>
+                      <div class="barraAreaRoja">{{retornarPorcentajeAvanceTestingNoIniciadas(i)}}%</div>
+                      <div class="barraAreaAmarilla">{{retornarPorcentajeAvanceTestingEnProgreso(i)}}%</div>
+                      <div class="barraAreaEnPrueba">{{retornarPorcentajeAvanceTestingEnPrueba(i)}}%</div>
+                      <div class="barraAreaVerde">{{retornarPorcentajeAvanceTestingCompletadas(i)}}%</div>
                     </div>
-                    -->  
                   </div>
               </mat-expansion-panel>
           </div>

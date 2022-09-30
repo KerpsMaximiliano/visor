@@ -24,6 +24,64 @@
   margin-left: 15px;
 }
 
+.boton-informacion{
+  margin-top: 10px;
+  margin-right: 10px;
+  margin-left: 15px;
+}
+
+#seccion-informacion{
+  background-color: grey;
+  border: 1px solid black;
+  height: 110px;
+  width: 110px;
+}
+
+#seccion-no-iniciadas{
+  display: flex;
+}
+
+#seccion-en-progreso{
+  display: flex;
+}
+
+#seccion-en-prueba{
+  display: flex;
+}
+
+#seccion-completadas{
+  display: flex;
+}
+
+.cc-no-iniciadas{
+  height: 20px;
+  width: 20px;
+  background-color: red;
+}
+
+.cc-en-progreso{
+  height: 20px;
+  width: 20px;
+  background-color: yellow;
+}
+
+.cc-en-prueba{
+  height: 20px;
+  width: 20px;
+  background-color: rgb(0, 177, 0);
+}
+
+.cc-completadas{
+  height: 20px;
+  width: 20px;
+  background-color: green;
+}
+
+.container-informacion{
+  float: right;
+  display: flex;  
+}
+
 .icon {
   font-size: 24px;
 }
@@ -56,6 +114,8 @@
   border-radius: 20px;
   padding: 10px;
 }
+
+
 /*
   Body
 */
@@ -263,6 +323,14 @@ max-height: 30%;
   padding-right: 12px;
 }
 
+#espacioDesarrollo{
+  padding-right: 40px;
+}
+
+#espacioTesting{
+  padding-right: 58px;
+}
+
 .barraAreaVerde{
   background-color: green;
   width: 20%;
@@ -300,6 +368,12 @@ max-height: 30%;
   border: solid 0.5px black;
   font-size: 15px;
   border-radius: 3px;
+}
+
+#container-indicadores{
+  height: 10%;
+  background-color: green;
+  width: 10%;
 }
 
 

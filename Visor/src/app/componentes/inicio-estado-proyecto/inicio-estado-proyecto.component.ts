@@ -52,7 +52,6 @@ export class InicioEstadoProyectoComponent implements OnInit {
     this._dataProyecto.getProyectos().subscribe((resp: any) => {
       if(resp.returnset[0].RCode == 1){
         let contadorHorasTotalesPlanificadas = 0;
-        let contadorHPTotalAreaFuncional = 0;
         for(let i = 0;i<resp.dataset.length;i++){
           let objetoTemporal: Proyecto = {
             numero: resp.dataset[i].Id_Caso,
@@ -67,14 +66,14 @@ export class InicioEstadoProyectoComponent implements OnInit {
             porcentajeHPEnProgreso: 0,
             porcentajeHPEnPrueba: 0,
             porcentajeHPNoIniciadas: 0,
-            porcentajeHPEnPruebaDiseñoFuncional: 0,
-            porcentajeHPNoIniciadasDiseñoFuncional: 0,
-            porcentajeHPCompletadasDiseñoFuncional: 0,
-            porcentajeHPEnProgresoDiseñoFuncional: 0,
-            porcentajeHPEnPruebaDiseñoTecnico: 0,
-            porcentajeHPNoIniciadasDiseñoTecnico: 0,
-            porcentajeHPCompletadasDiseñoTecnico: 0,
-            porcentajeHPEnProgresoDiseñoTecnico: 0,
+            porcentajeHPEnPruebaDisenioFuncional: 0,
+            porcentajeHPNoIniciadasDisenioFuncional: 0,
+            porcentajeHPCompletadasDisenioFuncional: 0,
+            porcentajeHPEnProgresoDisenioFuncional: 0,
+            porcentajeHPEnPruebaDisenioTecnico: 0,
+            porcentajeHPNoIniciadasDisenioTecnico: 0,
+            porcentajeHPCompletadasDisenioTecnico: 0,
+            porcentajeHPEnProgresoDisenioTecnico: 0,
             porcentajeHPEnPruebaDesarrollo: 0,
             porcentajeHPNoIniciadasDesarrollo: 0,
             porcentajeHPCompletadasDesarrollo: 0,
@@ -93,12 +92,34 @@ export class InicioEstadoProyectoComponent implements OnInit {
           });
           contadorHorasTotalesPlanificadas = 0;
           
-          //Contadores reutilizables.
-          let contadorHPCompletadas = 0;
-          let contadorHPEnProgreso = 0;
-          let contadorHPNoIniciadas = 0;
-          let contadorHPEnPrueba = 0;
-          
+          //Funcional.
+          let contadorHPCompletadasFuncional = 0;
+          let contadorHPEnProgresoFuncional = 0;
+          let contadorHPNoIniciadasFuncional = 0;
+          let contadorHPEnPruebaFuncional = 0;
+          let contadorHPTotalAreaFuncional = 0;
+
+          //Tecnico
+          let contadorHPCompletadasTecnico = 0;
+          let contadorHPEnProgresoTecnico = 0;
+          let contadorHPNoIniciadasTecnico = 0;
+          let contadorHPEnPruebaTecnico = 0;
+          let contadorHPTotalAreaTecnica = 0;
+
+          //Desarrollo.
+          let contadorHPCompletadasDesarrollo = 0;
+          let contadorHPEnProgresoDesarrollo = 0;
+          let contadorHPNoIniciadasDesarrollo = 0;
+          let contadorHPEnPruebaDesarrollo= 0;
+          let contadorHPTotalAreaDesarrollo = 0;
+
+          //Testing.
+          let contadorHPCompletadasTesting= 0;
+          let contadorHPEnProgresoTesting = 0;
+          let contadorHPNoIniciadasTesting = 0;
+          let contadorHPEnPruebaTesting = 0;
+          let contadorHPTotalAreaTesting = 0;
+
           this._dataProyecto.getPorcentajeHPAreas(this.proyectos[i].numero).subscribe((resp: any) => {
             for(let r = 0;r<resp.dataset.length;r++)
             {
@@ -107,24 +128,115 @@ export class InicioEstadoProyectoComponent implements OnInit {
                   switch (resp.dataset[r].Estado){
                     case "Completed": {
                       contadorHPTotalAreaFuncional = contadorHPTotalAreaFuncional + resp.dataset[r].Horas;
-                      contadorHPCompletadas = resp.dataset[r].Horas;
+                      contadorHPCompletadasFuncional = contadorHPCompletadasFuncional + resp.dataset[r].Horas;
                       break;
                     }
                     case "In Progress": {
                       contadorHPTotalAreaFuncional = contadorHPTotalAreaFuncional + resp.dataset[r].Horas;
-                      contadorHPEnProgreso = resp.dataset[r].Horas;
+                      contadorHPEnProgresoFuncional = contadorHPEnProgresoFuncional + resp.dataset[r].Horas;
                       break;
                     }
                     case "Not Started": {
                       contadorHPTotalAreaFuncional = contadorHPTotalAreaFuncional + resp.dataset[r].Horas;
-                      contadorHPNoIniciadas = resp.dataset[r].Horas;
+                      contadorHPNoIniciadasFuncional = contadorHPNoIniciadasFuncional + resp.dataset[r].Horas;
                       break;
                     }
+                    case "In Testing": {
+                      contadorHPTotalAreaFuncional = contadorHPTotalAreaFuncional + resp.dataset[r].Horas;
+                      contadorHPEnPruebaFuncional = contadorHPEnPruebaFuncional + resp.dataset[r].Horas;
+                    }
                   }
+                  this.proyectos[i].porcentajeHPCompletadasDisenioFuncional = Math.round((contadorHPCompletadasFuncional / contadorHPTotalAreaFuncional) * 100);
+                  this.proyectos[i].porcentajeHPNoIniciadasDisenioFuncional = Math.round((contadorHPNoIniciadasFuncional / contadorHPTotalAreaFuncional) * 100);
+                  this.proyectos[i].porcentajeHPEnProgresoDisenioFuncional = Math.round((contadorHPEnProgresoFuncional / contadorHPTotalAreaFuncional) * 100);
+                  this.proyectos[i].porcentajeHPEnPruebaDisenioFuncional = Math.round((contadorHPEnPruebaFuncional / contadorHPTotalAreaFuncional) * 100);
+                  break;
+                }
+                case "RelevamientoReq": {
+                  switch (resp.dataset[r].Estado){
+                    case "Completed": {
+                      contadorHPTotalAreaTecnica = contadorHPTotalAreaTecnica + resp.dataset[r].Horas;
+                      contadorHPCompletadasTecnico = contadorHPCompletadasTecnico + resp.dataset[r].Horas;
+                      break;
+                    }
+                    case "In Progress": {
+                      contadorHPTotalAreaTecnica = contadorHPTotalAreaTecnica + resp.dataset[r].Horas;
+                      contadorHPEnProgresoTecnico = contadorHPEnPruebaTecnico + resp.dataset[r].Horas;
+                      break;
+                    }
+                    case "Not Started": {
+                      contadorHPTotalAreaTecnica = contadorHPTotalAreaTecnica + resp.dataset[r].Horas;
+                      contadorHPNoIniciadasTecnico = contadorHPNoIniciadasTecnico + resp.dataset[r].Horas;
+                      break;
+                    }
+                    case "In Testing": {
+                      contadorHPTotalAreaTecnica = contadorHPTotalAreaTecnica + resp.dataset[r].Horas;
+                      contadorHPEnPruebaTecnico = contadorHPEnPruebaTecnico + resp.dataset[r].Horas;
+                    }
+                  }
+                  this.proyectos[i].porcentajeHPCompletadasDisenioTecnico = Math.round((contadorHPCompletadasTecnico / contadorHPTotalAreaTecnica) * 100);
+                  this.proyectos[i].porcentajeHPNoIniciadasDisenioTecnico = Math.round((contadorHPNoIniciadasTecnico/ contadorHPTotalAreaTecnica) * 100);
+                  this.proyectos[i].porcentajeHPEnProgresoDisenioTecnico = Math.round((contadorHPEnProgresoTecnico / contadorHPTotalAreaTecnica) * 100);
+                  this.proyectos[i].porcentajeHPEnPruebaDisenioTecnico = Math.round((contadorHPEnPruebaTecnico / contadorHPTotalAreaTecnica) * 100);
+                  break;
+                }
+                case "Produccion": {
+                  switch (resp.dataset[r].Estado){
+                    case "Completed": {
+                      contadorHPTotalAreaDesarrollo = contadorHPTotalAreaDesarrollo + resp.dataset[r].Horas;
+                      contadorHPCompletadasDesarrollo = contadorHPCompletadasDesarrollo + resp.dataset[r].Horas;
+                      break;
+                    }
+                    case "In Progress": {
+                      contadorHPTotalAreaDesarrollo = contadorHPTotalAreaDesarrollo + resp.dataset[r].Horas;
+                      contadorHPEnProgresoDesarrollo = contadorHPEnProgresoDesarrollo + resp.dataset[r].Horas;
+                      break;
+                    }
+                    case "Not Started": {
+                      contadorHPTotalAreaDesarrollo = contadorHPTotalAreaDesarrollo+ resp.dataset[r].Horas;
+                      contadorHPNoIniciadasDesarrollo = contadorHPNoIniciadasDesarrollo + resp.dataset[r].Horas;
+                      break;
+                    }
+                    case "In Testing": {
+                      contadorHPTotalAreaDesarrollo = contadorHPTotalAreaDesarrollo + resp.dataset[r].Horas;
+                      contadorHPEnPruebaDesarrollo = contadorHPEnPruebaDesarrollo + resp.dataset[r].Horas;
+                    }
+                  }
+                  this.proyectos[i].porcentajeHPCompletadasDesarrollo = Math.round((contadorHPCompletadasDesarrollo / contadorHPTotalAreaDesarrollo) * 100);
+                  this.proyectos[i].porcentajeHPNoIniciadasDesarrollo = Math.round((contadorHPNoIniciadasDesarrollo/ contadorHPTotalAreaDesarrollo) * 100);
+                  this.proyectos[i].porcentajeHPEnProgresoDesarrollo = Math.round((contadorHPEnProgresoDesarrollo / contadorHPTotalAreaDesarrollo) * 100);
+                  this.proyectos[i].porcentajeHPEnPruebaDesarrollo = Math.round((contadorHPEnPruebaDesarrollo / contadorHPTotalAreaDesarrollo) * 100);
+                  break;
+                }
+                case "Testing": {
+                  switch (resp.dataset[r].Estado){
+                    case "Completed": {
+                      contadorHPTotalAreaTesting = contadorHPTotalAreaTesting + resp.dataset[r].Horas;
+                      contadorHPCompletadasTesting = contadorHPCompletadasTesting + resp.dataset[r].Horas;
+                      break;
+                    }
+                    case "In Progress": {
+                      contadorHPTotalAreaTesting = contadorHPTotalAreaTesting + resp.dataset[r].Horas;
+                      contadorHPEnProgresoTesting = contadorHPEnProgresoTesting + resp.dataset[r].Horas;
+                      break;
+                    }
+                    case "Not Started": {
+                      contadorHPTotalAreaTesting = contadorHPTotalAreaTesting + resp.dataset[r].Horas;
+                      contadorHPNoIniciadasTesting = contadorHPNoIniciadasTesting + resp.dataset[r].Horas;
+                      break;
+                    }
+                    case "In Testing": {
+                      contadorHPTotalAreaTesting = contadorHPTotalAreaTesting + resp.dataset[r].Horas;
+                      contadorHPEnPruebaTesting = contadorHPEnPruebaTesting + resp.dataset[r].Horas;
+                    }
+                  }
+                  this.proyectos[i].porcentajeHPCompletadasTesting = Math.round((contadorHPCompletadasTesting / contadorHPTotalAreaTesting) * 100);
+                  this.proyectos[i].porcentajeHPNoIniciadasTesting = Math.round((contadorHPNoIniciadasTesting / contadorHPTotalAreaTesting) * 100);
+                  this.proyectos[i].porcentajeHPEnProgresoTesting = Math.round((contadorHPEnProgresoTesting / contadorHPTotalAreaTesting) * 100);
+                  this.proyectos[i].porcentajeHPEnPruebaTesting = Math.round((contadorHPEnPruebaTesting / contadorHPTotalAreaTesting) * 100);
                   break;
                 }
               }
-              this.proyectos[i].porcentajeHPCompletadasDiseñoFuncional = Math.round(( contadorHPCompletadas /contadorHPTotalAreaFuncional) * 100);
             }
           });
         }
@@ -156,20 +268,68 @@ export class InicioEstadoProyectoComponent implements OnInit {
   }
 
  retornarPorcentajeAvanceFuncionalCompletadas(index: number): number{
-    return this.proyectos[index].porcentajeHPCompletadasDiseñoFuncional;
+    return this.proyectos[index].porcentajeHPCompletadasDisenioFuncional;
   }
 
   retornarPorcentajeAvanceFuncionalNoIniciadas(index: number): number{
-    return this.proyectos[index].porcentajeHPNoIniciadasDiseñoFuncional;
+    return this.proyectos[index].porcentajeHPNoIniciadasDisenioFuncional;
   }
 
   retornarPorcentajeAvanceFuncionalEnProgreso(index: number): number{
-    return this.proyectos[index].porcentajeHPEnProgresoDiseñoFuncional;
+    return this.proyectos[index].porcentajeHPEnProgresoDisenioFuncional;
   }
 
- /*  retornarPorcentajeAvanceFuncionalEnPrueba(index: number): number{
-    return this.proyectos[index].porcentajeHPCompletadasDiseñoFuncional
-  } */
+ retornarPorcentajeAvanceFuncionalEnPrueba(index: number): number{
+    return this.proyectos[index].porcentajeHPEnPruebaDisenioFuncional;
+  } 
+
+  retornarPorcentajeAvanceTecnicoCompletadas(index: number): number{
+    return this.proyectos[index].porcentajeHPCompletadasDisenioTecnico;
+  }
+
+  retornarPorcentajeAvanceTecnicoNoIniciadas(index: number): number{
+    return this.proyectos[index].porcentajeHPNoIniciadasDisenioTecnico;
+  }
+
+  retornarPorcentajeAvanceTecnicoEnProgreso(index: number): number{
+    return this.proyectos[index].porcentajeHPEnProgresoDisenioTecnico;
+  }
+
+ retornarPorcentajeAvanceTecnicoEnPrueba(index: number): number{
+    return this.proyectos[index].porcentajeHPEnPruebaDisenioTecnico;
+  } 
+
+  retornarPorcentajeAvanceDesarrolloCompletadas(index: number): number{
+    return this.proyectos[index].porcentajeHPCompletadasDesarrollo;
+  }
+
+  retornarPorcentajeAvanceDesarrolloNoIniciadas(index: number): number{
+    return this.proyectos[index].porcentajeHPNoIniciadasDesarrollo;
+  }
+
+  retornarPorcentajeAvanceDesarrolloEnProgreso(index: number): number{
+    return this.proyectos[index].porcentajeHPEnProgresoDesarrollo;
+  }
+
+ retornarPorcentajeAvanceDesarrolloEnPrueba(index: number): number{
+    return this.proyectos[index].porcentajeHPEnPruebaDesarrollo;
+  } 
+
+  retornarPorcentajeAvanceTestingCompletadas(index: number): number{
+    return this.proyectos[index].porcentajeHPCompletadasTesting;
+  }
+
+  retornarPorcentajeAvanceTestingNoIniciadas(index: number): number{
+    return this.proyectos[index].porcentajeHPNoIniciadasTesting;
+  }
+
+  retornarPorcentajeAvanceTestingEnProgreso(index: number): number{
+    return this.proyectos[index].porcentajeHPEnProgresoTesting;
+  }
+
+ retornarPorcentajeAvanceTestingEnPrueba(index: number): number{
+    return this.proyectos[index].porcentajeHPEnPruebaTesting;
+  } 
 
   getPorcentajeRojo(valor: number) {
     if (valor>=0 && valor<=25) {
