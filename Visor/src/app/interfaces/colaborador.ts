@@ -8,6 +8,6 @@ export interface Colaborador {
     horasPlanificadas: number,
     tiempoDisponible: number,
     atrasadas: number,
-    horasAtrasadas: number
-
+    horasAtrasadas: number,
+    idFiltro: number
 }

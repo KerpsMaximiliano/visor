@@ -12,7 +12,6 @@ export class ModalFiltroComponent implements OnInit {
   funciones: string[] = [ 'Analista Funcional', 'Analista Tecnico', 'Desarrollador', 'Tester', 'Project Manager' ];
   result = {nombre: '', apellido: '', seleccion: '', filtrar: true, limpiar: false};
   saved_search_id = '';
-  resultTemp = {nombre: '', apellido: '', seleccion: '', filtrar: true, limpiar: false};
 
   constructor(public dialogRef: MatDialogRef<ModalFiltroComponent>, @Inject(MAT_DIALOG_DATA) public data:any,
               private _filtroService: FiltroService) { }
@@ -21,8 +20,7 @@ export class ModalFiltroComponent implements OnInit {
     this.result.nombre = this.data.nombre;
     this.result.apellido = this.data.apellido;
     this.result.seleccion = this.data.funcion;
-    this.saved_search_id = this.data.search_id
-    this.resultTemp = this.result;
+    this.saved_search_id = this.data.search_id;
   }
 
   limpiarFiltro() {
@@ -36,8 +34,20 @@ export class ModalFiltroComponent implements OnInit {
   }
 
   cancelarBusqueda(): void {
-    this.result.filtrar = false;
-    this.dialogRef.close(this.resultTemp);
+    if (this.result.limpiar == false) {
+      this.result.nombre = this.data.nombre;
+      this.result.apellido = this.data.apellido;
+      this.result.seleccion = this.data.funcion;
+      this.result.filtrar = false;
+      this.dialogRef.close(this.result);
+    } else {
+      this.result.nombre = '';
+      this.result.apellido = '';
+      this.result.seleccion = '';
+      this.result.limpiar = true;
+      this.result.filtrar = true;
+      this.dialogRef.close(this.result);
+    }
   }
 
   guardarFiltro() {

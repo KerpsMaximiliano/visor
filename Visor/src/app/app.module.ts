@@ -8,7 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 //Material
 import { MyMaterialModule } from './material';
 
-// Componentes
+// Components y Modules
 import { LoginModule } from './componentes/login/login.module';
 import { RecuperarcontraseniaModule } from './componentes/recuperar-contrasenia/recuperar-contrasenia.module';
 import { ConfiguracionesComponent } from './components/configuraciones/configuraciones-main/configuraciones-main.component';
@@ -21,19 +21,17 @@ import { Config } from './services/i2t/config.service';
 import { HttpClientModule } from '@angular/common/http';
 import { SnackbarService } from './services/util/snackbar.service';
 import { ModalcontraseniaComponent } from './shared/modal-contrasenia/modalcontrasenia.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { VistaDisenioTecnicoModule } from './componentes/vista-disenio-tecnico/vista-disenio-tecnico.module';
+import { ModalFiltroComponent } from './componentes/inicio/modal-filtro/modal-filtro.component';
+import { InicioMainComponent } from './componentes/inicio/inicio-main/inicio-main.component';
+import { InicioDisponibilidadColaboradoresModule } from './componentes/inicio/inicio-disponibilidad-colaboradores/inicio-disponibilidad-colaboradores.module';
 
 export function initConfig(config: Config) {
   return () => config.load();
 }
-import { InicioMainComponent } from './componentes/inicio/inicio-main/inicio-main.component';
-//import { InicioDisponibilidadColaboradoresModule } from './componentes/inicio/inicio-disponibilidad-colaboradores/inicio-disponibilidad-colaboradores.module';
-import { FormsModule } from '@angular/forms';
-import { ModalFiltroComponent } from './componentes/inicio/modal-filtro/modal-filtro.component';
-import { MAT_DATE_LOCALE } from '@angular/material/core';
-import { InicioDisponibilidadColaboradores2Module } from './componentes/inicio/inicio-disponibilidad-colaboradores2/inicio-disponibilidad-colaboradores2.module';
 
+import { FormsModule } from '@angular/forms';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -55,9 +53,8 @@ import { InicioDisponibilidadColaboradores2Module } from './componentes/inicio/i
     PermisosRolesModule,
     HttpClientModule,
     VistaDisenioTecnicoModule,
-    //InicioDisponibilidadColaboradoresModule,
-    FormsModule,
-    InicioDisponibilidadColaboradores2Module
+    InicioDisponibilidadColaboradoresModule,
+    FormsModule
   ],
 
   //Proveedores agregados

@@ -1,12 +1,13 @@
-/* import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { ModalFiltroComponent } from '../modal-filtro/modal-filtro.component';
+import { MatAccordion } from '@angular/material/expansion';
+import { MatTableDataSource } from '@angular/material/table';
+import { TooltipPosition } from '@angular/material/tooltip';
 import { Colaborador } from 'src/app/interfaces/colaborador';
 import { ColaboradorService } from 'src/app/services/i2t/colaborador.service';
-import { ModalFiltroComponent } from '../modal-filtro/modal-filtro.component';
-import { TooltipPosition } from '@angular/material/tooltip';
-import { FormControl } from '@angular/forms';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatAccordion } from '@angular/material/expansion';
+import { FiltroService } from 'src/app/services/i2t/filtro.service';
 
 @Component({
   selector: 'app-inicio-disponibilidad-colaboradores',
@@ -17,275 +18,186 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
 
   @ViewChild(MatAccordion) accordion!: MatAccordion;
 
-  colaboradores!: Colaborador[];
-  dataSource!: any;
+  colaboradoresSP: any[] = [];
+  planificacion: any[] = [];
+  colaboradores: Colaborador[] = [];
   columna1!: Colaborador[];
   columna2!: Colaborador[];
-  noHayColaboradores: boolean = false;
-  colaboradorUnico: boolean = false;
-  orden: string[] = ['Alfabetico', 'Tiempo Disponible'];
-  ordenSeleccion: string = 'Tiempo Disponible'; // se tiene que guardar en las preferencias del usuario en sesion cuando este disponible
+  dataSource!: any;
+  noHayColaboradores = false;
+  colaboradorUnico = false;
+  inputIzq = '';
+  nombre = '';
+  apellido = '';
+  funcion = '';
+  modal_saved_search_id = '';
+  orden = ['Alfabetico', 'Tiempo Disponible'];
+  ordenSeleccion = 'Tiempo Disponible';
+  orden_saved_search_id = '';
   fechaHoy = new Date();
   fechaHastaDate = new Date();
-  minDate = this.fechaHoy;
-  mesesMostrados: number = 0;
-  disponibilidadEquipo: number = 0;
-  tareasColaboradores: any[] = [];
+  mesesMostrados = 0;
+  disponibilidadEquipo = 0;
   mesesPlanificacion = [{mes: ''}];
   positionOptions: TooltipPosition[] = ['after', 'before', 'above', 'below', 'left', 'right'];
   position = new FormControl(this.positionOptions[0]);
   position2 = new FormControl(this.positionOptions[3]);
 
-  inputIzq: string = '';
-  nombre: string = ''; // se tiene que guardar en las preferencias del usuario en sesion cuando este disponible
-  apellido: string = ''; // se tiene que guardar en las preferencias del usuario en sesion cuando este disponible
-  funcion: string = ''; // se tiene que guardar en las preferencias del usuario en sesion cuando este disponible
-
-  constructor(private _colaboradorService: ColaboradorService, private dialog: MatDialog) { }
+  constructor(private _colaboradorService: ColaboradorService, private dialog: MatDialog, private _filtroService: FiltroService) { }
 
   ngOnInit(): void {
-    this.mesesPlanificacion[0].mes = this._colaboradorService.getMesString(this.fechaHoy.getMonth());
-    this.colaboradores = this._colaboradorService.getColaboradores();
-    this.dataSource = new MatTableDataSource(this.colaboradores);
-    this.getTareasColaboradores();
-    this.getTareasAtrasadas();
-    this.getTiempoDisponibleColaboradores();
-    this.actualizarDisponibilidadEquipo();
-    this.cambiarOrden();
-  }
-
-  getTareasColaboradores() {
-    let tareasColaboradoresAux:any = [];
-    this.colaboradores.forEach(colab => {
-      tareasColaboradoresAux.push(this._colaboradorService.getTareasColaborador(colab.id, this.fechaHoy));
-    });
-    tareasColaboradoresAux.forEach((obj: any) => {
-      obj.forEach((element: any) => {
-        this.tareasColaboradores.push(element);
+    this._filtroService.getUserId(localStorage.getItem('usuario')!).subscribe((response: any) => {
+      localStorage.setItem('userId', response.dataset[0].id);
+      this._filtroService.selectFiltro(response.dataset[0].id, 'disponibilidad').subscribe((resp: any) => {
+        if (resp.dataset.length == 0 ) {
+        } else {
+          console.log('hay datos', resp);
+          resp.dataset.forEach((filtro: any) => {
+            if (filtro.nombre == 'filtro_orden') {
+              this.orden_saved_search_id = filtro.saved_search_id;
+              const contenido = JSON.parse(atob(filtro.contenido));
+              this.ordenSeleccion = contenido.ordenSeleccion; 
+            }
+            if (filtro.nombre == 'filtro_nombre_apellido_funcion') {
+              this.modal_saved_search_id = filtro.saved_search_id;
+              const contenido = JSON.parse(atob(filtro.contenido));
+              this.nombre = contenido.nombre;
+              this.apellido = contenido.apellido;
+              this.funcion = contenido.funcion;
+            }
+          });
+        }
+      this.mesesPlanificacion[0].mes = this._colaboradorService.getMesString(this.fechaHoy.getMonth());
+      this._colaboradorService.disponibilidadUsuario(1, 1, this.formatearFecha(this.fechaHoy)).subscribe((response: any) => {
+        this.colaboradoresSP = response.dataset;
+        this.organizarColaboradores();
+        this.getTareasAtrasadas();
+        this.getPlanificacionColaboradores();
+        this.prepararFiltro();
+      });
       });
     });
+  }
+
+  formatearFecha(fecha: Date) {
+    const anio = fecha.getFullYear().toString();
+    let mes: string = '';
+    let mesN = fecha.getMonth()+1;
+    if (mesN<10) { mes = '0'+mesN } else { mes = ''+mesN }
+    let dia: string = '';
+    let diaN = fecha.getDate();
+    if (diaN<10) { dia = '0'+diaN } else { dia = ''+diaN }
+    return anio+'-'+mes+'-'+dia;
+  }
+
+  organizarColaboradores() {
+    this.colaboradores = [];
+    let contId = 1;
+    this.colaboradoresSP.forEach(colab => {
+      this.colaboradores.push({
+        id: colab.id_usuario,
+        nombre: colab.nombre,
+        apellido: colab.apellido,
+        funcion: this.funcionCheck(colab.funcion_usuario),
+        capacidad: this.nullCheck(colab.capacidad_total),
+        horasPlanificadas: colab.horas_asignadas,
+        tiempoDisponible: 0,
+        atrasadas: 0,
+        horasAtrasadas: 0,
+        idFiltro: contId
+      });
+      contId++;
+    });
+    this.dataSource = new MatTableDataSource(this.colaboradores);
+  }
+
+  nullCheck(check: any) {
+    if (check == null) { return 0 } else { return check }
+  }
+
+  funcionCheck(funcion: string) {  // agregar comportamiento para otras funciones, no hay datos de como vienen
+    let func = funcion;
+    switch (funcion) {
+      case 'Operativo':
+        func = 'Desarrollador'
+        break;
+      case 'Supervisor':
+        func = 'Analista Funcional'  // analista tecnico viene como supervisor ??
+        break;
+    }
+    return func;
   }
 
   getTareasAtrasadas() {
-    let contadorAtrasadas = 0;
-    let acumuladorHoras = 0;
-    this.colaboradores.forEach(colab => {
-      this.tareasColaboradores.forEach(tarea => {
-        if (tarea.idColab == colab.id && tarea.fechaPlanificacion < this.fechaHoy) {
-          if (tarea.estado == 'No iniciada' || tarea.estado == 'En progreso' || tarea.estado == 'En prueba') {
-            contadorAtrasadas++;
-            acumuladorHoras += tarea.horasPlanificadas;
-          }
-        }
+    this._colaboradorService.disponibilidadUsuario(2, 1, this.formatearFecha(this.fechaHoy)).subscribe((response: any) => {
+      response.dataset.forEach((obj: any) => {
+        this.colaboradores.forEach(colab => {
+          if (obj.id_usuario == colab.id) { colab.atrasadas = obj.tareas_atrasadas }
+        });
       });
-      colab.atrasadas = contadorAtrasadas;
-      colab.horasAtrasadas = acumuladorHoras;
-      contadorAtrasadas = 0;
-      acumuladorHoras = 0;
+    });
+    this._colaboradorService.disponibilidadUsuario(4, 1, this.formatearFecha(this.fechaHoy)).subscribe((response: any) => {
+      response.dataset.forEach((obj: any) => {
+        this.colaboradores.forEach(colab => {
+          if (obj.id_usuario == colab.id) { colab.horasAtrasadas = obj.horas }
+        });
+      });
     });
   }
 
-  separarProyectosDelMes(id: number, mes: string) {
-    let proyectos:any = [];
-    this.tareasColaboradores.forEach(tarea => {
-      if (tarea.idColab == id && tarea.fechaPlanificacion.getMonth() == this._colaboradorService.getMesDate(mes)) {
-        if (proyectos.indexOf(tarea.proyecto) == -1) {
-          proyectos.push(tarea.proyecto);
-        }
-      }
+  getPlanificacionColaboradores() {
+    this._colaboradorService.disponibilidadUsuario(5, this.mesesMostrados+1, this.formatearFecha(this.fechaHastaDate)).subscribe((resp: any) => {
+      resp.dataset.forEach((colab: any) => {
+        this.planificacion.push({ id: colab.id_usuario, proyecto: colab.nombre_proyecto, mes: colab.mes-1, horas_planificadas: colab.horas_planificadas });
+      });
     });
-    return proyectos;
   }
 
-  getPorcentajeOcupadoMensualProyecto(proyecto: string, id: number, mes: string) {
-    let hp = 0;
-    this.tareasColaboradores.forEach(tarea => {
-      if (tarea.idColab == id && tarea.proyecto == proyecto && tarea.fechaPlanificacion.getMonth() == this._colaboradorService.getMesDate(mes)) {
-        hp += tarea.horasPlanificadas
-      }
-    });
-    return Math.round((hp/this.getCapacidadColaborador(id)*100));
-  }
-
-  getTooltipHsPlanProyecto(proyecto: string, id: number, mes: string) {
-    let hp = 0;
-    this.tareasColaboradores.forEach(tarea => {
-      if (tarea.idColab == id && tarea.proyecto == proyecto && tarea.fechaPlanificacion.getMonth() == this._colaboradorService.getMesDate(mes)) {
-        hp += tarea.horasPlanificadas
-      }
-    });
-    return hp;
-  }
-
-  getCapacidadColaborador(id: number) {
-    let cap = 0;
+  calcularPorcentajeTiempoDisponible(id: any) {
+    let ptd = 0;
     this.colaboradores.forEach(colab => {
       if (colab.id == id) {
-        cap = colab.capacidad;
+        const cp = colab.capacidad;
+        const hp = colab.horasPlanificadas;
+        ptd = Math.round((cp-hp)/cp*100);
       }
     });
-    return cap;
+    return ptd;
   }
 
-  getHorasPlanColab(id: number, mes: string) {
-    let hp = 0;
-    this.tareasColaboradores.forEach(tarea => {
-      if (tarea.idColab == id && tarea.fechaPlanificacion.getMonth() == this._colaboradorService.getMesDate(mes)) {
-        hp += tarea.horasPlanificadas;
-      }
-    });
-    return hp;
-  }
-
-  getPorcentajeDisponibleMensual(id: number, mes: string) {
-    let hp = 0;
-    this.tareasColaboradores.forEach(tarea => {
-      if (tarea.idColab == id && tarea.fechaPlanificacion.getMonth() == this._colaboradorService.getMesDate(mes)) {
-        hp += tarea.horasPlanificadas;
-      }
-    });
-    return Math.round(((this.getCapacidadColaborador(id)-hp)/this.getCapacidadColaborador(id)*100));
-  }
-
-  getTooltipHsPlanMensual(id: number, mes: string) {
-    let hp = 0;
-    this.tareasColaboradores.forEach(tarea => {
-      if (tarea.idColab == id && tarea.fechaPlanificacion.getMonth() == this._colaboradorService.getMesDate(mes)) {
-        hp += tarea.horasPlanificadas;
-      }
-    });
-    return hp;
-  }
-
-  ordenarColaboradores() {
-    let tamanioCol1:number;
-    tamanioCol1 = Math.round(tamanioCol1 = this.colaboradores.length / 2);
-    this.columna1 = this.colaboradores.slice(0, tamanioCol1);
-    this.columna2 = this.colaboradores.slice(tamanioCol1, this.colaboradores.length);
-  }
-
-  applyFilter(event: Event) {
-    this.contraerColaboradores();
-    this.colaboradores = this._colaboradorService.getColaboradores();
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource = new MatTableDataSource(this.colaboradores);
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-    this.colaboradores = this.dataSource.filteredData;
-    this.aplicarFiltros();
-  }
-
-  aplicarFiltros() {
-    if (this.colaboradores.length == 0) {
-      this.colaboradorUnico = false;
-      this.noHayColaboradores = true;
-      this.disponibilidadEquipo = 0;
-    } else if (this.colaboradores.length == 1) {
-      this.colaboradorUnico = true;
-      this.noHayColaboradores = false;
-      this.actualizarDisponibilidadEquipo();
-      this.cambiarOrden();
-    } else {
-      this.colaboradorUnico = false;
-      this.noHayColaboradores = false;
-      this.actualizarDisponibilidadEquipo();
-      this.cambiarOrden();
-    }
-  }
-
-  abrirModalFiltro() {
-    this.contraerColaboradores();
-    this.colaboradores = this._colaboradorService.getColaboradores();
-    const dialogRef = this.dialog.open(ModalFiltroComponent, {
-      width: '400px',
-      disableClose: true,
-      data: { nombre: this.nombre, apellido: this.apellido, funcion: this.funcion }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.nombre = result.nombre;
-      this.apellido = result.apellido;
-      this.funcion = result.seleccion;
-      let filtrar = result.filtrar;
-      if (result.limpiar) { this.inputIzq = '', filtrar = true }
-      if (filtrar) {
-        const filtroNombre = this.filtroAvanzado(1, this.nombre);
-        const filtroApellido = this.filtroAvanzado(2, this.apellido);
-        const filtroFuncion = this.filtroAvanzado(3, this.funcion);
-        this.colaboradores = this.buscarCoincidencias(filtroNombre, filtroApellido, filtroFuncion);
-        this.aplicarFiltros();
-      }
-    });
-  }
-
-  filtroAvanzado(tipo: number, valor: string) {
-    let arrayTemp: any = [];
-    let arrayTabla: any;
-    switch (tipo) {
-      case 1:
-        this.colaboradores.forEach(colab => {
-          let obj = { id: colab.id, nombre: colab.nombre };
-          arrayTemp.push(obj);
-        });
-        arrayTabla = new MatTableDataSource(arrayTemp);
-        arrayTabla.filter = valor.trim().toLowerCase();
-        arrayTemp = arrayTabla.filteredData;
-        return arrayTemp;
-      case 2:
-        this.colaboradores.forEach(colab => {
-          let obj = { id: colab.id, apellido: colab.apellido };
-          arrayTemp.push(obj);
-        });
-        arrayTabla = new MatTableDataSource(arrayTemp);
-        arrayTabla.filter = valor.trim().toLowerCase();
-        arrayTemp = arrayTabla.filteredData;
-        return arrayTemp;
-      case 3:
-        this.colaboradores.forEach(colab => {
-          let obj = { id: colab.id, funcion: colab.funcion };
-          arrayTemp.push(obj);
-        });
-        arrayTabla = new MatTableDataSource(arrayTemp);
-        arrayTabla.filter = valor.trim().toLowerCase();
-        arrayTemp = arrayTabla.filteredData;
-        return arrayTemp;
-    }
-  }
-
-  buscarCoincidencias(arrayNombre: any, arrayApellido: any, arrayFuncion: any) {
-    let encontrados: any = [];
+  actualizarDisponibilidadEquipo() {
+    let horasPlanificadasAcumuladas = 0;
+    let capacidadTotalAcumulada = 0;
     this.colaboradores.forEach(colab => {
-      let encontradoNombre = false;
-      let encontradoApellido = false;
-      let encontradoFuncion = false;
-      arrayNombre.forEach((element: any) => {
-        if (element.id === colab.id) {
-          encontradoNombre = true;
-        }
-      });
-      arrayApellido.forEach((element: any) => {
-        if (element.id === colab.id) {
-          encontradoApellido = true;
-        }
-      });
-      arrayFuncion.forEach((element: any) => {
-        if (element.id === colab.id) {
-          encontradoFuncion = true;
-        }
-      });
-      if (encontradoNombre && encontradoApellido && encontradoFuncion) {
-        encontrados.push(colab);
-      }
+      horasPlanificadasAcumuladas += colab.horasPlanificadas;
+      capacidadTotalAcumulada += colab.capacidad;
+      colab.tiempoDisponible = Math.round((colab.capacidad-colab.horasPlanificadas)/colab.capacidad*100);
     });
-    return encontrados;
-  }
-  
-  contraerColaboradores() {
-    if (!this.noHayColaboradores) { this.accordion.closeAll(); }
+    this.disponibilidadEquipo = Math.round(this.disponibilidadEquipo = (capacidadTotalAcumulada-horasPlanificadasAcumuladas)/capacidadTotalAcumulada*100);
   }
 
   dispararCambioOrdenDesdePlantilla(e: Event) {
     this.ordenSeleccion = (e.target as HTMLElement).innerText;
-    this.cambiarOrden();
+    const contenido: string = JSON.stringify({ ordenSeleccion : this.ordenSeleccion });
+    const encodedData = btoa(contenido);
+    if (this.orden_saved_search_id == '') {
+      this._filtroService.insertFiltro(
+        localStorage.getItem('userId')!,
+        'disponibilidad',
+        'filtro_orden',
+        encodedData,
+        'Filtra los colaboradores por orden alfabetico o tiempo disponible').subscribe((rsp: any) => {
+          console.log('Filtro guardado: ', rsp);
+          this.cambiarOrden();
+          this.contraerColaboradores();
+        });
+    } else {
+      this._filtroService.updateFiltro(this.orden_saved_search_id, encodedData).subscribe((rsp: any) => {
+        console.log('Filtro actualizado: ', rsp);
+        this.cambiarOrden();
+        this.contraerColaboradores();
+      });
+    }
   }
 
   cambiarOrden() {
@@ -324,145 +236,163 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     }
   }
 
+  ordenarColaboradores() {
+    let tamanioCol1:number;
+    tamanioCol1 = Math.round(tamanioCol1 = this.colaboradores.length / 2);
+    this.columna1 = this.colaboradores.slice(0, tamanioCol1);
+    this.columna2 = this.colaboradores.slice(tamanioCol1, this.colaboradores.length);
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.contraerColaboradores();
+    this.organizarColaboradores();
+    this.getTareasAtrasadas();
+    let colaboradoresFiltro: any[] = [];
+    this.colaboradores.forEach(colab => {
+      colaboradoresFiltro.push({ nombre: colab.nombre, apellido: colab.apellido });
+    });
+    this.dataSource = new MatTableDataSource(colaboradoresFiltro);
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+    colaboradoresFiltro = this.dataSource.filteredData;
+    let arrayAux: Colaborador[] = [];
+    this.colaboradores.forEach(colab => {
+      colaboradoresFiltro.forEach(user => {
+        if (colab.nombre == user.nombre && colab.apellido == user.apellido) {
+          arrayAux.push(colab);
+        }
+      });
+    });
+    this.colaboradores = arrayAux;
+    this.aplicarFiltros();
+  }
+
+  aplicarFiltros() {
+    if (this.colaboradores.length == 0) {
+      this.colaboradorUnico = false;
+      this.noHayColaboradores = true;
+      this.disponibilidadEquipo = 0;
+    } else if (this.colaboradores.length == 1) {
+      this.colaboradorUnico = true;
+      this.noHayColaboradores = false;
+      this.actualizarDisponibilidadEquipo();
+      this.cambiarOrden();
+    } else {
+      this.colaboradorUnico = false;
+      this.noHayColaboradores = false;
+      this.actualizarDisponibilidadEquipo();
+      this.cambiarOrden();
+    }
+  }
+
+  abrirModalFiltro() {
+    this.contraerColaboradores();
+    this.organizarColaboradores();
+    this.getTareasAtrasadas();
+    const dialogRef = this.dialog.open(ModalFiltroComponent, {
+      width: '400px',
+      disableClose: true,
+      data: { nombre: this.nombre, apellido: this.apellido, funcion: this.funcion, search_id: this.modal_saved_search_id }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      this.inputIzq = '';
+      this.nombre = result.nombre;
+      this.apellido = result.apellido;
+      this.funcion = result.seleccion;
+      let filtrar = result.filtrar;
+      if (result.limpiar) { filtrar = true }
+      if (filtrar) {
+        this.prepararFiltro();
+      }
+    });
+  }
+
+  prepararFiltro() {
+    const filtroNombre = this.filtroAvanzado(1, this.nombre);
+    const filtroApellido = this.filtroAvanzado(2, this.apellido);
+    const filtroFuncion = this.filtroAvanzado(3, this.funcion);
+    this.colaboradores = this.buscarCoincidencias(filtroNombre, filtroApellido, filtroFuncion);
+    this.aplicarFiltros();
+  }
+
+  filtroAvanzado(tipo: number, valor: string) {
+    let arrayTemp: any = [];
+    let arrayTabla: any;
+    switch (tipo) {
+      case 1:
+        this.colaboradores.forEach(colab => {
+          let obj = { id: colab.idFiltro, nombre: colab.nombre };
+          arrayTemp.push(obj);
+        });
+        arrayTabla = new MatTableDataSource(arrayTemp);
+        arrayTabla.filter = valor.trim().toLowerCase();
+        arrayTemp = arrayTabla.filteredData;
+        return arrayTemp;
+      case 2:
+        this.colaboradores.forEach(colab => {
+          let obj = { id: colab.idFiltro, apellido: colab.apellido };
+          arrayTemp.push(obj);
+        });
+        arrayTabla = new MatTableDataSource(arrayTemp);
+        arrayTabla.filter = valor.trim().toLowerCase();
+        arrayTemp = arrayTabla.filteredData;
+        return arrayTemp;
+      case 3:
+        this.colaboradores.forEach(colab => {
+          let obj = { id: colab.idFiltro, funcion: colab.funcion };
+          arrayTemp.push(obj);
+        });
+        arrayTabla = new MatTableDataSource(arrayTemp);
+        arrayTabla.filter = valor.trim().toLowerCase();
+        arrayTemp = arrayTabla.filteredData;
+        return arrayTemp;
+    }
+  }
+
+  buscarCoincidencias(arrayNombre: any, arrayApellido: any, arrayFuncion: any) {
+    let encontrados: any = [];
+    this.colaboradores.forEach(colab => {
+      let encontradoNombre = false;
+      let encontradoApellido = false;
+      let encontradoFuncion = false;
+      arrayNombre.forEach((element: any) => {
+        if (element.id === colab.idFiltro) {
+          encontradoNombre = true;
+        }
+      });
+      arrayApellido.forEach((element: any) => {
+        if (element.id === colab.idFiltro) {
+          encontradoApellido = true;
+        }
+      });
+      arrayFuncion.forEach((element: any) => {
+        if (element.id === colab.idFiltro) {
+          encontradoFuncion = true;
+        }
+      });
+      if (encontradoNombre && encontradoApellido && encontradoFuncion) {
+        encontrados.push(colab);
+      }
+    });
+    return encontrados;
+  }
+
   cambioFechaHasta(event: any) {
     this.contraerColaboradores();
     this.fechaHastaDate = event.value;
     this.mesesMostrados = this.getDiferenciaMeses(this.fechaHoy, this.fechaHastaDate);
     this.actualizarMesesPlanificacion();
-    this.getTiempoDisponibleColaboradores();
-    this.actualizarDisponibilidadEquipo();
-    this.cambiarOrden();
+    this._colaboradorService.disponibilidadUsuario(1, this.mesesMostrados+1, this.formatearFecha(this.fechaHastaDate)).subscribe((response: any) => {
+      this.colaboradoresSP = response.dataset;
+      this.organizarColaboradores();
+      this.getTareasAtrasadas();
+      this.getPlanificacionColaboradores();
+      this.prepararFiltro();
+    });
   }
 
-  actualizarDisponibilidadEquipo() {
-    let horasPlanificadasAcumuladas = 0;
-    let capacidadTotalAcumulada = 0;
-    this.colaboradores.forEach(colab => {
-      horasPlanificadasAcumuladas += colab.horasPlanificadas;
-      capacidadTotalAcumulada += colab.capacidad*(this.getDiferenciaMeses(this.fechaHoy, this.fechaHastaDate)+1);
-    });
-    this.disponibilidadEquipo = Math.round(this.disponibilidadEquipo = (capacidadTotalAcumulada-horasPlanificadasAcumuladas)/capacidadTotalAcumulada*100);
-  }
-
-  getTooltipHsDispTotales() {
-    let horasPlanificadasAcumuladas = 0;
-    let capacidadTotalAcumulada = 0;
-    this.colaboradores.forEach(colab => {
-      horasPlanificadasAcumuladas += colab.horasPlanificadas;
-      capacidadTotalAcumulada += colab.capacidad*(this.getDiferenciaMeses(this.fechaHoy, this.fechaHastaDate)+1);
-    });
-    return (capacidadTotalAcumulada - horasPlanificadasAcumuladas);
-  }
-  
-  getTooltipHsCapTotales() {
-    let capacidadTotalAcumulada = 0;
-    this.colaboradores.forEach(colab => {
-      capacidadTotalAcumulada += colab.capacidad;
-    });
-    return capacidadTotalAcumulada * (this.getDiferenciaMeses(this.fechaHoy, this.fechaHastaDate)+1);
-  }
-
-  getTiempoDisponibleColaboradores() {
-    this.colaboradores.forEach(colab => {
-      switch (this.mesesMostrados) {
-        case 0:
-          colab.tiempoDisponible = this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[0].mes);
-          colab.horasPlanificadas = this.getHorasPlanColab(colab.id, this.mesesPlanificacion[0].mes);
-          break;
-        case 1:
-          colab.tiempoDisponible = this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[0].mes);
-          colab.horasPlanificadas = this.getHorasPlanColab(colab.id, this.mesesPlanificacion[0].mes);
-          colab.tiempoDisponible += this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[1].mes);
-          colab.horasPlanificadas += this.getHorasPlanColab(colab.id, this.mesesPlanificacion[1].mes);
-          colab.tiempoDisponible = Math.round(colab.tiempoDisponible /= 2);
-          break;
-        case 2:
-          colab.tiempoDisponible = this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[0].mes);
-          colab.horasPlanificadas = this.getHorasPlanColab(colab.id, this.mesesPlanificacion[0].mes);
-          colab.tiempoDisponible += this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[1].mes);
-          colab.horasPlanificadas += this.getHorasPlanColab(colab.id, this.mesesPlanificacion[1].mes);
-          colab.tiempoDisponible += this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[2].mes);
-          colab.horasPlanificadas += this.getHorasPlanColab(colab.id, this.mesesPlanificacion[2].mes);
-          colab.tiempoDisponible = Math.round(colab.tiempoDisponible /= 3);
-          break;
-        case 3:
-          colab.tiempoDisponible = this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[0].mes);
-          colab.horasPlanificadas = this.getHorasPlanColab(colab.id, this.mesesPlanificacion[0].mes);
-          let repeater = [{x:1},{x:2},{x:3}]; repeater.forEach(it => {
-            colab.tiempoDisponible += this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[it.x].mes);
-            colab.horasPlanificadas += this.getHorasPlanColab(colab.id, this.mesesPlanificacion[it.x].mes);});
-          colab.tiempoDisponible = Math.round(colab.tiempoDisponible /= 4);
-          break;
-        case 4:
-          colab.tiempoDisponible = this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[0].mes);
-          colab.horasPlanificadas = this.getHorasPlanColab(colab.id, this.mesesPlanificacion[0].mes);
-          let repeater2 = [{x:1},{x:2},{x:3},{x:4}]; repeater2.forEach(it => {
-            colab.tiempoDisponible += this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[it.x].mes);
-            colab.horasPlanificadas += this.getHorasPlanColab(colab.id, this.mesesPlanificacion[it.x].mes);});
-          colab.tiempoDisponible = Math.round(colab.tiempoDisponible /= 5);
-          break;
-        case 5:
-          colab.tiempoDisponible = this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[0].mes);
-          colab.horasPlanificadas = this.getHorasPlanColab(colab.id, this.mesesPlanificacion[0].mes);
-          let repeater3 = [{x:1},{x:2},{x:3},{x:4},{x:5}]; repeater3.forEach(it => {
-            colab.tiempoDisponible += this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[it.x].mes);
-            colab.horasPlanificadas += this.getHorasPlanColab(colab.id, this.mesesPlanificacion[it.x].mes);});
-          colab.tiempoDisponible = Math.round(colab.tiempoDisponible /= 6);
-          break;
-        case 6:
-          colab.tiempoDisponible = this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[0].mes);
-          colab.horasPlanificadas = this.getHorasPlanColab(colab.id, this.mesesPlanificacion[0].mes);
-          let repeater4 = [{x:1},{x:2},{x:3},{x:4},{x:5},{x:6}]; repeater4.forEach(it => {
-            colab.tiempoDisponible += this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[it.x].mes);
-            colab.horasPlanificadas += this.getHorasPlanColab(colab.id, this.mesesPlanificacion[it.x].mes);});
-          colab.tiempoDisponible = Math.round(colab.tiempoDisponible /= 7);
-          break;
-        case 7:
-          colab.tiempoDisponible = this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[0].mes);
-          colab.horasPlanificadas = this.getHorasPlanColab(colab.id, this.mesesPlanificacion[0].mes);
-          let repeater5 = [{x:1},{x:2},{x:3},{x:4},{x:5},{x:6},{x:7}]; repeater5.forEach(it => {
-            colab.tiempoDisponible += this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[it.x].mes);
-            colab.horasPlanificadas += this.getHorasPlanColab(colab.id, this.mesesPlanificacion[it.x].mes);});
-          colab.tiempoDisponible = Math.round(colab.tiempoDisponible /= 8);
-          break;
-        case 8:
-          colab.tiempoDisponible = this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[0].mes);
-          colab.horasPlanificadas = this.getHorasPlanColab(colab.id, this.mesesPlanificacion[0].mes);
-          let repeater6 = [{x:1},{x:2},{x:3},{x:4},{x:5},{x:6},{x:7},{x:8}]; repeater6.forEach(it => {
-            colab.tiempoDisponible += this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[it.x].mes);
-            colab.horasPlanificadas += this.getHorasPlanColab(colab.id, this.mesesPlanificacion[it.x].mes);});
-          colab.tiempoDisponible = Math.round(colab.tiempoDisponible /= 9);
-          break;        
-        case 9:
-          colab.tiempoDisponible = this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[0].mes);
-          colab.horasPlanificadas = this.getHorasPlanColab(colab.id, this.mesesPlanificacion[0].mes);
-          let repeater7 = [{x:1},{x:2},{x:3},{x:4},{x:5},{x:6},{x:7},{x:8},{x:9}]; repeater7.forEach(it => {
-            colab.tiempoDisponible += this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[it.x].mes);
-            colab.horasPlanificadas += this.getHorasPlanColab(colab.id, this.mesesPlanificacion[it.x].mes);});
-          colab.tiempoDisponible = Math.round(colab.tiempoDisponible /= 10);          
-          break;
-        case 10:
-          colab.tiempoDisponible = this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[0].mes);
-          colab.horasPlanificadas = this.getHorasPlanColab(colab.id, this.mesesPlanificacion[0].mes);
-          let repeater8 = [{x:1},{x:2},{x:3},{x:4},{x:5},{x:6},{x:7},{x:8},{x:9},{x:10}]; repeater8.forEach(it => {
-            colab.tiempoDisponible += this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[it.x].mes);
-            colab.horasPlanificadas += this.getHorasPlanColab(colab.id, this.mesesPlanificacion[it.x].mes);});
-          colab.tiempoDisponible = Math.round(colab.tiempoDisponible /= 11);
-          break;
-        case 11:
-          colab.tiempoDisponible = this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[0].mes);
-          colab.horasPlanificadas = this.getHorasPlanColab(colab.id, this.mesesPlanificacion[0].mes);
-          let repeater9 = [{x:1},{x:2},{x:3},{x:4},{x:5},{x:6},{x:7},{x:8},{x:9},{x:10},{x:11}]; repeater9.forEach(it => {
-            colab.tiempoDisponible += this.getPorcentajeDisponibleMensual(colab.id, this.mesesPlanificacion[it.x].mes);
-            colab.horasPlanificadas += this.getHorasPlanColab(colab.id, this.mesesPlanificacion[it.x].mes);});
-          colab.tiempoDisponible = Math.round(colab.tiempoDisponible /= 12);
-          break;
-      }
-    });
-  }  
-
-  getDiferenciaMeses(mesInicio: Date, mesFin: Date) {
-    return mesFin.getMonth() - mesInicio.getMonth() + (12 * (mesFin.getFullYear() - mesInicio.getFullYear()));
+  contraerColaboradores() {
+    if (!this.noHayColaboradores) { this.accordion.closeAll(); }
   }
 
   actualizarMesesPlanificacion() {
@@ -539,4 +469,78 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     }
   }
 
-} */
+  getTooltipHsDispTotales() {
+    let horasPlanificadasAcumuladas = 0;
+    let capacidadTotalAcumulada = 0;
+    this.colaboradores.forEach(colab => {
+      horasPlanificadasAcumuladas += colab.horasPlanificadas;
+      capacidadTotalAcumulada += colab.capacidad;
+    });
+    return (capacidadTotalAcumulada - horasPlanificadasAcumuladas);
+  }
+  
+  getTooltipHsCapTotales() {
+    let capacidadTotalAcumulada = 0;
+    this.colaboradores.forEach(colab => {
+      capacidadTotalAcumulada += colab.capacidad;
+    });
+    return capacidadTotalAcumulada;
+  }
+
+  getPorcentajeDisponibleMensual(id: string, mes: string, capacidad: number) {
+    let hp = 0;
+    this.planificacion.forEach(tarea => {
+      if (tarea.id == id && tarea.mes == this._colaboradorService.getMesDate(mes)) {
+        hp += tarea.horas_planificadas;
+      }
+    });
+    return Math.round(((capacidad-hp)/capacidad*100));
+  }
+
+  getTooltipHsPlanMensual(id: string, mes: string) {
+    let hp = 0;
+    this.planificacion.forEach(tarea => {
+      if (tarea.id == id && tarea.mes == this._colaboradorService.getMesDate(mes)) {
+        hp += tarea.horas_planificadas;
+      }
+    });
+    return hp;
+  }
+
+  separarProyectosDelMes(id: string, mes: string) {
+    let proyectos:any = [];
+    this.planificacion.forEach(tarea => {
+      if (tarea.id == id && tarea.mes == this._colaboradorService.getMesDate(mes)) {
+        if (proyectos.indexOf(tarea.proyecto) == -1) {
+          proyectos.push(tarea.proyecto);
+        }
+      }
+    });
+    return proyectos;
+  }
+
+  getPorcentajeOcupadoMensualProyecto(proyecto: string, id: string, mes: string, capacidad: number) {
+    let hp = 0;
+    this.planificacion.forEach(tarea => {
+      if (tarea.id == id && tarea.proyecto == proyecto && tarea.mes == this._colaboradorService.getMesDate(mes)) {
+        hp = tarea.horas_planificadas;
+      }
+    });
+    return Math.round(hp/capacidad*100);
+  }
+
+  getTooltipHsPlanProyecto(proyecto: string, id: string, mes: string) {
+    let hp = 0;
+    this.planificacion.forEach(tarea => {
+      if (tarea.id == id && tarea.proyecto == proyecto && tarea.mes == this._colaboradorService.getMesDate(mes)) {
+        hp = tarea.horas_planificadas;
+      }
+    });
+    return hp;
+  }
+
+  getDiferenciaMeses(mesInicio: Date, mesFin: Date) {
+    return mesFin.getMonth() - mesInicio.getMonth() + (12 * (mesFin.getFullYear() - mesInicio.getFullYear()));
+  }
+
+}
