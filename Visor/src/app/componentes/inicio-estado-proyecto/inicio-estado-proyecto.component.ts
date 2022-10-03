@@ -9,7 +9,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { FiltroProyectosComponent } from '../../shared/modal-filtro-proyectos/filtro-proyectos/filtro-proyectos.component';
 import { ViewChild } from '@angular/core';
 import { MatAccordion } from '@angular/material/expansion';
-import { TareaService } from '../../services/i2t/tarea.service';
+import { FiltroService } from '../../services/i2t/filtro.service';
+import { TipoDeFiltro } from '../../interfaces/tipo-de-filtro';
 
 @Component({
   selector: 'app-inicio-estado-proyecto',
@@ -36,6 +37,10 @@ export class InicioEstadoProyectoComponent implements OnInit {
   positionOptions: TooltipPosition[] = ['after', 'before', 'above', 'below', 'left', 'right'];
   position = new FormControl(this.positionOptions[0]);
   noHayProyectos: boolean = false;
+  estado: boolean = false;
+  ordenDeFiltrado: string;
+  orden_saved_search_id = '';
+  
 
   //Variables del filtro
   numero: string = "";
@@ -44,8 +49,15 @@ export class InicioEstadoProyectoComponent implements OnInit {
   nombre: string = "";
   inputIzq: string = "";
 
+  tipoDeFiltro: TipoDeFiltro[] = [
+    {value: 'abecedario', viewValue: 'Abecedario'},
+    {value: 'tareasAtrasadas', viewValue: 'Tareas atrasadas'},
+    {value: 'tareasATiempo', viewValue: 'Tareas a tiempo'}
+  ];
 
-  constructor(private _dataProyecto: ProyectoDataService, private _dialog: MatDialog, private _tareaService: TareaService) {
+
+  constructor(private _dataProyecto: ProyectoDataService, private _dialog: MatDialog, private _filtroService: FiltroService) {
+    this.ordenDeFiltrado = "";
   }
 
   ngOnInit(): void {
@@ -241,7 +253,11 @@ export class InicioEstadoProyectoComponent implements OnInit {
           });
         }
         this.data = new MatTableDataSource(this.proyectos);
-        this.actualizarDisponibilidadProyecto();  
+        this.actualizarDisponibilidadProyecto();
+        this._filtroService.getUserId(localStorage.getItem('usuario')!).subscribe((response: any) => {
+          localStorage.setItem('userId', response.dataset[0].id);
+          console.log(response.dataset[0])
+        });    
       }
     });
   }
@@ -542,4 +558,86 @@ export class InicioEstadoProyectoComponent implements OnInit {
   contraerProyectos(){
     this.accordion.closeAll();
   }
+
+  mostrarInformacion(){
+    if(this.estado == false){
+      this.estado = true;
+    }
+    else{
+      this.estado = false
+    }
+  }
+
+  dispararOrden(e: Event){
+    this.ordenDeFiltrado = (e.target as HTMLElement).innerText;
+    const contenido: string = JSON.stringify({ ordenSeleccion : this.ordenDeFiltrado });
+    const encodedData = btoa(contenido);
+    for(let i=0;i<this.tipoDeFiltro.length;i++){
+      if(this.ordenDeFiltrado == "Abecedario"){
+          if (this.orden_saved_search_id == '') {
+            this._filtroService.insertFiltro(
+              localStorage.getItem('userId')!,
+              'inicio-estado-proyecto',
+              'filtro_abecedario',
+              encodedData,
+              'Filtra los proyectos por orden alfabético').subscribe((rsp: any) => {
+                console.log('Filtro guardado: ', rsp);
+                /* this.cambiarOrden();
+                this.contraerColaboradores(); */
+                });
+          }
+          else {
+            this._filtroService.updateFiltro(this.orden_saved_search_id, encodedData).subscribe((rsp: any) => {
+              console.log('Filtro actualizado: ', rsp);
+              /* this.cambiarOrden();
+              this.contraerColaboradores(); */
+            });
+          }
+        }
+        else if(this.ordenDeFiltrado == "Tareas a tiempo"){
+          let contenido: string = JSON.stringify({ ordenSeleccion : this.ordenDeFiltrado });
+          let encodedData = btoa(contenido);
+          if (this.orden_saved_search_id == '') {
+            this._filtroService.insertFiltro(
+              localStorage.getItem('userId')!,
+              'inicio-estado-proyecto',
+              'filtro_tareasATiempo',
+              encodedData,
+              'Filtra los proyectos por la cantidad de tareas a tiempo').subscribe((rsp: any) => {
+                console.log('Filtro guardado: ', rsp);
+                /* this.cambiarOrden();
+                this.contraerColaboradores(); */
+                });
+          }
+          else {
+            this._filtroService.updateFiltro(this.orden_saved_search_id, encodedData).subscribe((rsp: any) => {
+              console.log('Filtro actualizado: ', rsp);
+              /* this.cambiarOrden();
+              this.contraerColaboradores(); */
+            });
+          } 
+        }
+        else if(this.ordenDeFiltrado == "Tareas atrasadas"){
+          if (this.orden_saved_search_id == '') {
+            this._filtroService.insertFiltro(
+              localStorage.getItem('userId')!,
+              'inicio-estado-proyecto',
+              'filtro_tareasAtrasadas',
+              encodedData,
+              'Filtra los proyectos por la cantidad de tareas atrasadas').subscribe((rsp: any) => {
+                console.log('Filtro guardado: ', rsp);
+                /* this.cambiarOrden();
+                this.contraerColaboradores(); */
+                });
+          }
+          else {
+            this._filtroService.updateFiltro(this.orden_saved_search_id, encodedData).subscribe((rsp: any) => {
+              console.log('Filtro actualizado: ', rsp);
+              /* this.cambiarOrden();
+              this.contraerColaboradores(); */
+            });
+          }
+        } 
+      }
+    }
 }

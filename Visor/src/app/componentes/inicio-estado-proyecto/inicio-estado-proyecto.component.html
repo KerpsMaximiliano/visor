@@ -7,8 +7,17 @@
       </mat-form-field>
       <button class="boton-icono" (click)="openFiltro()" mat-mini-fab color="primary" mat-button matTooltip="Filtro Avanzado"><mat-icon class="icon">filter_alt</mat-icon></button>
       <button class="boton-icono" mat-mini-fab color="primary" (click)="contraerProyectos()" mat-button matTooltip="Cerrar Proyectos"><mat-icon class="icon">close_fullscreen</mat-icon></button>
+      <mat-form-field appearance="outline" id="ordenarPor">
+        <mat-label>Ordenar por...</mat-label>
+        <mat-select [(value)]="ordenDeFiltrado">
+          <mat-option (click)="dispararOrden($event)" *ngFor="let filtro of tipoDeFiltro" [value]="filtro.value">
+            {{filtro.viewValue}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
       <div class="container-informacion">
-        <div id="seccion-informacion">
+        <div id="seccion-informacion" [ngClass]="{ 'visible': estado == true, 'noVisible': estado == false }">
           <div id="seccion-completadas">
             <div class="cc-no-iniciadas"></div>
             <p class="letrasSeccionInformacion">No iniciadas</p>
@@ -26,9 +35,9 @@
             <p class="letrasSeccionInformacion">Completadas</p>
           </div>
         </div>
-        <button class="boton-informacion" mat-mini-fab color="primary"><mat-icon class="icony">info</mat-icon></button>
+        <button class="boton-informacion" (click)="mostrarInformacion()" mat-mini-fab color="primary"><mat-icon class="icony">info</mat-icon></button>
       </div>
-      <div class="disponibilidad-proyectos">
+      <div class="disponibilidad-proyectos" [ngClass]="{'acomodar': estado == true}">
         <h3>Tareas atrasadas<mat-divider></mat-divider></h3>
         <div id="porcentaje-disponibilidad-proyectos" [ngClass]="{
             'porcentaje-rojo': getPorcentajeRojo(disponibilidadProyectos),

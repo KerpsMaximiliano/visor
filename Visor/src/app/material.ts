@@ -25,7 +25,7 @@ const MATERIALES = [
     MatSelectModule,
     MatCheckboxModule,
     MatMenuModule,
-  MatExpansionModule
+    MatExpansionModule
 ]
 
 
