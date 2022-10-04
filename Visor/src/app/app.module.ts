@@ -7,20 +7,58 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 //Material
 import { MyMaterialModule } from './material';
-import { VistaAnalistaModule } from './vista-analista-funcional/modules/vista-analista.module';
+
+// Components y Modules
+import { LoginModule } from './componentes/login/login.module';
+import { RecuperarcontraseniaModule } from './componentes/recuperar-contrasenia/recuperar-contrasenia.module';
+import { ConfiguracionesComponent } from './components/configuraciones/configuraciones-main/configuraciones-main.component';
+import { RolesUsuariosModule } from './components/configuraciones/roles-usuarios/roles-usuarios.module';
+import { PermisosRolesModule } from './components/configuraciones/permisos-roles/permisos-roles.module';
+import { MatConfirmDialogComponent } from './shared/mat-confirm-dialog/mat-confirm-dialog.component';
+import { RestService } from './services/i2t/rest.service';
+import { LoginService } from './services/i2t/login.service';
+import { Config } from './services/i2t/config.service';
+import { HttpClientModule } from '@angular/common/http';
+import { SnackbarService } from './services/util/snackbar.service';
+import { ModalcontraseniaComponent } from './shared/modal-contrasenia/modalcontrasenia.component';
+import { VistaDisenioTecnicoModule } from './componentes/vista-disenio-tecnico/vista-disenio-tecnico.module';
+import { ModalFiltroComponent } from './componentes/inicio/modal-filtro/modal-filtro.component';
+import { InicioMainComponent } from './componentes/inicio/inicio-main/inicio-main.component';
+import { InicioDisponibilidadColaboradoresModule } from './componentes/inicio/inicio-disponibilidad-colaboradores/inicio-disponibilidad-colaboradores.module';
+
+export function initConfig(config: Config) {
+  return () => config.load();
+}
+
+import { FormsModule } from '@angular/forms';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ConfiguracionesComponent,
+    MatConfirmDialogComponent,
+    ModalcontraseniaComponent,
+    InicioMainComponent,
+    ModalFiltroComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MyMaterialModule,
-    VistaAnalistaModule
+    LoginModule,
+    RecuperarcontraseniaModule,
+    RolesUsuariosModule,
+    PermisosRolesModule,
+    HttpClientModule,
+    VistaDisenioTecnicoModule,
+    InicioDisponibilidadColaboradoresModule,
+    FormsModule
   ],
-  providers: [],
+
+  //Proveedores agregados
+  providers: [RestService, LoginService, Config, SnackbarService, { provide: MAT_DATE_LOCALE, useValue: 'en-GB' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
