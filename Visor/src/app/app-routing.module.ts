@@ -9,6 +9,7 @@ import { InicioMainComponent } from './componentes/inicio/inicio-main/inicio-mai
 import { ConfiguracionesComponent } from './components/configuraciones/configuraciones-main/configuraciones-main.component';
 import { PermisosRolesComponent } from './components/configuraciones/permisos-roles/permisos-roles.component';
 import { RolesUsuariosComponent } from './components/configuraciones/roles-usuarios/roles-usuarios.component';
+import { VistaDesarrolladorComponent } from './componentes/vista-desarrollador/vista-desarrollador.component';
 
 const routes: Routes = [
   {
@@ -33,6 +34,9 @@ const routes: Routes = [
   {
     path: "vista-diseño-tecnico",
     component: VistaDisenioTecnicoComponent
+  },
+  {
+    path: "vista-desarrollador", component: VistaDesarrolladorComponent
   }
 ];
 

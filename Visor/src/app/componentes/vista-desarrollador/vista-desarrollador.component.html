@@ -2,88 +2,134 @@
 
 <!-- Cabecera -->
 <div class="cabecera">
-    <h2 id="titulo-proyecto">Proyecto XXX (FEDE)</h2>
-    <p id="subtitulo-disenio">Avance de Diseño Funcional</p>
+    <h2 id="titulo-proyecto" *ngIf="!noHayProyecto"> {{ proyectoNombre }} </h2> <!-- El proyecto viene del componente tareas -->
+    <p id="subtitulo-disenio" *ngIf="!noHayProyecto">Avance de Producción</p>
 
     <!-- Barra de progreso -->
-    <div class="conteiner-barra">
+    <!-- <div class="conteiner-barra">
         <div class="progress">
             <div id="progressNoIniciadas" class="progress-bar " role="progressbar" aria-label="Segment one" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"><p class="porcentajes">50%</p></div>
             <div id="progressEnProgreso" class="progress-bar " role="progressbar" aria-label="Segment two" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"><p class="porcentajes">40%</p></div>
             <div id="progressEnPrueba" class="progress-bar " role="progressbar" aria-label="Segment one" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"><p class="porcentajes">10%</p></div>
             <div id="progressCompletadas" class="progress-bar " role="progressbar" aria-label="Segment one" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"><p class="porcentajes">10%</p></div>
         </div>
+    </div> -->
+    <div class="progress container-barra" [ngClass]="{'oculto': noHayProyecto }">
+        <div id="barraRoja" class="progress-bar bg-danger" role="progressbar" aria-label="Segment one" aria-valuenow="cargarBarraRoja()" aria-valuemin="0" aria-valuemax="100"><p class="porcentajes">{{cargarBarraRoja()}}%</p></div>
+        <div id="barraAmarilla" class="progress-bar bg-warning" role="progressbar" aria-label="Segment two" aria-valuenow="cargarBarraAmarilla()" aria-valuemin="0" aria-valuemax="100"><p id="porcentajeAmarillo" class="porcentajes">{{cargarBarraAmarilla()}}%</p></div>
+        <div id="barraVerdeClaro" class="progress-bar " role="progressbar" aria-label="Segment one" aria-valuenow="cargarBarraVerdeClaro()" aria-valuemin="0" aria-valuemax="100"><p class="porcentajes">{{cargarBarraVerdeClaro()}}%</p></div>
+        <div id="barraVerdeOscuro" class="progress-bar bg-success" role="progressbar" aria-label="Segment one" aria-valuenow="cargarBarraVerdeOscuro()" aria-valuemin="0" aria-valuemax="100"><p class="porcentajes">{{cargarBarraVerdeOscuro()}}%</p></div>
     </div>
 </div>
 
 
 <!-- Contenedor para las columnas de las tareas -->
-<div class="conteiner-all">
+<div class="conteiner-all" *ngIf="!noHayProyecto">
     <div class="card-columna">
-        <mat-card class="card">
-            <div class="titulo-conteiner-no-iniciadas">
+        <mat-card [ngClass]="{'card': poseeTareasNoIniciadas, 'container-vacio': !poseeTareasNoIniciadas}">
+            <div id="no-iniciadas" class="titulo-container">
                 <h4>NO INICIADAS</h4>
             </div>
-            <!--Contenedor de tarjetas de actividades NO INICIADAS-->
-            <div class="conteiner-all-act">
-                <div class="actividades" *ngFor="let actividad of actividadesNoIniciadas ; let i = index">
+
+            <div class="conteiner-all-tareas">
+                <div class="tareas" *ngFor="let tarea of tareasNoIniciadas ; let i = index">
                     <mat-accordion class="panel-header">
                         <mat-expansion-panel hideToggle>
                             <mat-divider id="separador"></mat-divider>
 
-                             <!-- Iconos -->
-                            <div id="iconos">
-                                <i id="icon-edit" class="fas fa-edit"></i>
-                                <i id="icon-x" class="fa-solid fa-x"></i> 
+                            <!-- Iconos -->
+                            <div class="iconos-superior">
+                                <i class="icon-edit fas fa-edit fa-xl"></i>
+                                <i class="icon-x fa-solid fa-x fa-xl"></i> 
                             </div> 
 
-                            <div class="desc-act">
+                            <div class="descripcion-tarea">
                                 <div class="datos">
-                                    <i id="icon-danger" class="fa-solid fa-triangle-exclamation"></i>
+                                    <i class="icon-general fa-solid fa-triangle-exclamation"></i>
                                     <strong>Prioridad: </strong>
-                                    <p>{{actividad.prioridad}}</p>
+                                    <p>{{tarea.prioridad}}</p>
                                 </div>
                                 <div class="datos">
-                                    <i id="icon-avatar" class="fa-solid fa-user-tie"></i>
+                                    <i class="icon-general fa-solid fa-user-tie"></i>
                                     <strong>Asignado: </strong>
-                                    <p>{{actividad.asignado}}</p>
+                                    <p>{{tarea.asignado}}</p>
                                 </div>
                                     <div class="datos">
-                                    <i id="icon-avatar" class="fa-solid fa-user-tie"></i>
+                                    <i class="icon-general fa-solid fa-user-tie"></i>
                                     <strong>Facilitador: </strong>
-                                    <p>{{actividad.facilitador}}</p>
+                                    <p>{{tarea.facilitador}}</p>
                                 </div>
-                                <div id="fechas">
-                                    <i id="icon-calendar" class="fa-regular fa-calendar-days"></i>
+
+                                <div class="fecha">
+                                    <i class="icon-general fa-regular fa-calendar-days"></i>
                                     <strong>Fechas: </strong>
-                                    <p>De inicio: {{actividad.fechas}}</p>
-                                    <p>Fin: {{actividad.fechas}}</p>
-                                    <p>Planificada: {{actividad.fechas}}</p>
+                                    <div class="caja-fecha">
+                                        <div class="fecha"><p>De inicio:</p></div>
+                                        <div class="fecha-right"><p>{{tarea.fechaInicio}}</p></div>
+                                    </div>
+                                    <div class="caja-fecha">
+                                        <div class="fecha"><p>Planificada:</p></div>
+                                        <div class="fecha-right"><p>{{tarea.fechaPlanificacion}}</p></div>
+                                    </div>
+                                    <div class="caja-fecha">
+                                        <div class="fecha"><p>Fin:</p></div>
+                                        <div class="fecha-right"><p>{{tarea.fechaFin}}</p></div>
+                                    </div>
+                                </div>
+
+                                <!-- REVISAR DESDE ACA -->
+
+                                <div class="datos">
+                                    <i class="icon-general far fa-clock"></i>
+                                    <strong class="strong-horas">Horas:</strong>
+                                    <div class="caja-fecha">
+                                        <div class="fecha"><p>Planificadas:</p></div>
+                                        <div class="fecha"><p>{{numeroNulo(tarea.horasPlanificadas)}} hs</p></div>
+                                    </div>
+                                    <div class="caja-fecha">
+                                        <div class="fecha"><p>Ejecutadas:</p></div>
+                                        <div class="fecha"><p>{{numeroNulo(tarea.horasEjecutadas)}} hs</p></div>
+                                    </div>
+                                    <div class="caja-fecha">
+                                        <div class="fecha"><p class="horas">Desvío:</p><p [ngClass]="{
+                                            'desvioNegativo': calcularDesvio(tarea.horasPlanificadas, tarea.horasEjecutadas),
+                                            'desvioPositivo': !calcularDesvio(tarea.horasPlanificadas, tarea.horasEjecutadas)
+                                        }">
+                                            {{valorAbsoluto(tarea.horasPlanificadas-tarea.horasEjecutadas)}} hs
+                                        </p></div>
+                                    </div>
+                                </div>
+                                <!-- <div id="fechas">
+                                    <i class="icon-general fa-regular fa-calendar-days"></i>
+                                    <strong>Fechas: </strong>
+                                    <p>De inicio: {{tarea.fechaInicio}}</p>
+                                    <p>Fin: {{tarea.fechaFin}}</p>
+                                    <p>Planificada: {{tarea.fechaPlanificacion}}</p>
                                 </div> 
                                 <div class="horas">
-                                    <i id="icon-clock" class="far fa-clock"></i>
+                                    <i class="icon-general far fa-clock"></i>
                                     <strong>Horas:</strong>
                                     <div id="horas-div">
-                                        <p>Planificadas: {{actividad.horasPlanificadas}}h</p>
-                                        <p>Ejecutadas: {{actividad.horasPlanificadas}}h</p>
-                                        <p>Desvió:</p><p id="horasDesvio">{{actividad.horasPlanificadas}}h</p>
+                                        <p>Planificadas: {{tarea.horasPlanificadas}}h</p>
+                                        <p>Ejecutadas: {{tarea.horasPlanificadas}}h</p>
+                                        <p>Desvió:</p><p id="horasDesvio">{{tarea.horasPlanificadas}}h</p>
                                     </div>
-                                </div> 
+                                </div>  -->
                                 <div class="datos">
                                     <i id="icon-paper" class="fa-solid fa-copy"></i>
                                     <strong>Documento: </strong>
-                                    <p>{{actividad.documento}}</p>
+                                    <p>{{tarea.documento}}</p>
                                 </div> 
                                 <div class="datos">
                                     <i id="icon-check" class="fa-solid fa-circle-check"></i>
                                     <strong>Tarea: </strong>
-                                    <p>{{actividad.tareasPrecondicion}}</p>
+                                    <p>{{tarea.tareasPrecondicion}}</p>
                                 </div> 
                             </div>
                         <mat-expansion-panel-header>
                         <div class="titulo-act">
                             <mat-panel-title>
-                                {{actividad.titulo}}
+                                {{tarea.titulo}}
                             </mat-panel-title>
                         </div>
                         <!-- Icono editar -->    
@@ -104,7 +150,7 @@
             </div>
             <i class=" fa-3x fa-solid fa-handshake " id="shakehands"></i>
             <div class="conteiner-all-act">
-                <div class="actividades" *ngFor="let actividad of actividadesEnProgreso ; let i = index">
+                <div class="actividades" *ngFor="let actividad of tareasEnProgreso ; let i = index">
                     <mat-accordion class="panel-header">
                         <mat-expansion-panel hideToggle>
                             <mat-divider id="separador"></mat-divider>
@@ -134,9 +180,9 @@
                                 <div id="fechas">
                                     <i id="icon-calendar" class="fa-regular fa-calendar-days"></i>
                                     <strong>Fechas: </strong>
-                                    <p>De inicio: {{actividad.fechas}}</p>
-                                    <p>Fin: {{actividad.fechas}}</p>
-                                    <p>Planificada: {{actividad.fechas}}</p>
+                                    <p>De inicio: {{actividad.fechaInicio}}</p>
+                                    <p>Fin: {{actividad.fechaFin}}</p>
+                                    <p>Planificada: {{actividad.fechaPlanificacion}}</p>
                                 </div>
                                 <div class="horas">
                                     <i id="icon-clock" class="far fa-clock"></i>
@@ -183,7 +229,7 @@
             </div>
     
             <div class="conteiner-all-act">
-                <div class="actividades" *ngFor="let actividad of actividadesEnPrueba ; let i = index">
+                <div class="actividades" *ngFor="let actividad of tareasEnPrueba ; let i = index">
                     <mat-accordion class="panel-header">
                         <mat-expansion-panel hideToggle>
                             <mat-divider id="separador"></mat-divider>
@@ -213,9 +259,9 @@
                                 <div id="fechas">
                                     <i id="icon-calendar" class="fa-regular fa-calendar-days"></i>
                                     <strong>Fechas: </strong>
-                                    <p>De inicio: {{actividad.fechas}}</p>
-                                    <p>Fin: {{actividad.fechas}}</p>
-                                    <p>Planificada: {{actividad.fechas}}</p>
+                                    <p>De inicio: {{actividad.fechaInicio}}</p>
+                                    <p>Fin: {{actividad.fechaFin}}</p>
+                                    <p>Planificada: {{actividad.fechaPlanificacion}}</p>
                                 </div>
                                 <div class="horas">
                                     <i id="icon-clock" class="far fa-clock"></i>
@@ -260,7 +306,7 @@
                 <h4>COMPLETADAS</h4>
             </div>
             <div class="conteiner-all-act">
-                <div class="actividades" *ngFor="let actividad of actividadesCompletadas">
+                <div class="actividades" *ngFor="let actividad of tareasCompletadas">
                     <mat-accordion class="panel-header">
                         <mat-expansion-panel hideToggle>
                             <mat-divider id="separador"></mat-divider>
@@ -290,9 +336,9 @@
                                 <div id="fechas">
                                     <i id="icon-calendar" class="fa-regular fa-calendar-days"></i>
                                     <strong>Fechas: </strong>
-                                    <p>De inicio: {{actividad.fechas}}</p>
-                                    <p>Fin: {{actividad.fechas}}</p>
-                                    <p>Planificada: {{actividad.fechas}}</p>
+                                    <p>De inicio: {{actividad.fechaInicio}}</p>
+                                    <p>Fin: {{actividad.fechaFin}}</p>
+                                    <p>Planificada: {{actividad.fechaPlanificacion}}</p>
                                 </div>
                                 <div class="datos">
                                     <i id="icon-clock" class="far fa-clock"></i>

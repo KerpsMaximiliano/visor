@@ -4,17 +4,25 @@
     text-decoration: none;
     list-style: none;
 }
-#progressNoIniciadas{
+
+.titulo-container {
+    height: 25px;
+    text-align: center;
+    border: 1.5px solid black;
+    border-radius: 4px;
+}
+
+#no-iniciadas{
     background-color: #cc0000;
 }
 
-#progressEnProgreso{
+#en-progreso{
     background-color: #f1c232;
 }
-#progressEnPrueba{
+#en-prueba{
     background-color: #93c47d;
 }
-#progressCompletadas{
+#completadas{
     background-color: #6aa84f;
 }
 
@@ -25,8 +33,11 @@
 }  
 
 .conteiner-barra{
-    margin-right: 350px;
-    margin-left: 350px;
+    /* margin-right: 350px;
+    margin-left: 350px; */
+    margin-right: 20%;
+    margin-left: 20%;
+    border: 1px solid black;
 }
 
 .porcentajes{
@@ -41,10 +52,26 @@
 #titulo-proyecto {
     font-size: 25px;
     margin-top: 20px;
+    font-weight: 700;
 }
 
-#subtitulo-disenio{
-    font-size: 15px;
+#subtitulo-disenio {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.caja-fecha {
+    display: flex;
+}
+
+.fecha p {
+    margin-left: 13px;
+    font-size: small;
+}
+.fecha-right {
+    margin-left: auto;
+    margin-right: 0;
+    font-size: small;
 }
 
 .datos{
@@ -60,11 +87,11 @@
     font-size: 12px;
 }
 
-.desc-act{
+.descripcion-tarea{
     padding-top: 10px;
 }
 
-.conteiner-all-act{
+.conteiner-all-tareas{
     margin-top: 10px;
 }
 
@@ -90,7 +117,7 @@
     height: 25px;
 }
 
-.actividades {
+.tareas {
     margin-bottom: 8px;
 }
 
@@ -110,43 +137,11 @@
     /* width: 370px; */
 }
 
-.titulo-conteiner-no-iniciadas {
-    height: 25px;
-    background-color: #cc0000;
-    text-align: center;
-    border: 1.5px solid black;
-    border-radius: 4px;
-}
-
-.titulo-conteiner-progreso {
-    height: 25px;
-    background-color: #f1c232;
-    text-align: center;
-    border: 1.5px solid black;
-    border-radius: 4px;
-}
-
-.titulo-conteiner-en-prueba {
-    height: 25px;
-    background-color: #93c47d;
-    text-align: center;
-    border: 1.5px solid black;
-    border-radius: 4px;
-}
-
-.titulo-conteiner-completadas {
-    height: 25px;
-    background-color: #6aa84f;
-    text-align: center;
-    border: 1.5px solid black; 
-    border-radius: 4px;
-}
-
-.conteiner-vacio{
-    width: 370px;
+.container-vacio{
+    /* width: 370px; */
     border: 1.5px solid black;
     height: 60px;
-    display: block;
+    /* display: block; */
 }
 
 .horas{
@@ -169,7 +164,12 @@
 }
 
 /*  Iconos  */
-#iconos{
+/* #iconos{
+    margin-top: 10px;
+    text-align: right;
+} */
+
+.iconos-superior {
     margin-top: 10px;
     text-align: right;
 }
@@ -184,7 +184,24 @@
     color: blue;
 }
 
-#icon-edit{
+.icon-general {
+    margin-top: 2px;
+    margin-right: 5px;
+    color: black;
+}
+
+.icon-edit {
+    margin-right: 5px;
+    cursor: pointer;
+    color: blue;
+}
+
+.icon-x {
+    cursor: pointer;
+    color: red;
+}
+
+/* #icon-edit{
     margin-right: 5px;
     cursor: pointer;
     color: black;
@@ -199,7 +216,8 @@
 }
 #icon-x{
     color:#cc0000
-}
+} */
+
 #icon-danger{
     margin-top: 2px;
     margin-right: 3px;

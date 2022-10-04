@@ -25,6 +25,7 @@ import { VistaDisenioTecnicoModule } from './componentes/vista-disenio-tecnico/v
 import { ModalFiltroComponent } from './componentes/inicio/modal-filtro/modal-filtro.component';
 import { InicioMainComponent } from './componentes/inicio/inicio-main/inicio-main.component';
 import { InicioDisponibilidadColaboradoresModule } from './componentes/inicio/inicio-disponibilidad-colaboradores/inicio-disponibilidad-colaboradores.module';
+import { VistaDesarrolladorModule } from './componentes/vista-desarrollador/vista-desarrollador.module';
 
 export function initConfig(config: Config) {
   return () => config.load();
@@ -54,7 +55,8 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     HttpClientModule,
     VistaDisenioTecnicoModule,
     InicioDisponibilidadColaboradoresModule,
-    FormsModule
+    FormsModule,
+    VistaDesarrolladorModule
   ],
 
   //Proveedores agregados
