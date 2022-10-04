@@ -8,9 +8,11 @@ import {
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
+import { TareaService } from 'src/app/services/i2t/tarea.service';
 
 
 export interface PropiedadesProyecto{
+  
   id: number,
   nombre: string, 
   planificadas: number
@@ -22,6 +24,12 @@ export interface PropiedadesProyecto{
   cliente: string, 
   asignadoA: string
 }
+export interface ResponseService{
+  id_projecto: string;
+  nombre_cliente: string;
+  nombre_projecto: string;
+  usuario_asignado: string;
+}
 @Component({
   selector: 'app-tareas',
   templateUrl: './tareas.component.html',
@@ -29,8 +37,10 @@ export interface PropiedadesProyecto{
 })
 
 export class TareasComponent implements OnInit {
+  listaProyectosService: ResponseService[] = [] ;
   listaProyectos: PropiedadesProyecto[] = [];
   dataSource: MatTableDataSource<PropiedadesProyecto>;
+  dataSourceService: any
   nombreProyecto='';
   estiloListaProyectos: string = 'ocultarTabla';
   seleccionoProyecto = '';
@@ -54,7 +64,7 @@ export class TareasComponent implements OnInit {
   columnas: string[] = ['nombre'];
 
 
-  constructor(public dialog: MatDialog, private _snackBar: MatSnackBar) {
+  constructor(public dialog: MatDialog, private _snackBar: MatSnackBar, private _tareaService: TareaService) {
     const proyectos: PropiedadesProyecto[] = [
       { id: 128109, nombre: 'Entrenamiento en Drupal y Symfony', planificadas: 448, noIniciadas: 424, enProgreso: 24, enPrueba: 0, completadas: 0, tieneTareasUsuario: false, cliente: 'Factory', asignadoA: 'Adrian Enrico' },
       { id: 125029, nombre: 'Restyling y Migración de Portal PAC', planificadas: 3600, noIniciadas: 500, enProgreso: 0, enPrueba: 0, completadas: 2400, tieneTareasUsuario: false, cliente: 'Factory', asignadoA: 'Patricio Hernán Macagno' },
@@ -69,6 +79,14 @@ export class TareasComponent implements OnInit {
     this.listaProyectos = proyectos;
     
     this.dataSource = new MatTableDataSource(this.listaProyectos);
+
+    this._tareaService.getABMproyectoService().subscribe((response: any) =>{
+    this.listaProyectosService = response.dataset;
+    this.dataSourceService = new MatTableDataSource(this.listaProyectosService);
+    
+    console.log(this.dataSourceService.filteredData[0])
+    
+  });
   }
 
   ngOnInit(): void {
@@ -84,13 +102,13 @@ export class TareasComponent implements OnInit {
     }
     else{
       this.estiloListaProyectos = 'mostrarTabla'
-      this.dataSource.filter = filterValue.trim().toLowerCase();
+      this.dataSourceService.filter = filterValue.trim().toLowerCase();
       console.log("No vacio")
 
     }
   }
   seleccionarProyecto(unProyecto: any){
-    this.nombreProyecto = unProyecto;
+    this.nombreProyecto = unProyecto.nombre_projecto;
     this.estiloListaProyectos = 'ocultarTabla'; //nombre clase css
     console.log(this.nombreProyecto)
   }
@@ -113,6 +131,7 @@ export class TareasComponent implements OnInit {
         //No utilizó filtros para encontrar el proyecto
         console.log(this.nombreProyecto)
       }
+
         
       
     })

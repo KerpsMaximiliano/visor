@@ -17,4 +17,12 @@ getTareasDeProyecto(id_caso: string) {
     return this.rest.callProcedimientoVisor(jsbody, "TareasProyecto");
 }
 
+getABMproyectoService() {
+    let endPoint = 'AbmProyectos';
+    let jsbody: string = JSON.stringify({
+        par_modo : 'G'
+    });
+    return this.rest.getABMproyectoRest(jsbody,endPoint);
+}
+
 }
