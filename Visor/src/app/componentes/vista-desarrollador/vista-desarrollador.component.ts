@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Tarea } from 'src/app/interfaces/tarea';
 import { TareaService } from 'src/app/services/i2t/tarea.service';
-// import { Actividad } from '../../interfaces/actividad';
 
 @Component({
   selector: 'app-vista-desarrollador',
@@ -28,20 +27,8 @@ export class VistaDesarrolladorComponent implements OnInit {
   horasEnPrueba: number = 0;
   horasCompleatadas: number = 0;
   horasTotales: number = 0;
-
-  /* actividadesNoIniciadas: Actividad[] = [];
-  actividadesEnProgreso: Actividad[] = [];
-  actividadesEnPrueba: Actividad[] = [];
-  actividadesCompletadas: Actividad[] = [];
-  proyectoSeleccionado: boolean = true;
-  poseeTareasCompletadas: boolean = true;
-
-  panelOpenState = false; */
   
-  constructor(private _tareaService: TareaService) {
-    /* this.cargarActividades();
-    this.ordenarListas(); */
-  }
+  constructor(private _tareaService: TareaService) { }
 
   ngOnInit(): void {
     this.proyectoId = "d31cfdaa-049e-e6e3-999d-62b5b2f778b7"; // este dato viene del commponente tareas
@@ -79,6 +66,24 @@ export class VistaDesarrolladorComponent implements OnInit {
         estado: tarea.estado,
         sprint: this.calcularSprint(tarea.fecha_planificada)
       })
+    });
+    this.tareasOrg.push({
+      titulo: 'Tarea en Prueba XXX',
+      proyecto: 'Visor',
+      prioridad: 'Alta',
+      asignado: 'ffriggeri',
+      facilitador: 'ffriggeri',
+      fechaInicio: '01-09-2022',
+      fechaFin: null,
+      fechaPlanificacion: '31-09-2022',
+      horasPlanificadas: 24,
+      horasEjecutadas: 20,
+      documento: null,
+      tareasPrecondicion: null,
+      notas: null,
+      tipoTarea: 'Produccion',
+      estado: 'In Testing',
+      sprint: this.calcularSprint('31-09-2022')
     });
   };
 
@@ -204,7 +209,7 @@ export class VistaDesarrolladorComponent implements OnInit {
     this.ordenAlfabetico(this.tareasCompletadas);
     this.tareasNoIniciadas = this.ordenPrioridad(this.tareasNoIniciadas);
     this.tareasEnProgreso = this.ordenPrioridad(this.tareasEnProgreso);
-    this.tareasEnProgreso = this.ordenPrioridad(this.tareasEnPrueba);
+    this.tareasEnPrueba = this.ordenPrioridad(this.tareasEnPrueba);
     this.tareasCompletadas = this.ordenPrioridad(this.tareasCompletadas);
   }
 
@@ -240,7 +245,6 @@ export class VistaDesarrolladorComponent implements OnInit {
     if (tarea.prioridad == null) {
       arrayOrdenado.push(tarea);
     }});
-    console.log(arrayOrdenado);
     return arrayOrdenado;
   }
 
@@ -282,153 +286,8 @@ export class VistaDesarrolladorComponent implements OnInit {
     }
   }
 
-  ////////  ARCHIVO VIEJO ///////
-
-  /* cargarActividades(){
-    this.actividadesNoIniciadas = [{
-      titulo: "CHANO - xxx",
-      prioridad: "Alta",
-      asignado: "Franco Friggeri",
-      facilitador: "Adrian Enrico",
-      fechas: "22/08/2022",
-      horasPlanificadas: 17,
-      horasEjecutadas: 15,
-      horasDesvio: 2,
-      documento: "Documento 1",
-      tareasPrecondicion: "Tarea 1",
-      notas: ""
-    },
-    {
-      titulo: "A - xxx",
-      prioridad: "Baja",
-      asignado: "Luciano De Giorgio",
-      facilitador: "Federico Gauchat",
-      fechas: "10/08/2022",
-      horasPlanificadas: 4,
-      horasEjecutadas: 4,
-      horasDesvio: 2,
-      documento: "Documento 2",
-      tareasPrecondicion: "Tarea 9",
-      notas: ""
-    }
-    ]
-    this.actividadesEnProgreso = [{
-      titulo: "EN PROGRESO 1 - xxx",
-      prioridad: "Alta",
-      asignado: "Franco Friggeri",
-      facilitador: "Adrian Enrico",
-      fechas: "22/08/2022",
-      horasPlanificadas: 17,
-      horasEjecutadas: 15,
-      horasDesvio: 2,
-      documento: "Documento 1",
-      tareasPrecondicion: "Tarea 1",
-      notas: ""
-    },
-    {
-      titulo: "EN PROGRESO 2 - xxx",
-      prioridad: "Baja",
-      asignado: "Luciano De Giorgio",
-      facilitador: "Federico Gauchat",
-      fechas: "10/08/2022",
-      horasPlanificadas: 4,
-      horasEjecutadas: 4,
-      horasDesvio: 2,
-      documento: "Documento 2",
-      tareasPrecondicion: "Tarea 9",
-      notas: ""
-    }
-    ];
-    this.actividadesEnPrueba = [{
-      titulo: "EN PRUEBA 1 - xxx",
-      prioridad: "Alta",
-      asignado: "Franco Friggeri",
-      facilitador: "Adrian Enrico",
-      fechas: "22/08/2022",
-      horasPlanificadas: 17,
-      horasEjecutadas: 15,
-      horasDesvio: 2,
-      documento: "Documento 1",
-      tareasPrecondicion: "Tarea 1",
-      notas: ""
-    },
-    {
-      titulo: "EN PRUEBA 2 - xxx",
-      prioridad: "Baja",
-      asignado: "Luciano De Giorgio",
-      facilitador: "Federico Gauchat",
-      fechas: "10/08/2022",
-      horasPlanificadas: 4,
-      horasEjecutadas: 4,
-      horasDesvio: 2,
-      documento: "Documento 2",
-      tareasPrecondicion: "Tarea 9",
-      notas: ""
-    }
-    ]
-    this.actividadesCompletadas = [{
-      
-      titulo: "COMPLETADA 1 - xxx",
-      prioridad: "Alta",
-      asignado: "Franco Friggeri",
-      facilitador: "Adrian Enrico",
-      fechas: "22/08/2022",
-      horasPlanificadas: 17,
-      horasEjecutadas: 15,
-      horasDesvio: 2,
-      documento: "Documento 1",
-      tareasPrecondicion: "Tarea 1",
-      notas: ""
-    }];
+  solicitudAyuda(tarea: Tarea) {  // revisar
+    return true;
   }
-
-  ordenarListas() {
-    this.ordenAlfabetico(this.actividadesNoIniciadas);
-    this.ordenAlfabetico(this.actividadesEnProgreso);
-    this.ordenAlfabetico(this.actividadesEnPrueba);
-    this.ordenAlfabetico(this.actividadesCompletadas);
-    // this.actividadesNoIniciadas = this.ordenPrioridad(this.actividadesNoIniciadas);
-    // this.actividadesEnProgreso = this.ordenPrioridad(this.actividadesEnProgreso);
-    // this.actividadesEnPrueba = this.ordenPrioridad(this.actividadesEnPrueba);
-    // this.actividadesCompletadas = this.ordenPrioridad(this.actividadesCompletadas);
-  }
-
-  ordenAlfabetico(lista: Array<Actividad>) {
-    console.log("entra")
-    lista.sort(function(a, b) {
-      
-      if (a.titulo > b.titulo) {
-        console.log("Retorna 1: " + a.titulo + b.titulo)
-        return 1;
-      }
-      if (a.titulo < b.titulo) {
-        console.log("Retorna -1: " + a.titulo + b.titulo)
-        return -1;
-      }
-      return 0;
-    });
-  }
-
-  ordenPrioridad(lista: Array<Actividad>) {
-    let arrayOrdenado: Actividad[]=[];
-    lista.forEach(tarea => {
-    if (tarea.prioridad == 'Alta') {
-      arrayOrdenado.push(tarea);
-    }});
-    lista.forEach(tarea => {
-    if (tarea.prioridad == 'Media') {
-      arrayOrdenado.push(tarea);
-    }});
-    lista.forEach(tarea => {
-    if (tarea.prioridad == 'Baja') {
-      arrayOrdenado.push(tarea);
-    }});
-    lista.forEach(tarea => {
-    if (tarea.prioridad == '') {
-      arrayOrdenado.push(tarea);
-    }});
-    console.log(arrayOrdenado);
-    return arrayOrdenado;
-  } */
 
 }

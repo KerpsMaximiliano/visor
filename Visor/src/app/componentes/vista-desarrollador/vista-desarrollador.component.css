@@ -20,10 +20,19 @@
     background-color: #f1c232;
 }
 #en-prueba{
-    background-color: #93c47d;
+    background-color: #0d6efd;
 }
 #completadas{
-    background-color: #6aa84f;
+    background-color: #198754;
+}
+
+h4 {
+    font-weight: 700;
+    color: white;
+}
+
+.h4-negro {
+    color: black;
 }
 
 .conteiner-all{
@@ -32,9 +41,7 @@
     padding-top: 20px;
 }  
 
-.conteiner-barra{
-    /* margin-right: 350px;
-    margin-left: 350px; */
+.container-barra{
     margin-right: 20%;
     margin-left: 20%;
     border: 1px solid black;
@@ -42,6 +49,11 @@
 
 .porcentajes{
     margin-top: 13px;
+    color: white;
+    font-weight: 700;
+}
+
+#porcentajeNegro {
     color: black;
 }
 
@@ -62,29 +74,31 @@
 
 .caja-fecha {
     display: flex;
+    font-size: 11px;
 }
 
 .fecha p {
     margin-left: 13px;
-    font-size: small;
+    font-size: 12px;
 }
+
+.fecha strong {
+    font-size: 12px;
+}
+
 .fecha-right {
     margin-left: auto;
     margin-right: 0;
-    font-size: small;
+    font-size: 12px;
 }
 
 .datos{
     display: flex;
+    font-size: 12px;
 }
 
 .datos strong{
     padding-right: 4px;
-    font-size: 12px;
-}
-
-.datos p{
-    font-size: 12px;
 }
 
 .descripcion-tarea{
@@ -95,35 +109,23 @@
     margin-top: 10px;
 }
 
-#fechas strong{
-    font-size: 12px;
-}
-
-#fechas p{
-    padding-left: 10px;
-    font-size: 10px;
-}
-
-#separador{
+.separador{
     background-color: black;
 }
 
-.actividades mat-accordion mat-expansion-panel{
+mat-expansion-panel{
     background-color: white;
     border: solid 1px black;
-}
-
-.actividades mat-accordion mat-expansion-panel-header{
-    height: 25px;
 }
 
 .tareas {
     margin-bottom: 8px;
 }
 
-#titulo-act{
+.titulo-tarea{
     text-align: center;
-    font-size: 12px;
+    font-weight: 500;
+    font-size: 16px;
 }
 
 .card-columna{
@@ -134,14 +136,11 @@
 .card{
     border: 1.5px solid black;
     border-radius: 4px;
-    /* width: 370px; */
 }
 
 .container-vacio{
-    /* width: 370px; */
     border: 1.5px solid black;
     height: 60px;
-    /* display: block; */
 }
 
 .horas{
@@ -155,19 +154,15 @@
     padding: 3px;
 }
 
-#horas-div{
-    padding-left: 7px;
-}
-
-#horasDesvio{
+.desvioNegativo {
     color: red;
+    font-weight: 700;
 }
 
-/*  Iconos  */
-/* #iconos{
-    margin-top: 10px;
-    text-align: right;
-} */
+.desvioPositivo {
+    color: green;
+    font-weight: 700;
+}
 
 .iconos-superior {
     margin-top: 10px;
@@ -177,9 +172,8 @@
 #shakehands{
     display: flex;
     justify-content: center;
-}
-
-#shakehands::before{
+    padding-top: 5px;
+    padding-bottom: 5px;
     cursor: pointer;
     color: blue;
 }
@@ -201,58 +195,13 @@
     color: red;
 }
 
-/* #icon-edit{
-    margin-right: 5px;
-    cursor: pointer;
-    color: black;
-}
-#icon-edit::before{
-    color: #085394;
+.mano-ayuda {
+    color: blue;
+    font-size: 18px;
+    margin-right: 0;
 }
 
-#icon-x{
-    cursor: pointer;
-    color: black;
+#mano-derecha {  /* revisar */
+    margin-right: 0;
+    margin-left: auto;
 }
-#icon-x{
-    color:#cc0000
-} */
-
-#icon-danger{
-    margin-top: 2px;
-    margin-right: 3px;
-    color: black;
-}
-
-#icon-avatar{
-    margin-top: 2px;
-    margin-right: 3px;
-    color: black;
-}
-
-#icon-calendar{
-    margin-top: 2px;
-    margin-right: 3px;
-    color: black;
-}
-
-#icon-paper{
-    margin-top: 2px;
-    margin-right: 3px;
-    color: black;
-}
-
-#icon-check{
-    margin-top: 2px;
-    margin-right: 3px;
-    color: black;
-}
-
-#icon-clock{
-    margin-top: 2px;
-    margin-right: 3px;
-    color: black;
-}
-
-
-
