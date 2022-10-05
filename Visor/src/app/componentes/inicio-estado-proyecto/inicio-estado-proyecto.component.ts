@@ -6,7 +6,6 @@ import { Proyecto } from '../../interfaces/proyecto';
 import { TooltipPosition } from '@angular/material/tooltip';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { FiltroProyectosComponent } from '../../shared/modal-filtro-proyectos/filtro-proyectos/filtro-proyectos.component';
 import { ViewChild } from '@angular/core';
 import { MatAccordion } from '@angular/material/expansion';
 import { FiltroService } from '../../services/i2t/filtro.service';
@@ -254,10 +253,10 @@ export class InicioEstadoProyectoComponent implements OnInit {
         }
         this.data = new MatTableDataSource(this.proyectos);
         this.actualizarDisponibilidadProyecto();
-        this._filtroService.getUserId(localStorage.getItem('usuario')!).subscribe((response: any) => {
+       /*  this._filtroService.getUserId(localStorage.getItem('usuario')!).subscribe((response: any) => {
           localStorage.setItem('userId', response.dataset[0].id);
           console.log(response.dataset[0])
-        });    
+        });     */
       }
     });
   }
@@ -399,12 +398,12 @@ export class InicioEstadoProyectoComponent implements OnInit {
     this.disponibilidadProyectos = Math.round((this.getTooltipTareasAtrasadas() / this.getTooltipTareasAbiertasTotales()) * 100);
   }
 
-  openFiltro(){
+  /* openFiltro(){
     //this.proyectos = this.dataProyecto.proyectos;
     const dialogRef = this._dialog.open(FiltroProyectosComponent, {
       width: '400px',
       disableClose: true,
-      data: { numero: this.numero, nombre: this.nombre, cliente: this.cliente, asignadoA: this.asignadoA}
+      data: { numero: this.numero, nombre: this.nombre, cliente: this.cliente, asignadoA: this.asignadoA, seleccion: this.ordenDeFiltrado, search_id: this.}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -416,33 +415,39 @@ export class InicioEstadoProyectoComponent implements OnInit {
       let filtrar = result.filtrar;
       if (result.limpiar) { this.inputIzq = '', filtrar = true }
       if (filtrar) {
-        const filtroNumero = this.filtroAvanzado(1, this.numero);
-        const filtroNombre = this.filtroAvanzado(2, this.nombre);
-        const filtroCliente = this.filtroAvanzado(3, this.cliente);
-        const filtroAsignado = this.filtroAvanzado(4, this.asignadoA);
-        this.data = this.buscarCoincidencias(filtroNumero, filtroNombre, filtroCliente, filtroAsignado);
-        this.proyectos = this.buscarCoincidencias(filtroNumero, filtroNombre, filtroCliente, filtroAsignado);
+        const filtroNombre = this.filtroAvanzado(1, this.nombre);
+        const filtroCliente = this.filtroAvanzado(2, this.cliente);
+        const filtroAsignado = this.filtroAvanzado(3, this.asignadoA);
+        const filtroNumero = this.filtroAvanzado(4, this.numero);
+        this.data = this.buscarCoincidencias(filtroNumero, filtroCliente, filtroAsignado, filtroNumero);
+        this.proyectos = this.buscarCoincidencias(filtroNumero, filtroNombre, filtroAsignado, filtroNumero);
         this.aplicarFiltros();
       }
     });
-  }
+  } */
 
-  private aplicarFiltros() {
+ /*  aplicarFiltros() {
     if (this.proyectos.length == 0) {
       this.noHayProyectos = true;
-    } 
-    else {
+      this.disponibilidadProyectos = 0;
+    } else if (this.proyectos.length == 1) {
       this.noHayProyectos = false;
+      this.actualizarDisponibilidadProyecto();
+      this.cambiarOrden();
+    } else {
+      this.noHayProyectos = false;
+      this.actualizarDisponibilidadProyecto();
+      this.cambiarOrden();
     }
-  }
+  } */
 
-  private filtroAvanzado(tipo: number, valor: string) {
+  /* private filtroAvanzado(tipo: number, valor: string) {
     let arrayTemp: any = [];
     let arrayTabla: any;
     switch (tipo) {
       case 1:
         this.proyectos.forEach(project => {
-          let obj = { numero: project.numero };
+          let obj = { numero: project.numero, nombre: project.nombre };
           arrayTemp.push(obj);
         });
         arrayTabla = new MatTableDataSource(arrayTemp);
@@ -452,7 +457,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
       
         case 2:
         this.proyectos.forEach(project => {
-          let obj = { numero: project.numero, nombre: project.nombre };
+          let obj = { numero: project.numero, cliente: project.cliente };
           arrayTemp.push(obj);
         });
         arrayTabla = new MatTableDataSource(arrayTemp);
@@ -462,7 +467,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
         
         case 3:
         this.proyectos.forEach(project => {
-          let obj = { numero: project.numero, cliente: project.cliente };
+          let obj = { numero: project.numero, asignado: project.asignado };
           arrayTemp.push(obj);
         });
         arrayTabla = new MatTableDataSource(arrayTemp);
@@ -472,7 +477,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
 
         case 4:
           this.proyectos.forEach(project => {
-            let obj = { numero: project.numero, asignado: project.asignado };
+            let obj = { numero: project.numero };
             arrayTemp.push(obj);
           });
           arrayTabla = new MatTableDataSource(arrayTemp);
@@ -480,9 +485,10 @@ export class InicioEstadoProyectoComponent implements OnInit {
           arrayTemp = arrayTabla.filteredData;
           return arrayTemp;
     }
-  }
+  } */
 
-  private buscarCoincidencias(arrayNumero: any, arrayNombre: any, arrayCliente: any, arrayAsignado: any) {
+
+ /*  private buscarCoincidencias(arrayNombre: any, arrayCliente: any, arrayAsignado: any, arrayNumero: any) {
     let encontrados: any = [];
     this.proyectos.forEach(project => {
       let encontradoNumero = false;
@@ -496,6 +502,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
           console.log("hola numero");
         }
       });
+
       arrayNombre.forEach((element: any) => {
         if (element.numero === project.numero) {
           encontradoNombre = true;
@@ -515,45 +522,9 @@ export class InicioEstadoProyectoComponent implements OnInit {
         encontrados.push(project);
       }
     });
-    console.log(encontrados)
     return encontrados;
   }
-
-  /* cambiarOrden() {
-    if (this.ordenSeleccion == 'Alfabetico') {
-      this.colaboradores.sort(function(a, b) {
-        if (a.apellido > b.apellido) {
-          return 1;
-        }
-        if (a.apellido < b.apellido) {
-          return -1;
-        }
-        return 0;
-      });
-      this.colaboradores.sort(function(a, b) {
-        if (a.nombre > b.nombre) {
-          return 1;
-        }
-        if (a.nombre < b.nombre) {
-          return -1;
-        }
-        return 0;
-      });
-      this.ordenarColaboradores();
-    }
-    if (this.ordenSeleccion == 'Tiempo Disponible') {
-      this.colaboradores.sort(function(a, b) {
-        if (a.tiempoDisponible < b.tiempoDisponible) {
-          return 1;
-        }
-        if (a.tiempoDisponible > b.tiempoDisponible) {
-          return -1;
-        }
-        return 0;
-      });
-      this.ordenarColaboradores();
-    }
-  } */
+ */
 
   contraerProyectos(){
     this.accordion.closeAll();
@@ -582,15 +553,15 @@ export class InicioEstadoProyectoComponent implements OnInit {
               encodedData,
               'Filtra los proyectos por orden alfabético').subscribe((rsp: any) => {
                 console.log('Filtro guardado: ', rsp);
-                /* this.cambiarOrden();
-                this.contraerColaboradores(); */
+                this.cambiarOrden();
+                /* this.contraerColaboradores(); */
                 });
           }
           else {
             this._filtroService.updateFiltro(this.orden_saved_search_id, encodedData).subscribe((rsp: any) => {
               console.log('Filtro actualizado: ', rsp);
-              /* this.cambiarOrden();
-              this.contraerColaboradores(); */
+              this.cambiarOrden();
+           /*    this.contraerColaboradores(); */
             });
           }
         }
@@ -605,15 +576,15 @@ export class InicioEstadoProyectoComponent implements OnInit {
               encodedData,
               'Filtra los proyectos por la cantidad de tareas a tiempo').subscribe((rsp: any) => {
                 console.log('Filtro guardado: ', rsp);
-                /* this.cambiarOrden();
-                this.contraerColaboradores(); */
+                this.cambiarOrden();
+                /* this.contraerColaboradores(); */
                 });
           }
           else {
             this._filtroService.updateFiltro(this.orden_saved_search_id, encodedData).subscribe((rsp: any) => {
               console.log('Filtro actualizado: ', rsp);
-              /* this.cambiarOrden();
-              this.contraerColaboradores(); */
+              this.cambiarOrden();
+              /* this.contraerColaboradores(); */
             });
           } 
         }
@@ -626,18 +597,54 @@ export class InicioEstadoProyectoComponent implements OnInit {
               encodedData,
               'Filtra los proyectos por la cantidad de tareas atrasadas').subscribe((rsp: any) => {
                 console.log('Filtro guardado: ', rsp);
-                /* this.cambiarOrden();
-                this.contraerColaboradores(); */
+                this.cambiarOrden();
+               /*  this.contraerColaboradores(); */
                 });
           }
           else {
             this._filtroService.updateFiltro(this.orden_saved_search_id, encodedData).subscribe((rsp: any) => {
               console.log('Filtro actualizado: ', rsp);
-              /* this.cambiarOrden();
-              this.contraerColaboradores(); */
+              this.cambiarOrden();
+              /* this.contraerColaboradores();  */
             });
           }
         } 
+      }
+    }
+
+    cambiarOrden(){
+      if(this.ordenDeFiltrado == 'Abecedario') {
+        this.proyectos.sort(function(a, b) {
+          if(a.nombre > b.nombre){
+            return 1;
+          }
+          if (a.nombre < b.nombre) {
+            return -1;
+          }
+          return 0;
+        });
+      }
+      if(this.ordenDeFiltrado == 'Tareas atrasadas') {
+        this.proyectos.sort(function(a, b) {
+          if(a.porcentajeTareasAtrasadas < b.porcentajeTareasAtrasadas){
+            return 1;
+          }
+          if(a.porcentajeTareasAtrasadas > b.porcentajeTareasAtrasadas){
+            return -1;
+          }
+          return 0;
+        });
+      }
+      if(this.ordenDeFiltrado == 'Tareas a tiempo') {
+        this.proyectos.sort(function(a, b) {
+          if(a.porcentajeTareasATiempo < b.porcentajeTareasATiempo){
+            return 1;
+          }
+          if(a.porcentajeTareasATiempo > b.porcentajeTareasATiempo){
+            return -1;
+          }
+          return 0;
+        });
       }
     }
 }
