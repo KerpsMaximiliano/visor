@@ -35,7 +35,8 @@ export class LoginComponent implements OnInit {
   comprobarCredenciales(){
     let usuario: Usuario = {
       usuario: String(this.user.value),
-      password: String(this.password.value)
+      password: String(this.password.value),
+      email: ''
     }
     console.log("Se ejecutó la llamada al servicio de login")
     this._loginService.obtenerToken(usuario).subscribe((resp: any) => {
@@ -49,7 +50,7 @@ export class LoginComponent implements OnInit {
       else{
         this.visibilidadMensaje = true;
       }
-    })
+    });
   }
   
   /**

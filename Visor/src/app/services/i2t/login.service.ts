@@ -25,4 +25,12 @@ export class LoginService {
     });
     return this._restService.callLogin(jsbody);
   }
+
+  enviarCorreo(usuarioRecibido: Usuario){
+    let jsbody: string = JSON.stringify ({
+      "nombre_usuario": usuarioRecibido.usuario,
+      "email_usuario": usuarioRecibido.email
+    });
+    return this._restService.callProcedimientoVisor(jsbody, "ConfirmarEmail");  
+  }
 }
