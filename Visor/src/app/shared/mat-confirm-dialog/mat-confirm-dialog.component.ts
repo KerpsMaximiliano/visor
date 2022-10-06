@@ -9,16 +9,15 @@ import {MatDividerModule} from '@angular/material/divider';
   styleUrls: ['./mat-confirm-dialog.component.css']
 })
 export class MatConfirmDialogComponent implements OnInit {
-  
 
   constructor(public dialogRef: MatDialogRef<MatConfirmDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) public data:any, ) { }
+    @Inject(MAT_DIALOG_DATA) public data:any, ) { }
 
   ngOnInit(): void {
   }
 
-  
   closeDialog(){
     this.dialogRef.close(false);
   }
+
 }

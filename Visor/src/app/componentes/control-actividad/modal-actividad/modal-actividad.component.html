@@ -9,7 +9,7 @@
     
  
 
-  <form class="form-container" [formGroup]="form" (ngSubmit)="agregarActividad();editarActividad()">
+  <form class="form-container" [formGroup]="form" (ngSubmit)="agregarActividadSuite();editarActividadSuite()">
 
   
     <!--<table class="example-full-width" cellspacing="0"><tr>
@@ -63,7 +63,7 @@
       <mat-label>Descripcion</mat-label>
     <mat-form-field class="example-full-width" appearance="fill">
     <!--<mat-label>Descripcion completar</mat-label>-->
-    <input matInput value="children" formControlName="children" >
+    <input matInput value="descripcion" formControlName="descripcion">
     </mat-form-field>
     <!--</div>-->
   </div>
@@ -87,7 +87,7 @@
   <mat-form-field class="example-full-width" appearance="fill">
     <mat-label *ngIf="!form.value.tareaAsociada"></mat-label>
     <!--<mat-label>tarea</mat-label>-->
-    <input matInput value="Descripcion a completar" formControlName="tareaAsociada">
+    <input matInput value="Descripcion a completar"  formControlName="tareaAsociada">
   </mat-form-field>
   <!--</div>-->
 </div>

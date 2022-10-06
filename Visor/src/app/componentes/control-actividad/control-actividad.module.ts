@@ -6,7 +6,7 @@ import { ActividadComponent } from  '../control-actividad/actividad/actividad.co
 import { ModalActividadComponent } from './modal-actividad/modal-actividad.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { DialogService } from 'src/app/shared/dialog.service'
+import { DialogService } from 'src/app/services/i2t/dialog.service'
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';

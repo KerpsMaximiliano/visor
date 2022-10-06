@@ -6,7 +6,7 @@ import { MyMaterialModule } from '../../material';
 import { ModalcontraseniaComponent } from '../../shared/modal-contrasenia/modalcontrasenia.component';
 
 @NgModule({
-  declarations: [RecuperarcontraseniaComponent, ModalcontraseniaComponent],
+  declarations: [RecuperarcontraseniaComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,

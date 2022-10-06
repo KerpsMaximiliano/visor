@@ -21,7 +21,10 @@
     <button mat-flat-button id="yes-button" [mat-dialog-close]="true" style="float: right;margin-bottom: -5%;">SI</button>
 </div>-->
 
-<div class="dialog-container">
+
+
+<!-- ANTIGUO -->
+<!--<div class="dialog-container">
     <div class="toolbar">
             <mat-toolbar >
             <span>Confirmar acción</span>
@@ -33,9 +36,6 @@
           <mat-divider class="divider"></mat-divider>
     </div>
     
-    
-    
-    
     <div class="content" style="text-align: center">
         {{data.message}}
         
@@ -46,10 +46,16 @@
         <button id="yes-button" mat-stroked-button [mat-dialog-close]="true">SI</button>
     </div>
 
-</div>
-    
-
-    
-
-
+</div>-->
   
+<div>
+    <h1>Confirmación</h1>
+    <div class="content-container">
+        <div class="content-span">{{data.message}}</div>
+    </div>
+    <div class="botonera">
+        <button mat-flat-button id="no-button" [mat-dialog-close]="false">Cancelar</button>
+        <span class="separador"></span>
+        <button mat-flat-button id="yes-button" [mat-dialog-close]="true">Confirmar</button>
+    </div>
+</div>

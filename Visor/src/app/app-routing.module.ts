@@ -1,10 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ActividadComponent } from './componentes/control-actividad/actividad/actividad.component';
+import { ConfiguracionesComponent } from './components/configuraciones/configuraciones-main/configuraciones-main.component';
+import { PermisosRolesComponent } from './components/configuraciones/permisos-roles/permisos-roles.component';
+import { RolesUsuariosComponent } from './components/configuraciones/roles-usuarios/roles-usuarios.component';
 
 //Componentes
 import { LoginComponent } from './componentes/login/login.component';
 import { RecuperarcontraseniaComponent } from './componentes/recuperar-contrasenia/recuperar-contrasenia.component';
+import { VistaDisenioTecnicoComponent } from './componentes/vista-disenio-tecnico/vista-disenio-tecnico.component';
 
 const routes: Routes = [
   {
@@ -21,8 +25,17 @@ const routes: Routes = [
     component: RecuperarcontraseniaComponent
   },
   { path: 'app-actividad', component: ActividadComponent,
-    }
+    },
 
+  { path: 'configuraciones-main', component: ConfiguracionesComponent,
+    children: [
+      { path: 'roles-usuarios', component: RolesUsuariosComponent },
+      { path: 'permisos-roles', component: PermisosRolesComponent }
+    ] },
+  {
+    path: "vista-diseño-tecnico",
+    component: VistaDisenioTecnicoComponent
+  }
 ];
 
 @NgModule({

@@ -15,6 +15,12 @@ import { MatNativeDateModule } from '@angular/material/core';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatListModule} from '@angular/material/list';
 import {MatGridListModule} from '@angular/material/grid-list';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 const MATERIALES = [
     MatButtonModule,
@@ -33,9 +39,14 @@ const MATERIALES = [
     MatNativeDateModule,
     MatDividerModule,
     MatListModule,
-    MatGridListModule
+    MatGridListModule,
+    MatAutocompleteModule,
+    MatProgressBarModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatMenuModule,
+    MatPaginatorModule
 ]
-
 
 import { NgModule } from '@angular/core';
 

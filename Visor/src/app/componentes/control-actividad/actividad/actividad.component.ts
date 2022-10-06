@@ -3,7 +3,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { Actividad } from 'src/app/interfaces/actividades';
 import { ActividadService } from 'src/app/services/i2t/actividad.service';
-import { DialogService } from 'src/app/shared/dialog.service';
+import { DialogService } from 'src/app/services/i2t/dialog.service';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ModalActividadComponent } from '../modal-actividad/modal-actividad.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -14,7 +14,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { RestService } from 'src/app/services/i2t/rest.service';
 import { Usuario } from 'src/app/interfaces/usuario';
 import { ActividadSuite } from 'src/app/interfaces/actividadesSuite';
-
+import { Data } from '@angular/router';
+import { DataSource } from '@angular/cdk/collections';
+import { finalize } from 'rxjs/operators';
 
 
 @Component({
@@ -36,12 +38,12 @@ export class ActividadComponent implements OnInit {
   
  
   //displayedColumns: string[] = ['fecha','horas','descripcion','asunto','acciones'];
-  displayedColumns:string[] = ['fecha','horas'];
-  displayedColumns2:string[] =  ['asunto','acciones'];
-  columnsToDisplayWithExpand = [...this.displayedColumns, 'children',...this.displayedColumns2];
+  displayedColumns:string[] = ['fecha','horas_ejecutadas'];
+  displayedColumns2:string[] =  ['asunto_actividad','acciones'];
+  columnsToDisplayWithExpand = [...this.displayedColumns, 'descripcion',...this.displayedColumns2];
   //columnsToDisplayWithExpand = [ ...this.displayedColumns,'children'];
 
-  dataSource!: MatTableDataSource<any>;
+  dataSource = new MatTableDataSource<any>();
   form! : FormGroup;
   actividad!: Actividad;
   index! : number | undefined;
@@ -49,10 +51,7 @@ export class ActividadComponent implements OnInit {
   user! : Usuario;
   token!: String|null;
   actividades!: ActividadSuite[]|null;
-  
-  
-  
-  
+  id!:string;
 
   panelOpenState = false;
 
@@ -71,11 +70,16 @@ export class ActividadComponent implements OnInit {
 
   ngOnInit(): void {
     
-    this.cargarActividades();
+    //this.cargarActividades();
+    this.cargarActividadesSuite();
     
     this._actividadService.enviarIndexObservable.subscribe(response => {
       this.index = response;
     })
+    this._actividadService.enviarIdActividadObservable.subscribe(response => {
+      this.id = response;
+    })
+    console.log("muestra ID PPIO",this.id);
     console.log('todas las actividades',this._actividadService.listActividades)
     let usuario: Usuario ={
       usuario: 'admin',
@@ -88,49 +92,27 @@ export class ActividadComponent implements OnInit {
           console.log('token',localStorage.getItem('auth_token'));
           this.token = localStorage.getItem('auth_token');
           this.user = usuario;
-         
+        
         }
     });
-
-    this._actividadService.iniciar().subscribe((response: any) =>{
-      //this.actividades = response.dataset;
-      console.log("mmmmm",response.dataset);
-    });
-    
-
-    let httpHeaders: HttpHeaders = new HttpHeaders();
-
-    httpHeaders = httpHeaders.append('Authorization','Bearer'+this.token);
-
-    this.http.get<ActividadSuite[]>('http://tstvar.i2tsa.com.ar:3001/api/proc/AbmActividades',
-          {
-            headers: httpHeaders,
-            observe: 'response'
-          }).subscribe(res=> {
-            this.actividades = res.body;
-            console.log('body',res.body);
-            console.log('body actividad',this.actividades);
-            
-          })
-  
-    
-    this._actividadService.getAllActividadesSuite().subscribe(data => console.log('prieba',data))
   } 
 
-  toggleOn(horas: Number){
+  /*toggleOn(horas: Number){
     console.log("asunto",horas);
     for(let row of this.listActividades){
       if (row.horas == horas){
         row.toggle = 1;
       }
     }
-  }
+  }*/
 
   cargarActividades(){
     
     this.listActividades = this._actividadService.getActividad();
     this.dataSource = new MatTableDataSource(this.listActividades);
   }
+
+  
 
   //Expand Panel
   expandedRows: { [key: number]: boolean } = {};
@@ -139,7 +121,7 @@ export class ActividadComponent implements OnInit {
   }
 
 
-
+//ELIMINAR HARDCODE
   onEliminarActividad(index: number){
     console.log('posicion inicial',index);
     
@@ -160,16 +142,62 @@ export class ActividadComponent implements OnInit {
   
   }
 
+  cargarActividadesSuite(){
+    this._actividadService.par_modoG().subscribe((response: any) =>{
+      
+      console.log("dataSource",this.dataSource);
+      response.dataset.forEach((y: any) =>{
+        if(y.descripcion == null || y.descripcion.length < 1 || y.descripcion === ""){
+          y.descripcion = 'Esta actividad no tiene descripción';
+        }   
+        
+          
+      console.log(y.descripcion)
+    
+    });
+      console.log("RESPONSE DATASET",response.dataset)
+      this.dataSource = new MatTableDataSource(response.dataset)
+      console.log("DATA SOURCE",this.dataSource)
+      
+    });
+   
+  }
+
+
+//ELIMINAR INTEGRACION
+  onEliminarActividadSuite(index: number){
+    console.log('posicion inicial',index);
+      console.log('actividades',this._actividadService.listActividades)
+    this.dialogService.openConfirmDialog('¿Usted está seguro de que desea eliminar esa actividad?' )
+    .afterClosed().pipe(
+      finalize(()=>{
+        this.cargarActividadesSuite();
+      })
+    ).subscribe(res =>{
+      if(res){
+          console.log("id actividad a eliminar index",this.dataSource.data[index])
+          console.log("id actividad a eliminar index id",this.dataSource.data[index].id_actividad)
+         this._actividadService.deleteActividad(this.dataSource.data[index].id_actividad).subscribe((response:any)=>{
+            console.log("DELETE EXITOSO", response);
+          })
+     
+        this._snackBar.open('Actividad eliminada','',{
+          duration: 1500,
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom'
+        })
+      }
+    });
+  
+  }
+
  cambioIndex(index: number){
   console.log('index del boton editar',index);
   this._actividadService.enviarIndex(index);
  }
  
   onEditarActividad(index: number){
-     
-    //this.cambioIndex(index);
-    //this.index = index;
-   /*this._actividadService.editarActividad(index);*/
+
    console.log("posicion incial",index);
     let aux = index;
   this._actividadService.enviarIndex(index);
@@ -181,7 +209,7 @@ export class ActividadComponent implements OnInit {
       position: elemento.position,
       fecha: elemento.fecha,
       horasEjecutadas: elemento.horas,
-      children: elemento.children,
+      descripcion: elemento.descripcion,
       asunto: elemento.asunto,
       tareaAsociada: elemento.tareas
      })}
@@ -209,13 +237,56 @@ export class ActividadComponent implements OnInit {
   
   }
 
+  onEditarActividadSuite(index: number){
+
+    let fAux = new Date();
+    
+    fAux = this.dataSource.data[index].fecha.split(" ")[0];
+    
+
+    this._actividadService.enviarIdActividad(this.dataSource.data[index].id_actividad);
+
+    console.log("prueba fecha",fAux) ;   
+    //console.log("prueba fecha",fechaA) ;   
+   
+    
+     this._actividadService.form.patchValue({
+       fecha: fAux,
+       horasEjecutadas: this.dataSource.data[index].horas_ejecutadas,
+       descripcion: this.dataSource.data[index].descripcion,
+       asunto: this.dataSource.data[index].asunto_actividad,
+       tareaAsociada: this.dataSource.data[index].nombre_tarea
+      })
+      console.log("FORM 555",this.form)
+    console.log('actividad final',this.dataSource.data[index])
+    
+    //this._actividadService.openModalActividad(8);
+    const dialogRef = this.dialog.open(ModalActividadComponent,{});
+    dialogRef.afterClosed().subscribe(res =>{
+     if(res){
+       console.log(res);
+       this.cargarActividadesSuite();
+       this._snackBar.open('Actividad actualizada','',{
+         duration: 1500,
+         horizontalPosition: 'center',
+         verticalPosition: 'bottom'
+       })
+     }
+     
+     this._actividadService.index = undefined;
+   });
+   
+   this._actividadService.index = undefined;
+   
+   }
+
   /*onAgregarActividad(){
     this._actividadService.openModalActividad(form: FormGroup);
     //this.modalActividad.agregarActividad();
 
   }*/
 
-  //eseeeeee
+
   onAgregarActividad(){
       // Agregamos una nueva Actividad
       this._actividadService.form.reset();
@@ -224,7 +295,7 @@ export class ActividadComponent implements OnInit {
     dialogRef.afterClosed().subscribe(res =>{
       if(res){
         console.log(res);
-        this.cargarActividades();
+        this.cargarActividadesSuite();
         this._snackBar.open('Actividad agregada','',{
           duration: 1500,
           horizontalPosition: 'center',
@@ -234,18 +305,10 @@ export class ActividadComponent implements OnInit {
     });
   }
 
- 
-
-
-   public getAllActividadesSuite(){
-    this._actividadService.getAllActividadesSuite().subscribe(
-      actividadesSuite => {
-        console.log(actividadesSuite);
-      }
-    );
-   }
    
 
 }
+
+
 
 
