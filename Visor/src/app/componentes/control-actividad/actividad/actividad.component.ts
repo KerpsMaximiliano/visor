@@ -239,19 +239,25 @@ export class ActividadComponent implements OnInit {
 
   onEditarActividadSuite(index: number){
 
-    let fAux = new Date();
-    
+  
+    let fAux = new String();
     fAux = this.dataSource.data[index].fecha.split(" ")[0];
-    
 
     this._actividadService.enviarIdActividad(this.dataSource.data[index].id_actividad);
 
-    console.log("prueba fecha",fAux) ;   
-    //console.log("prueba fecha",fechaA) ;   
-   
+      
+    let day:number = parseInt(fAux.split("-")[2]);
+    let month:number= parseInt(fAux.split("-")[1]);
+    let year: number = parseInt(fAux.split("-")[0]);
+
+    const fechaA:string = year+'-'+month+'-'+day;
+    const fecha =new Date(fechaA);
+    console.log("prueba fecha",fecha) ;   
+    
+    
     
      this._actividadService.form.patchValue({
-       fecha: fAux,
+       fecha: fecha,
        horasEjecutadas: this.dataSource.data[index].horas_ejecutadas,
        descripcion: this.dataSource.data[index].descripcion,
        asunto: this.dataSource.data[index].asunto_actividad,

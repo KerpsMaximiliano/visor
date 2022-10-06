@@ -214,7 +214,7 @@ id!: string;
     });
     console.log("bodyyyy",jsbody);
     return this.rest.callProcedimientoVisor(jsbody, 'AbmActividades');
-    
+
   }
 
   editarActividad(actividadS: ActividadSuite){
