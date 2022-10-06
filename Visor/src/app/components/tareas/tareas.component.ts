@@ -58,8 +58,11 @@ export class TareasComponent implements OnInit {
     {prioridadTarea: ''},
     {facilitadorTarea: ''},
     {asignadoAtarea: ''},
-    {tecnologiatarea: ''}
+    {tecnologiatarea: ''},
+    {idProyectoSeleccionado: ''}
   ]
+
+  idProyecto!:string
 
   columnas: string[] = ['nombre'];
 
@@ -124,7 +127,8 @@ export class TareasComponent implements OnInit {
     )
     .subscribe(result => {
       console.log(result)
-
+      this.idProyecto = result.idProyectoSeleccionado;
+      console.log(this.idProyecto)
       if (result.proyectoSeleccionado !== undefined) {
 
         this.nombreProyecto = result.proyectoSeleccionado

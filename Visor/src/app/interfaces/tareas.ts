@@ -1,3 +1,4 @@
 export interface Tareas {
-    buscaTareas: boolean
+    buscaTareas: boolean,
+    idProyectoSeleccionado: string
 }

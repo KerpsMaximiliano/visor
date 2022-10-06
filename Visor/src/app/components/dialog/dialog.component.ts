@@ -57,6 +57,13 @@ export interface PropiedadesProyecto{
   asignadoA: string
 }
 
+export interface ResponseService{
+  id_projecto: string;
+  nombre_cliente: string;
+  nombre_projecto: string;
+  usuario_asignado: string;
+}
+
 @Component({
   selector: 'app-dialog',
   templateUrl: './dialog.component.html',
@@ -130,7 +137,7 @@ export class DialogComponent implements OnInit {
         console.log(this.listaProyectosPrueba)
         this.dataSourcePrueba = new MatTableDataSource(this.listaProyectosPrueba);
         
-        console.log(this.dataSourcePrueba.filteredData[0])
+         
         let cantProyectos = this.dataSourcePrueba.filteredData.length;
         for(let i = 0; i < cantProyectos ; i++){
           if(!this.clientesDeProyectos.includes(this.dataSourcePrueba.filteredData[i].nombre_cliente)){
@@ -142,7 +149,7 @@ export class DialogComponent implements OnInit {
             this.usuariosDeProyectos.push( this.dataSourcePrueba.filteredData[i].usuario_asignado);
           }
         }
-        console.log(this.usuariosDeProyectos)
+        
         
 
 
@@ -154,27 +161,31 @@ export class DialogComponent implements OnInit {
     
     if(buscarTareasInterface.buscaTareas){
       this.buscarTareas = buscarTareasInterface.buscaTareas;
-      // this._tareaService.getABMproyectoService().subscribe((response: any) => {
-      //   this.listaProyectosPrueba = response.dataset;
-      //   this.dataSourcePrueba = new MatTableDataSource(this.listaProyectosPrueba);
+      
+      const id_projecto = this.buscarTareasInterface.idProyectoSeleccionado;
+      console.log(id_projecto)
+      this._tareaService.getTareasDeProyecto(id_projecto).subscribe((response: any) => {
+        this.listaProyectosPrueba = response.dataset;
+        this.dataSourcePrueba = new MatTableDataSource(this.listaProyectosPrueba);
+        console.log(this.dataSourcePrueba)
         
-      //   console.log(this.dataSourcePrueba.filteredData[0])
-      //   let cantProyectos = this.dataSourcePrueba.filteredData.length;
-      //   for(let i = 0; i < cantProyectos ; i++){
-      //     if(!this.clientesDeProyectos.includes(this.dataSourcePrueba.filteredData[i].nombre_cliente)){
-      //       this.clientesDeProyectos.push( this.dataSourcePrueba.filteredData[i].nombre_cliente);
-      //     }
-      //   }
-      //   for(let i = 0; i < cantProyectos ; i++){
-      //     if(!this.usuariosDeProyectos.includes(this.dataSourcePrueba.filteredData[i].usuario_asignado)){
-      //       this.usuariosDeProyectos.push( this.dataSourcePrueba.filteredData[i].usuario_asignado);
-      //     }
-      //   }
-      //   console.log(this.usuariosDeProyectos)
+        console.log(this.dataSourcePrueba.filteredData[0])
+        // let cantProyectos = this.dataSourcePrueba.filteredData.length;
+        // for(let i = 0; i < cantProyectos ; i++){
+        //   if(!this.clientesDeProyectos.includes(this.dataSourcePrueba.filteredData[i].nombre_cliente)){
+        //     this.clientesDeProyectos.push( this.dataSourcePrueba.filteredData[i].nombre_cliente);
+        //   }
+        // }
+        // for(let i = 0; i < cantProyectos ; i++){
+        //   if(!this.usuariosDeProyectos.includes(this.dataSourcePrueba.filteredData[i].usuario_asignado)){
+        //     this.usuariosDeProyectos.push( this.dataSourcePrueba.filteredData[i].usuario_asignado);
+        //   }
+        // }
+        // console.log(this.usuariosDeProyectos)
         
 
 
-      // });
+      });
       
       this.filtrosTareasDialog = JSON.parse(JSON.stringify(this.buscarTareasInterface)).filtros
       console.log(this.filtrosTareasDialog)
@@ -220,6 +231,58 @@ export class DialogComponent implements OnInit {
   });
 
   //Filtra servicio
+  
+  
+  //Filtra prueba
+  // filtrarProyectos(id:string,valor:string){
+  //   const idParametroFiltro = id;
+  //   var valorParametroFiltro = valor;
+  //   console.log(idParametroFiltro)
+  //   console.log(valorParametroFiltro)
+    
+    
+  //   switch(idParametroFiltro){
+  //     case 'nroProyecto':
+  //       this.numeroProyecto = valorParametroFiltro;
+  //       this.filtrosProyectoDialog[0].numeroProyecto = this.numeroProyecto;//Para permanencia de filtro
+  //       this.valoresFiltros.id = valorParametroFiltro;
+  //       const valores = Object.values(this.valoresFiltros)
+        
+  //       this.armarFilterPredicate(valores);
+  //       this.filtrarPor(valores);
+        
+        
+  //     break;
+  //     case 'nombreProyecto':
+  //       this.nombreProyecto = valorParametroFiltro;
+  //       this.filtrosProyectoDialog[1].nombreProyecto = this.nombreProyecto;//Para permanencia de filtro
+  //       this.valoresFiltros.nombre = valorParametroFiltro;
+  //       const valoresN = Object.values(this.valoresFiltros)
+
+  //       this.armarFilterPredicate(valoresN);
+  //       this.filtrarPor(valoresN);
+        
+  //     break;
+  //     case 'clienteProyecto':
+  //       this.clienteProyecto = valorParametroFiltro;
+  //       this.filtrosProyectoDialog[2] = this.clienteProyecto;
+  //       this.valoresFiltros.cliente = valorParametroFiltro;
+  //       const valoresC = Object.values(this.valoresFiltros);
+
+  //       this.armarFilterPredicate(valoresC);
+  //       this.filtrarPor(valoresC);
+        
+  //       break;
+  //     case 'asignadoAproyecto':
+  //       this.asignadoAproyecto = valorParametroFiltro;
+  //       this.filtrosProyectoDialog[3] = this.asignadoAproyecto;
+  //       this.valoresFiltros.asignado = valorParametroFiltro;
+  //       const valoresA = Object.values(this.valoresFiltros)
+
+  //       this.armarFilterPredicate(valoresA);
+  //       this.filtrarPor(valoresA);
+  //   }
+  // }
   filtrarProyectos(id:string,valor:string){
     const idParametroFiltro = id;
     var valorParametroFiltro = valor;
@@ -234,164 +297,11 @@ export class DialogComponent implements OnInit {
         this.filtrosProyectoDialog[0].numeroProyecto = this.numeroProyecto;//Para permanencia de filtro
         this.valoresFiltros.id = valorParametroFiltro;
         const valores = Object.values(this.valoresFiltros)
+        console.log(valores)
+        const objeto = JSON.parse(JSON.stringify(this.valoresFiltros))
         
-        this.dataSourcePrueba.filterPredicate = (data: any, filter: string): boolean => {
-          
-          this.valoresFiltros.id = valorParametroFiltro;
-          const valores = Object.values(this.valoresFiltros)
-          console.log(valores)
-          
-          //Filtra solo por id_projecto
-          if(valores[0] != '' && valores[1] == '' && valores[2] == '' && valores[3] == ''){
-            return (String(data.id_projecto).indexOf(valores[0]) != -1);
-          }
-
-          //Filtra solo por nombre_projecto
-          else if(valores[0] == '' && valores[1] != '' && valores[2] == '' && valores[3] == ''){
-            return ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1);
-          }
-
-          //Filtra solo por Cliente
-          else if(valores[0] == '' && valores[1] == '' && valores[2] != '' && valores[3] == ''){
-            return ( data.nombre_cliente == valores[2] );
-          }
-
-          //Filtra solo por Asignado
-          else if(valores[0] == '' && valores[1] == '' && valores[2] == '' && valores[3] != ''){
-            return ( data.usuario_asignado == valores[3] );
-          }
-
-          //Filtra por Cliente y Asignado
-          else if(valores[0] == '' && valores[1] == '' && valores[2] != '' && valores[3] != ''){
-            return ( (data.nombre_cliente == valores[2]) &&  (data.usuario_asignado == valores[3]) );
-          }
-          //Filtra por Nombre y Asignado
-          else if(valores[0] == '' && valores[1] != '' && valores[2] == '' && valores[3] != ''){
-            return ( ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1 ) &&  (data.usuario_asignado == valores[3]) );
-          }
-          //Filtra por Nombre y Cliente
-          else if(valores[0] == '' && valores[1] != '' && valores[2] != '' && valores[3] == ''){
-            return ( ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1) &&  (data.nombre_cliente == valores[2]) );
-          }
-          //Filtra por Nombre, Cliente y Asignado
-          else if(valores[0] == '' && valores[1] != '' && valores[2] != '' && valores[3] != ''){
-            return ( ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1) && (data.nombre_cliente == valores[2]) && (data.usuario_asignado == valores[3])  );
-          }
-          //Filtra por id_projecto y Asignado
-          else if(valores[0] != '' && valores[1] == '' && valores[2] == '' && valores[3] != ''){
-            return ( (String(data.id_projecto).indexOf(valores[0]) != -1) && (data.usuario_asignado == valores[3])  );
-          }
-          //Filtra por id_projecto y Cliente
-          else if(valores[0] != '' && valores[1] == '' && valores[2] != '' && valores[3] == ''){
-            return ( (String(data.id_projecto).indexOf(valores[0]) != -1) && (data.nombre_cliente == valores[2])  );
-          }
-          //Filtra por id_projecto, Cliente y Asignado
-          else if(valores[0] != '' && valores[1] == '' && valores[2] != '' && valores[3] != ''){
-            return ( (String(data.id_projecto).indexOf(valores[0]) != -1) && (data.nombre_cliente == valores[2]) && (data.usuario_asignado == valores[3])  );
-          }
-          //id_projecto y Nombre
-          else if(valores[0] != '' && valores[1] != '' && valores[2] == '' && valores[3] == ''){
-            return ( (String(data.id_projecto).indexOf(valores[0]) != -1) && ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valores[1])) != -1 );
-          }
-          //Filtra por id_projecto, Nombre y Asignado
-          else if(valores[0] != '' && valores[1] != '' && valores[2] == '' && valores[2] != ''){
-            return ( (String(data.id_projecto).indexOf(valores[0]) != -1) && ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1) && (String(data.usuario_asignado) == (valores[3])) );
-          }
-          //Filtra id_projecto, Nombre y Cliente
-          else if(valores[0] != '' && valores[1] != '' && valores[2] != '' && valores[3] == ''){
-            return ( (String(data.id_projecto).indexOf(valores[0]) != -1) && ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1) && (data.nombre_cliente == valores[2])  );
-          }
-          //id_projecto, Nombre, Cliente y Asignado
-          else{
-            return ( (String(data.id_projecto).indexOf(valores[0]) != -1) && ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1) &&  (data.nombre_cliente == valores[2]) && (data.usuario_asignado) == valores[3]    )                                                                                                      ;
-          }
-        }
-
-        if(valores[0] != '' && valores[1] == '' && valores[2] == '' && valores[3] == ''){
-          console.log("Filtra por esta condicion")
-          this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
-        }
-
-        //Filtra solo por nombre_projecto
-        else if(valores[0] == '' && valores[1] != '' && valores[2] == '' && valores[3] == ''){
-          this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-        }
-
-        //Filtra solo por Cliente
-        else if(valores[0] == '' && valores[1] == '' && valores[2] != '' && valores[3] == ''){
-          this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-        }
-
-        //Filtra solo por Asignado
-        else if(valores[0] == '' && valores[1] == '' && valores[2] == '' && valores[3] != ''){
-          this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-        }
-
-        //Filtra por Cliente y Asignado
-        else if(valores[0] == '' && valores[1] == '' && valores[2] != '' && valores[3] != ''){
-          this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-        }
-        //Filtra por Nombre y Asignado
-        else if(valores[0] == '' && valores[1] != '' && valores[2] == '' && valores[3] != ''){
-          this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-        }
-        //Filtra por Nombre y Cliente
-        else if(valores[0] == '' && valores[1] != '' && valores[2] != '' && valores[3] == ''){
-          this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-        }
-        //Filtra por Nombre, Cliente y Asignado
-        else if(valores[0] == '' && valores[1] != '' && valores[2] != '' && valores[3] != ''){
-          this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-          
-        }
-        //Filtra por id_projecto y Asignado
-        else if(valores[0] != '' && valores[1] == '' && valores[2] == '' && valores[3] != ''){
-          this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-        }
-        //Filtra por id_projecto y Cliente
-        else if(valores[0] != '' && valores[1] == '' && valores[2] != '' && valores[3] == ''){
-          this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-        }
-        //Filtra por id_projecto, Cliente y Asignado
-        else if(valores[0] != '' && valores[1] == '' && valores[2] != '' && valores[3] != ''){
-          this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-          
-        }
-        //id_projecto y Nombre
-        else if(valores[0] != '' && valores[1] != '' && valores[2] == '' && valores[3] == ''){
-          this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-        }
-        //Filtra por id_projecto, Nombre y Asignado
-        else if(valores[0] != '' && valores[1] != '' && valores[2] == '' && valores[2] != ''){
-          this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-          
-        }
-        //Filtra id_projecto, Nombre y Cliente
-        else if(valores[0] != '' && valores[1] != '' && valores[2] != '' && valores[3] == ''){
-          this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-          
-        }
-        //id_projecto, Nombre, Cliente y Asignado
-        else{
-          this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-        }
+        this.armarFilterPredicate(valores);
+        this.filtrarPor(valores);
         
       break;
       case 'nombreProyecto':
@@ -401,162 +311,8 @@ export class DialogComponent implements OnInit {
         const valoresN = Object.values(this.valoresFiltros);
 
 
-        this.dataSourcePrueba.filterPredicate = (data: any, filter: string): boolean => {
-          this.valoresFiltros.nombre = valorParametroFiltro;
-          const valoresN = Object.values(this.valoresFiltros);
-          
-          //Filtra solo por id_projecto
-          if(valoresN[0] != '' && valoresN[1] == '' && valoresN[2] == '' && valoresN[3] == ''){
-            return (String(data.id_projecto).indexOf(valoresN[0]) != -1);
-          }
-
-          //Filtra solo por nombre_projecto
-          else if(valoresN[0] == '' && valoresN[1] != '' && valoresN[2] == '' && valoresN[3] == ''){
-            return ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valoresN[1]) != -1);
-          }
-
-          //Filtra solo por Cliente
-          else if(valoresN[0] == '' && valoresN[1] == '' && valoresN[2] != '' && valoresN[3] == ''){
-            return ( data.nombre_cliente == valoresN[2] );
-          }
-
-          //Filtra solo por Asignado
-          else if(valoresN[0] == '' && valoresN[1] == '' && valoresN[2] == '' && valoresN[3] != ''){
-            return ( data.usuario_asignado == valoresN[3] );
-          }
-
-          //Filtra por Cliente y Asignado
-          else if(valoresN[0] == '' && valoresN[1] == '' && valoresN[2] != '' && valoresN[3] != ''){
-            return ( (data.nombre_cliente == valoresN[2]) &&  (data.usuario_asignado == valoresN[3]) );
-          }
-          //Filtra por Nombre y Asignado
-          else if(valoresN[0] == '' && valoresN[1] != '' && valoresN[2] == '' && valoresN[3] != ''){
-            return ( ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valoresN[1]) != -1 ) &&  (data.usuario_asignado == valoresN[3]) );
-          }
-          //Filtra por Nombre y Cliente
-          else if(valoresN[0] == '' && valoresN[1] != '' && valoresN[2] != '' && valoresN[3] == ''){
-            return ( ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valoresN[1]) != -1) &&  (data.nombre_cliente == valoresN[2]) );
-          }
-          //Filtra por Nombre, Cliente y Asignado
-          else if(valoresN[0] == '' && valoresN[1] != '' && valoresN[2] != '' && valoresN[3] != ''){
-            return ( ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valoresN[1]) != -1) && (data.nombre_cliente == valoresN[2]) && (data.usuario_asignado == valoresN[3])  );
-          }
-          //Filtra por id_projecto y Asignado
-          else if(valoresN[0] != '' && valoresN[1] == '' && valoresN[2] == '' && valoresN[3] != ''){
-            return ( (String(data.id_projecto).indexOf(valoresN[0]) != -1) && (data.usuario_asignado == valoresN[3])  );
-          }
-          //Filtra por id_projecto y Cliente
-          else if(valoresN[0] != '' && valoresN[1] == '' && valoresN[2] != '' && valoresN[3] == ''){
-            return ( (String(data.id_projecto).indexOf(valoresN[0]) != -1) && (data.nombre_cliente == valoresN[2])  );
-          }
-          //Filtra por id_projecto, Cliente y Asignado
-          else if(valoresN[0] != '' && valoresN[1] == '' && valoresN[2] != '' && valoresN[3] != ''){
-            return ( (String(data.id_projecto).indexOf(valoresN[0]) != -1) && (data.nombre_cliente == valoresN[2]) && (data.usuario_asignado == valoresN[3])  );
-          }
-          //id_projecto y Nombre
-          else if(valoresN[0] != '' && valoresN[1] != '' && valoresN[2] == '' && valoresN[3] == ''){
-            return ( (String(data.id_projecto).indexOf(valoresN[0]) != -1) && ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valoresN[1])) != -1 );
-          }
-          //Filtra por id_projecto, Nombre y Asignado
-          else if(valoresN[0] != '' && valoresN[1] != '' && valoresN[2] == '' && valoresN[2] != ''){
-            return ( (String(data.id_projecto).indexOf(valoresN[0]) != -1) && ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valoresN[1]) != -1) && (String(data.usuario_asignado) == (valoresN[3])) );
-          }
-          //Filtra id_projecto, Nombre y Cliente
-          else if(valoresN[0] != '' && valoresN[1] != '' && valoresN[2] != '' && valoresN[3] == ''){
-            return ( (String(data.id_projecto).indexOf(valoresN[0]) != -1) && ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valoresN[1]) != -1) && (data.nombre_cliente == valoresN[2])  );
-          }
-          //id_projecto, Nombre, Cliente y Asignado
-          else{
-            return ( (String(data.id_projecto).indexOf(valoresN[0]) != -1) && ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valoresN[1]) != -1) &&  (data.nombre_cliente == valoresN[2]) && (data.usuario_asignado) == valoresN[3]    )                                                                                                      ;
-          }
-        }
-
-        if(valoresN[0] != '' && valoresN[1] == '' && valoresN[2] == '' && valoresN[3] == ''){
-          console.log("Filtra por esta condicion")
-          this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
-        }
-
-        //Filtra solo por nombre_projecto
-        else if(valoresN[0] == '' && valoresN[1] != '' && valoresN[2] == '' && valoresN[3] == ''){
-          this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-        }
-
-        //Filtra solo por Cliente
-        else if(valoresN[0] == '' && valoresN[1] == '' && valoresN[2] != '' && valoresN[3] == ''){
-          this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-        }
-
-        //Filtra solo por Asignado
-        else if(valoresN[0] == '' && valoresN[1] == '' && valoresN[2] == '' && valoresN[3] != ''){
-          this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-        }
-
-        //Filtra por Cliente y Asignado
-        else if(valoresN[0] == '' && valoresN[1] == '' && valoresN[2] != '' && valoresN[3] != ''){
-          this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-        }
-        //Filtra por Nombre y Asignado
-        else if(valoresN[0] == '' && valoresN[1] != '' && valoresN[2] == '' && valoresN[3] != ''){
-          this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-        }
-        //Filtra por Nombre y Cliente
-        else if(valoresN[0] == '' && valoresN[1] != '' && valoresN[2] != '' && valoresN[3] == ''){
-          this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-        }
-        //Filtra por Nombre, Cliente y Asignado
-        else if(valoresN[0] == '' && valoresN[1] != '' && valoresN[2] != '' && valoresN[3] != ''){
-          this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-          
-        }
-        //Filtra por id_projecto y Asignado
-        else if(valoresN[0] != '' && valoresN[1] == '' && valoresN[2] == '' && valoresN[3] != ''){
-          this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-        }
-        //Filtra por id_projecto y Cliente
-        else if(valoresN[0] != '' && valoresN[1] == '' && valoresN[2] != '' && valoresN[3] == ''){
-          this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-        }
-        //Filtra por id_projecto, Cliente y Asignado
-        else if(valoresN[0] != '' && valoresN[1] == '' && valoresN[2] != '' && valoresN[3] != ''){
-          this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-          
-        }
-        //id_projecto y Nombre
-        else if(valoresN[0] != '' && valoresN[1] != '' && valoresN[2] == '' && valoresN[3] == ''){
-          this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-        }
-        //Filtra por id_projecto, Nombre y Asignado
-        else if(valoresN[0] != '' && valoresN[1] != '' && valoresN[2] == '' && valoresN[2] != ''){
-          this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-          
-        }
-        //Filtra id_projecto, Nombre y Cliente
-        else if(valoresN[0] != '' && valoresN[1] != '' && valoresN[2] != '' && valoresN[3] == ''){
-          this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-          
-        }
-        //id_projecto, Nombre, Cliente y Asignado
-        else{
-          this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-        }
-        
+        this.armarFilterPredicate(valoresN);
+        this.filtrarPor(valoresN);
 
       break;
       case 'clienteProyecto':
@@ -565,1024 +321,186 @@ export class DialogComponent implements OnInit {
         this.valoresFiltros.cliente = valorParametroFiltro;
         const valoresC = Object.values(this.valoresFiltros);
 
-        this.dataSourcePrueba.filterPredicate = (data: any, filter: string): boolean => {
-          this.valoresFiltros.cliente = valorParametroFiltro;
-          const valoresC = Object.values(this.valoresFiltros);
-          
+        this.armarFilterPredicate(valoresC);
+        this.filtrarPor(valoresC);
 
-          //Filtra solo por id_projecto
-          if(valoresC[0] != '' && valoresC[1] == '' && valoresC[2] == '' && valoresC[3] == ''){
-            return (String(data.id_projecto).indexOf(valoresC[0]) != -1);
-          }
-
-          //Filtra solo por nombre_projecto
-          else if(valoresC[0] == '' && valoresC[1] != '' && valoresC[2] == '' && valoresC[3] == ''){
-            return ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valoresC[1]) != -1);
-          }
-
-          //Filtra solo por Cliente
-          else if(valoresC[0] == '' && valoresC[1] == '' && valoresC[2] != '' && valoresC[3] == ''){
-            return ( data.nombre_cliente == valoresC[2] );
-          }
-
-          //Filtra solo por Asignado
-          else if(valoresC[0] == '' && valoresC[1] == '' && valoresC[2] == '' && valoresC[3] != ''){
-            return ( data.usuario_asignado == valoresC[3] );
-          }
-
-          //Filtra por Cliente y Asignado
-          else if(valoresC[0] == '' && valoresC[1] == '' && valoresC[2] != '' && valoresC[3] != ''){
-            return ( (data.nombre_cliente == valoresC[2]) &&  (data.usuario_asignado == valoresC[3]) );
-          }
-          //Filtra por Nombre y Asignado
-          else if(valoresC[0] == '' && valoresC[1] != '' && valoresC[2] == '' && valoresC[3] != ''){
-            return ( ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valoresC[1]) != -1 ) &&  (data.usuario_asignado == valoresC[3]) );
-          }
-          //Filtra por Nombre y Cliente
-          else if(valoresC[0] == '' && valoresC[1] != '' && valoresC[2] != '' && valoresC[3] == ''){
-            return ( ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valoresC[1]) != -1) &&  (data.nombre_cliente == valoresC[2]) );
-          }
-          //Filtra por Nombre, Cliente y Asignado
-          else if(valoresC[0] == '' && valoresC[1] != '' && valoresC[2] != '' && valoresC[3] != ''){
-            return ( ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valoresC[1]) != -1) && (data.nombre_cliente == valoresC[2]) && (data.usuario_asignado == valoresC[3])  );
-          }
-          //Filtra por id_projecto y Asignado
-          else if(valoresC[0] != '' && valoresC[1] == '' && valoresC[2] == '' && valoresC[3] != ''){
-            return ( (String(data.id_projecto).indexOf(valoresC[0]) != -1) && (data.usuario_asignado == valoresC[3])  );
-          }
-          //Filtra por id_projecto y Cliente
-          else if(valoresC[0] != '' && valoresC[1] == '' && valoresC[2] != '' && valoresC[3] == ''){
-            return ( (String(data.id_projecto).indexOf(valoresC[0]) != -1) && (data.nombre_cliente == valoresC[2])  );
-          }
-          //Filtra por id_projecto, Cliente y Asignado
-          else if(valoresC[0] != '' && valoresC[1] == '' && valoresC[2] != '' && valoresC[3] != ''){
-            return ( (String(data.id_projecto).indexOf(valoresC[0]) != -1) && (data.nombre_cliente == valoresC[2]) && (data.usuario_asignado == valoresC[3])  );
-          }
-          //id_projecto y Nombre
-          else if(valoresC[0] != '' && valoresC[1] != '' && valoresC[2] == '' && valoresC[3] == ''){
-            return ( (String(data.id_projecto).indexOf(valoresC[0]) != -1) && ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valoresC[1])) != -1 );
-          }
-          //Filtra por id_projecto, Nombre y Asignado
-          else if(valoresC[0] != '' && valoresC[1] != '' && valoresC[2] == '' && valoresC[2] != ''){
-            return ( (String(data.id_projecto).indexOf(valoresC[0]) != -1) && ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valoresC[1]) != -1) && (String(data.usuario_asignado) == (valoresC[3])) );
-          }
-          //Filtra id_projecto, Nombre y Cliente
-          else if(valoresC[0] != '' && valoresC[1] != '' && valoresC[2] != '' && valoresC[3] == ''){
-            return ( (String(data.id_projecto).indexOf(valoresC[0]) != -1) && ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valoresC[1]) != -1) && (data.nombre_cliente == valoresC[2])  );
-          }
-          //id_projecto, Nombre, Cliente y Asignado
-          else{
-            return ( (String(data.id_projecto).indexOf(valoresC[0]) != -1) && ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valoresC[1]) != -1) &&  (data.nombre_cliente == valoresC[2]) && (data.usuario_asignado) == valoresC[3]    )                                                                                                      ;
-          }
-        }
-
-        if(valoresC[0] != '' && valoresC[1] == '' && valoresC[2] == '' && valoresC[3] == ''){
-          console.log("Filtra por esta condicion")
-          this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
-        }
-
-        //Filtra solo por nombre_projecto
-        else if(valoresC[0] == '' && valoresC[1] != '' && valoresC[2] == '' && valoresC[3] == ''){
-          this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-        }
-
-        //Filtra solo por Cliente
-        else if(valoresC[0] == '' && valoresC[1] == '' && valoresC[2] != '' && valoresC[3] == ''){
-          this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-        }
-
-        //Filtra solo por Asignado
-        else if(valoresC[0] == '' && valoresC[1] == '' && valoresC[2] == '' && valoresC[3] != ''){
-          this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-        }
-
-        //Filtra por Cliente y Asignado
-        else if(valoresC[0] == '' && valoresC[1] == '' && valoresC[2] != '' && valoresC[3] != ''){
-          this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-        }
-        //Filtra por Nombre y Asignado
-        else if(valoresC[0] == '' && valoresC[1] != '' && valoresC[2] == '' && valoresC[3] != ''){
-          this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-        }
-        //Filtra por Nombre y Cliente
-        else if(valoresC[0] == '' && valoresC[1] != '' && valoresC[2] != '' && valoresC[3] == ''){
-          this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-        }
-        //Filtra por Nombre, Cliente y Asignado
-        else if(valoresC[0] == '' && valoresC[1] != '' && valoresC[2] != '' && valoresC[3] != ''){
-          this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-          
-        }
-        //Filtra por id_projecto y Asignado
-        else if(valoresC[0] != '' && valoresC[1] == '' && valoresC[2] == '' && valoresC[3] != ''){
-          this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-        }
-        //Filtra por id_projecto y Cliente
-        else if(valoresC[0] != '' && valoresC[1] == '' && valoresC[2] != '' && valoresC[3] == ''){
-          this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-        }
-        //Filtra por id_projecto, Cliente y Asignado
-        else if(valoresC[0] != '' && valoresC[1] == '' && valoresC[2] != '' && valoresC[3] != ''){
-          this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-          
-        }
-        //id_projecto y Nombre
-        else if(valoresC[0] != '' && valoresC[1] != '' && valoresC[2] == '' && valoresC[3] == ''){
-          this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-        }
-        //Filtra por id_projecto, Nombre y Asignado
-        else if(valoresC[0] != '' && valoresC[1] != '' && valoresC[2] == '' && valoresC[2] != ''){
-          this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-          
-        }
-        //Filtra id_projecto, Nombre y Cliente
-        else if(valoresC[0] != '' && valoresC[1] != '' && valoresC[2] != '' && valoresC[3] == ''){
-          this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-          
-        }
-        //id_projecto, Nombre, Cliente y Asignado
-        else{
-          this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-        }
-        break;
+        
+      break;
       case 'asignadoAproyecto':
         this.asignadoAproyecto = valorParametroFiltro;
         this.filtrosProyectoDialog[3] = this.asignadoAproyecto;
         this.valoresFiltros.asignado = valorParametroFiltro;
         const valoresA = Object.values(this.valoresFiltros);
 
-        this.dataSourcePrueba.filterPredicate = (data: any, filter: string): boolean => {
-          this.valoresFiltros.asignado = valorParametroFiltro;
-          const valoresA = Object.values(this.valoresFiltros);
+        this.armarFilterPredicate(valoresA);
+        this.filtrarPor(valoresA);
 
-
-          //Filtra solo por id_projecto
-          if (valoresA[0] != '' && valoresA[1] == '' && valoresA[2] == '' && valoresA[3] == '') {
-            return (String(data.id_projecto).indexOf(valoresA[0]) != -1);
-          }
-
-          //Filtra solo por nombre_projecto
-          else if (valoresA[0] == '' && valoresA[1] != '' && valoresA[2] == '' && valoresA[3] == '') {
-            return ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valoresA[1]) != -1);
-          }
-
-          //Filtra solo por Cliente
-          else if (valoresA[0] == '' && valoresA[1] == '' && valoresA[2] != '' && valoresA[3] == '') {
-            return (data.nombre_cliente == valoresA[2]);
-          }
-
-          //Filtra solo por Asignado
-          else if (valoresA[0] == '' && valoresA[1] == '' && valoresA[2] == '' && valoresA[3] != '') {
-            return (data.usuario_asignado == valoresA[3]);
-          }
-
-          //Filtra por Cliente y Asignado
-          else if (valoresA[0] == '' && valoresA[1] == '' && valoresA[2] != '' && valoresA[3] != '') {
-            return ((data.nombre_cliente == valoresA[2]) && (data.usuario_asignado == valoresA[3]));
-          }
-          //Filtra por Nombre y Asignado
-          else if (valoresA[0] == '' && valoresA[1] != '' && valoresA[2] == '' && valoresA[3] != '') {
-            return (((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valoresA[1]) != -1) && (data.usuario_asignado == valoresA[3]));
-          }
-          //Filtra por Nombre y Cliente
-          else if (valoresA[0] == '' && valoresA[1] != '' && valoresA[2] != '' && valoresA[3] == '') {
-            return (((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valoresA[1]) != -1) && (data.nombre_cliente == valoresA[2]));
-          }
-          //Filtra por Nombre, Cliente y Asignado
-          else if (valoresA[0] == '' && valoresA[1] != '' && valoresA[2] != '' && valoresA[3] != '') {
-            return (((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valoresA[1]) != -1) && (data.nombre_cliente == valoresA[2]) && (data.usuario_asignado == valoresA[3]));
-          }
-          //Filtra por id_projecto y Asignado
-          else if (valoresA[0] != '' && valoresA[1] == '' && valoresA[2] == '' && valoresA[3] != '') {
-            return ((String(data.id_projecto).indexOf(valoresA[0]) != -1) && (data.usuario_asignado == valoresA[3]));
-          }
-          //Filtra por id_projecto y Cliente
-          else if (valoresA[0] != '' && valoresA[1] == '' && valoresA[2] != '' && valoresA[3] == '') {
-            return ((String(data.id_projecto).indexOf(valoresA[0]) != -1) && (data.nombre_cliente == valoresA[2]));
-          }
-          //Filtra por id_projecto, Cliente y Asignado
-          else if (valoresA[0] != '' && valoresA[1] == '' && valoresA[2] != '' && valoresA[3] != '') {
-            return ((String(data.id_projecto).indexOf(valoresA[0]) != -1) && (data.nombre_cliente == valoresA[2]) && (data.usuario_asignado == valoresA[3]));
-          }
-          //id_projecto y Nombre
-          else if (valoresA[0] != '' && valoresA[1] != '' && valoresA[2] == '' && valoresA[3] == '') {
-            return ((String(data.id_projecto).indexOf(valoresA[0]) != -1) && ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valoresA[1])) != -1);
-          }
-          //Filtra por id_projecto, Nombre y Asignado
-          else if (valoresA[0] != '' && valoresA[1] != '' && valoresA[2] == '' && valoresA[2] != '') {
-            return ((String(data.id_projecto).indexOf(valoresA[0]) != -1) && ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valoresA[1]) != -1) && (String(data.usuario_asignado) == (valoresA[3])));
-          }
-          //Filtra id_projecto, Nombre y Cliente
-          else if (valoresA[0] != '' && valoresA[1] != '' && valoresA[2] != '' && valoresA[3] == '') {
-            return ((String(data.id_projecto).indexOf(valoresA[0]) != -1) && ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valoresA[1]) != -1) && (data.nombre_cliente == valoresA[2]));
-          }
-          //id_projecto, Nombre, Cliente y Asignado
-          else {
-            return ((String(data.id_projecto).indexOf(valoresA[0]) != -1) && ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valoresA[1]) != -1) && (data.nombre_cliente == valoresA[2]) && (data.usuario_asignado) == valoresA[3]);
-          }
-        }
-
-        if (valoresA[0] != '' && valoresA[1] == '' && valoresA[2] == '' && valoresA[3] == '') {
-          console.log("Filtra por esta condicion")
-          this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
-        }
-
-        //Filtra solo por nombre_projecto
-        else if (valoresA[0] == '' && valoresA[1] != '' && valoresA[2] == '' && valoresA[3] == '') {
-          this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-        }
-
-        //Filtra solo por Cliente
-        else if (valoresA[0] == '' && valoresA[1] == '' && valoresA[2] != '' && valoresA[3] == '') {
-          this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-        }
-
-        //Filtra solo por Asignado
-        else if (valoresA[0] == '' && valoresA[1] == '' && valoresA[2] == '' && valoresA[3] != '') {
-          this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-        }
-
-        //Filtra por Cliente y Asignado
-        else if (valoresA[0] == '' && valoresA[1] == '' && valoresA[2] != '' && valoresA[3] != '') {
-          this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-        }
-        //Filtra por Nombre y Asignado
-        else if (valoresA[0] == '' && valoresA[1] != '' && valoresA[2] == '' && valoresA[3] != '') {
-          this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-        }
-        //Filtra por Nombre y Cliente
-        else if (valoresA[0] == '' && valoresA[1] != '' && valoresA[2] != '' && valoresA[3] == '') {
-          this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-        }
-        //Filtra por Nombre, Cliente y Asignado
-        else if (valoresA[0] == '' && valoresA[1] != '' && valoresA[2] != '' && valoresA[3] != '') {
-          this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-
-        }
-        //Filtra por id_projecto y Asignado
-        else if (valoresA[0] != '' && valoresA[1] == '' && valoresA[2] == '' && valoresA[3] != '') {
-          this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-        }
-        //Filtra por id_projecto y Cliente
-        else if (valoresA[0] != '' && valoresA[1] == '' && valoresA[2] != '' && valoresA[3] == '') {
-          this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-        }
-        //Filtra por id_projecto, Cliente y Asignado
-        else if (valoresA[0] != '' && valoresA[1] == '' && valoresA[2] != '' && valoresA[3] != '') {
-          this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-
-        }
-        //id_projecto y Nombre
-        else if (valoresA[0] != '' && valoresA[1] != '' && valoresA[2] == '' && valoresA[3] == '') {
-          this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-        }
-        //Filtra por id_projecto, Nombre y Asignado
-        else if (valoresA[0] != '' && valoresA[1] != '' && valoresA[2] == '' && valoresA[2] != '') {
-          this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-
-        }
-        //Filtra id_projecto, Nombre y Cliente
-        else if (valoresA[0] != '' && valoresA[1] != '' && valoresA[2] != '' && valoresA[3] == '') {
-          this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-
-        }
-        //id_projecto, Nombre, Cliente y Asignado
-        else {
-          this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-          this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-        }
-        break;
+        
+      break;
     }
   }
+  armarFilterPredicate( valores:string[] ): boolean{                                     
+    let respuesta: any;
+    respuesta = this.dataSourcePrueba.filterPredicate = (data: any, filter: string): boolean => {
+      //Filtra solo por id_projecto
+      if(valores[0] != '' && valores[1] == '' && valores[2] == '' && valores[3] == ''){
+        console.log("data.id = " + data.id_projecto + " valores[0] = " + valores[0] + " = " + (String(data.id).indexOf(valores[0]) != -1))
+        return ( (data.id_projecto.split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1);
+      }
 
+      //Filtra solo por nombre_projecto
+      else if(valores[0] == '' && valores[1] != '' && valores[2] == '' && valores[3] == ''){
+        return ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1);
+      }
 
-  
-  //Filtra prueba
-  // filtrarProyectos(id:string,valor:string){
-  //   const idParametroFiltro = id;
-  //   var valorParametroFiltro = valor;
-  //     // const idParametroFiltro = (event.currentTarget as HTMLInputElement).id;
-  //     // const valorParametroFiltro = (event.currentTarget as HTMLInputElement).value;
-  //     console.log(idParametroFiltro)
-  //     console.log(valorParametroFiltro)
-    
-    
-  //   switch(idParametroFiltro){
-  //     case 'nroProyecto':
-  //       this.numeroProyecto = valorParametroFiltro;
-  //       this.filtrosProyectoDialog[0].numeroProyecto = this.numeroProyecto;//Para permanencia de filtro
-  //       this.valoresFiltros.id = valorParametroFiltro;
-  //       const valores = Object.values(this.valoresFiltros)
-  //       this.dataSource.filterPredicate = (data: PropiedadesProyecto, filter: string): boolean => {
-          
-  //         this.valoresFiltros.id = valorParametroFiltro;
-  //         const valores = Object.values(this.valoresFiltros)
-          
-          
-  //         //Filtra solo por id_projecto
-  //         if(valores[0] != '' && valores[1] == '' && valores[2] == '' && valores[3] == ''){
-  //           console.log("Arma por esta condicion")
-  //           return (String(data.id).indexOf(valores[0]) != -1);
-  //         }
+      //Filtra solo por Cliente
+      else if(valores[0] == '' && valores[1] == '' && valores[2] != '' && valores[3] == ''){
+        return ( data.nombre_cliente == valores[2] );
+      }
 
-  //         //Filtra solo por nombre_projecto
-  //         else if(valores[0] == '' && valores[1] != '' && valores[2] == '' && valores[3] == ''){
-  //           return ((String(data.nombre).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1);
-  //         }
+      //Filtra solo por Asignado
+      else if(valores[0] == '' && valores[1] == '' && valores[2] == '' && valores[3] != ''){
+        return ( data.usuario_asignado == valores[3] );
+      }
 
-  //         //Filtra solo por Cliente
-  //         else if(valores[0] == '' && valores[1] == '' && valores[2] != '' && valores[3] == ''){
-  //           return ( data.cliente == valores[2] );
-  //         }
+      //Filtra por Cliente y Asignado
+      else if(valores[0] == '' && valores[1] == '' && valores[2] != '' && valores[3] != ''){
+        return ( (data.nombre_cliente == valores[2]) &&  (data.usuario_asignado == valores[3]) );
+      }
+      //Filtra por Nombre y Asignado
+      else if(valores[0] == '' && valores[1] != '' && valores[2] == '' && valores[3] != ''){
+        return ( ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1 ) &&  (data.usuario_asignado == valores[3]) );
+      }
+      //Filtra por Nombre y Cliente
+      else if(valores[0] == '' && valores[1] != '' && valores[2] != '' && valores[3] == ''){
+        return ( ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1) &&  (data.nombre_cliente == valores[2]) );
+      }
+      //Filtra por Nombre, Cliente y Asignado
+      else if(valores[0] == '' && valores[1] != '' && valores[2] != '' && valores[3] != ''){
+        return ( ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1) && (data.nombre_cliente == valores[2]) && (data.usuario_asignado == valores[3])  );
+      }
+      //Filtra por id_projecto y Asignado
+      else if(valores[0] != '' && valores[1] == '' && valores[2] == '' && valores[3] != ''){
+        return ( ((data.id_projecto.split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1) && (data.usuario_asignado == valores[3])  );
+      }
+      //Filtra por id_projecto y Cliente
+      else if(valores[0] != '' && valores[1] == '' && valores[2] != '' && valores[3] == ''){
+        return ( ((data.id_projecto.split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1) && (data.nombre_cliente == valores[2])  );
+      }
+      //Filtra por id_projecto, Cliente y Asignado
+      else if(valores[0] != '' && valores[1] == '' && valores[2] != '' && valores[3] != ''){
+        return ( ((data.id_projecto.split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1) && (data.nombre_cliente == valores[2]) && (data.usuario_asignado == valores[3])  );
+      }
+      //id_projecto y Nombre
+      else if(valores[0] != '' && valores[1] != '' && valores[2] == '' && valores[3] == ''){
+        return ( ((data.id_projecto.split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1) && ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valores[1])) != -1 );
+      }
+      //Filtra por id_projecto, Nombre y Asignado
+      else if(valores[0] != '' && valores[1] != '' && valores[2] == '' && valores[2] != ''){
+        return ( ((data.id_projecto.split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1) && ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1) && (String(data.usuario_asignado) == (valores[3])) );
+      }
+      //Filtra id_projecto, Nombre y Cliente
+      else if(valores[0] != '' && valores[1] != '' && valores[2] != '' && valores[3] == ''){
+        return ( ((data.id_projecto.split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1) && ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1) && (data.nombre_cliente == valores[2])  );
+      }
+      //id_projecto, Nombre, Cliente y Asignado
+      else{
+        return ( ((data.id_projecto.split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1) && ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1) &&  (data.nombre_cliente == valores[2]) && (data.usuario_asignado) == valores[3]    );                                                                                                ;
+      }
+      
+    }
+    return respuesta;
+  }
 
-  //         //Filtra solo por Asignado
-  //         else if(valores[0] == '' && valores[1] == '' && valores[2] == '' && valores[3] != ''){
-  //           return ( data.asignadoA == valores[3] );
-  //         }
+  filtrarPor(valores:string[]){
+    if (valores[0] != '' && valores[1] == '' && valores[2] == '' && valores[3] == '') {
+      console.log("Esta condicion" )
+      this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
+    }
 
-  //         //Filtra por Cliente y Asignado
-  //         else if(valores[0] == '' && valores[1] == '' && valores[2] != '' && valores[3] != ''){
-  //           return ( (data.cliente == valores[2]) &&  (data.asignadoA == valores[3]) );
-  //         }
-  //         //Filtra por Nombre y Asignado
-  //         else if(valores[0] == '' && valores[1] != '' && valores[2] == '' && valores[3] != ''){
-  //           return ( ((String(data.nombre).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1 ) &&  (data.asignadoA == valores[3]) );
-  //         }
-  //         //Filtra por Nombre y Cliente
-  //         else if(valores[0] == '' && valores[1] != '' && valores[2] != '' && valores[3] == ''){
-  //           return ( ((String(data.nombre).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1) &&  (data.cliente == valores[2]) );
-  //         }
-  //         //Filtra por Nombre, Cliente y Asignado
-  //         else if(valores[0] == '' && valores[1] != '' && valores[2] != '' && valores[3] != ''){
-  //           return ( ((String(data.nombre).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1) && (data.cliente == valores[2]) && (data.asignadoA == valores[3])  );
-  //         }
-  //         //Filtra por id_projecto y Asignado
-  //         else if(valores[0] != '' && valores[1] == '' && valores[2] == '' && valores[3] != ''){
-  //           return ( (String(data.id).indexOf(valores[0]) != -1) && (data.asignadoA == valores[3])  );
-  //         }
-  //         //Filtra por id_projecto y Cliente
-  //         else if(valores[0] != '' && valores[1] == '' && valores[2] != '' && valores[3] == ''){
-  //           return ( (String(data.id).indexOf(valores[0]) != -1) && (data.cliente == valores[2])  );
-  //         }
-  //         //Filtra por id_projecto, Cliente y Asignado
-  //         else if(valores[0] != '' && valores[1] == '' && valores[2] != '' && valores[3] != ''){
-  //           return ( (String(data.id).indexOf(valores[0]) != -1) && (data.nombre == valores[2]) && (data.asignadoA == valores[3])  );
-  //         }
-  //         //id_projecto y Nombre
-  //         else if(valores[0] != '' && valores[1] != '' && valores[2] == '' && valores[3] == ''){
-  //           return ( (String(data.id).indexOf(valores[0]) != -1) && ((String(data.nombre).split(' ').join('').toLowerCase()).indexOf(valores[1])) != -1 );
-  //         }
-  //         //Filtra por id_projecto, Nombre y Asignado
-  //         else if(valores[0] != '' && valores[1] != '' && valores[2] == '' && valores[2] != ''){
-  //           return ( (String(data.id).indexOf(valores[0]) != -1) && ((String(data.nombre).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1) && (String(data.asignadoA) == (valores[3])) );
-  //         }
-  //         //Filtra id_projecto, Nombre y Cliente
-  //         else if(valores[0] != '' && valores[1] != '' && valores[2] != '' && valores[3] == ''){
-  //           return ( (String(data.id).indexOf(valores[0]) != -1) && ((String(data.nombre).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1) && (data.cliente == valores[2])  );
-  //         }
-  //         //id_projecto, Nombre, Cliente y Asignado
-  //         else{
-  //           return ( (String(data.id).indexOf(valores[0]) != -1) && ((String(data.nombre).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1) &&  (data.cliente == valores[2]) && (data.asignadoA) == valores[3]    )                                                                                                      ;
-  //         }
-          
-  //       }
-        
-  //       // if(this.valoresFiltros.id != ''){
+    //Filtra solo por nombre_projecto
+    else if (valores[0] == '' && valores[1] != '' && valores[2] == '' && valores[3] == '') {
+      this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
+    }
 
-  //       //   this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
-  //       // }
-  //       // else{
-  //       //   console.log("entra")
-  //       //   this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-  //       // }
+    //Filtra solo por Cliente
+    else if (valores[0] == '' && valores[1] == '' && valores[2] != '' && valores[3] == '') {
+      this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
+    }
 
-  //       if(valores[0] != '' && valores[1] == '' && valores[2] == '' && valores[3] == ''){
-  //         console.log("Filtra por esta condicion")
-  //         this.dataSource.filter = this.valoresFiltros.id.trim().toLowerCase();
-  //       }
+    //Filtra solo por Asignado
+    else if (valores[0] == '' && valores[1] == '' && valores[2] == '' && valores[3] != '') {
+      this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
+    }
 
-  //       //Filtra solo por nombre_projecto
-  //       else if(valores[0] == '' && valores[1] != '' && valores[2] == '' && valores[3] == ''){
-  //         this.dataSource.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-  //       }
+    //Filtra por Cliente y Asignado
+    else if (valores[0] == '' && valores[1] == '' && valores[2] != '' && valores[3] != '') {
+      this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
+      this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
+    }
+    //Filtra por Nombre y Asignado
+    else if (valores[0] == '' && valores[1] != '' && valores[2] == '' && valores[3] != '') {
+      this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
+      this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
+    }
+    //Filtra por Nombre y Cliente
+    else if (valores[0] == '' && valores[1] != '' && valores[2] != '' && valores[3] == '') {
+      this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
+      this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
+    }
+    //Filtra por Nombre, Cliente y Asignado
+    else if (valores[0] == '' && valores[1] != '' && valores[2] != '' && valores[3] != '') {
+      this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
+      this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
+      this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
 
-  //       //Filtra solo por Cliente
-  //       else if(valores[0] == '' && valores[1] == '' && valores[2] != '' && valores[3] == ''){
-  //         this.dataSource.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-  //       }
+    }
+    //Filtra por id_projecto y Asignado
+    else if (valores[0] != '' && valores[1] == '' && valores[2] == '' && valores[3] != '') {
+      this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
+      this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
+    }
+    //Filtra por id_projecto y Cliente
+    else if (valores[0] != '' && valores[1] == '' && valores[2] != '' && valores[3] == '') {
+      this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
+      this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
+    }
+    //Filtra por id_projecto, Cliente y Asignado
+    else if (valores[0] != '' && valores[1] == '' && valores[2] != '' && valores[3] != '') {
+      this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
+      this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
+      this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
 
-  //       //Filtra solo por Asignado
-  //       else if(valores[0] == '' && valores[1] == '' && valores[2] == '' && valores[3] != ''){
-  //         this.dataSource.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-  //       }
+    }
+    //id_projecto y Nombre
+    else if (valores[0] != '' && valores[1] != '' && valores[2] == '' && valores[3] == '') {
+      this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
+      this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
+    }
+    //Filtra por id_projecto, Nombre y Asignado
+    else if (valores[0] != '' && valores[1] != '' && valores[2] == '' && valores[2] != '') {
+      this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
+      this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
+      this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
 
-  //       //Filtra por Cliente y Asignado
-  //       else if(valores[0] == '' && valores[1] == '' && valores[2] != '' && valores[3] != ''){
-  //         this.dataSource.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-  //       }
-  //       //Filtra por Nombre y Asignado
-  //       else if(valores[0] == '' && valores[1] != '' && valores[2] == '' && valores[3] != ''){
-  //         this.dataSource.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-  //       }
-  //       //Filtra por Nombre y Cliente
-  //       else if(valores[0] == '' && valores[1] != '' && valores[2] != '' && valores[3] == ''){
-  //         this.dataSource.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-  //       }
-  //       //Filtra por Nombre, Cliente y Asignado
-  //       else if(valores[0] == '' && valores[1] != '' && valores[2] != '' && valores[3] != ''){
-  //         this.dataSource.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-          
-  //       }
-  //       //Filtra por id_projecto y Asignado
-  //       else if(valores[0] != '' && valores[1] == '' && valores[2] == '' && valores[3] != ''){
-  //         this.dataSource.filter = this.valoresFiltros.id.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-  //       }
-  //       //Filtra por id_projecto y Cliente
-  //       else if(valores[0] != '' && valores[1] == '' && valores[2] != '' && valores[3] == ''){
-  //         this.dataSource.filter = this.valoresFiltros.id.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-  //       }
-  //       //Filtra por id_projecto, Cliente y Asignado
-  //       else if(valores[0] != '' && valores[1] == '' && valores[2] != '' && valores[3] != ''){
-  //         this.dataSource.filter = this.valoresFiltros.id.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-          
-  //       }
-  //       //id_projecto y Nombre
-  //       else if(valores[0] != '' && valores[1] != '' && valores[2] == '' && valores[3] == ''){
-  //         this.dataSource.filter = this.valoresFiltros.id.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-  //       }
-  //       //Filtra por id_projecto, Nombre y Asignado
-  //       else if(valores[0] != '' && valores[1] != '' && valores[2] == '' && valores[2] != ''){
-  //         this.dataSource.filter = this.valoresFiltros.id.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-          
-  //       }
-  //       //Filtra id_projecto, Nombre y Cliente
-  //       else if(valores[0] != '' && valores[1] != '' && valores[2] != '' && valores[3] == ''){
-  //         this.dataSource.filter = this.valoresFiltros.id.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-          
-  //       }
-  //       //id_projecto, Nombre, Cliente y Asignado
-  //       else{
-  //         this.dataSource.filter = this.valoresFiltros.id.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-  //       }
-        
-        
-  //     break;
-  //     case 'nombreProyecto':
-  //       this.nombreProyecto = valorParametroFiltro;
-  //       this.filtrosProyectoDialog[1].nombreProyecto = this.nombreProyecto;//Para permanencia de filtro
-  //       this.valoresFiltros.nombre = valorParametroFiltro;
-  //       const valoresN = Object.values(this.valoresFiltros)
+    }
+    //Filtra id_projecto, Nombre y Cliente
+    else if (valores[0] != '' && valores[1] != '' && valores[2] != '' && valores[3] == '') {
+      this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
+      this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
+      this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
 
-
-  //       this.dataSource.filterPredicate = (data: PropiedadesProyecto, filter: string): boolean => {
-  //         this.valoresFiltros.nombre = valorParametroFiltro;
-  //         const valores = Object.values(this.valoresFiltros)
-          
-          
-  //         //Filtra solo por id_projecto
-  //         if(valores[0] != '' && valores[1] == '' && valores[2] == '' && valores[3] == ''){
-  //           console.log("Esta condicion")
-  //           return (String(data.id).indexOf(valores[0]) != -1);
-  //         }
-
-  //         //Filtra solo por nombre_projecto
-  //         else if(valores[0] == '' && valores[1] != '' && valores[2] == '' && valores[3] == ''){
-  //           return ((String(data.nombre).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1);
-  //         }
-
-  //         //Filtra solo por Cliente
-  //         else if(valores[0] == '' && valores[1] == '' && valores[2] != '' && valores[3] == ''){
-  //           return ( data.cliente == valores[2] );
-  //         }
-
-  //         //Filtra solo por Asignado
-  //         else if(valores[0] == '' && valores[1] == '' && valores[2] == '' && valores[3] != ''){
-  //           return ( data.asignadoA == valores[3] );
-  //         }
-
-  //         //Filtra por Cliente y Asignado
-  //         else if(valores[0] == '' && valores[1] == '' && valores[2] != '' && valores[3] != ''){
-  //           return ( (data.cliente == valores[2]) &&  (data.asignadoA == valores[3]) );
-  //         }
-  //         //Filtra por Nombre y Asignado
-  //         else if(valores[0] == '' && valores[1] != '' && valores[2] == '' && valores[3] != ''){
-  //           return ( ((String(data.nombre).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1 ) &&  (data.asignadoA == valores[3]) );
-  //         }
-  //         //Filtra por Nombre y Cliente
-  //         else if(valores[0] == '' && valores[1] != '' && valores[2] != '' && valores[3] == ''){
-  //           return ( ((String(data.nombre).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1) &&  (data.cliente == valores[2]) );
-  //         }
-  //         //Filtra por Nombre, Cliente y Asignado
-  //         else if(valores[0] == '' && valores[1] != '' && valores[2] != '' && valores[3] != ''){
-  //           return ( ((String(data.nombre).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1) && (data.cliente == valores[2]) && (data.asignadoA == valores[3])  );
-  //         }
-  //         //Filtra por id_projecto y Asignado
-  //         else if(valores[0] != '' && valores[1] == '' && valores[2] == '' && valores[3] != ''){
-  //           return ( (String(data.id).indexOf(valores[0]) != -1) && (data.asignadoA == valores[3])  );
-  //         }
-  //         //Filtra por id_projecto y Cliente
-  //         else if(valores[0] != '' && valores[1] == '' && valores[2] != '' && valores[3] == ''){
-  //           return ( (String(data.id).indexOf(valores[0]) != -1) && (data.cliente == valores[2])  );
-  //         }
-  //         //Filtra por id_projecto, Cliente y Asignado
-  //         else if(valores[0] != '' && valores[1] == '' && valores[2] != '' && valores[3] != ''){
-  //           return ( (String(data.id).indexOf(valores[0]) != -1) && (data.nombre == valores[2]) && (data.asignadoA == valores[3])  );
-  //         }
-  //         //id_projecto y Nombre
-  //         else if(valores[0] != '' && valores[1] != '' && valores[2] == '' && valores[3] == ''){
-  //           return ( (String(data.id).indexOf(valores[0]) != -1) && ((String(data.nombre).split(' ').join('').toLowerCase()).indexOf(valores[1])) != -1 );
-  //         }
-  //         //Filtra por id_projecto, Nombre y Asignado
-  //         else if(valores[0] != '' && valores[1] != '' && valores[2] == '' && valores[2] != ''){
-  //           return ( (String(data.id).indexOf(valores[0]) != -1) && ((String(data.nombre).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1) && (String(data.asignadoA) == (valores[3])) );
-  //         }
-  //         //Filtra id_projecto, Nombre y Cliente
-  //         else if(valores[0] != '' && valores[1] != '' && valores[2] != '' && valores[3] == ''){
-  //           return ( (String(data.id).indexOf(valores[0]) != -1) && ((String(data.nombre).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1) && (data.cliente == valores[2])  );
-  //         }
-  //         //id_projecto, Nombre, Cliente y Asignado
-  //         else{
-  //           return ( (String(data.id).indexOf(valores[0]) != -1) && ((String(data.nombre).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1) &&  (data.cliente == valores[2]) && (data.asignadoA) == valores[3]    )                                                                                                      ;
-  //         }
-          
-  //       }
-        
-        
-  //       if(valoresN[0] != '' && valoresN[1] == '' && valoresN[2] == '' && valoresN[3] == ''){
-  //         console.log("Esta condicion")
-  //         this.dataSource.filter = this.valoresFiltros.id.trim().toLowerCase();
-  //       }
-
-  //       //Filtra solo por nombre_projecto
-  //       else if(valoresN[0] == '' && valoresN[1] != '' && valoresN[2] == '' && valoresN[3] == ''){
-  //         this.dataSource.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-  //       }
-
-  //       //Filtra solo por Cliente
-  //       else if(valoresN[0] == '' && valoresN[1] == '' && valoresN[2] != '' && valoresN[3] == ''){
-  //         this.dataSource.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-  //       }
-
-  //       //Filtra solo por Asignado
-  //       else if(valoresN[0] == '' && valoresN[1] == '' && valoresN[2] == '' && valoresN[3] != ''){
-  //         this.dataSource.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-  //       }
-
-  //       //Filtra por Cliente y Asignado
-  //       else if(valoresN[0] == '' && valoresN[1] == '' && valoresN[2] != '' && valoresN[3] != ''){
-  //         this.dataSource.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-  //       }
-  //       //Filtra por Nombre y Asignado
-  //       else if(valoresN[0] == '' && valoresN[1] != '' && valoresN[2] == '' && valoresN[3] != ''){
-  //         this.dataSource.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-  //       }
-  //       //Filtra por Nombre y Cliente
-  //       else if(valoresN[0] == '' && valoresN[1] != '' && valoresN[2] != '' && valoresN[3] == ''){
-  //         this.dataSource.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-  //       }
-  //       //Filtra por Nombre, Cliente y Asignado
-  //       else if(valoresN[0] == '' && valoresN[1] != '' && valoresN[2] != '' && valoresN[3] != ''){
-  //         this.dataSource.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-          
-  //       }
-  //       //Filtra por id_projecto y Asignado
-  //       else if(valoresN[0] != '' && valoresN[1] == '' && valoresN[2] == '' && valoresN[3] != ''){
-  //         this.dataSource.filter = this.valoresFiltros.id.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-  //       }
-  //       //Filtra por id_projecto y Cliente
-  //       else if(valoresN[0] != '' && valoresN[1] == '' && valoresN[2] != '' && valoresN[3] == ''){
-  //         this.dataSource.filter = this.valoresFiltros.id.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-  //       }
-  //       //Filtra por id_projecto, Cliente y Asignado
-  //       else if(valoresN[0] != '' && valoresN[1] == '' && valoresN[2] != '' && valoresN[3] != ''){
-  //         this.dataSource.filter = this.valoresFiltros.id.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-          
-  //       }
-  //       //id_projecto y Nombre
-  //       else if(valoresN[0] != '' && valoresN[1] != '' && valoresN[2] == '' && valoresN[3] == ''){
-  //         this.dataSource.filter = this.valoresFiltros.id.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-  //       }
-  //       //Filtra por id_projecto, Nombre y Asignado
-  //       else if(valoresN[0] != '' && valoresN[1] != '' && valoresN[2] == '' && valoresN[2] != ''){
-  //         this.dataSource.filter = this.valoresFiltros.id.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-          
-  //       }
-  //       //Filtra id_projecto, Nombre y Cliente
-  //       else if(valoresN[0] != '' && valoresN[1] != '' && valoresN[2] != '' && valoresN[3] == ''){
-  //         this.dataSource.filter = this.valoresFiltros.id.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-          
-  //       }
-  //       //id_projecto, Nombre, Cliente y Asignado
-  //       else{
-  //         this.dataSource.filter = this.valoresFiltros.id.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-  //       }
-        
-
-  //     break;
-  //     case 'clienteProyecto':
-  //       this.clienteProyecto = valorParametroFiltro;
-  //       this.filtrosProyectoDialog[2] = this.clienteProyecto;
-  //       this.valoresFiltros.cliente = valorParametroFiltro;
-  //       const valoresC = Object.values(this.valoresFiltros);
-
-  //       this.dataSource.filterPredicate = (data: PropiedadesProyecto, filter: string): boolean => {
-  //         this.valoresFiltros.cliente = valorParametroFiltro;
-  //         const valores = Object.values(this.valoresFiltros)
-          
-  //         //Filtra solo por id_projecto
-  //         if(valores[0] != '' && valores[1] == '' && valores[2] == '' && valores[3] == ''){
-  //           console.log("Esta condicion")
-  //           return (String(data.id).indexOf(valores[0]) != -1);
-  //         }
-
-  //         //Filtra solo por nombre_projecto
-  //         else if(valores[0] == '' && valores[1] != '' && valores[2] == '' && valores[3] == ''){
-  //           return ((String(data.nombre).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1);
-  //         }
-
-  //         //Filtra solo por Cliente
-  //         else if(valores[0] == '' && valores[1] == '' && valores[2] != '' && valores[3] == ''){
-  //           return ( data.cliente == valores[2] );
-  //         }
-
-  //         //Filtra solo por Asignado
-  //         else if(valores[0] == '' && valores[1] == '' && valores[2] == '' && valores[3] != ''){
-  //           return ( data.asignadoA == valores[3] );
-  //         }
-
-  //         //Filtra por Cliente y Asignado
-  //         else if(valores[0] == '' && valores[1] == '' && valores[2] != '' && valores[3] != ''){
-  //           return ( (data.cliente == valores[2]) &&  (data.asignadoA == valores[3]) );
-  //         }
-  //         //Filtra por Nombre y Asignado
-  //         else if(valores[0] == '' && valores[1] != '' && valores[2] == '' && valores[3] != ''){
-  //           return ( ((String(data.nombre).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1 ) &&  (data.asignadoA == valores[3]) );
-  //         }
-  //         //Filtra por Nombre y Cliente
-  //         else if(valores[0] == '' && valores[1] != '' && valores[2] != '' && valores[3] == ''){
-  //           return ( ((String(data.nombre).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1) &&  (data.cliente == valores[2]) );
-  //         }
-  //         //Filtra por Nombre, Cliente y Asignado
-  //         else if(valores[0] == '' && valores[1] != '' && valores[2] != '' && valores[3] != ''){
-  //           return ( ((String(data.nombre).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1) && (data.cliente == valores[2]) && (data.asignadoA == valores[3])  );
-  //         }
-  //         //Filtra por id_projecto y Asignado
-  //         else if(valores[0] != '' && valores[1] == '' && valores[2] == '' && valores[3] != ''){
-  //           return ( (String(data.id).indexOf(valores[0]) != -1) && (data.asignadoA == valores[3])  );
-  //         }
-  //         //Filtra por id_projecto y Cliente
-  //         else if(valores[0] != '' && valores[1] == '' && valores[2] != '' && valores[3] == ''){
-  //           return ( (String(data.id).indexOf(valores[0]) != -1) && (data.cliente == valores[2])  );
-  //         }
-  //         //Filtra por id_projecto, Cliente y Asignado
-  //         else if(valores[0] != '' && valores[1] == '' && valores[2] != '' && valores[3] != ''){
-  //           return ( (String(data.id).indexOf(valores[0]) != -1) && (data.nombre == valores[2]) && (data.asignadoA == valores[3])  );
-  //         }
-  //         //id_projecto y Nombre
-  //         else if(valores[0] != '' && valores[1] != '' && valores[2] == '' && valores[3] == ''){
-  //           return ( (String(data.id).indexOf(valores[0]) != -1) && ((String(data.nombre).split(' ').join('').toLowerCase()).indexOf(valores[1])) != -1 );
-  //         }
-  //         //Filtra por id_projecto, Nombre y Asignado
-  //         else if(valores[0] != '' && valores[1] != '' && valores[2] == '' && valores[2] != ''){
-  //           return ( (String(data.id).indexOf(valores[0]) != -1) && ((String(data.nombre).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1) && (String(data.asignadoA) == (valores[3])) );
-  //         }
-  //         //Filtra id_projecto, Nombre y Cliente
-  //         else if(valores[0] != '' && valores[1] != '' && valores[2] != '' && valores[3] == ''){
-  //           return ( (String(data.id).indexOf(valores[0]) != -1) && ((String(data.nombre).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1) && (data.cliente == valores[2])  );
-  //         }
-  //         //id_projecto, Nombre, Cliente y Asignado
-  //         else{
-  //           return ( (String(data.id).indexOf(valores[0]) != -1) && ((String(data.nombre).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1) &&  (data.cliente == valores[2]) && (data.asignadoA) == valores[3]    )                                                                                                      ;
-  //         }
-          
-  //       }
-
-  //       if(valoresC[0] != '' && valoresC[1] == '' && valoresC[2] == '' && valoresC[3] == ''){
-  //         console.log("Esta condicion")
-  //         this.dataSource.filter = this.valoresFiltros.id.trim().toLowerCase();
-  //       }
-
-  //       //Filtra solo por nombre_projecto
-  //       else if(valoresC[0] == '' && valoresC[1] != '' && valoresC[2] == '' && valoresC[3] == ''){
-  //         this.dataSource.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-  //       }
-
-  //       //Filtra solo por Cliente
-  //       else if(valoresC[0] == '' && valoresC[1] == '' && valoresC[2] != '' && valoresC[3] == ''){
-  //         this.dataSource.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-  //       }
-
-  //       //Filtra solo por Asignado
-  //       else if(valoresC[0] == '' && valoresC[1] == '' && valoresC[2] == '' && valoresC[3] != ''){
-  //         this.dataSource.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-  //       }
-
-  //       //Filtra por Cliente y Asignado
-  //       else if(valoresC[0] == '' && valoresC[1] == '' && valoresC[2] != '' && valoresC[3] != ''){
-  //         this.dataSource.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-  //       }
-  //       //Filtra por Nombre y Asignado
-  //       else if(valoresC[0] == '' && valoresC[1] != '' && valoresC[2] == '' && valoresC[3] != ''){
-  //         this.dataSource.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-  //       }
-  //       //Filtra por Nombre y Cliente
-  //       else if(valoresC[0] == '' && valoresC[1] != '' && valoresC[2] != '' && valoresC[3] == ''){
-  //         this.dataSource.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-  //       }
-  //       //Filtra por Nombre, Cliente y Asignado
-  //       else if(valoresC[0] == '' && valoresC[1] != '' && valoresC[2] != '' && valoresC[3] != ''){
-  //         this.dataSource.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-          
-  //       }
-  //       //Filtra por id_projecto y Asignado
-  //       else if(valoresC[0] != '' && valoresC[1] == '' && valoresC[2] == '' && valoresC[3] != ''){
-  //         this.dataSource.filter = this.valoresFiltros.id.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-  //       }
-  //       //Filtra por id_projecto y Cliente
-  //       else if(valoresC[0] != '' && valoresC[1] == '' && valoresC[2] != '' && valoresC[3] == ''){
-  //         this.dataSource.filter = this.valoresFiltros.id.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-  //       }
-  //       //Filtra por id_projecto, Cliente y Asignado
-  //       else if(valoresC[0] != '' && valoresC[1] == '' && valoresC[2] != '' && valoresC[3] != ''){
-  //         this.dataSource.filter = this.valoresFiltros.id.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-          
-  //       }
-  //       //id_projecto y Nombre
-  //       else if(valoresC[0] != '' && valoresC[1] != '' && valoresC[2] == '' && valoresC[3] == ''){
-  //         this.dataSource.filter = this.valoresFiltros.id.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-  //       }
-  //       //Filtra por id_projecto, Nombre y Asignado
-  //       else if(valoresC[0] != '' && valoresC[1] != '' && valoresC[2] == '' && valoresC[2] != ''){
-  //         this.dataSource.filter = this.valoresFiltros.id.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-          
-  //       }
-  //       //Filtra id_projecto, Nombre y Cliente
-  //       else if(valoresC[0] != '' && valoresC[1] != '' && valoresC[2] != '' && valoresC[3] == ''){
-  //         this.dataSource.filter = this.valoresFiltros.id.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-          
-  //       }
-  //       else{
-  //         this.dataSource.filter = this.valoresFiltros.id.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-  //       }
-        
-  //       break;
-  //     case 'asignadoAproyecto':
-  //       this.asignadoAproyecto = valorParametroFiltro;
-  //       this.filtrosProyectoDialog[3] = this.asignadoAproyecto;
-  //       this.valoresFiltros.asignado = valorParametroFiltro;
-  //       const valoresA = Object.values(this.valoresFiltros)
-
-  //       this.dataSource.filterPredicate = (data: PropiedadesProyecto, filter: string): boolean => {
-  //         this.valoresFiltros.asignado = valorParametroFiltro;
-  //         const valoresA = Object.values(this.valoresFiltros)
-
-  //         //Filtra solo por id_projecto
-  //         if (valoresA[0] != '' && valoresA[1] == '' && valoresA[2] == '' && valoresA[3] == '') {
-  //           console.log("Esta condicion")
-  //           return (String(data.id).indexOf(valoresA[0]) != -1);
-  //         }
-
-  //         //Filtra solo por nombre_projecto
-  //         else if (valoresA[0] == '' && valoresA[1] != '' && valoresA[2] == '' && valoresA[3] == '') {
-  //           return ((String(data.nombre).split(' ').join('').toLowerCase()).indexOf(valoresA[1]) != -1);
-  //         }
-
-  //         //Filtra solo por Cliente
-  //         else if (valoresA[0] == '' && valoresA[1] == '' && valoresA[2] != '' && valoresA[3] == '') {
-  //           return (data.cliente == valoresA[2]);
-  //         }
-
-  //         //Filtra solo por Asignado
-  //         else if (valoresA[0] == '' && valoresA[1] == '' && valoresA[2] == '' && valoresA[3] != '') {
-  //           return (data.asignadoA == valoresA[3]);
-  //         }
-
-  //         //Filtra por Cliente y Asignado
-  //         else if (valoresA[0] == '' && valoresA[1] == '' && valoresA[2] != '' && valoresA[3] != '') {
-  //           return ((data.cliente == valoresA[2]) && (data.asignadoA == valoresA[3]));
-  //         }
-  //         //Filtra por Nombre y Asignado
-  //         else if (valoresA[0] == '' && valoresA[1] != '' && valoresA[2] == '' && valoresA[3] != '') {
-  //           return (((String(data.nombre).split(' ').join('').toLowerCase()).indexOf(valoresA[1]) != -1) && (data.asignadoA == valoresA[3]));
-  //         }
-  //         //Filtra por Nombre y Cliente
-  //         else if (valoresA[0] == '' && valoresA[1] != '' && valoresA[2] != '' && valoresA[3] == '') {
-  //           return (((String(data.nombre).split(' ').join('').toLowerCase()).indexOf(valoresA[1]) != -1) && (data.cliente == valoresA[2]));
-  //         }
-  //         //Filtra por Nombre, Cliente y Asignado
-  //         else if (valoresA[0] == '' && valoresA[1] != '' && valoresA[2] != '' && valoresA[3] != '') {
-  //           return (((String(data.nombre).split(' ').join('').toLowerCase()).indexOf(valoresA[1]) != -1) && (data.cliente == valoresA[2]) && (data.asignadoA == valoresA[3]));
-  //         }
-  //         //Filtra por id_projecto y Asignado
-  //         else if (valoresA[0] != '' && valoresA[1] == '' && valoresA[2] == '' && valoresA[3] != '') {
-  //           return ((String(data.id).indexOf(valoresA[0]) != -1) && (data.asignadoA == valoresA[3]));
-  //         }
-  //         //Filtra por id_projecto y Cliente
-  //         else if (valoresA[0] != '' && valoresA[1] == '' && valoresA[2] != '' && valoresA[3] == '') {
-  //           return ((String(data.id).indexOf(valoresA[0]) != -1) && (data.cliente == valoresA[2]));
-  //         }
-  //         //Filtra por id_projecto, Cliente y Asignado
-  //         else if (valoresA[0] != '' && valoresA[1] == '' && valoresA[2] != '' && valoresA[3] != '') {
-  //           return ((String(data.id).indexOf(valoresA[0]) != -1) && (data.nombre == valoresA[2]) && (data.asignadoA == valoresA[3]));
-  //         }
-  //         //id_projecto y Nombre
-  //         else if (valoresA[0] != '' && valoresA[1] != '' && valoresA[2] == '' && valoresA[3] == '') {
-  //           return ((String(data.id).indexOf(valoresA[0]) != -1) && ((String(data.nombre).split(' ').join('').toLowerCase()).indexOf(valoresA[1])) != -1);
-  //         }
-  //         //Filtra por id_projecto, Nombre y Asignado
-  //         else if (valoresA[0] != '' && valoresA[1] != '' && valoresA[2] == '' && valoresA[2] != '') {
-  //           return ((String(data.id).indexOf(valoresA[0]) != -1) && ((String(data.nombre).split(' ').join('').toLowerCase()).indexOf(valoresA[1]) != -1) && (String(data.asignadoA) == (valoresA[3])));
-  //         }
-  //         //Filtra id_projecto, Nombre y Cliente
-  //         else if (valoresA[0] != '' && valoresA[1] != '' && valoresA[2] != '' && valoresA[3] == '') {
-  //           return ((String(data.id).indexOf(valoresA[0]) != -1) && ((String(data.nombre).split(' ').join('').toLowerCase()).indexOf(valoresA[1]) != -1) && (data.cliente == valoresA[2]));
-  //         }
-  //         //id_projecto, Nombre, Cliente y Asignado
-  //         else {
-  //           return ((String(data.id).indexOf(valoresA[0]) != -1) && ((String(data.nombre).split(' ').join('').toLowerCase()).indexOf(valoresA[1]) != -1) && (data.cliente == valoresA[2]) && (data.asignadoA) == valoresA[3]);
-  //         }
-
-  //       }
-  //       if (valoresA[0] != '' && valoresA[1] == '' && valoresA[2] == '' && valoresA[3] == '') {
-  //         console.log("Esta condicion")
-  //         this.dataSource.filter = this.valoresFiltros.id.trim().toLowerCase();
-  //       }
-
-  //       //Filtra solo por nombre_projecto
-  //       else if (valoresA[0] == '' && valoresA[1] != '' && valoresA[2] == '' && valoresA[3] == '') {
-  //         this.dataSource.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-  //       }
-
-  //       //Filtra solo por Cliente
-  //       else if (valoresA[0] == '' && valoresA[1] == '' && valoresA[2] != '' && valoresA[3] == '') {
-  //         this.dataSource.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-  //       }
-
-  //       //Filtra solo por Asignado
-  //       else if (valoresA[0] == '' && valoresA[1] == '' && valoresA[2] == '' && valoresA[3] != '') {
-  //         this.dataSource.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-  //       }
-
-  //       //Filtra por Cliente y Asignado
-  //       else if (valoresA[0] == '' && valoresA[1] == '' && valoresA[2] != '' && valoresA[3] != '') {
-  //         this.dataSource.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-  //       }
-  //       //Filtra por Nombre y Asignado
-  //       else if (valoresA[0] == '' && valoresA[1] != '' && valoresA[2] == '' && valoresA[3] != '') {
-  //         this.dataSource.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-  //       }
-  //       //Filtra por Nombre y Cliente
-  //       else if (valoresA[0] == '' && valoresA[1] != '' && valoresA[2] != '' && valoresA[3] == '') {
-  //         this.dataSource.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-  //       }
-  //       //Filtra por Nombre, Cliente y Asignado
-  //       else if (valoresA[0] == '' && valoresA[1] != '' && valoresA[2] != '' && valoresA[3] != '') {
-  //         this.dataSource.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-
-  //       }
-  //       //Filtra por id_projecto y Asignado
-  //       else if (valoresA[0] != '' && valoresA[1] == '' && valoresA[2] == '' && valoresA[3] != '') {
-  //         this.dataSource.filter = this.valoresFiltros.id.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-  //       }
-  //       //Filtra por id_projecto y Cliente
-  //       else if (valoresA[0] != '' && valoresA[1] == '' && valoresA[2] != '' && valoresA[3] == '') {
-  //         this.dataSource.filter = this.valoresFiltros.id.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-  //       }
-  //       //Filtra por id_projecto, Cliente y Asignado
-  //       else if (valoresA[0] != '' && valoresA[1] == '' && valoresA[2] != '' && valoresA[3] != '') {
-  //         this.dataSource.filter = this.valoresFiltros.id.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-
-  //       }
-  //       //id_projecto y Nombre
-  //       else if (valoresA[0] != '' && valoresA[1] != '' && valoresA[2] == '' && valoresA[3] == '') {
-  //         this.dataSource.filter = this.valoresFiltros.id.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-  //       }
-  //       //Filtra por id_projecto, Nombre y Asignado
-  //       else if (valoresA[0] != '' && valoresA[1] != '' && valoresA[2] == '' && valoresA[2] != '') {
-  //         this.dataSource.filter = this.valoresFiltros.id.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-
-  //       }
-  //       //Filtra id_projecto, Nombre y Cliente
-  //       else if (valoresA[0] != '' && valoresA[1] != '' && valoresA[2] != '' && valoresA[3] == '') {
-  //         this.dataSource.filter = this.valoresFiltros.id.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-
-  //       }
-  //       else {
-  //         this.dataSource.filter = this.valoresFiltros.id.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.nombre.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.cliente.trim().toLowerCase();
-  //         this.dataSource.filter = this.valoresFiltros.asignado.trim().toLowerCase();
-  //       }
-
-  //   }
-  // }
-
-  
+    }
+    else {
+      this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
+      this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
+      this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
+      this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
+    }
+  }
   
 
-  clientes: Cliente[] = [
-    {value: 'steak-0', viewValue: 'Cliente 1', id: 'clienteProyecto'},
-    {value: 'pizza-1', viewValue: 'Cliente 2', id: 'clienteProyecto'},
-    {value: 'tacos-2', viewValue: 'Cliente 3', id: 'clienteProyecto'},
-  ];
+ 
   
   
   getDatosFiltrosProyecto(event: Event){ //Los inputs
@@ -1612,11 +530,13 @@ export class DialogComponent implements OnInit {
     this.filtrosProyectoDialog[3].asignadoAproyecto = this.asignadoAproyecto;
   }
   
-  getNombreProyecto(proyecto:any):void{
-    
+  getProyecto(proyecto:any):void{
+   
     this.proyectoSeleccionado = proyecto.nombre_projecto;
+    this.nombreProyecto = this.proyectoSeleccionado
     console.log(this.proyectoSeleccionado)
     this.buscarProyectoInterface.proyectoSeleccionado = this.proyectoSeleccionado;
+    this.buscarTareasInterface.idProyectoSeleccionado = proyecto.id_projecto;
     this.dialogRef.close(this.buscarProyectoInterface);
     console.log(this.nombreProyecto);
     
