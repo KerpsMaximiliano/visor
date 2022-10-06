@@ -114,26 +114,27 @@
             <div id="en-progreso" class="titulo-container">
                 <h4 class="h4-negro">EN PROGRESO</h4>
             </div>
-            <i class="fa-3x fa-solid fa-handshake" id="shakehands"></i>
+            <i [ngClass]="{ 'shakehands fa-3x fa-regular fa-handshake': !chequearFiltro(),
+                'oculto': chequearFiltro() }" (click)="filtrarAyuda()"></i>
+            <i [ngClass]="{ 'shakehands fa-3x fa-solid fa-handshake': chequearFiltro(),
+                'oculto': !chequearFiltro() }" (click)="filtrarAyuda()"></i>
             <div class="conteiner-all-tareas">
                 <div class="tareas" *ngFor="let tarea of tareasEnProgreso ; let i = index">
                     <mat-accordion class="panel-header">
                         <mat-expansion-panel hideToggle>
                             <mat-expansion-panel-header>
-                                <div>
+                                <div class="panel-ayuda">
                                     <mat-panel-title class="titulo-tarea">
                                         <div>{{tarea.titulo}}</div>
-                                        <i id="mano-derecha" [ngClass]="{
-                                            'mano-ayuda fa-regular fa-hand fa-xl': !solicitudAyuda(tarea),
-                                            'mano-ayuda fa-solid fa-hand fa-xl': solicitudAyuda(tarea)
-                                        }"></i>
-                                        <!-- <i class="mano-ayuda fa-regular fa-hand fa-xl"></i>
-                                        <i class="mano-ayuda fa-solid fa-hand fa-xl"></i> -->
                                     </mat-panel-title>
                                 </div>
                             </mat-expansion-panel-header>
                             <mat-divider class="separador"></mat-divider>
                             <div class="iconos-superior">
+                                <i [ngClass]="{ 'mano-ayuda fa-regular fa-hand fa-xl': solicitudAyuda(tarea),
+                            'oculto': chequearAyuda(tarea) }" (click)="cambiarAyuda(tarea, true)"></i>
+                                <i [ngClass]="{ 'mano-ayuda fa-solid fa-hand fa-xl': chequearAyuda(tarea),
+                            'oculto': !chequearAyuda(tarea) }"(click)="cambiarAyuda(tarea, false)" ></i>
                                 <i class="icon-edit fas fa-edit fa-xl"></i>
                                 <i class="icon-x fa-solid fa-x fa-xl"></i> 
                             </div>

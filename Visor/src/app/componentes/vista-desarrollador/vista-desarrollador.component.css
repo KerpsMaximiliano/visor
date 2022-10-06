@@ -123,9 +123,9 @@ mat-expansion-panel{
 }
 
 .titulo-tarea{
-    text-align: center;
+    text-align: left;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .card-columna{
@@ -169,11 +169,11 @@ mat-expansion-panel{
     text-align: right;
 }
 
-#shakehands{
+.shakehands{
     display: flex;
     justify-content: center;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    margin-top: 15px;
+    margin-bottom: 10px;
     cursor: pointer;
     color: blue;
 }
@@ -196,12 +196,17 @@ mat-expansion-panel{
 }
 
 .mano-ayuda {
+    margin-right: 5px;
+    cursor: pointer;
     color: blue;
     font-size: 18px;
-    margin-right: 0;
 }
 
-#mano-derecha {  /* revisar */
-    margin-right: 0;
-    margin-left: auto;
+.oculto {
+    display: none;
+}
+
+.panel-ayuda {
+    display: flex;
+    justify-content: space-between;
 }

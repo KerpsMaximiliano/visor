@@ -14,7 +14,9 @@ export class VistaDesarrolladorComponent implements OnInit {
   tareasSP: any;
   tareasOrg: any[]=[];
   tareasNoIniciadas: Tarea[]=[];
-  tareasEnProgreso: Tarea[]=[];
+  tareasEnProgreso: any[]=[];
+  tareasEnProgresoAux: any[]=[];
+  tareasAyuda: any[]=[];
   tareasEnPrueba: Tarea[]=[];
   tareasCompletadas: Tarea[]=[];
   poseeTareasNoIniciadas: boolean = false;
@@ -27,6 +29,7 @@ export class VistaDesarrolladorComponent implements OnInit {
   horasEnPrueba: number = 0;
   horasCompleatadas: number = 0;
   horasTotales: number = 0;
+  filtroAyuda: boolean = false;
   
   constructor(private _tareaService: TareaService) { }
 
@@ -36,7 +39,6 @@ export class VistaDesarrolladorComponent implements OnInit {
       this.tareasSP = response.dataset;
       this.proyectoNombre = this.tareasSP[0].nombre_proyecto;
       this.organizarTareas();
-      console.log(this.tareasOrg);
       this.cargarTareas();
       this.poseeTareas();
       if (!this.noHayProyecto) {
@@ -72,8 +74,8 @@ export class VistaDesarrolladorComponent implements OnInit {
       proyecto: 'Visor',
       prioridad: 'Alta',
       asignado: 'ffriggeri',
-      facilitador: 'ffriggeri',
-      fechaInicio: '01-09-2022',
+      facilitador: 'ffriggeri',            // esta tarea es de esta pusheada para chequear el
+      fechaInicio: '01-09-2022',           // comportamiento de la barra de tareas en prueba
       fechaFin: null,
       fechaPlanificacion: '31-09-2022',
       horasPlanificadas: 24,
@@ -117,7 +119,7 @@ export class VistaDesarrolladorComponent implements OnInit {
   }
 
   getTareasEnProgreso() {
-    const respuesta: Tarea[] = [];
+    const respuesta: any[] = [];
     this.tareasOrg.forEach(tarea => {
       if(tarea.estado == "In Progress") {
         respuesta.push(tarea);
@@ -214,7 +216,7 @@ export class VistaDesarrolladorComponent implements OnInit {
   }
 
   // Ordena una lista por orden alfabético
-  ordenAlfabetico(lista: Array<Tarea>) {
+  ordenAlfabetico(lista: Array<any>) {
     lista.sort(function(a, b) {
       if (a.titulo > b.titulo) {
         return 1;
@@ -227,8 +229,8 @@ export class VistaDesarrolladorComponent implements OnInit {
   }
 
   // Ordena una lista por prioridad
-  ordenPrioridad(lista: Array<Tarea>) {
-    let arrayOrdenado: Tarea[]=[];
+  ordenPrioridad(lista: Array<any>) {
+    let arrayOrdenado: any[]=[];
     lista.forEach(tarea => {
     if (tarea.prioridad == 'Alta') {
       arrayOrdenado.push(tarea);
@@ -286,8 +288,80 @@ export class VistaDesarrolladorComponent implements OnInit {
     }
   }
 
-  solicitudAyuda(tarea: Tarea) {  // revisar
-    return true;
+  solicitudAyuda(tarea: any) {
+    if (tarea.asignado === localStorage.getItem('usuario')) {
+      if (this.tareasAyuda.length === 0) {
+        this.tareasAyuda.push({
+          titulo: tarea.titulo,
+          proyecto: tarea.proyecto,
+          prioridad: tarea.prioridad,
+          asignado: tarea.asignado,
+          facilitador: tarea.facilitador,
+          fechaInicio: tarea.fechaInicio,
+          fechaFin: tarea.fechaFin,
+          fechaPlanificacion: tarea.fechaPlanificacion,
+          horasPlanificadas: tarea.horasPlanificadas,
+          horasEjecutadas: tarea.horasEjecutadas,
+          documento: tarea.documento,
+          tareasPrecondicion: tarea.tareasPrecondicion,
+          notas: tarea.notas,
+          tipoTarea: tarea.tipoTarea,
+          estado: tarea.estado,
+          sprint: tarea.sprint,
+          ayuda: false
+        });
+      } else {
+        this.tareasAyuda.forEach(tar => {
+          if (tar.titulo !== tarea.titulo) {
+            this.tareasAyuda.push({
+              titulo: tarea.titulo,
+              ayuda: false
+            });
+          }
+        });
+      }
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  cambiarAyuda(tarea: any, valor: boolean) {
+    this.tareasAyuda.forEach(tar => {
+      if (tar.titulo === tarea.titulo) {
+        tar.ayuda = valor;
+      }
+    });
+  }
+
+  chequearAyuda(tarea: any) {
+    let result = false;
+    this.tareasAyuda.forEach(tar => {
+      if (tar.titulo === tarea.titulo && tar.ayuda === true) {
+        result = true;
+      }
+    });
+    return result;
+  }
+
+  filtrarAyuda() {
+    if (this.filtroAyuda === true) {
+      this.filtroAyuda = false;
+      this.tareasEnProgreso = this.tareasEnProgresoAux;
+    } else {
+      this.filtroAyuda = true;
+      this.tareasEnProgresoAux = this.tareasEnProgreso;
+      this.tareasEnProgreso = [];
+      this.tareasAyuda.forEach(tarea => {
+        if (tarea.ayuda === true) {
+          this.tareasEnProgreso.push(tarea);
+        }
+      });
+    }
+  }
+
+  chequearFiltro() {
+    return this.filtroAyuda;
   }
 
 }
