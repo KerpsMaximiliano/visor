@@ -97,7 +97,7 @@
             <mat-label class="label">Nombre</mat-label>
 
             <mat-form-field class="example-form-field" appearance="fill">
-                <input matInput type="text" placeholder="nombreTarea" [(ngModel)]="nombreTarea">
+                <input matInput type="text" placeholder="nombreTarea" [(ngModel)]="nombreTarea" id="nombreTarea" (keyup)="getNombreTarea($event)">
             </mat-form-field>
         </mat-dialog-content>
 
@@ -105,9 +105,9 @@
             <mat-label class="label">Prioridad</mat-label>
             <mat-form-field appearance="fill">
                 <mat-label>Prioridad</mat-label>
-                <mat-select [(value)]="prioridadTarea">
+                <mat-select [(value)]="prioridadTarea" id="prioridadTarea" (selectionChange)="selectPrioridadTarea($event)">
                     <mat-option></mat-option>
-                    <mat-option (click)="getPrioridadTarea(prioridad.valor)" [value]="prioridad.valor" *ngFor="let prioridad of prioridades">{{ prioridad.valor }}</mat-option>
+                    <mat-option [value]="prioridad" *ngFor="let prioridad of prioridadDeTareas">{{ prioridad }}</mat-option>
                 </mat-select>
             </mat-form-field>
             <!-- <p>You selected: {{selectedFood}}</p> -->
@@ -117,9 +117,9 @@
             <mat-label class="label">Facilitador</mat-label>
             <mat-form-field appearance="fill">
                 <mat-label>Facilitador</mat-label>
-                <mat-select [(value)]="facilitadorTarea">
+                <mat-select [(value)]="facilitadorTarea" id="facilitadorTarea" (selectionChange)="selectFacilitadorTarea($event)">
                     <mat-option></mat-option>
-                    <mat-option (click)="getFacilitadorTarea(facilitador.nombre)" [value]="facilitador.nombre" *ngFor="let facilitador of facilitadores">{{ facilitador.nombre }}</mat-option>
+                    <mat-option [value]="facilitador" *ngFor="let facilitador of facilitadoresTareas">{{ facilitador }}</mat-option>
                 </mat-select>
             </mat-form-field>
             <!-- <p>You selected: {{selectedFood}}</p> -->
@@ -128,26 +128,25 @@
         <mat-dialog-content>
             <mat-label class="label">Asignado a</mat-label>
             <mat-form-field appearance="fill">
-                <mat-select [(value)]="asignadoAtarea">
+                <mat-select [(value)]="asignadoAtarea" id="asignadoAtarea" (selectionChange)="selectAsignadoAtarea($event)">
                     <mat-option></mat-option>
-                    <mat-option (click)="getAsignadoAtarea(programador)" [value]="programador.viewValue"  *ngFor="let programador of programadores">{{ programador.viewValue }}</mat-option>
+                    <mat-option (click)="getAsignadoAtarea(programador)" [value]="programador"  *ngFor="let programador of usuariosAsignadosTareas">{{ programador }}</mat-option>
                 </mat-select>
             </mat-form-field>
             <!-- <p>You selected: {{selectedFood}}</p> -->
         </mat-dialog-content>
 
-        <mat-dialog-content>
+        <!-- <mat-dialog-content>
             <mat-label class="label">Tecnologia</mat-label>
             <mat-form-field appearance="fill">
-                <mat-select [(value)]="tecnologiatarea">
+                <mat-select [(value)]="tecnologiatarea" id="tecnologiaTarea" (selectionChange)="selectTecnologiaTarea($event)">
                     <mat-option></mat-option>
-                    <mat-option (click)="tecnologiaElegidaTarea(tecnologia)" [value]="tecnologia.nombre"  *ngFor="let tecnologia of tecnologias">{{ tecnologia.nombre }}</mat-option>
+                    <mat-option (click)="tecnologiaElegidaTarea(tecnologia)" [value]="tecnologia"  *ngFor="let tecnologia of tecnologiasTareas">{{ tecnologia }}</mat-option>
                 </mat-select>
             </mat-form-field>
-            <!-- <p>You selected: {{selectedFood}}</p> -->
-        </mat-dialog-content>
+        </mat-dialog-content> -->
 
-        <mat-dialog-content>
+        <mat-dialog-content class="titulo_fechas">
 
             <mat-label class="label">Desde</mat-label>
             <mat-label class="label">Hasta</mat-label>
@@ -156,14 +155,14 @@
             <mat-label class="label">Por fecha de inicio</mat-label>
             <mat-form-field appearance="fill">
                 <mat-label>dd/mm/aaaa</mat-label>
-                <input matInput [matDatepicker]="fechaInicioDesde">
+                <input matInput [matDatepicker]="fechaInicioDesde" id="fechaInicio"  (dateInput)="getFechaInicio($event)" >
                 <mat-hint>{{getDateFormatString()}}</mat-hint>
                 <mat-datepicker-toggle matSuffix [for]="fechaInicioDesde"></mat-datepicker-toggle>
-                <mat-datepicker #fechaInicioDesde></mat-datepicker>
+                <mat-datepicker #fechaInicioDesde ></mat-datepicker>
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>dd/mm/aaaa</mat-label>
-                <input matInput [matDatepicker]="fechaInicioHasta">
+                <input matInput [matDatepicker]="fechaInicioHasta" (dateInput)="getFechaFin($event)">
                 <mat-hint>{{getDateFormatString()}}</mat-hint>
                 <mat-datepicker-toggle matSuffix [for]="fechaInicioHasta"></mat-datepicker-toggle>
                 <mat-datepicker #fechaInicioHasta></mat-datepicker>
@@ -210,7 +209,7 @@
         <mat-dialog-actions align="end" class="accionesBotones">
             <button mat-raised-button color="primary" type="submit" (click)="limpiarValoresDeFiltros()"> Limpiar </button>
             <button mat-raised-button color="primary" type="submit" (click)="cerrarDialog()"> Cancelar </button>
-            <button mat-raised-button color="primary" type="submit" cdkFocusInitial (click)="guardarValoresDeFiltro()"> Filtrar </button>
+            <button mat-raised-button color="primary" type="submit" cdkFocusInitial (click)="prepararFiltro()"> Filtrar </button>
         </mat-dialog-actions>
     
     </div>

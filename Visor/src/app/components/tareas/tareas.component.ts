@@ -11,6 +11,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { TareaService } from 'src/app/services/i2t/tarea.service';
 
 
+
 export interface PropiedadesProyecto{
   
   id: number,
@@ -29,6 +30,14 @@ export interface ResponseService{
   nombre_cliente: string;
   nombre_projecto: string;
   usuario_asignado: string;
+}
+export interface FiltrosTarea{
+  nombreTarea: string,
+  prioridadTarea: string,
+  facilitadorTarea: string ,
+  asignadoAtarea: string ,
+  tecnologiaTarea: string ,
+  idProyectoSeleccionado: string 
 }
 @Component({
   selector: 'app-tareas',
@@ -62,12 +71,25 @@ export class TareasComponent implements OnInit {
     {idProyectoSeleccionado: ''}
   ]
 
-  idProyecto!:string
+  filtrosTarea: FiltrosTarea = {
+  nombreTarea: '',
+  prioridadTarea: '',
+  facilitadorTarea: '',
+  asignadoAtarea: '',
+  tecnologiaTarea: '',
+  idProyectoSeleccionado: '' 
+  }
+  
+
+  
 
   columnas: string[] = ['nombre'];
 
 
   constructor(public dialog: MatDialog, private _snackBar: MatSnackBar, private _tareaService: TareaService) {
+    
+    //this.filtrosBusquedaTareas = JSON.parse(JSON.stringify(this.filtrosBusquedaTareas));
+
     const proyectos: PropiedadesProyecto[] = [
       { id: 128109, nombre: 'Entrenamiento en Drupal y Symfony', planificadas: 448, noIniciadas: 424, enProgreso: 24, enPrueba: 0, completadas: 0, tieneTareasUsuario: false, cliente: 'Factory', asignadoA: 'Adrian Enrico' },
       { id: 125029, nombre: 'Restyling y Migración de Portal PAC', planificadas: 3600, noIniciadas: 500, enProgreso: 0, enPrueba: 0, completadas: 2400, tieneTareasUsuario: false, cliente: 'Factory', asignadoA: 'Patricio Hernán Macagno' },
@@ -127,8 +149,11 @@ export class TareasComponent implements OnInit {
     )
     .subscribe(result => {
       console.log(result)
-      this.idProyecto = result.idProyectoSeleccionado;
-      console.log(this.idProyecto)
+      this.filtrosTarea.idProyectoSeleccionado = result.idProyectoSeleccionado
+      console.log(this.filtrosTarea.idProyectoSeleccionado)
+      
+      
+      
       if (result.proyectoSeleccionado !== undefined) {
 
         this.nombreProyecto = result.proyectoSeleccionado
@@ -142,8 +167,8 @@ export class TareasComponent implements OnInit {
   }
 
   buscarTarea(){
-    console.log(this.filtrosBusquedaTareas)
-    const dialogRef = this.dialog.open(DialogComponent,{width:'72%', data:{buscaTareas: true, filtros:this.filtrosBusquedaTareas}});
+    console.log(this.filtrosTarea)
+    const dialogRef = this.dialog.open(DialogComponent,{width:'72%', data:{buscaTareas: true, filtros:this.filtrosTarea}});
     dialogRef.afterClosed().pipe(
       finalize(() => {
           console.log("Actualiza autoridades")
@@ -197,6 +222,11 @@ export class TareasComponent implements OnInit {
         this.subtituloProyecto = '';
       break;
     }
+  }
+
+  getUsuarioTareasAsignadas(){
+    console.log("ejecuta")
+    this._tareaService.asignadasAmi = 'pepito' 
   }
 
   openSnackBar() {

@@ -30,7 +30,11 @@
 #text_checkbox{
     margin: 0 0 -2px;
 }
-
+.titulo_fechas{
+    display: flex;
+    width: 80%;
+    justify-content: space-around;
+}
 .fechas{
     width: 80%;
     display: flex;

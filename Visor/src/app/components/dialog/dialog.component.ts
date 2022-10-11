@@ -9,40 +9,9 @@ import { FormBuilder } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSelectChange } from '@angular/material/select';
 import { TareaService } from 'src/app/services/i2t/tarea.service';
+import { finalize } from 'rxjs/operators';
+import { MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepicker';
 
-
-
-
-
-interface Cliente {
-  value: string;
-  viewValue: string;
-  id: string
-}
-interface Programador {
-  value: string;
-  viewValue: string;
-}
-
-interface Prioridad {
-  nombre: string,
-  valor: string
-}
-
-interface Facilitador{
-  nombre: string
-}
-
-interface Tecnologia{
-  nombre: string
-}
-
-export interface Tile {
-  color: string;
-  cols: number;
-  rows: number;
-  text: string;
-}
 
 export interface PropiedadesProyecto{
   id: number,
@@ -62,6 +31,24 @@ export interface ResponseService{
   nombre_cliente: string;
   nombre_projecto: string;
   usuario_asignado: string;
+}
+export interface PropiedadesTarea{
+  estado: string, 
+  facilitador: string,
+  fecha_fin: string, 
+  fecha_inicio: string
+  fecha_planificada: string,
+  horas_ejecutadas: string,
+  horas_planificadas: number,
+  id_tarea: string
+  nombre_documento: string
+  nombre_proyecto: string,
+  nombre_tarea: string 
+  nota: string,
+  prioridad: string
+  tipo_tarea: string 
+  usuario_asignado: string
+
 }
 
 @Component({
@@ -85,6 +72,8 @@ export class DialogComponent implements OnInit {
   asignadoAproyecto: string = '';
   listaProyectos: any[] = [];
   listaProyectosPrueba: any;
+  listaTareasProyectos: PropiedadesTarea[] = [];
+  listaTareasProyectosAux: PropiedadesTarea[] = [];
   dataSource: MatTableDataSource<PropiedadesProyecto>;
   clientesDeProyectos: String[] = [];
   usuariosDeProyectos: String[] = [];
@@ -97,17 +86,24 @@ export class DialogComponent implements OnInit {
     asignado: ''
   }
 
+  dataSourceTareas!: MatTableDataSource<PropiedadesTarea>;
+  prioridadDeTareas: String[] = [];
+  facilitadoresTareas: String[] = [];
+  usuariosAsignadosTareas: String[] = [];
+  tecnologiasTareas: String[] = [];
+
   buscarTareas: boolean = false;
   filtrosTareasDialog: any;
   filtrosTarea: Object[] = [];
   nombreTarea = '';
-  prioridadTarea: any;
+  prioridadTarea: string = '';
+  facilitadorTarea: string = ''
+  asignadoAtarea :string = ''
+  tecnologiaTarea: string = '';
   
   
-  tecnologia: string = '';
+  idProyectoSeleccionado: string = ''
   
-  facilitadorTarea: any
-  asignadoAtarea :any
   tecnologiatarea : any
   
   columnas: string[] = ['nombre'];
@@ -154,47 +150,70 @@ export class DialogComponent implements OnInit {
 
 
       });
-      
     }
     
     //Pregunto si el pop up se abrió para buscar TAREAS
     
     if(buscarTareasInterface.buscaTareas){
       this.buscarTareas = buscarTareasInterface.buscaTareas;
-      
-      const id_projecto = this.buscarTareasInterface.idProyectoSeleccionado;
-      console.log(id_projecto)
-      this._tareaService.getTareasDeProyecto(id_projecto).subscribe((response: any) => {
-        this.listaProyectosPrueba = response.dataset;
-        this.dataSourcePrueba = new MatTableDataSource(this.listaProyectosPrueba);
-        console.log(this.dataSourcePrueba)
-        
-        console.log(this.dataSourcePrueba.filteredData[0])
-        // let cantProyectos = this.dataSourcePrueba.filteredData.length;
-        // for(let i = 0; i < cantProyectos ; i++){
-        //   if(!this.clientesDeProyectos.includes(this.dataSourcePrueba.filteredData[i].nombre_cliente)){
-        //     this.clientesDeProyectos.push( this.dataSourcePrueba.filteredData[i].nombre_cliente);
-        //   }
-        // }
-        // for(let i = 0; i < cantProyectos ; i++){
-        //   if(!this.usuariosDeProyectos.includes(this.dataSourcePrueba.filteredData[i].usuario_asignado)){
-        //     this.usuariosDeProyectos.push( this.dataSourcePrueba.filteredData[i].usuario_asignado);
-        //   }
-        // }
-        // console.log(this.usuariosDeProyectos)
-        
+      this.filtrosTareasDialog = JSON.parse(JSON.stringify(this.buscarTareasInterface)).filtros;
+      this.nombreTarea = this.filtrosTareasDialog.nombreTarea;
+      this.prioridadTarea = this.filtrosTareasDialog.prioridadTarea;
+      this.facilitadorTarea = this.filtrosTareasDialog.facilitadorTarea;
+      this.idProyectoSeleccionado = this.filtrosTareasDialog.idProyectoSeleccionado;
+      this.asignadoAtarea = this.filtrosTareasDialog.asignadoAtarea;
+      this.tecnologiatarea = this.filtrosTareasDialog.tecnologiatarea;
 
+      
+      this._tareaService.getTareasDeProyecto(this.idProyectoSeleccionado).subscribe((response: any) => {
+        this.listaTareasProyectos = response.dataset;
+        
+        
+        this.dataSourceTareas = new MatTableDataSource(this.listaTareasProyectos);
+        console.log(this.dataSourceTareas)
+        this.listaTareasProyectosAux = this.listaTareasProyectos
+
+        // this.listaTareasProyectos.forEach((unaTarea)=>{
+        //   this.listaTareasProyectosAux.push(unaTarea)
+        // })
+        let cantTareas = this.dataSourceTareas.filteredData.length;
+
+        for(let i = 0; i < cantTareas ; i++){
+          
+          //Obtengo prioridades
+          if(!this.prioridadDeTareas.includes(this.dataSourceTareas.filteredData[i].prioridad)){
+            this.prioridadDeTareas.push( this.dataSourceTareas.filteredData[i].prioridad );
+          }
+          //Obtengo facilitadores
+          if(!this.facilitadoresTareas.includes(this.listaTareasProyectos[i].facilitador)){
+            this.facilitadoresTareas.push( this.listaTareasProyectos[i].facilitador);
+          }
+          //Obtengo usuarios asignados
+          if(!this.usuariosAsignadosTareas.includes(this.listaTareasProyectos[i].usuario_asignado)){
+            this.usuariosAsignadosTareas.push( this.listaTareasProyectos[i].usuario_asignado);
+          }
+          //Obtengo tecnologias
+          // if(!this.tecnologiasTareas.includes(this.listaTareasProyectos[i].tecnologia)){
+          //   this.tecnologiasTareas.push( this.listaTareasProyectos[i].tecnologia);
+          // }
+        }
+        console.log(this.facilitadoresTareas)
+        
+        
+        if(this._tareaService.asignadasAmi != ''){
+          console.log("tareas service != vacío " + this._tareaService.asignadasAmi);
+          this.asignadoAtarea = this._tareaService.asignadasAmi;
+          console.log(this.asignadoAtarea)
+        }
 
       });
       
-      this.filtrosTareasDialog = JSON.parse(JSON.stringify(this.buscarTareasInterface)).filtros
+      
+      
       console.log(this.filtrosTareasDialog)
 
-      this.nombreTarea = JSON.parse(JSON.stringify(this.filtrosTareasDialog[0])).nombreTarea;
-      this.prioridadTarea = this.filtrosTareasDialog[1].prioridadTarea;
-      this.facilitadorTarea = this.filtrosTareasDialog[2].facilitadorTarea;
-      this.asignadoAtarea = this.filtrosTareasDialog[3].asignadoAtarea;
-      this.tecnologiatarea = this.filtrosTareasDialog[4].tecnologiatarea;
+      //this.nombreTarea = JSON.parse(JSON.stringify(this.filtrosTareasDialog[0])).nombreTarea;
+      
     }
 
     this._locale = 'es';
@@ -230,7 +249,6 @@ export class DialogComponent implements OnInit {
     mushroom: false,
   });
 
-  //Filtra servicio
   
   
   //Filtra prueba
@@ -283,6 +301,20 @@ export class DialogComponent implements OnInit {
   //       this.filtrarPor(valoresA);
   //   }
   // }
+
+  //Obtengo los datos para filtrar por PROYECTOS
+  getDatosFiltrosProyecto(event: Event){ //Los inputs
+    const idParametroFiltro = (event.currentTarget as HTMLInputElement).id;
+    const valorParametroFiltro = (event.currentTarget as HTMLInputElement).value;
+    this.filtrarProyectos(idParametroFiltro,valorParametroFiltro);
+  }
+  public selectProyecto(select:MatSelectChange) {
+    const id = select.source.id
+    const valor = select.source.triggerValue
+    console.log(id + valor)
+    
+    this.filtrarProyectos(id,valor);
+  }
   filtrarProyectos(id:string,valor:string){
     const idParametroFiltro = id;
     var valorParametroFiltro = valor;
@@ -300,8 +332,8 @@ export class DialogComponent implements OnInit {
         console.log(valores)
         const objeto = JSON.parse(JSON.stringify(this.valoresFiltros))
         
-        this.armarFilterPredicate(valores);
-        this.filtrarPor(valores);
+        this.armarFilterPredicateProyectos(valores);
+        this.filtrarProyectosPor(valores);
         
       break;
       case 'nombreProyecto':
@@ -311,8 +343,8 @@ export class DialogComponent implements OnInit {
         const valoresN = Object.values(this.valoresFiltros);
 
 
-        this.armarFilterPredicate(valoresN);
-        this.filtrarPor(valoresN);
+        this.armarFilterPredicateProyectos(valoresN);
+        this.filtrarProyectosPor(valoresN);
 
       break;
       case 'clienteProyecto':
@@ -321,8 +353,8 @@ export class DialogComponent implements OnInit {
         this.valoresFiltros.cliente = valorParametroFiltro;
         const valoresC = Object.values(this.valoresFiltros);
 
-        this.armarFilterPredicate(valoresC);
-        this.filtrarPor(valoresC);
+        this.armarFilterPredicateProyectos(valoresC);
+        this.filtrarProyectosPor(valoresC);
 
         
       break;
@@ -332,14 +364,14 @@ export class DialogComponent implements OnInit {
         this.valoresFiltros.asignado = valorParametroFiltro;
         const valoresA = Object.values(this.valoresFiltros);
 
-        this.armarFilterPredicate(valoresA);
-        this.filtrarPor(valoresA);
+        this.armarFilterPredicateProyectos(valoresA);
+        this.filtrarProyectosPor(valoresA);
 
         
       break;
     }
   }
-  armarFilterPredicate( valores:string[] ): boolean{                                     
+  armarFilterPredicateProyectos( valores:string[] ): boolean{                                     
     let respuesta: any;
     respuesta = this.dataSourcePrueba.filterPredicate = (data: any, filter: string): boolean => {
       //Filtra solo por id_projecto
@@ -412,7 +444,7 @@ export class DialogComponent implements OnInit {
     return respuesta;
   }
 
-  filtrarPor(valores:string[]){
+  filtrarProyectosPor(valores:string[]){
     if (valores[0] != '' && valores[1] == '' && valores[2] == '' && valores[3] == '') {
       console.log("Esta condicion" )
       this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
@@ -498,32 +530,159 @@ export class DialogComponent implements OnInit {
       this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
     }
   }
+
+  //Obtengo los datos para filtrar por tarea
+  getNombreTarea(event: Event){
+    this.nombreTarea = (event.currentTarget as HTMLInputElement).value;
+  }
+
+  selectPrioridadTarea(select:MatSelectChange){
+    this.prioridadTarea = select.source.triggerValue
+  }
+
+  selectFacilitadorTarea(select:MatSelectChange){
+    this.facilitadorTarea = select.source.triggerValue;
+  }
+
+  selectAsignadoAtarea(select:MatSelectChange){
+    this.asignadoAtarea = select.source.triggerValue    
+  }
+
+  selectTecnologiaTarea(select:MatSelectChange){
+    this.tecnologiaTarea = select.source.triggerValue
+  }
+
   
 
- 
-  
-  
-  getDatosFiltrosProyecto(event: Event){ //Los inputs
-    const idParametroFiltro = (event.currentTarget as HTMLInputElement).id;
-    const valorParametroFiltro = (event.currentTarget as HTMLInputElement).value;
-    this.filtrarProyectos(idParametroFiltro,valorParametroFiltro);
-  }
-  public selectProyecto(select:MatSelectChange) {
-    const id = select.source.id
-    const valor = select.source.triggerValue
-    console.log(id + valor)
+  //Filtro de Tareas
+  prepararFiltro() {
+    const filtroNombreTarea = this.filtroAvanzado(1, this.nombreTarea);
+    const filtroPrioridad = this.filtroAvanzado(2, this.prioridadTarea);
+    const filtroFacilitador = this.filtroAvanzado(3, this.facilitadorTarea);
+    const filtroAsignadoA = this.filtroAvanzado(4, this.asignadoAtarea);
+    //const filtroTecnologia = this.filtroAvanzado(5, this.tecnologiaTarea);
+    //const filtroFechaInicioDesde = this.filtroAvanzado(6, this.funcion);
+    //const filtroFechaInicioHasta = this.filtroAvanzado(7, this.funcion);
+    //const filtroPlanificadaDesde = this.filtroAvanzado(8, this.funcion);
+    //const filtroPlanificadaHasta = this.filtroAvanzado(9, this.funcion);
+    //const filtroFinDesde = this.filtroAvanzado(10, this.funcion);
+    //const filtroFinHasta = this.filtroAvanzado(11, this.funcion);
     
-    this.filtrarProyectos(id,valor);
+    
+    this.listaTareasProyectosAux = this.buscarCoincidencias(filtroNombreTarea, filtroPrioridad ,filtroFacilitador,filtroAsignadoA);
+    console.log(this.listaTareasProyectosAux)
+    this.dialogRef.close(this.listaTareasProyectosAux);
   }
 
-  
+  filtroAvanzado(tipo: number, valor: string) {
+    let arrayTemp: any = [];
+    let arrayTabla: any;
+    switch (tipo) {
+      case 1:
+        this.listaTareasProyectosAux.forEach(tarea => {
+          let obj = { id: tarea.id_tarea, nombre: tarea.nombre_tarea };
+          arrayTemp.push(obj);
+          
+        });
+        arrayTabla = new MatTableDataSource(arrayTemp);
+        arrayTabla.filterPredicate = (arrayTabla: any, valor: string): boolean => {
+          return ((arrayTabla.nombre.split(' ').join('').toLowerCase()).indexOf(valor) != -1)
+        }
+        arrayTabla.filter = valor.trim().toLowerCase();
+        arrayTemp = arrayTabla.filteredData;
+        console.log(arrayTemp)
+        return arrayTemp;
 
-  //Tarea y proyectos
-  programadores: Programador[] = [
-    {value: 'Federico', viewValue: 'Federico Gauchat'},
-    {value: 'steak-0', viewValue: 'Ignacio Girod'},
-    {value: 'pizza-1', viewValue: 'Luciano Di Giorgio'},
-  ];
+      case 2:
+        this.listaTareasProyectosAux.forEach(tarea => {
+          let obj = { id: tarea.id_tarea, apellido: tarea.prioridad };
+          arrayTemp.push(obj);
+        });
+        arrayTabla = new MatTableDataSource(arrayTemp);
+        arrayTabla.filter = valor.trim().toLowerCase();
+        arrayTemp = arrayTabla.filteredData;
+        return arrayTemp;
+
+      case 3:
+        this.listaTareasProyectosAux.forEach(tarea => {
+          let obj = { id: tarea.id_tarea, facilitador: tarea.facilitador };
+          arrayTemp.push(obj);
+        });
+        arrayTabla = new MatTableDataSource(arrayTemp);
+        arrayTabla.filter = valor.trim().toLowerCase();
+        arrayTemp = arrayTabla.filteredData;
+        console.log(arrayTemp)
+        return arrayTemp;
+
+      case 4:
+        this.listaTareasProyectosAux.forEach(tarea => {
+          let obj = { id: tarea.id_tarea, facilitador: tarea.usuario_asignado };
+          arrayTemp.push(obj);
+        });
+        arrayTabla = new MatTableDataSource(arrayTemp);
+        arrayTabla.filter = valor.trim().toLowerCase();
+        arrayTemp = arrayTabla.filteredData;
+        console.log(arrayTemp)
+        return arrayTemp;
+
+      // case 5:
+      //   this.listaTareasProyectosAux.forEach(tarea => {
+      //     let obj = { id: tarea.id_tarea, facilitador: tarea.usuario_asignado };
+      //     arrayTemp.push(obj);
+      //   });
+      //   arrayTabla = new MatTableDataSource(arrayTemp);
+      //   arrayTabla.filter = valor.trim().toLowerCase();
+      //   arrayTemp = arrayTabla.filteredData;
+      //   console.log(arrayTemp)
+      //   return arrayTemp;
+    }
+  }
+
+  buscarCoincidencias(arrayNombre: any, arrPrioridad:any, arrayFacilitador: any, arrAsignado:any) {
+    let encontrados: any = [];
+
+    this.listaTareasProyectosAux.forEach(tarea => {
+      let encontradoNombre = false;
+      let encontradoPrioridad = false;
+      let encontradoFacilitador = false;
+      let encontradoAsignado = false;
+      
+      arrayNombre.forEach((element: any) => {
+        console.log(element)
+        if (tarea.id_tarea == element.id) {
+          encontradoNombre = true;
+        }
+      });
+
+      arrPrioridad.forEach((element: any) => {
+        if (tarea.id_tarea == element.id) {
+          encontradoPrioridad = true;
+        }
+      });
+
+      arrayFacilitador.forEach((element: any) => {
+        
+        if (tarea.id_tarea == element.id) {
+          encontradoFacilitador = true;
+        }
+      });
+
+      arrAsignado.forEach((element: any) => {
+        
+        if (tarea.id_tarea == element.id) {
+          encontradoAsignado = true;
+        }
+      });
+      
+      
+      if (encontradoNombre && encontradoPrioridad && encontradoFacilitador && encontradoAsignado) {
+        encontrados.push(tarea);
+      }
+    });
+    
+    return encontrados;
+  }
+  
   
   getAsignadoAProyecto(programador: any){
     this.asignadoAproyecto = programador;
@@ -542,44 +701,37 @@ export class DialogComponent implements OnInit {
     
   }
 
-  prioridades: Prioridad[] = [
-    {nombre:'Alta', valor:'Alta'},
-    {nombre:'Media', valor:'Media'},
-    {nombre:'Baja', valor:'Baja'}
-  ]
-  getPrioridadTarea(prioridad: any){
-    this.prioridadTarea = prioridad;
-  }
-
-  facilitadores: Facilitador[] = [
-    {nombre:'Franco Friggeri'},
-    {nombre:'Maximiliano Reichert'},
-    {nombre:'Jeremias García'}
-  ]
 
   getFacilitadorTarea(facilitador:any){
     this.facilitadorTarea = facilitador;
     console.log(this.facilitadorTarea);
   }
+  fechaInicio!: MatDatepickerInputEvent<any, any>;
+  fechaFin!: MatDatepickerInputEvent<any, any>;
 
+  getFechaInicio(event: MatDatepickerInputEvent<any, any>){
+    this.fechaInicio= event.value
+    
+  }
+
+  getFechaFin(event: MatDatepickerInputEvent<any, any>){
+    this.fechaFin = event.value
+    this.comparaFechas(this.fechaInicio,this.fechaFin );
+  }
+
+  comparaFechas(fechaInicio:MatDatepickerInputEvent<any, any>,fechaFin: MatDatepickerInputEvent<any, any>){
+    console.log(fechaInicio < fechaFin)
+    return fechaInicio < fechaFin;
+  }
   
+ 
   getAsignadoAtarea(programador:any){//Programadores
-
-    this.asignadoAtarea = programador.viewValue;
+    //Obtener token
+    
     console.log(this.asignadoAtarea)
   }
 
-
-
-  tecnologias: Tecnologia[]=[
-    {nombre: 'Angular'},
-    {nombre: 'Wordpress'}
-  ]
-
-  tecnologiaElegidaTarea(tecnologia:any){
-    this.tecnologia = tecnologia.nombre
-    console.log(this.tecnologia)
-  }
+  
 
   french() {
     this._locale = 'fr';
@@ -614,7 +766,7 @@ export class DialogComponent implements OnInit {
       this.filtrosTareasDialog[1].prioridadTarea = this.prioridadTarea;
       this.filtrosTareasDialog[2].facilitadorTarea = this.facilitadorTarea;
       this.filtrosTareasDialog[3].asignadoAtarea = this.asignadoAtarea;
-      this.filtrosTareasDialog[4].tecnologiatarea = this.tecnologia;
+      this.filtrosTareasDialog[4].tecnologiatarea = this.tecnologiaTarea;
       this.dialogRef.close(this.filtrosTareasDialog);
     }
 

@@ -1,5 +1,4 @@
-<h1> {{nombreProyecto}}</h1>
-<h3>{{subtituloProyecto}}</h3>
+<h1> Visor </h1>
 <button mat-button >Inicio</button>
 <button mat-button>Equipo</button>
 <button mat-button>Tareas</button>
@@ -8,6 +7,9 @@
 
 <mat-divider class="mat_divider"></mat-divider>
 <mat-divider class="mat_divider"></mat-divider>
+
+<h1> {{nombreProyecto}}</h1>
+<h3>{{subtituloProyecto}}</h3>
 
 
 <div class="buscador" appearance="standard">
@@ -66,10 +68,10 @@
     <mat-icon class="icon">add_circle</mat-icon>
     <button mat-raised-button [matMenuTriggerFor]="sprintMenu">Sprint 9</button>
     <mat-menu #sprintMenu="matMenu">
-      <button mat-menu-item>Backlog</button>
-      <button mat-menu-item>Sprint 1</button>
-      <button mat-menu-item>Sprint n</button>
+      <button mat-menu-item>10/22</button>
+      <button mat-menu-item>11/12</button>
+      <button mat-menu-item>12/12</button>
     </mat-menu>
-    <button>Asignadas a mi</button>
+    <button (click)="getUsuarioTareasAsignadas()">Asignadas a mi</button>
     <mat-icon class="icon" (click)="buscarTarea()">filter_alt</mat-icon>
 </div>
