@@ -44,6 +44,9 @@ table {
   .example-element-description-attribution {
     opacity: 0.5;
   }
+  cdk-virtual-scroll-viewport {
+    height: 400px;
+  }
 
   
 /*

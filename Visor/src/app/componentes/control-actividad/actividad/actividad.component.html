@@ -1,3 +1,4 @@
+<cdk-virtual-scroll-viewport itemSize="200">
 <table mat-table
        [dataSource]="dataSource" multiTemplateDataRows
        class="mat-elevation-z8" >
@@ -29,7 +30,7 @@
       <div *ngIf="column == 'acciones'">
         <a class="pointer" (click)="onAgregarActividad()" matTooltip="Agregar Actividad">
           <button mat-icon-button style="right: -5%;">
-            <mat-icon>add_circle</mat-icon>
+            <mat-icon [ngStyle]="{'color':'gray'}">add_circle</mat-icon>
           </button>
         </a>
       </div> 
@@ -46,7 +47,7 @@
         <a class="pointer" (click)="onEliminarActividadSuite(i)" matTooltip="Eliminar Actividad">
           <!--<button mat-icon-button style="right: -78%;">-->
             <button mat-icon-button style="text-align: right;">
-            <mat-icon>clear</mat-icon>
+            <mat-icon [ngStyle]="{'color':'red'}">clear</mat-icon>
           </button>
         </a>
       </div>
@@ -77,6 +78,7 @@
 </table>
 
 
+</cdk-virtual-scroll-viewport>
 
 
 

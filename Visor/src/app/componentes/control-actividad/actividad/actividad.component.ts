@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { Actividad } from 'src/app/interfaces/actividades';
@@ -17,6 +17,7 @@ import { ActividadSuite } from 'src/app/interfaces/actividadesSuite';
 import { Data } from '@angular/router';
 import { DataSource } from '@angular/cdk/collections';
 import { finalize } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -52,6 +53,7 @@ export class ActividadComponent implements OnInit {
   token!: String|null;
   actividades!: ActividadSuite[]|null;
   id!:string;
+  subscription!:Subscription;
 
   panelOpenState = false;
 
@@ -65,13 +67,16 @@ export class ActividadComponent implements OnInit {
               private dialog: MatDialog,
               public dialogRef: MatDialogRef<ActividadComponent>,
               public dialogRefModal: MatDialogRef<ModalActividadComponent>,
+              private cd: ChangeDetectorRef,
               @Inject(MAT_DIALOG_DATA) public data:Actividad
                ) { }
 
   ngOnInit(): void {
     
     //this.cargarActividades();
+    
     this.cargarActividadesSuite();
+    
     
     this._actividadService.enviarIndexObservable.subscribe(response => {
       this.index = response;
@@ -95,7 +100,9 @@ export class ActividadComponent implements OnInit {
         
         }
     });
+    this.cargarActividadesSuite();
   } 
+  
 
   /*toggleOn(horas: Number){
     console.log("asunto",horas);
@@ -124,8 +131,6 @@ export class ActividadComponent implements OnInit {
 //ELIMINAR HARDCODE
   onEliminarActividad(index: number){
     console.log('posicion inicial',index);
-    
-      
       console.log('actividades',this._actividadService.listActividades)
     this.dialogService.openConfirmDialog('¿Usted está seguro de que desea eliminar esa actividad?' )
     .afterClosed().subscribe(res =>{
@@ -143,23 +148,26 @@ export class ActividadComponent implements OnInit {
   }
 
   cargarActividadesSuite(){
-    this._actividadService.par_modoG().subscribe((response: any) =>{
+    this.cd.detectChanges();
+   
+      this._actividadService.par_modoG().subscribe((response: any) =>{
       
-      console.log("dataSource",this.dataSource);
-      response.dataset.forEach((y: any) =>{
-        if(y.descripcion == null || y.descripcion.length < 1 || y.descripcion === ""){
-          y.descripcion = 'Esta actividad no tiene descripción';
-        }   
+        console.log("dataSource",this.dataSource);
+        response.dataset.forEach((y: any) =>{
+          if(y.descripcion == null || y.descripcion.length < 1 || y.descripcion === ""){
+            y.descripcion = 'Esta actividad no tiene descripción';
+          }   
+        console.log(y.descripcion)
+      });
+        console.log("RESPONSE DATASET",response.dataset)
         
-          
-      console.log(y.descripcion)
+        this.dataSource = new MatTableDataSource(response.dataset)
+        this.cd.detectChanges();
+        console.log("DATA SOURCE",this.dataSource)
+        
+      });
     
-    });
-      console.log("RESPONSE DATASET",response.dataset)
-      this.dataSource = new MatTableDataSource(response.dataset)
-      console.log("DATA SOURCE",this.dataSource)
-      
-    });
+    
    
   }
 
@@ -192,15 +200,15 @@ export class ActividadComponent implements OnInit {
   }*/
 
   onEliminarActividadSuite(index: number){
-    
+    this.cargarActividadesSuite();
     this.dialogService.openConfirmDialog('¿Usted está seguro de que desea eliminar esa actividad?' )
     .afterClosed().subscribe(res =>{
-      if(res){
-        
+      if(res){ 
+        console.log(res);
          this._actividadService.deleteActividad(this.dataSource.data[index].id_actividad).subscribe((response:any)=>{
             console.log("DELETE EXITOSO", response);
+            this.cargarActividadesSuite();
           })
-          this.cargarActividadesSuite();
           this._snackBar.open('Actividad eliminada','',{
           duration: 1500,
           horizontalPosition: 'center',
@@ -208,7 +216,8 @@ export class ActividadComponent implements OnInit {
         })
       }
     });
-  
+    this.cd.detectChanges();
+    this.cargarActividadesSuite();
   }
 
  cambioIndex(index: number){

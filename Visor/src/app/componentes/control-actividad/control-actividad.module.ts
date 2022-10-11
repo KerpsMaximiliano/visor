@@ -11,6 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { MyMaterialModule } from 'src/app/material';
+import {ScrollingModule} from '@angular/cdk/scrolling';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { MyMaterialModule } from 'src/app/material';
     ReactiveFormsModule,
     SharedModule,
     RouterModule,
-    MyMaterialModule
+    MyMaterialModule,
+    ScrollingModule
   ],
   /*imports: [
     CommonModule,

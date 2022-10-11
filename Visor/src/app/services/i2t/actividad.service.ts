@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { Subject } from 'rxjs';
+import { Subject, tap } from 'rxjs';
 import { Actividad } from 'src/app/interfaces/actividades';
 import { ModalActividadComponent } from 'src/app/componentes/control-actividad/modal-actividad/modal-actividad.component';
 import { HttpClient } from '@angular/common/http';
@@ -17,6 +17,7 @@ export class ActividadService {
 
 act!: Actividad;
 dataSource!: MatTableDataSource<any>;
+private _refresh$ = new Subject<void>();
 
   listActividades: Actividad[] = [
     {position: 0,fecha: new Date('01/10/21'), horas: 5, descripcion:['Descripcion para la Actividad 1'], asunto:'XXXX', tareas:'tarea1',toggle:0},
@@ -95,6 +96,9 @@ id!: string;
     this.listActividades.splice(index, 1);
     
     console.log('eliminado',this.listActividades);
+  }
+  get refresh$(){
+    return this._refresh$;
   }
 
   //EDITAR ACTIVIDAD HARDCODE
@@ -182,6 +186,23 @@ id!: string;
    return this.dataSource;
   }*/
   
+  /*cargarActividadesSuite(){
+    
+    let jsbody: string = JSON.stringify({
+      par_modo : "G",
+      descripcion:"",
+      titulo: "",
+      id_actividad: "",
+      estado: "",
+      horas_ejecutadas: 0,
+      tipo_actividad : "",
+      asignado_a : "",
+      id_tarea: "a0287b5d-14c5-11ed-965a-00505601020a"
+      });
+      return this.rest.callProcedimientoVisor(jsbody,"AbmActividades");
+   
+  }*/
+
 
 
   
