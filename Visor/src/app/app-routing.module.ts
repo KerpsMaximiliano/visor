@@ -10,6 +10,8 @@ import { ConfiguracionesComponent } from './components/configuraciones/configura
 import { PermisosRolesComponent } from './components/configuraciones/permisos-roles/permisos-roles.component';
 import { RolesUsuariosComponent } from './components/configuraciones/roles-usuarios/roles-usuarios.component';
 import { VistaDesarrolladorComponent } from './componentes/vista-desarrollador/vista-desarrollador.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -25,12 +27,19 @@ const routes: Routes = [
     path: "recuperar-contraseña",
     component: RecuperarcontraseniaComponent
   },
-  { path: 'inicio-main', component: InicioMainComponent },
-  { path: 'configuraciones-main', component: ConfiguracionesComponent,
-    children: [
-      { path: 'roles-usuarios', component: RolesUsuariosComponent },
-      { path: 'permisos-roles', component: PermisosRolesComponent }
-    ] },
+  {
+    path: "dashboard",
+    canActivate: [AuthGuard],
+    component: DashboardComponent,
+    children:[
+      { path: 'inicio', component: InicioMainComponent },
+      { path: 'configuraciones', component: ConfiguracionesComponent,
+        children: [
+        { path: 'roles-usuarios', component: RolesUsuariosComponent },
+        { path: 'permisos-roles', component: PermisosRolesComponent }
+    ] }
+    ]
+  },
   {
     path: "vista-diseño-tecnico",
     component: VistaDisenioTecnicoComponent

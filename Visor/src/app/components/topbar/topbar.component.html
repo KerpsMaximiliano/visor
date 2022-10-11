@@ -1,0 +1,28 @@
+<h1> {{nombreProyecto}}</h1>
+<h3>{{subtituloProyecto}}</h3>
+<button mat-button >Inicio</button>
+<button mat-button>Equipo</button>
+<button mat-button>Tareas</button>
+<button mat-button >Wiki I+D</button>
+<button mat-button>Documentos</button>
+
+<button class="nav-end-btn" mat-button tabindex="-1" [matMenuTriggerFor]="menuUsuario">
+    <span>{{nombreUsuario}}</span>
+    <i class="material-icons">account_circle</i>
+</button>
+
+<mat-menu #menuUsuario="matMenu" overlapTrigger="false" xPosition="before">
+	<button (click)="configuracion()" mat-menu-item>
+        <mat-icon>settings</mat-icon>
+        Configuración
+    </button>
+	<button (click)="logout()" mat-menu-item>
+		<mat-icon>exit_to_app</mat-icon>
+		Cerrar sesión
+	</button>
+</mat-menu>
+
+<mat-divider class="mat_divider"></mat-divider>
+<mat-divider class="mat_divider"></mat-divider>
+
+

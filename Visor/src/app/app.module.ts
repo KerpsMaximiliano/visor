@@ -33,6 +33,8 @@ export function initConfig(config: Config) {
 
 import { FormsModule } from '@angular/forms';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { TopbarComponent } from './components/topbar/topbar.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,9 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     MatConfirmDialogComponent,
     ModalcontraseniaComponent,
     InicioMainComponent,
-    ModalFiltroComponent
+    ModalFiltroComponent,
+    TopbarComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
