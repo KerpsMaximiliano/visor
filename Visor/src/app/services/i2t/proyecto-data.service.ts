@@ -18,24 +18,39 @@ export class ProyectoDataService {
 
   public getProyectos() {
     let jsbody: string = JSON.stringify({
-      'nivel': "1",
-      'id_caso':""
+        "nivel":"1",
+        "id_caso": "",
+        "id_usuario": null,
+        "abierto": "FALSE"
     });
     return this.restService.callProcedimientoVisor(jsbody,"EstadoProyectos");
   }
 
+  public getProyectosAbiertos(){
+    let jsbody: string = JSON.stringify({
+      "nivel":"1",
+      "id_caso": "",
+      "id_usuario": null,
+      "abierto": "TRUE"
+  });
+  return this.restService.callProcedimientoVisor(jsbody,"EstadoProyectos");
+}
   public getPorcentajeHP(id_caso: string) {
     let jsbody: string = JSON.stringify({
-      'nivel': "2",
-      'id_caso': id_caso
+      "nivel":"2",
+      "id_caso": id_caso,
+      "id_usuario": null,
+      "abierto": "FALSE"
     });
     return this.restService.callProcedimientoVisor(jsbody,"EstadoProyectos");
   }
 
   public getPorcentajeHPAreas(id_caso: string) {
     let jsbody: string = JSON.stringify({
-      'nivel': "3",
-      'id_caso': id_caso
+      "nivel":"3",
+      "id_caso": id_caso,
+      "id_usuario": null,
+      "abierto": "FALSE"
     });
     return this.restService.callProcedimientoVisor(jsbody,"EstadoProyectos");
   }

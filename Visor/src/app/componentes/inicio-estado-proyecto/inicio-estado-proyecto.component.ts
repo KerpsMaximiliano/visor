@@ -10,6 +10,7 @@ import { ViewChild } from '@angular/core';
 import { MatAccordion } from '@angular/material/expansion';
 import { FiltroService } from '../../services/i2t/filtro.service';
 import { TipoDeFiltro } from '../../interfaces/tipo-de-filtro';
+import { FiltroProyectosComponent } from 'src/app/shared/modal-filtro-proyectos/filtro-proyectos/filtro-proyectos.component';
 
 @Component({
   selector: 'app-inicio-estado-proyecto',
@@ -39,7 +40,11 @@ export class InicioEstadoProyectoComponent implements OnInit {
   estado: boolean = false;
   ordenDeFiltrado: string;
   orden_saved_search_id = '';
-  
+  modal_saved_search_id = '';
+  proyectosAuxiliar: Proyecto[] = [];
+  misProyectos: boolean = false;
+  proyectosAbiertos: boolean = false;
+
 
   //Variables del filtro
   numero: string = "";
@@ -60,7 +65,247 @@ export class InicioEstadoProyectoComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this._filtroService.getUserId(localStorage.getItem('usuario')!).subscribe((response: any) => {
+      localStorage.setItem('userId', response.dataset[0].id);
+      this._filtroService.selectFiltro(response.dataset[0].id, 'inicio-estado-proyecto').subscribe((resp: any) => {
+        if (resp.dataset.length == 0) {
+        } else {
+          console.log('hay datos', resp);
+          resp.dataset.forEach((filtro: any) => {
+            if (filtro.nombre == 'filtro_abecedario') {
+              this.orden_saved_search_id = filtro.saved_search_id;
+              const contenido = JSON.parse(atob(filtro.contenido));
+              this.ordenDeFiltrado = contenido.ordenSeleccion; 
+            }
+            if (filtro.nombre == 'filtro_tareasAtrasadas') {
+              this.orden_saved_search_id = filtro.saved_search_id;
+              const contenido = JSON.parse(atob(filtro.contenido));
+              this.ordenDeFiltrado = contenido.ordenSeleccion; 
+            }
+            if (filtro.nombre == 'filtro_tareasATiempo') {
+              this.orden_saved_search_id = filtro.saved_search_id;
+              const contenido = JSON.parse(atob(filtro.contenido));
+              this.ordenDeFiltrado = contenido.ordenSeleccion; 
+            }
+            if (filtro.nombre == 'filtro_numero_nombre_cliente_asignadoa') {
+              this.modal_saved_search_id = filtro.saved_search_id;
+              const contenido = JSON.parse(atob(filtro.contenido));
+              this.numero = contenido.numero;
+              this.nombre = contenido.nombre;
+              this.cliente = contenido.cliente;
+              this.asignadoA = contenido.asignadoA;     
+            }
+          });
+        }
+        this.verificarChecksBox(this.misProyectos, this.proyectosAbiertos);
+        console.log(this.disponibilidadProyectos)
+      });
+  });
+  }
+
+  private obtenerProyectos(){
+    this.proyectos = [];
     this._dataProyecto.getProyectos().subscribe((resp: any) => {
+      if(resp.returnset[0].RCode == 1){
+        let contadorHorasTotalesPlanificadas = 0;
+        for(let i = 0;i<resp.dataset.length;i++){
+          let objetoTemporal: Proyecto = {
+            numero: resp.dataset[i].Id_Caso,
+            nombre: resp.dataset[i].Caso,
+            cliente: resp.dataset[i].Cliente,
+            asignado: resp.dataset[i].Asignado_a,
+            cantidadTareasTotales: resp.dataset[i].Tareas_totales,
+            cantidadTareasAtrasadas: resp.dataset[i].Tareas_atrasadas,
+            porcentajeTareasAtrasadas: Math.round((resp.dataset[i].Tareas_atrasadas / resp.dataset[i].Tareas_totales) * 100),
+            porcentajeTareasATiempo: Math.round(((resp.dataset[i].Tareas_totales - resp.dataset[i].Tareas_atrasadas) / resp.dataset[i].Tareas_totales) * 100),
+            porcentajeHPCompletadas: 0,
+            porcentajeHPEnProgreso: 0,
+            porcentajeHPEnPrueba: 0,
+            porcentajeHPNoIniciadas: 0,
+            porcentajeHPEnPruebaDisenioFuncional: 0,
+            porcentajeHPNoIniciadasDisenioFuncional: 0,
+            porcentajeHPCompletadasDisenioFuncional: 0,
+            porcentajeHPEnProgresoDisenioFuncional: 0,
+            porcentajeHPEnPruebaDisenioTecnico: 0,
+            porcentajeHPNoIniciadasDisenioTecnico: 0,
+            porcentajeHPCompletadasDisenioTecnico: 0,
+            porcentajeHPEnProgresoDisenioTecnico: 0,
+            porcentajeHPEnPruebaDesarrollo: 0,
+            porcentajeHPNoIniciadasDesarrollo: 0,
+            porcentajeHPCompletadasDesarrollo: 0,
+            porcentajeHPEnProgresoDesarrollo: 0,
+            porcentajeHPEnPruebaTesting: 0,
+            porcentajeHPNoIniciadasTesting: 0,
+            porcentajeHPCompletadasTesting: 0,
+            porcentajeHPEnProgresoTesting: 0
+          }
+          this.proyectos.push(objetoTemporal);
+          this._dataProyecto.getPorcentajeHP(this.proyectos[i].numero).subscribe((resp: any) => {
+            contadorHorasTotalesPlanificadas = contadorHorasTotalesPlanificadas + resp.dataset[0].Horas + resp.dataset[1].Horas + resp.dataset[2].Horas;
+            this.proyectos[i].porcentajeHPEnProgreso = Math.round((resp.dataset[1].Horas / contadorHorasTotalesPlanificadas) * 100);
+            this.proyectos[i].porcentajeHPCompletadas = Math.round((resp.dataset[0].Horas / contadorHorasTotalesPlanificadas) * 100);
+            this.proyectos[i].porcentajeHPNoIniciadas = Math.round((resp.dataset[2].Horas / contadorHorasTotalesPlanificadas) * 100);
+          });
+          contadorHorasTotalesPlanificadas = 0;
+          
+          //Funcional.
+          let contadorHPCompletadasFuncional = 0;
+          let contadorHPEnProgresoFuncional = 0;
+          let contadorHPNoIniciadasFuncional = 0;
+          let contadorHPEnPruebaFuncional = 0;
+          let contadorHPTotalAreaFuncional = 0;
+
+          //Tecnico
+          let contadorHPCompletadasTecnico = 0;
+          let contadorHPEnProgresoTecnico = 0;
+          let contadorHPNoIniciadasTecnico = 0;
+          let contadorHPEnPruebaTecnico = 0;
+          let contadorHPTotalAreaTecnica = 0;
+
+          //Desarrollo.
+          let contadorHPCompletadasDesarrollo = 0;
+          let contadorHPEnProgresoDesarrollo = 0;
+          let contadorHPNoIniciadasDesarrollo = 0;
+          let contadorHPEnPruebaDesarrollo= 0;
+          let contadorHPTotalAreaDesarrollo = 0;
+
+          //Testing.
+          let contadorHPCompletadasTesting= 0;
+          let contadorHPEnProgresoTesting = 0;
+          let contadorHPNoIniciadasTesting = 0;
+          let contadorHPEnPruebaTesting = 0;
+          let contadorHPTotalAreaTesting = 0;
+
+          this._dataProyecto.getPorcentajeHPAreas(this.proyectos[i].numero).subscribe((resp: any) => {
+            for(let r = 0;r<resp.dataset.length;r++)
+            {
+              switch (resp.dataset[r].Area){
+                case "Design": {
+                  switch (resp.dataset[r].Estado){
+                    case "Completed": {
+                      contadorHPTotalAreaFuncional = contadorHPTotalAreaFuncional + resp.dataset[r].Horas;
+                      contadorHPCompletadasFuncional = contadorHPCompletadasFuncional + resp.dataset[r].Horas;
+                      break;
+                    }
+                    case "In Progress": {
+                      contadorHPTotalAreaFuncional = contadorHPTotalAreaFuncional + resp.dataset[r].Horas;
+                      contadorHPEnProgresoFuncional = contadorHPEnProgresoFuncional + resp.dataset[r].Horas;
+                      break;
+                    }
+                    case "Not Started": {
+                      contadorHPTotalAreaFuncional = contadorHPTotalAreaFuncional + resp.dataset[r].Horas;
+                      contadorHPNoIniciadasFuncional = contadorHPNoIniciadasFuncional + resp.dataset[r].Horas;
+                      break;
+                    }
+                    case "In Testing": {
+                      contadorHPTotalAreaFuncional = contadorHPTotalAreaFuncional + resp.dataset[r].Horas;
+                      contadorHPEnPruebaFuncional = contadorHPEnPruebaFuncional + resp.dataset[r].Horas;
+                    }
+                  }
+                  this.proyectos[i].porcentajeHPCompletadasDisenioFuncional = Math.round((contadorHPCompletadasFuncional / contadorHPTotalAreaFuncional) * 100);
+                  this.proyectos[i].porcentajeHPNoIniciadasDisenioFuncional = Math.round((contadorHPNoIniciadasFuncional / contadorHPTotalAreaFuncional) * 100);
+                  this.proyectos[i].porcentajeHPEnProgresoDisenioFuncional = Math.round((contadorHPEnProgresoFuncional / contadorHPTotalAreaFuncional) * 100);
+                  this.proyectos[i].porcentajeHPEnPruebaDisenioFuncional = Math.round((contadorHPEnPruebaFuncional / contadorHPTotalAreaFuncional) * 100);
+                  break;
+                }
+                case "RelevamientoReq": {
+                  switch (resp.dataset[r].Estado){
+                    case "Completed": {
+                      contadorHPTotalAreaTecnica = contadorHPTotalAreaTecnica + resp.dataset[r].Horas;
+                      contadorHPCompletadasTecnico = contadorHPCompletadasTecnico + resp.dataset[r].Horas;
+                      break;
+                    }
+                    case "In Progress": {
+                      contadorHPTotalAreaTecnica = contadorHPTotalAreaTecnica + resp.dataset[r].Horas;
+                      contadorHPEnProgresoTecnico = contadorHPEnPruebaTecnico + resp.dataset[r].Horas;
+                      break;
+                    }
+                    case "Not Started": {
+                      contadorHPTotalAreaTecnica = contadorHPTotalAreaTecnica + resp.dataset[r].Horas;
+                      contadorHPNoIniciadasTecnico = contadorHPNoIniciadasTecnico + resp.dataset[r].Horas;
+                      break;
+                    }
+                    case "In Testing": {
+                      contadorHPTotalAreaTecnica = contadorHPTotalAreaTecnica + resp.dataset[r].Horas;
+                      contadorHPEnPruebaTecnico = contadorHPEnPruebaTecnico + resp.dataset[r].Horas;
+                    }
+                  }
+                  this.proyectos[i].porcentajeHPCompletadasDisenioTecnico = Math.round((contadorHPCompletadasTecnico / contadorHPTotalAreaTecnica) * 100);
+                  this.proyectos[i].porcentajeHPNoIniciadasDisenioTecnico = Math.round((contadorHPNoIniciadasTecnico/ contadorHPTotalAreaTecnica) * 100);
+                  this.proyectos[i].porcentajeHPEnProgresoDisenioTecnico = Math.round((contadorHPEnProgresoTecnico / contadorHPTotalAreaTecnica) * 100);
+                  this.proyectos[i].porcentajeHPEnPruebaDisenioTecnico = Math.round((contadorHPEnPruebaTecnico / contadorHPTotalAreaTecnica) * 100);
+                  break;
+                }
+                case "Produccion": {
+                  switch (resp.dataset[r].Estado){
+                    case "Completed": {
+                      contadorHPTotalAreaDesarrollo = contadorHPTotalAreaDesarrollo + resp.dataset[r].Horas;
+                      contadorHPCompletadasDesarrollo = contadorHPCompletadasDesarrollo + resp.dataset[r].Horas;
+                      break;
+                    }
+                    case "In Progress": {
+                      contadorHPTotalAreaDesarrollo = contadorHPTotalAreaDesarrollo + resp.dataset[r].Horas;
+                      contadorHPEnProgresoDesarrollo = contadorHPEnProgresoDesarrollo + resp.dataset[r].Horas;
+                      break;
+                    }
+                    case "Not Started": {
+                      contadorHPTotalAreaDesarrollo = contadorHPTotalAreaDesarrollo+ resp.dataset[r].Horas;
+                      contadorHPNoIniciadasDesarrollo = contadorHPNoIniciadasDesarrollo + resp.dataset[r].Horas;
+                      break;
+                    }
+                    case "In Testing": {
+                      contadorHPTotalAreaDesarrollo = contadorHPTotalAreaDesarrollo + resp.dataset[r].Horas;
+                      contadorHPEnPruebaDesarrollo = contadorHPEnPruebaDesarrollo + resp.dataset[r].Horas;
+                    }
+                  }
+                  this.proyectos[i].porcentajeHPCompletadasDesarrollo = Math.round((contadorHPCompletadasDesarrollo / contadorHPTotalAreaDesarrollo) * 100);
+                  this.proyectos[i].porcentajeHPNoIniciadasDesarrollo = Math.round((contadorHPNoIniciadasDesarrollo/ contadorHPTotalAreaDesarrollo) * 100);
+                  this.proyectos[i].porcentajeHPEnProgresoDesarrollo = Math.round((contadorHPEnProgresoDesarrollo / contadorHPTotalAreaDesarrollo) * 100);
+                  this.proyectos[i].porcentajeHPEnPruebaDesarrollo = Math.round((contadorHPEnPruebaDesarrollo / contadorHPTotalAreaDesarrollo) * 100);
+                  break;
+                }
+                case "Testing": {
+                  switch (resp.dataset[r].Estado){
+                    case "Completed": {
+                      contadorHPTotalAreaTesting = contadorHPTotalAreaTesting + resp.dataset[r].Horas;
+                      contadorHPCompletadasTesting = contadorHPCompletadasTesting + resp.dataset[r].Horas;
+                      break;
+                    }
+                    case "In Progress": {
+                      contadorHPTotalAreaTesting = contadorHPTotalAreaTesting + resp.dataset[r].Horas;
+                      contadorHPEnProgresoTesting = contadorHPEnProgresoTesting + resp.dataset[r].Horas;
+                      break;
+                    }
+                    case "Not Started": {
+                      contadorHPTotalAreaTesting = contadorHPTotalAreaTesting + resp.dataset[r].Horas;
+                      contadorHPNoIniciadasTesting = contadorHPNoIniciadasTesting + resp.dataset[r].Horas;
+                      break;
+                    }
+                    case "In Testing": {
+                      contadorHPTotalAreaTesting = contadorHPTotalAreaTesting + resp.dataset[r].Horas;
+                      contadorHPEnPruebaTesting = contadorHPEnPruebaTesting + resp.dataset[r].Horas;
+                    }
+                  }
+                  this.proyectos[i].porcentajeHPCompletadasTesting = Math.round((contadorHPCompletadasTesting / contadorHPTotalAreaTesting) * 100);
+                  this.proyectos[i].porcentajeHPNoIniciadasTesting = Math.round((contadorHPNoIniciadasTesting / contadorHPTotalAreaTesting) * 100);
+                  this.proyectos[i].porcentajeHPEnProgresoTesting = Math.round((contadorHPEnProgresoTesting / contadorHPTotalAreaTesting) * 100);
+                  this.proyectos[i].porcentajeHPEnPruebaTesting = Math.round((contadorHPEnPruebaTesting / contadorHPTotalAreaTesting) * 100);
+                  break;
+                }
+              }
+            }
+          });
+        }
+        this.proyectos = [];
+        this.data = new MatTableDataSource(this.proyectos);
+        this.actualizarDisponibilidadProyecto();
+      }
+    });
+  }
+
+  private obtenerProyectosAbiertos(){
+    this.proyectos = [];
+    this._dataProyecto.getProyectosAbiertos().subscribe((resp: any) => {
       if(resp.returnset[0].RCode == 1){
         let contadorHorasTotalesPlanificadas = 0;
         for(let i = 0;i<resp.dataset.length;i++){
@@ -253,10 +498,6 @@ export class InicioEstadoProyectoComponent implements OnInit {
         }
         this.data = new MatTableDataSource(this.proyectos);
         this.actualizarDisponibilidadProyecto();
-       /*  this._filtroService.getUserId(localStorage.getItem('usuario')!).subscribe((response: any) => {
-          localStorage.setItem('userId', response.dataset[0].id);
-          console.log(response.dataset[0])
-        });     */
       }
     });
   }
@@ -398,12 +639,11 @@ export class InicioEstadoProyectoComponent implements OnInit {
     this.disponibilidadProyectos = Math.round((this.getTooltipTareasAtrasadas() / this.getTooltipTareasAbiertasTotales()) * 100);
   }
 
-  /* openFiltro(){
-    //this.proyectos = this.dataProyecto.proyectos;
+  openFiltro(){
     const dialogRef = this._dialog.open(FiltroProyectosComponent, {
       width: '400px',
       disableClose: true,
-      data: { numero: this.numero, nombre: this.nombre, cliente: this.cliente, asignadoA: this.asignadoA, seleccion: this.ordenDeFiltrado, search_id: this.}
+      data: { numero: this.numero, nombre: this.nombre, cliente: this.cliente, asignadoA: this.asignadoA, seleccion: this.ordenDeFiltrado, search_id: this.modal_saved_search_id, misProyectos: this.misProyectos, proyectosAbiertos: this.proyectosAbiertos}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -411,7 +651,8 @@ export class InicioEstadoProyectoComponent implements OnInit {
       this.nombre = result.nombre;
       this.cliente = result.cliente;
       this.asignadoA = result.asignadoA;
-      
+      this.misProyectos = result.misProyectos;
+      this.proyectosAbiertos = result.proyectosAbiertos;
       let filtrar = result.filtrar;
       if (result.limpiar) { this.inputIzq = '', filtrar = true }
       if (filtrar) {
@@ -419,17 +660,44 @@ export class InicioEstadoProyectoComponent implements OnInit {
         const filtroCliente = this.filtroAvanzado(2, this.cliente);
         const filtroAsignado = this.filtroAvanzado(3, this.asignadoA);
         const filtroNumero = this.filtroAvanzado(4, this.numero);
-        this.data = this.buscarCoincidencias(filtroNumero, filtroCliente, filtroAsignado, filtroNumero);
-        this.proyectos = this.buscarCoincidencias(filtroNumero, filtroNombre, filtroAsignado, filtroNumero);
+        this.proyectos = this.buscarCoincidencias(filtroNombre, filtroCliente, filtroAsignado, filtroNumero);
         this.aplicarFiltros();
+        this.verificarChecksBox(this.misProyectos, this.proyectosAbiertos);
       }
     });
-  } */
+  }
 
- /*  aplicarFiltros() {
+  private verificarChecksBox(misProyectos: boolean, proyectosAbiertos: boolean){
+    if(proyectosAbiertos){
+      this.obtenerProyectosAbiertos();
+      console.log("Obtenemos solo los proyectos abiertos");
+      if(misProyectos){
+        for(let i = 0; i<this.proyectos.length;i++){
+          if(this.proyectos[i].asignado == localStorage.getItem('usuario')){
+            this.proyectosAuxiliar.push(this.proyectos[i]);
+          }
+        }
+      }
+    }
+    else{
+      this.obtenerProyectos();
+      if(misProyectos){
+        for(let i = 0; i<this.proyectos.length;i++){
+          if(this.proyectos[i].asignado == localStorage.getItem('usuario')){
+            this.proyectosAuxiliar.push(this.proyectos[i]);
+          }
+        }
+      }
+      console.log("Se restablecen todos los proyectos");
+    }
+  }
+
+  aplicarFiltros() {
+    this.actualizarDisponibilidadProyecto();
     if (this.proyectos.length == 0) {
       this.noHayProyectos = true;
       this.disponibilidadProyectos = 0;
+      console.log("Paso por aca")
     } else if (this.proyectos.length == 1) {
       this.noHayProyectos = false;
       this.actualizarDisponibilidadProyecto();
@@ -439,9 +707,9 @@ export class InicioEstadoProyectoComponent implements OnInit {
       this.actualizarDisponibilidadProyecto();
       this.cambiarOrden();
     }
-  } */
+  }
 
-  /* private filtroAvanzado(tipo: number, valor: string) {
+  private filtroAvanzado(tipo: number, valor: string) {
     let arrayTemp: any = [];
     let arrayTabla: any;
     switch (tipo) {
@@ -485,10 +753,10 @@ export class InicioEstadoProyectoComponent implements OnInit {
           arrayTemp = arrayTabla.filteredData;
           return arrayTemp;
     }
-  } */
+  }
 
 
- /*  private buscarCoincidencias(arrayNombre: any, arrayCliente: any, arrayAsignado: any, arrayNumero: any) {
+  private buscarCoincidencias(arrayNombre: any, arrayCliente: any, arrayAsignado: any, arrayNumero: any) {
     let encontrados: any = [];
     this.proyectos.forEach(project => {
       let encontradoNumero = false;
@@ -499,7 +767,6 @@ export class InicioEstadoProyectoComponent implements OnInit {
       arrayNumero.forEach((element: any) => {
         if (element.numero === project.numero) {
           encontradoNumero = true;
-          console.log("hola numero");
         }
       });
 
@@ -524,7 +791,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
     });
     return encontrados;
   }
- */
+
 
   contraerProyectos(){
     this.accordion.closeAll();
@@ -577,14 +844,12 @@ export class InicioEstadoProyectoComponent implements OnInit {
               'Filtra los proyectos por la cantidad de tareas a tiempo').subscribe((rsp: any) => {
                 console.log('Filtro guardado: ', rsp);
                 this.cambiarOrden();
-                /* this.contraerColaboradores(); */
                 });
           }
           else {
             this._filtroService.updateFiltro(this.orden_saved_search_id, encodedData).subscribe((rsp: any) => {
               console.log('Filtro actualizado: ', rsp);
               this.cambiarOrden();
-              /* this.contraerColaboradores(); */
             });
           } 
         }
@@ -598,14 +863,12 @@ export class InicioEstadoProyectoComponent implements OnInit {
               'Filtra los proyectos por la cantidad de tareas atrasadas').subscribe((rsp: any) => {
                 console.log('Filtro guardado: ', rsp);
                 this.cambiarOrden();
-               /*  this.contraerColaboradores(); */
                 });
           }
           else {
             this._filtroService.updateFiltro(this.orden_saved_search_id, encodedData).subscribe((rsp: any) => {
               console.log('Filtro actualizado: ', rsp);
               this.cambiarOrden();
-              /* this.contraerColaboradores();  */
             });
           }
         } 

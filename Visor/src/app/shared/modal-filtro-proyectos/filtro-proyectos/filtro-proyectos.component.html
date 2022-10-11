@@ -17,12 +17,12 @@
         <input matInput name="nombre" [(ngModel)]="result.asignadoA">
     </mat-form-field>
     <section class="example-section">
-        <mat-checkbox class="example-margin" [disabled]="activarBoton">Mis proyectos</mat-checkbox>
-        <mat-checkbox class="example-margin" [disabled]="activarBoton">Proyectos Abiertos</mat-checkbox>
+        <mat-checkbox [(ngModel)]="result.misProyectos" [checked]="result.misProyectos" class="example-margin">Mis proyectos</mat-checkbox>
+        <mat-checkbox [(ngModel)]="result.proyectosAbiertos" [checked]="result.proyectosAbiertos" class="example-margin">Proyectos Abiertos</mat-checkbox>
     </section>
 </div>
 <div class="botonera">
-    <button mat-button class="blue">Limpiar</button>
+    <button mat-button class="blue" (click)="limpiarFiltro()">Limpiar</button>
     <button mat-button class="red" (click)="cancelarBusqueda()">Cancelar</button>
-    <button mat-button class="green" [mat-dialog-close]="result">Filtrar</button>
+    <button mat-button class="green" [mat-dialog-close]="result" (click)="guardarFiltro()">Filtrar</button>
 </div>
