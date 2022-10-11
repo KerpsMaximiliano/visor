@@ -165,7 +165,7 @@ export class ActividadComponent implements OnInit {
 
 
 //ELIMINAR INTEGRACION
-  onEliminarActividadSuite(index: number){
+  /*onEliminarActividadSuite(index: number){
     console.log('posicion inicial',index);
       console.log('actividades',this._actividadService.listActividades)
     this.dialogService.openConfirmDialog('¿Usted está seguro de que desea eliminar esa actividad?' )
@@ -182,6 +182,26 @@ export class ActividadComponent implements OnInit {
           })
      
         this._snackBar.open('Actividad eliminada','',{
+          duration: 1500,
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom'
+        })
+      }
+    });
+  
+  }*/
+
+  onEliminarActividadSuite(index: number){
+    
+    this.dialogService.openConfirmDialog('¿Usted está seguro de que desea eliminar esa actividad?' )
+    .afterClosed().subscribe(res =>{
+      if(res){
+        
+         this._actividadService.deleteActividad(this.dataSource.data[index].id_actividad).subscribe((response:any)=>{
+            console.log("DELETE EXITOSO", response);
+          })
+          this.cargarActividadesSuite();
+          this._snackBar.open('Actividad eliminada','',{
           duration: 1500,
           horizontalPosition: 'center',
           verticalPosition: 'bottom'
@@ -296,6 +316,9 @@ export class ActividadComponent implements OnInit {
   onAgregarActividad(){
       // Agregamos una nueva Actividad
       this._actividadService.form.reset();
+      this._actividadService.form.patchValue({
+        tareaAsociada: this.dataSource.data[0].nombre_tarea
+      })
       const dialogRef = this.dialog.open(ModalActividadComponent,{});
   // this.dialog.open(ModalActividadComponent);
     dialogRef.afterClosed().subscribe(res =>{
