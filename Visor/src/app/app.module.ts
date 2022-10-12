@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
+import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -26,6 +27,8 @@ import { ModalFiltroComponent } from './componentes/inicio/modal-filtro/modal-fi
 import { InicioMainComponent } from './componentes/inicio/inicio-main/inicio-main.component';
 import { InicioDisponibilidadColaboradoresModule } from './componentes/inicio/inicio-disponibilidad-colaboradores/inicio-disponibilidad-colaboradores.module';
 import { VistaDesarrolladorModule } from './componentes/vista-desarrollador/vista-desarrollador.module';
+import { TareasModule } from './components/tareas/tareas.module';
+import { DialogModule } from './components/dialog/dialog.module';
 
 export function initConfig(config: Config) {
   return () => config.load();
@@ -50,6 +53,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    RouterModule,
     BrowserAnimationsModule,
     MyMaterialModule,
     LoginModule,
@@ -60,7 +64,9 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     VistaDisenioTecnicoModule,
     InicioDisponibilidadColaboradoresModule,
     FormsModule,
-    VistaDesarrolladorModule
+    VistaDesarrolladorModule,
+    TareasModule,
+    DialogModule
   ],
 
   //Proveedores agregados

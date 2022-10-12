@@ -1,0 +1,77 @@
+<h1> Visor </h1>
+<button mat-button >Inicio</button>
+<button mat-button>Equipo</button>
+<button mat-button>Tareas</button>
+<button mat-button >Wiki I+D</button>
+<button mat-button>Documentos</button>
+
+<mat-divider class="mat_divider"></mat-divider>
+<mat-divider class="mat_divider"></mat-divider>
+
+<h1> {{nombreProyecto}}</h1>
+<h3>{{subtituloProyecto}}</h3>
+
+
+<div class="buscador" appearance="standard">
+  <mat-form-field class="example-form-field" appearance="fill">
+    <!-- <mat-label>Buscar proyecto</mat-label> -->
+    <input matInput type="text" placeholder="Buscar proyecto..." autocomplete="off" [(ngModel)]="nombreProyecto"  (keyup)="buscarProyectos($event)">
+    <!-- <div class="resultados" [ngClass]="nombreProyecto == '' ? 'ocultarTabla' : 'mostrarTabla'"> -->
+    <div class="resultados" [ngClass]= estiloListaProyectos >
+      <div>
+        <table mat-table [dataSource]="dataSourceService" class="mat-elevation-z8">
+          <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef>Proyectos</th>
+            <td mat-cell *matCellDef="let unProyecto" (click)="seleccionarProyecto(unProyecto)"> {{ unProyecto.nombre_projecto }} </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+          <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
+        </table>
+      </div>
+    </div>
+  </mat-form-field>
+  <!-- Lupa para buscar proyectos-->
+  <mat-icon class="icon" (click)="abrirDialogProyecto($event)">search</mat-icon>
+  
+  <button mat-button [matMenuTriggerFor]="menu">Vista</button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)='proyectoSeleccionado($event)' id="Analista Funcional">Analista funcional</button>
+    <button mat-menu-item (click)='proyectoSeleccionado($event)' id="Analista Tecnico">Analsita Técnico</button>
+    <button mat-menu-item (click)='proyectoSeleccionado($event)' id="Desarrollador">Desarrollador</button>
+    <button mat-menu-item (click)='proyectoSeleccionado($event)' id="Tester">Tester</button>
+    <button mat-menu-item (click)='proyectoSeleccionado($event)' id="Project manager">Project manager</button>
+  </mat-menu>
+  <!-- <mat-form-field appearance="fill">
+            <mat-label>Horizontal position</mat-label>
+            <mat-select [(value)]="horizontalPosition">
+              <mat-option value="start">Start</mat-option>
+              <mat-option value="center">Center</mat-option>
+              <mat-option value="end">End</mat-option>
+              <mat-option value="left">Left</mat-option>
+              <mat-option value="right">Right</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Vertical position</mat-label>
+            <mat-select [(value)]="verticalPosition">
+              <mat-option value="top">Top</mat-option>
+              <mat-option value="bottom">Bottom</mat-option>
+            </mat-select>
+          </mat-form-field> -->
+  
+  <!-- <button mat-stroked-button (click)="openSnackBar()" aria-label="Show an example snack-bar">
+            Pool party!
+          </button> -->
+</div>
+
+<div class="buscador">
+    <mat-icon class="icon">add_circle</mat-icon>
+    <button mat-raised-button [matMenuTriggerFor]="sprintMenu">Sprint 9</button>
+    <mat-menu #sprintMenu="matMenu">
+      <button mat-menu-item>10/22</button>
+      <button mat-menu-item>11/12</button>
+      <button mat-menu-item>12/12</button>
+    </mat-menu>
+    <button (click)="getUsuarioTareasAsignadas()">Asignadas a mi</button>
+    <mat-icon class="icon" (click)="buscarTarea()">filter_alt</mat-icon>
+</div>

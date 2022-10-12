@@ -133,4 +133,14 @@ export class RestService {
   //   let result = this.doProcedimientoExt(body, query);
   //   return result;
   // }
+
+  getABMproyectoRest(jsbody:string, endPoint:string){
+    let token = localStorage.getItem('auth_token')!; //con el ! le digo a typescript que token nunca va a ser nulo o vacio, ojo! asegurar este comportamiento sino buscar otra forma
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'x-access-token': token
+    });
+    let url = this.preUrl + 'api/proc/' + endPoint;
+    return this.http.post(url,jsbody, { headers });
+  }
 }

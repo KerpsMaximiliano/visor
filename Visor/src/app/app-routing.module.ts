@@ -12,6 +12,7 @@ import { RolesUsuariosComponent } from './components/configuraciones/roles-usuar
 import { VistaDesarrolladorComponent } from './componentes/vista-desarrollador/vista-desarrollador.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AuthGuard } from './guards/auth.guard';
+import { TareasComponent } from './components/tareas/tareas.component';
 
 const routes: Routes = [
   {
@@ -37,15 +38,13 @@ const routes: Routes = [
         children: [
         { path: 'roles-usuarios', component: RolesUsuariosComponent },
         { path: 'permisos-roles', component: PermisosRolesComponent }
-    ] }
+    ] },
+    {path: 'tareas', component: TareasComponent}
     ]
   },
   {
     path: "vista-diseño-tecnico",
     component: VistaDisenioTecnicoComponent
-  },
-  {
-    path: "vista-desarrollador", component: VistaDesarrolladorComponent
   }
 ];
 
