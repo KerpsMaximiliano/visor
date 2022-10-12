@@ -1,12 +1,3 @@
-<h1> Visor </h1>
-<button mat-button >Inicio</button>
-<button mat-button>Equipo</button>
-<button mat-button>Tareas</button>
-<button mat-button >Wiki I+D</button>
-<button mat-button>Documentos</button>
-
-<mat-divider class="mat_divider"></mat-divider>
-<mat-divider class="mat_divider"></mat-divider>
 
 <h1> {{nombreProyecto}}</h1>
 <h3>{{subtituloProyecto}}</h3>
@@ -75,3 +66,6 @@
     <button (click)="getUsuarioTareasAsignadas()">Asignadas a mi</button>
     <mat-icon class="icon" (click)="buscarTarea()">filter_alt</mat-icon>
 </div>
+
+<app-vista-disenio-tecnico *ngIf="subtituloProyecto ==  ' Avance de Diseño técnico'" [tareasSP]="tareasFiltradasPorVista"></app-vista-disenio-tecnico>
+<app-vista-desarrollador *ngIf="subtituloProyecto == ' Avance de Desarrollo'" [tareasSP]="tareasFiltradasPorVista"></app-vista-desarrollador>

@@ -27,4 +27,12 @@ export class TopbarComponent implements OnInit {
   logout(){
     this._loginService.logOut();
   }
+
+  inicio(){
+    this.router.navigate(['inicio'], {relativeTo: this.route })
+  }
+
+  tareas(){
+    this.router.navigate(['tareas'], {relativeTo: this.route })
+  }
 }

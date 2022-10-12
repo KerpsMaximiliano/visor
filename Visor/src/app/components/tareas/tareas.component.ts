@@ -9,6 +9,7 @@ import {
 } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { TareaService } from 'src/app/services/i2t/tarea.service';
+import { Tarea } from 'src/app/interfaces/tarea';
 
 
 
@@ -82,7 +83,8 @@ export class TareasComponent implements OnInit {
   
 
   
-
+  tareasFiltradas: any = [];
+  tareasFiltradasPorVista: any= []; 
   columnas: string[] = ['nombre'];
 
 
@@ -167,7 +169,7 @@ export class TareasComponent implements OnInit {
   }
 
   buscarTarea(){
-    console.log(this.filtrosTarea)
+    console.log("filtros: "+this.filtrosTarea.idProyectoSeleccionado)
     const dialogRef = this.dialog.open(DialogComponent,{width:'72%', data:{buscaTareas: true, filtros:this.filtrosTarea}});
     dialogRef.afterClosed().pipe(
       finalize(() => {
@@ -175,8 +177,7 @@ export class TareasComponent implements OnInit {
       })
     )
     .subscribe(result => {
-      this.filtrosBusquedaTareas = result;
-      console.log(result)
+      this.tareasFiltradas= result;
          
     })
   }
@@ -207,9 +208,21 @@ export class TareasComponent implements OnInit {
       break;
       case 'Analista Tecnico':
         this.subtituloProyecto = ' Avance de Diseño técnico';
+        this.tareasFiltradasPorVista= [];
+        this.tareasFiltradas.forEach( (tarea:any) => {
+          if(tarea.tipo_tarea == "RelevamientoReq"){
+            this.tareasFiltradasPorVista.push(tarea);
+          }
+        });
       break;
       case 'Desarrollador':
-        this.subtituloProyecto = ' Avance de Diseño funcional';
+        this.subtituloProyecto = ' Avance de Desarrollo';
+        this.tareasFiltradasPorVista= [];
+        this.tareasFiltradas.forEach( (tarea:any) => {
+          if(tarea.tipo_tarea == "Produccion"){
+            this.tareasFiltradasPorVista.push(tarea);
+          }
+        });
       break;
       case 'Tester':
         this.subtituloProyecto = ' Avance de Testing';

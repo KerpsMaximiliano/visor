@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Tarea } from 'src/app/interfaces/tarea';
 import { TareaService } from 'src/app/services/i2t/tarea.service';
 
@@ -11,7 +11,7 @@ export class VistaDesarrolladorComponent implements OnInit {
 
   proyectoId: any;
   proyectoNombre?: string;
-  tareasSP: any;
+  //tareasSP: any;
   tareasOrg: any[]=[];
   tareasNoIniciadas: Tarea[]=[];
   tareasEnProgreso: any[]=[];
@@ -33,9 +33,11 @@ export class VistaDesarrolladorComponent implements OnInit {
   
   constructor(private _tareaService: TareaService) { }
 
+  @Input() tareasSP: any = [];
+
   ngOnInit(): void {
     this.proyectoId = "d31cfdaa-049e-e6e3-999d-62b5b2f778b7"; // este dato viene del commponente tareas
-    this._tareaService.getTareasDeProyecto(this.proyectoId, 'Produccion').subscribe((response: any) => {
+    /*this._tareaService.getTareasDeProyecto(this.proyectoId, 'Produccion').subscribe((response: any) => {
       this.tareasSP = response.dataset;
       this.proyectoNombre = this.tareasSP[0].nombre_proyecto;
       this.organizarTareas();
@@ -45,7 +47,22 @@ export class VistaDesarrolladorComponent implements OnInit {
         this.setearBarraProgreso();
         this.ordenarListas();
       }
-    });
+    });*/
+
+    if(this.tareasSP.length > 0){
+      this.noHayProyecto= false;
+      this.organizarTareas();
+      console.log(this.tareasOrg);
+      this.cargarTareas();
+      this.poseeTareas();
+      if (!this.noHayProyecto) {
+        this.setearBarraProgreso();
+        this.ordenarListas();
+      }
+    }
+    else{
+      this.noHayProyecto = true;
+    }
   }
 
   organizarTareas() {
