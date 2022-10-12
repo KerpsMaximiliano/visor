@@ -57,7 +57,7 @@ export class VistaDisenioTecnicoComponent implements OnInit{
       else{
         this.noHayProyecto = true;
       }
-      
+
   }
 
   organizarTareas() {

@@ -6,10 +6,13 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+
+
 //Material
 import { MyMaterialModule } from './material';
 
-// Components y Modules
+
+// Componentes
 import { LoginModule } from './componentes/login/login.module';
 import { RecuperarcontraseniaModule } from './componentes/recuperar-contrasenia/recuperar-contrasenia.module';
 import { ConfiguracionesComponent } from './components/configuraciones/configuraciones-main/configuraciones-main.component';
@@ -38,6 +41,10 @@ import { FormsModule } from '@angular/forms';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { TopbarComponent } from './components/topbar/topbar.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ControlActividadModule } from 'src/app/componentes/control-actividad/control-actividad.module';
+import { SharedModule } from './shared/shared.module';
+
 
 @NgModule({
   declarations: [
@@ -66,7 +73,9 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     FormsModule,
     VistaDesarrolladorModule,
     TareasModule,
-    DialogModule
+    DialogModule,
+    ControlActividadModule,
+    SharedModule
   ],
 
   //Proveedores agregados

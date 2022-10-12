@@ -43,11 +43,32 @@ const MATERIALES = [
   MatDatepickerModule,
   MatNativeDateModule,
   MatExpansionModule,
-  MatSelectModule
+  MatSelectModule,
+  MatButtonModule,
+  MatSliderModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatSnackBarModule,
+  MatTableModule,
+  MatIconModule,
+  MatTooltipModule,
+  MatExpansionModule,
+  MatDialogModule,
+  MatDatepickerModule,
+  MatNativeDateModule,
+  MatDividerModule,
+  MatListModule,
+  MatGridListModule,
+  MatAutocompleteModule,
+  MatProgressBarModule,
+  MatCardModule,
+  MatCheckboxModule,
+  MatMenuModule,
+  MatPaginatorModule
 ]
 
-
 import { NgModule } from '@angular/core';
+
 
 @NgModule({
   imports: [
