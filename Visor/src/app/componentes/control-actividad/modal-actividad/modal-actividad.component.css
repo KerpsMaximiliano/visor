@@ -18,7 +18,7 @@
 }
 .table{
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr 2fr;
+  grid-template-columns: 3fr 2fr 1fr 2fr;
   gap: 2%;
   align-items: center;
   font-size: medium;

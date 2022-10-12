@@ -70,7 +70,7 @@ id!: string;
     this.form = this.fb.group({
       fecha: ['',Validators.required],
       horasEjecutadas: ['',Validators.required],
-      descripcion: ['',Validators.required],
+      descripcion: [''],
       asunto: ['',Validators.required],
       
       tareaAsociada: ['',Validators.required]
@@ -258,4 +258,6 @@ id!: string;
     });
     return this.rest.callProcedimientoVisor(jsbody, 'AbmActividades');
   }
+
+  
 }
