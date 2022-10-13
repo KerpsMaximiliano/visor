@@ -118,10 +118,11 @@
                                     <strong>Notas: </strong>
                                     <p>{{tarea.notas}}</p>
                                 </div>
-                                <button mat-button class="actividades-desplegable">
+                                <button mat-button class="actividades-desplegable" (click)="abrirActividades()">
                                     <i class="icon-general fa-solid fa-angle-down"></i>
                                     <strong>Actividades</strong>
                                 </button>
+                                <app-actividad *ngIf="panelActividadesAbierto == true" [idTarea]="tarea.idTarea"></app-actividad>
                             </div>
                         <mat-expansion-panel-header>
                         <mat-panel-title>
@@ -200,10 +201,11 @@
                                     <strong>Notas: </strong>
                                     <p>{{tarea.notas}}</p>
                                 </div>
-                                <button mat-button class="actividades-desplegable">
+                                <button mat-button class="actividades-desplegable" (click)="abrirActividades()">
                                     <i class="icon-general fa-solid fa-angle-down"></i>
                                     <strong>Actividades</strong>
                                 </button>
+                                <app-actividad *ngIf="panelActividadesAbierto == true" [idTarea]="tarea.idTarea"></app-actividad>
                             </div>
                         <mat-expansion-panel-header>
                         <mat-panel-title>
@@ -283,10 +285,11 @@
                                 <strong>Notas: </strong>
                                 <p>{{tarea.notas}}</p>
                             </div>
-                            <button mat-button class="actividades-desplegable">
+                            <button mat-button class="actividades-desplegable" (click)="abrirActividades()">
                                 <i class="icon-general fa-solid fa-angle-down"></i>
                                 <strong>Actividades</strong>
                             </button>
+                            <app-actividad *ngIf="panelActividadesAbierto == true" [idTarea]="tarea.idTarea"></app-actividad>
                         </div>
                     <mat-expansion-panel-header>
                     <mat-panel-title>

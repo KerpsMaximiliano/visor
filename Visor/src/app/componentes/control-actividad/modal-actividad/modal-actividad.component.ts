@@ -35,7 +35,7 @@ export class ModalActividadComponent implements OnInit {
               private dialog: MatDialog,
               public dialogRef: MatDialogRef<ModalActividadComponent>,
               private dateAdapter: DateAdapter<Date>,
-              @Inject(MAT_DIALOG_DATA) public data: Actividad,
+              @Inject(MAT_DIALOG_DATA) public data: any,
               ) {
                 this.dateAdapter.setLocale('en-GB'); //dd/MM/yyyy
                 /*this.form = this.fb.group({
@@ -160,7 +160,7 @@ console.log('ACTIVIDAD SSSS FECHAAA',actividadS.fecha)
   this._actividadService.form.reset()
   
    
-      this._actividadService.agregarActividad(actividadS).subscribe((response:any)=>{
+      this._actividadService.agregarActividad(actividadS, this.data.idTarea).subscribe((response:any)=>{
         console.log("INSERT EXITOSO", response);
     });
   
@@ -258,7 +258,7 @@ editarActividadSuite(){
 
   this._actividadService.form.reset();
   
-  this._actividadService.editarActividad(actividadS).subscribe((response:any)=>{
+  this._actividadService.editarActividad(actividadS, this.data.idTarea).subscribe((response:any)=>{
     console.log("UPDATE EXITOSO", response);
 });
   }

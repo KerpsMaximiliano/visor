@@ -121,7 +121,7 @@ id!: string;
     console.log('arreglo final',this.listActividades);
   }
  
-  par_modoG(){
+  par_modoG(idTarea: string){
     let jsbody: string = JSON.stringify({
     par_modo : "G",
     descripcion:"",
@@ -131,12 +131,12 @@ id!: string;
     horas_ejecutadas: 0,
     tipo_actividad : "",
     asignado_a : "",
-    id_tarea: "a0287b5d-14c5-11ed-965a-00505601020a"
+    id_tarea: idTarea
     });
     return this.rest.callProcedimientoVisor(jsbody,"AbmActividades");
   }
 
-  par_modoI(){
+  par_modoI(idTarea: string){
     let jsbody: string = JSON.stringify({
       par_modo : "I",
     titulo: "",
@@ -146,12 +146,12 @@ id!: string;
     horas_ejecutadas: 0,
     tipo_actividad : "",
     asignado_a : "",
-    id_tarea: "a0287b5d-14c5-11ed-965a-00505601020a"
+    id_tarea: idTarea
     });
     return this.rest.callProcedimientoVisor(jsbody,"AbmActividades");
   }
 
-  par_modoD(){
+  par_modoD(idTarea: string){
     let jsbody: string = JSON.stringify({
       par_modo : "D",
     titulo: "",
@@ -160,7 +160,7 @@ id!: string;
     horas_ejecutadas: 0,
     tipo_actividad : "",
     asignado_a : "",
-    id_tarea: "a0287b5d-14c5-11ed-965a-00505601020a"
+    id_tarea: idTarea
     });
     return this.rest.callProcedimientoVisor(jsbody,"AbmActividades");
   }
@@ -215,7 +215,7 @@ id!: string;
     return this.rest.callProcedimientoVisor(jsbody, 'AbmActividades');
   }
 
-  agregarActividad(actividadS: ActividadSuite){
+  agregarActividad(actividadS: ActividadSuite, idTarea: string){
     let day:number=actividadS.fecha.getDate();
     let month:number=actividadS.fecha.getMonth()+1;
     let year:number=actividadS.fecha.getFullYear();
@@ -231,14 +231,14 @@ id!: string;
     tipo_actividad : "",
     fecha: fechaA,
     asignado_a : "",
-    id_tarea: "a0287b5d-14c5-11ed-965a-00505601020a"
+    id_tarea: idTarea
     });
     console.log("bodyyyy",jsbody);
     return this.rest.callProcedimientoVisor(jsbody, 'AbmActividades');
 
   }
 
-  editarActividad(actividadS: ActividadSuite){
+  editarActividad(actividadS: ActividadSuite, idTarea: string){
     let day:number=actividadS.fecha.getDate();
     let month:number=actividadS.fecha.getMonth()+1;
     let year:number=actividadS.fecha.getFullYear();
@@ -254,7 +254,7 @@ id!: string;
     tipo_actividad : "",
     fecha: fechaA,
     asignado_a : "",
-    id_tarea: "a0287b5d-14c5-11ed-965a-00505601020a"
+    id_tarea: idTarea
     });
     return this.rest.callProcedimientoVisor(jsbody, 'AbmActividades');
   }

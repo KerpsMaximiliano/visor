@@ -202,6 +202,11 @@
                                     <p>{{tarea.tareasPrecondicion}}</p>
                                 </div>
                             </div>
+                            <button mat-button class="actividades-desplegable" (click)="abrirActividades()">
+                                <i class="icon-general fa-solid fa-angle-down"></i>
+                                <strong>Actividades</strong>
+                            </button>
+                            <app-actividad *ngIf="panelActividadesAbierto == true" [idTarea]="tarea.idTarea"></app-actividad>
                         </mat-expansion-panel>
                     </mat-accordion>
                 </div>
@@ -294,6 +299,11 @@
                                     <p>{{tarea.tareasPrecondicion}}</p>
                                 </div>
                             </div>
+                            <button mat-button class="actividades-desplegable" (click)="abrirActividades()">
+                                <i class="icon-general fa-solid fa-angle-down"></i>
+                                <strong>Actividades</strong>
+                            </button>
+                            <app-actividad *ngIf="panelActividadesAbierto == true" [idTarea]="tarea.idTarea"></app-actividad>
                         </mat-expansion-panel>
                     </mat-accordion>
                 </div>
@@ -386,6 +396,11 @@
                                     <p>{{tarea.tareasPrecondicion}}</p>
                                 </div>
                             </div>
+                            <button mat-button class="actividades-desplegable" (click)="abrirActividades()">
+                                <i class="icon-general fa-solid fa-angle-down"></i>
+                                <strong>Actividades</strong>
+                            </button>
+                            <app-actividad *ngIf="panelActividadesAbierto == true" [idTarea]="tarea.idTarea"></app-actividad>
                         </mat-expansion-panel>
                     </mat-accordion>
                 </div>

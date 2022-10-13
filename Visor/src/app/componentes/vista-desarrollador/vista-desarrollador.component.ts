@@ -30,6 +30,7 @@ export class VistaDesarrolladorComponent implements OnInit {
   horasCompleatadas: number = 0;
   horasTotales: number = 0;
   filtroAyuda: boolean = false;
+  panelActividadesAbierto: boolean= false;
   
   constructor(private _tareaService: TareaService) { }
 
@@ -68,6 +69,7 @@ export class VistaDesarrolladorComponent implements OnInit {
   organizarTareas() {
     this.tareasSP.forEach((tarea: any) => {
       this.tareasOrg.push({
+        idTarea: tarea.id_trea,
         titulo: tarea.nombre_tarea,
         proyecto: tarea.nombre_proyecto,
         prioridad: tarea.prioridad,
@@ -379,6 +381,10 @@ export class VistaDesarrolladorComponent implements OnInit {
 
   chequearFiltro() {
     return this.filtroAyuda;
+  }
+
+  abrirActividades(){
+    this.panelActividadesAbierto= this.panelActividadesAbierto ? false : true;
   }
 
 }

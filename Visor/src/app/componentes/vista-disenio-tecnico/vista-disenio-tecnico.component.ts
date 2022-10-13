@@ -24,6 +24,7 @@ export class VistaDisenioTecnicoComponent implements OnInit{
   horasEnProgreso: number = 0;
   horasCompleatadas: number = 0;
   horasTotales: number = 0;
+  panelActividadesAbierto: boolean= false;
 
   constructor(private _tareaService: TareaService) {  }
 
@@ -63,6 +64,7 @@ export class VistaDisenioTecnicoComponent implements OnInit{
   organizarTareas() {
     this.tareasSP.forEach((tarea: any) => {
       this.tareasOrg.push({
+        idTarea: tarea.id_trea,
         titulo: tarea.nombre_tarea,
         proyecto: tarea.nombre_proyecto,
         prioridad: tarea.prioridad,
@@ -255,6 +257,10 @@ export class VistaDisenioTecnicoComponent implements OnInit{
     }});
     console.log(arrayOrdenado);
     return arrayOrdenado;
+  }
+
+  abrirActividades(){
+    this.panelActividadesAbierto= this.panelActividadesAbierto ? false : true;
   }
 
 }

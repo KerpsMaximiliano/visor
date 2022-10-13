@@ -20,6 +20,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSelectModule } from '@angular/material/select';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 const MATERIALES = [
   MatButtonModule,
@@ -36,35 +38,17 @@ const MATERIALES = [
   MatCheckboxModule,
   MatListModule,
   MatDividerModule,
+  MatProgressSpinnerModule,
   MatTableModule,
+  MatToolbarModule,
   MatMenuModule,
   MatSnackBarModule,
   MatPaginatorModule,
   MatDatepickerModule,
   MatNativeDateModule,
   MatExpansionModule,
-  MatSelectModule,
-  MatButtonModule,
-  MatSliderModule,
-  MatFormFieldModule,
-  MatInputModule,
-  MatSnackBarModule,
-  MatTableModule,
-  MatIconModule,
-  MatTooltipModule,
-  MatExpansionModule,
-  MatDialogModule,
-  MatDatepickerModule,
-  MatNativeDateModule,
-  MatDividerModule,
-  MatListModule,
-  MatGridListModule,
-  MatAutocompleteModule,
-  MatProgressBarModule,
-  MatCardModule,
-  MatCheckboxModule,
-  MatMenuModule,
-  MatPaginatorModule
+  MatSelectModule
+  
 ]
 
 import { NgModule } from '@angular/core';

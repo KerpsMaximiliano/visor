@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { Actividad } from 'src/app/interfaces/actividades';
@@ -57,6 +57,8 @@ export class ActividadComponent implements OnInit {
 
   panelOpenState = false;
 
+  @Input() idTarea: string= '';
+
   //inyecto el servicio 
   constructor(private _actividadService: ActividadService,
               private _loginService: LoginService,
@@ -68,7 +70,7 @@ export class ActividadComponent implements OnInit {
               public dialogRef: MatDialogRef<ActividadComponent>,
               public dialogRefModal: MatDialogRef<ModalActividadComponent>,
               private cd: ChangeDetectorRef,
-              @Inject(MAT_DIALOG_DATA) public data:Actividad
+              @Inject(MAT_DIALOG_DATA) public data:Actividad,
                ) { }
 
   ngOnInit(): void {
@@ -150,7 +152,7 @@ export class ActividadComponent implements OnInit {
   cargarActividadesSuite(){
     this.cd.detectChanges();
    
-      this._actividadService.par_modoG().subscribe((response: any) =>{
+      this._actividadService.par_modoG(this.idTarea).subscribe((response: any) =>{
       
         console.log("dataSource",this.dataSource);
         response.dataset.forEach((y: any) =>{
@@ -247,7 +249,7 @@ export class ActividadComponent implements OnInit {
    console.log('actividad final',this.actividad)
    
    //this._actividadService.openModalActividad(8);
-   const dialogRef = this.dialog.open(ModalActividadComponent,{});
+   const dialogRef = this.dialog.open(ModalActividadComponent,{data: {idTarea: this.idTarea}});
    dialogRef.afterClosed().subscribe(res =>{
     if(res){
       console.log(res);
@@ -296,7 +298,7 @@ export class ActividadComponent implements OnInit {
     console.log('actividad final',this.dataSource.data[index])
     
     //this._actividadService.openModalActividad(8);
-    const dialogRef = this.dialog.open(ModalActividadComponent,{});
+    const dialogRef = this.dialog.open(ModalActividadComponent,{data: {idTarea: this.idTarea}});
     dialogRef.afterClosed().subscribe(res =>{
      if(res){
        console.log(res);
@@ -328,7 +330,7 @@ export class ActividadComponent implements OnInit {
       this._actividadService.form.patchValue({
         tareaAsociada: this.dataSource.data[0].nombre_tarea
       })
-      const dialogRef = this.dialog.open(ModalActividadComponent,{});
+      const dialogRef = this.dialog.open(ModalActividadComponent,{data:{idTarea: this.idTarea}});
   // this.dialog.open(ModalActividadComponent);
     dialogRef.afterClosed().subscribe(res =>{
       if(res){
