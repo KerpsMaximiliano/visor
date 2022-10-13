@@ -15,16 +15,18 @@ import { MyMaterialModule } from './material';
 // Componentes
 import { LoginModule } from './componentes/login/login.module';
 import { RecuperarcontraseniaModule } from './componentes/recuperar-contrasenia/recuperar-contrasenia.module';
-import { ConfiguracionesComponent } from './components/configuraciones/configuraciones-main/configuraciones-main.component';
-import { RolesUsuariosModule } from './components/configuraciones/roles-usuarios/roles-usuarios.module';
-import { PermisosRolesModule } from './components/configuraciones/permisos-roles/permisos-roles.module';
-import { MatConfirmDialogComponent } from './shared/mat-confirm-dialog/mat-confirm-dialog.component';
-import { RestService } from './services/i2t/rest.service';
-import { LoginService } from './services/i2t/login.service';
-import { Config } from './services/i2t/config.service';
+import { InicioEstadoModule } from './componentes/inicio-estado-proyecto/inicio-estado.module';
 import { HttpClientModule } from '@angular/common/http';
+import { RestService } from './services/i2t/rest.service';
+import { Config } from './services/i2t/config.service';
 import { SnackbarService } from './services/util/snackbar.service';
 import { ModalcontraseniaComponent } from './shared/modal-contrasenia/modalcontrasenia.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormsModule } from '@angular/forms';
+import { PermisosRolesModule } from './components/configuraciones/permisos-roles/permisos-roles.module';
+import { RolesUsuariosModule } from './components/configuraciones/roles-usuarios/roles-usuarios.module';
+import { ConfiguracionesComponent } from './components/configuraciones/configuraciones-main/configuraciones-main.component';
+import { MatConfirmDialogComponent } from './shared/mat-confirm-dialog/mat-confirm-dialog.component';
 import { VistaDisenioTecnicoModule } from './componentes/vista-disenio-tecnico/vista-disenio-tecnico.module';
 import { ModalFiltroComponent } from './componentes/inicio/modal-filtro/modal-filtro.component';
 import { InicioMainComponent } from './componentes/inicio/inicio-main/inicio-main.component';
@@ -37,13 +39,12 @@ export function initConfig(config: Config) {
   return () => config.load();
 }
 
-import { FormsModule } from '@angular/forms';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { TopbarComponent } from './components/topbar/topbar.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ControlActividadModule } from 'src/app/componentes/control-actividad/control-actividad.module';
 import { SharedModule } from './shared/shared.module';
+import { LoginService } from './services/i2t/login.service';
 
 
 @NgModule({
@@ -64,9 +65,7 @@ import { SharedModule } from './shared/shared.module';
     BrowserAnimationsModule,
     MyMaterialModule,
     LoginModule,
-    RecuperarcontraseniaModule,
-    RolesUsuariosModule,
-    PermisosRolesModule,
+    InicioEstadoModule,
     HttpClientModule,
     VistaDisenioTecnicoModule,
     InicioDisponibilidadColaboradoresModule,
@@ -75,11 +74,13 @@ import { SharedModule } from './shared/shared.module';
     TareasModule,
     DialogModule,
     ControlActividadModule,
-    SharedModule
+    SharedModule,
+    RecuperarcontraseniaModule
   ],
 
   //Proveedores agregados
-  providers: [RestService, LoginService, Config, SnackbarService, { provide: MAT_DATE_LOCALE, useValue: 'en-GB' }],
+  providers: [RestService, LoginService, Config, MatSnackBar, SnackbarService, { provide: MAT_DATE_LOCALE, useValue: 'en-GB' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+

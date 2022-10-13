@@ -5,6 +5,7 @@ import { ActividadComponent } from './componentes/control-actividad/actividad/ac
 //Componentes
 import { LoginComponent } from './componentes/login/login.component';
 import { RecuperarcontraseniaComponent } from './componentes/recuperar-contrasenia/recuperar-contrasenia.component';
+import { InicioEstadoProyectoComponent } from './componentes/inicio-estado-proyecto/inicio-estado-proyecto.component';
 import { VistaDisenioTecnicoComponent } from './componentes/vista-disenio-tecnico/vista-disenio-tecnico.component';
 import { InicioMainComponent } from './componentes/inicio/inicio-main/inicio-main.component';
 import { ConfiguracionesComponent } from './components/configuraciones/configuraciones-main/configuraciones-main.component';
@@ -40,7 +41,6 @@ const routes: Routes = [
         { path: 'roles-usuarios', component: RolesUsuariosComponent },
         { path: 'permisos-roles', component: PermisosRolesComponent }
     ] },
-    {path: 'tareas', component: TareasComponent},
     {path: 'actividades', component: ActividadComponent}
     ]
   }

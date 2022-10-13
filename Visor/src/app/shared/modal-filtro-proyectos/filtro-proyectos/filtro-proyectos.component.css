@@ -1,0 +1,32 @@
+h1 {
+    text-align: center;
+}
+
+.form {
+    text-align: center;
+}
+
+.botonera {
+    display: flex;
+    justify-content: space-between;
+}
+
+button {
+    width: 30%;
+}
+
+.blue {
+    background-color: lightskyblue;
+}
+
+.red {
+    background-color: lightcoral;
+}
+
+.green {
+    background-color: lightgreen;
+}
+
+mat-checkbox{
+    margin: 15px;
+}

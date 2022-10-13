@@ -14,7 +14,8 @@ import { environment } from 'src/environments/environment';
 })
 export class RestService {
   preUrl: string;
-
+  urlPost: string = "http://tstvar.i2tsa.com.ar:3001/api/";
+  token: any = localStorage.getItem('auth_token');
 
 
   constructor(
