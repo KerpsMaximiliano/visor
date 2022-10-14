@@ -59,9 +59,9 @@ export class FiltroProyectosComponent implements OnInit {
       this.result.asignadoA = '';
       this.result.limpiar = true;
       this.result.filtrar = true;
-      this.result.misProyectos = false
-      this.result.proyectosAbiertos = false
-      this.dialogRef.close(this.result);
+      this.result.misProyectos = true;
+      this.result.proyectosAbiertos = true;
+      this.dialogRef.close(this.result);  
     }
   }
 

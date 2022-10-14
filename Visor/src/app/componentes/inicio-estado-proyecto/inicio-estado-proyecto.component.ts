@@ -30,6 +30,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
 
   data: any;
   proyectos: Proyecto[] = [];
+  proyectosAsignados: Proyecto[] = [];
   displayedColumns: string[] = ['nombre','tareasATiempo','tareasAtrasadas'];
   columnsToDisplayWithExpand = [...this.displayedColumns, 'expand'];
   expandedElement!: Proyecto;
@@ -41,9 +42,9 @@ export class InicioEstadoProyectoComponent implements OnInit {
   ordenDeFiltrado: string;
   orden_saved_search_id = '';
   modal_saved_search_id = '';
-  proyectosAuxiliar: Proyecto[] = [];
   misProyectos: boolean = false;
   proyectosAbiertos: boolean = false;
+  proyectosSP: Proyecto[] = [];
 
 
   //Variables del filtro
@@ -94,17 +95,17 @@ export class InicioEstadoProyectoComponent implements OnInit {
               this.nombre = contenido.nombre;
               this.cliente = contenido.cliente;
               this.asignadoA = contenido.asignadoA;     
-            }
+            } 
           });
         }
-        this.verificarChecksBox(this.misProyectos, this.proyectosAbiertos);
-        console.log(this.disponibilidadProyectos)
       });
+      this.verificarCheckProyectosAbiertos(this.proyectosAbiertos);
+      this.verificarCheckMisProyectos(this.misProyectos);
+      this.actualizarDisponibilidadProyecto();
   });
   }
 
   private obtenerProyectos(){
-    this.proyectos = [];
     this._dataProyecto.getProyectos().subscribe((resp: any) => {
       if(resp.returnset[0].RCode == 1){
         let contadorHorasTotalesPlanificadas = 0;
@@ -296,7 +297,6 @@ export class InicioEstadoProyectoComponent implements OnInit {
             }
           });
         }
-        this.proyectos = [];
         this.data = new MatTableDataSource(this.proyectos);
         this.actualizarDisponibilidadProyecto();
       }
@@ -497,6 +497,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
           });
         }
         this.data = new MatTableDataSource(this.proyectos);
+        
         this.actualizarDisponibilidadProyecto();
       }
     });
@@ -653,47 +654,51 @@ export class InicioEstadoProyectoComponent implements OnInit {
       this.asignadoA = result.asignadoA;
       this.misProyectos = result.misProyectos;
       this.proyectosAbiertos = result.proyectosAbiertos;
+      this.verificarCheckProyectosAbiertos(this.proyectosAbiertos);
+      this.verificarCheckMisProyectos(this.misProyectos);
       let filtrar = result.filtrar;
       if (result.limpiar) { this.inputIzq = '', filtrar = true }
       if (filtrar) {
-        const filtroNombre = this.filtroAvanzado(1, this.nombre);
-        const filtroCliente = this.filtroAvanzado(2, this.cliente);
-        const filtroAsignado = this.filtroAvanzado(3, this.asignadoA);
-        const filtroNumero = this.filtroAvanzado(4, this.numero);
-        this.proyectos = this.buscarCoincidencias(filtroNombre, filtroCliente, filtroAsignado, filtroNumero);
         this.aplicarFiltros();
-        this.verificarChecksBox(this.misProyectos, this.proyectosAbiertos);
       }
     });
   }
 
-  private verificarChecksBox(misProyectos: boolean, proyectosAbiertos: boolean){
+  private prepararFiltro(){
+    const filtroNombre = this.filtroAvanzado(1, this.nombre);
+    const filtroCliente = this.filtroAvanzado(2, this.cliente);
+    const filtroAsignado = this.filtroAvanzado(3, this.asignadoA);
+    const filtroNumero = this.filtroAvanzado(4, this.numero);
+    this.proyectos = this.buscarCoincidencias(filtroNombre, filtroCliente, filtroAsignado, filtroNumero);
+  }
+
+  private verificarCheckProyectosAbiertos(proyectosAbiertos: boolean){
+    this.proyectosAsignados = [];
+    this.proyectos = [];
     if(proyectosAbiertos){
       this.obtenerProyectosAbiertos();
       console.log("Obtenemos solo los proyectos abiertos");
-      if(misProyectos){
-        for(let i = 0; i<this.proyectos.length;i++){
-          if(this.proyectos[i].asignado == localStorage.getItem('usuario')){
-            this.proyectosAuxiliar.push(this.proyectos[i]);
-          }
-        }
-      }
     }
     else{
       this.obtenerProyectos();
-      if(misProyectos){
-        for(let i = 0; i<this.proyectos.length;i++){
-          if(this.proyectos[i].asignado == localStorage.getItem('usuario')){
-            this.proyectosAuxiliar.push(this.proyectos[i]);
-          }
+      console.log("Se restablecen todos los proyectos");
+    }
+    this.actualizarDisponibilidadProyecto();
+  }
+
+  private verificarCheckMisProyectos(misProyectos: boolean){
+    if(misProyectos){
+      for(let i = 0; i<this.proyectos.length;i++){
+        if(this.proyectos[i].asignado == localStorage.getItem('usuario')){
+          this.proyectosAsignados.push(this.proyectos[i]);
         }
       }
-      console.log("Se restablecen todos los proyectos");
+      console.log("/////////////////////////////////////////////////////////////")
+      this.proyectos = this.proyectosAsignados;
     }
   }
 
   aplicarFiltros() {
-    this.actualizarDisponibilidadProyecto();
     if (this.proyectos.length == 0) {
       this.noHayProyectos = true;
       this.disponibilidadProyectos = 0;
@@ -821,14 +826,12 @@ export class InicioEstadoProyectoComponent implements OnInit {
               'Filtra los proyectos por orden alfabético').subscribe((rsp: any) => {
                 console.log('Filtro guardado: ', rsp);
                 this.cambiarOrden();
-                /* this.contraerColaboradores(); */
                 });
           }
           else {
             this._filtroService.updateFiltro(this.orden_saved_search_id, encodedData).subscribe((rsp: any) => {
               console.log('Filtro actualizado: ', rsp);
-              this.cambiarOrden();
-           /*    this.contraerColaboradores(); */
+              this.cambiarOrden();  
             });
           }
         }
@@ -876,12 +879,13 @@ export class InicioEstadoProyectoComponent implements OnInit {
     }
 
     cambiarOrden(){
+      console.log(this.ordenDeFiltrado)
       if(this.ordenDeFiltrado == 'Abecedario') {
         this.proyectos.sort(function(a, b) {
-          if(a.nombre > b.nombre){
+          if(a.nombre < b.nombre){
             return 1;
           }
-          if (a.nombre < b.nombre) {
+          if (a.nombre > b.nombre) {
             return -1;
           }
           return 0;
@@ -891,11 +895,14 @@ export class InicioEstadoProyectoComponent implements OnInit {
         this.proyectos.sort(function(a, b) {
           if(a.porcentajeTareasAtrasadas < b.porcentajeTareasAtrasadas){
             return 1;
+            console.log("1")
           }
           if(a.porcentajeTareasAtrasadas > b.porcentajeTareasAtrasadas){
             return -1;
+            console.log("-1")
           }
           return 0;
+          console.log("0")
         });
       }
       if(this.ordenDeFiltrado == 'Tareas a tiempo') {
