@@ -133,7 +133,6 @@
                     <mat-option (click)="getAsignadoAtarea(programador)" [value]="programador"  *ngFor="let programador of usuariosAsignadosTareas">{{ programador }}</mat-option>
                 </mat-select>
             </mat-form-field>
-            <!-- <p>You selected: {{selectedFood}}</p> -->
         </mat-dialog-content>
 
         <!-- <mat-dialog-content>
@@ -172,14 +171,14 @@
             <mat-label class="label">Planificada</mat-label>
             <mat-form-field appearance="fill">
                 <mat-label>dd/mm/aaaa</mat-label>
-                <input matInput [matDatepicker]="planificadaDesde">
+                <input matInput [matDatepicker]="planificadaDesde" (dateInput)="getFechaPlanificadaDesde($event)">
                 <mat-hint>{{getDateFormatString()}}</mat-hint>
                 <mat-datepicker-toggle matSuffix [for]="planificadaDesde"></mat-datepicker-toggle>
                 <mat-datepicker #planificadaDesde></mat-datepicker>
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>dd/mm/aaaa</mat-label>
-                <input matInput [matDatepicker]="planificadaHasta">
+                <input matInput [matDatepicker]="planificadaHasta" (dateInput)="getFechaPlanificadaHasta($event)">
                 <mat-hint>{{getDateFormatString()}}</mat-hint>
                 <mat-datepicker-toggle matSuffix [for]="planificadaHasta"></mat-datepicker-toggle>
                 <mat-datepicker #planificadaHasta></mat-datepicker>
@@ -189,14 +188,14 @@
             <mat-label class="label">Fin</mat-label>
             <mat-form-field appearance="fill">
                 <mat-label>dd/mm/aaaa</mat-label>
-                <input matInput [matDatepicker]="finDesde">
+                <input matInput [matDatepicker]="finDesde" (dateInput)="getFechaFinDesde($event)">
                 <mat-hint>{{getDateFormatString()}}</mat-hint>
                 <mat-datepicker-toggle matSuffix [for]="finDesde"></mat-datepicker-toggle>
                 <mat-datepicker #finDesde></mat-datepicker>
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>dd/mm/aaaa</mat-label>
-                <input matInput [matDatepicker]="finHasta">
+                <input matInput [matDatepicker]="finHasta" (dateInput)="getFechaFinHasta($event)">
                 <mat-hint>{{getDateFormatString()}}</mat-hint>
                 <mat-datepicker-toggle matSuffix [for]="finHasta"></mat-datepicker-toggle>
                 <mat-datepicker #finHasta></mat-datepicker>

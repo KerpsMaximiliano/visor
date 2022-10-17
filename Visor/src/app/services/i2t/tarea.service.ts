@@ -14,7 +14,7 @@ export class TareaService {
         let jsbody: string = JSON.stringify({
             par_modo: 'G',
             id_caso: id_caso,
-            tipo_tarea: 'RelevamientoReq'
+            //tipo_tarea: 'RelevamientoReq'
         });
         return this.rest.callProcedimientoVisor(jsbody, "TareasProyecto");
     }

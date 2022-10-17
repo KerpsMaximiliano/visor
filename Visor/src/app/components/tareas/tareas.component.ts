@@ -31,6 +31,23 @@ export interface ResponseService{
   nombre_projecto: string;
   usuario_asignado: string;
 }
+export interface EstructuraTareaService{
+  estado: string,
+  facilitador: string,
+  fecha_fin: string,
+  fecha_inicio: string,
+  fecha_planificada: string,
+  horas_ejecutadas: string,
+  horas_planificadas: string
+  id_tarea: string,
+  nombre_documento: string,
+  nombre_proyecto: string,
+  nombre_tarea: string,
+  nota:string,
+  prioridad: string,
+  tipo_tarea: string,
+  usuario_asignado:string
+}
 export interface FiltrosTarea{
   nombreTarea: string,
   prioridadTarea: string,
@@ -79,6 +96,8 @@ export class TareasComponent implements OnInit {
   tecnologiaTarea: '',
   idProyectoSeleccionado: '' 
   }
+
+  subMenuElegido: string = 'fecha'
   
 
   
@@ -225,8 +244,29 @@ export class TareasComponent implements OnInit {
   }
 
   getUsuarioTareasAsignadas(){
-    console.log("ejecuta")
-    this._tareaService.asignadasAmi = 'pepito' 
+    //let usuario = localStorage.getItem("usuario");
+    let usuario = "ffriggeri"; //Todas las tareas están asignadas a este usuario
+    
+    const id = "d31cfdaa-049e-e6e3-999d-62b5b2f778b7"; //Id de proyecto visor, único con tareas.
+    let tareasUsuarioLogueado: EstructuraTareaService[] = [];
+    this._tareaService.getTareasDeProyecto(id).subscribe((response: any) => {
+      const tareas = response.dataset;
+      //Filtro tarea por usuario asignado
+      for (const unaTarea of tareas){
+        if(unaTarea.usuario_asignado == usuario){
+          tareasUsuarioLogueado.push(unaTarea);
+        }
+      }
+      
+      this._tareaService.asignadasAmi = usuario;
+
+
+    });
+  }
+
+  setSubMenuElegido(event:Event){
+    this.subMenuElegido = (event.target as HTMLInputElement).value;
+    console.log(this.subMenuElegido)
   }
 
   openSnackBar() {

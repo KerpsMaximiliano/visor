@@ -100,11 +100,19 @@ export class DialogComponent implements OnInit {
   facilitadorTarea: string = ''
   asignadoAtarea :string = ''
   tecnologiaTarea: string = '';
+  fechaPlanificadaDesde: string = '';
+  fechaPlanificadaHasta: string = '';
+  fechaFinDesde: string = '';
+  fechaFinHasta: string = '';
   
   
   idProyectoSeleccionado: string = ''
   
   tecnologiatarea : any
+  // fechaInicio!: MatDatepickerInputEvent<any, any>;
+  // fechaFin!: MatDatepickerInputEvent<any, any>;
+  fechaInicioDesde: string = '';
+  fechaInicioHasta: string = '';
   
   columnas: string[] = ['nombre'];
 
@@ -552,24 +560,44 @@ export class DialogComponent implements OnInit {
     this.tecnologiaTarea = select.source.triggerValue
   }
 
-  
+  getFechaInicio(event: MatDatepickerInputEvent<any, any>){
+    this.fechaInicioDesde= JSON.parse(JSON.stringify(event.value)).split('T')[0];
+    
+  }
 
+  getFechaFin(event: MatDatepickerInputEvent<any, any>){
+    this.fechaInicioHasta = JSON.parse(JSON.stringify(event.value)).split('T')[0];
+  }
+  getFechaPlanificadaDesde(event: MatDatepickerInputEvent<any, any>){
+    this.fechaPlanificadaDesde = JSON.parse(JSON.stringify(event.value)).split('T')[0];
+  }
+  getFechaPlanificadaHasta(event: MatDatepickerInputEvent<any, any>){
+    this.fechaPlanificadaHasta = JSON.parse(JSON.stringify(event.value)).split('T')[0];
+  }
+  getFechaFinDesde(event: MatDatepickerInputEvent<any, any>){
+    this.fechaFinDesde = JSON.parse(JSON.stringify(event.value)).split('T')[0];
+  }
+  getFechaFinHasta(event: MatDatepickerInputEvent<any, any>){
+    this.fechaFinHasta = JSON.parse(JSON.stringify(event.value)).split('T')[0];
+  }
+  
+  
+  
   //Filtro de Tareas
   prepararFiltro() {
     const filtroNombreTarea = this.filtroAvanzado(1, this.nombreTarea);
     const filtroPrioridad = this.filtroAvanzado(2, this.prioridadTarea);
     const filtroFacilitador = this.filtroAvanzado(3, this.facilitadorTarea);
     const filtroAsignadoA = this.filtroAvanzado(4, this.asignadoAtarea);
-    //const filtroTecnologia = this.filtroAvanzado(5, this.tecnologiaTarea);
-    //const filtroFechaInicioDesde = this.filtroAvanzado(6, this.funcion);
-    //const filtroFechaInicioHasta = this.filtroAvanzado(7, this.funcion);
-    //const filtroPlanificadaDesde = this.filtroAvanzado(8, this.funcion);
-    //const filtroPlanificadaHasta = this.filtroAvanzado(9, this.funcion);
-    //const filtroFinDesde = this.filtroAvanzado(10, this.funcion);
-    //const filtroFinHasta = this.filtroAvanzado(11, this.funcion);
+    const filtroFechaInicio = this.filtroAvanzado(5, this.fechaInicioDesde);
+    const filtroFechaFin = this.filtroAvanzado(6, this.fechaInicioHasta);
+    const filtroFechaPlanificadaDesde = this.filtroAvanzado(7, this.fechaPlanificadaDesde);
+    const filtroFechaPlanificadaHasta = this.filtroAvanzado(8, this.fechaPlanificadaHasta);
+    const filtroFechaFinDesde = this.filtroAvanzado(9, this.fechaFinDesde);
+    const filtroFechaFinHasta = this.filtroAvanzado(10, this.fechaFinHasta);
     
     
-    this.listaTareasProyectosAux = this.buscarCoincidencias(filtroNombreTarea, filtroPrioridad ,filtroFacilitador,filtroAsignadoA);
+    this.listaTareasProyectosAux = this.buscarCoincidencias(filtroNombreTarea, filtroPrioridad ,filtroFacilitador,filtroAsignadoA,filtroFechaInicio,filtroFechaFin,filtroFechaPlanificadaDesde,filtroFechaPlanificadaHasta,filtroFechaFinDesde,filtroFechaFinHasta);
     console.log(this.listaTareasProyectosAux)
     this.dialogRef.close(this.listaTareasProyectosAux);
   }
@@ -590,7 +618,6 @@ export class DialogComponent implements OnInit {
         }
         arrayTabla.filter = valor.trim().toLowerCase();
         arrayTemp = arrayTabla.filteredData;
-        console.log(arrayTemp)
         return arrayTemp;
 
       case 2:
@@ -611,34 +638,323 @@ export class DialogComponent implements OnInit {
         arrayTabla = new MatTableDataSource(arrayTemp);
         arrayTabla.filter = valor.trim().toLowerCase();
         arrayTemp = arrayTabla.filteredData;
-        console.log(arrayTemp)
         return arrayTemp;
 
       case 4:
         this.listaTareasProyectosAux.forEach(tarea => {
-          let obj = { id: tarea.id_tarea, facilitador: tarea.usuario_asignado };
+          let obj = { id: tarea.id_tarea, asignadoA: tarea.usuario_asignado };
           arrayTemp.push(obj);
         });
         arrayTabla = new MatTableDataSource(arrayTemp);
         arrayTabla.filter = valor.trim().toLowerCase();
         arrayTemp = arrayTabla.filteredData;
+      return arrayTemp;
+
+      case 5://fecha_inicio desde
+        if(this.fechaInicioHasta != ''){
+          console.log("Fecha inicio desde: " + this.fechaInicioDesde)
+          console.log("Fecha inicio hasta: " + this.fechaInicioHasta)
+          this.listaTareasProyectosAux.forEach(tarea => {
+            let obj = { id: tarea.id_tarea, fecha_inicio: tarea.fecha_inicio};
+            arrayTemp.push(obj);
+          });
+          
+          arrayTabla = new MatTableDataSource(arrayTemp);
+          
+          arrayTabla.filterPredicate = (arrayTabla: any, valor: string): boolean => {
+            return (arrayTabla.fecha_inicio >= valor);
+          }
+          
+          arrayTabla.filter = valor.trim().toLowerCase();
+          let arrayTempInicio = arrayTabla.filteredData;
+          
+          this.listaTareasProyectosAux.forEach(tarea => {
+            let obj = { id: tarea.id_tarea, fecha_inicio_hasta: tarea.fecha_inicio};
+            arrayTemp.push(obj);
+          });
+
+          arrayTabla = new MatTableDataSource(arrayTemp);
+
+          arrayTabla.filterPredicate = (arrayTabla: any, valor: string): boolean => {
+            return (arrayTabla.fecha_inicio_hasta <= valor);
+          }
+          
+          arrayTabla.filter = this.fechaInicioHasta.trim().toLowerCase();
+          let arrayTempHasta = arrayTabla.filteredData;
+            
+          
+          
+          let arrayTempInicioFinal = [];
+          //Capturo tareas cuya fecha de inicio es menor a "fecha de inicio hasta"
+          
+          for(const unArrayTempInicio of arrayTempInicio ){
+
+            if(unArrayTempInicio.fecha_inicio <= this.fechaInicioHasta){
+              arrayTempInicioFinal.push(unArrayTempInicio)
+            }
+          }
+          
+          //Capturo tareas cuya fecha de inicio es mayor a "fecha de inicio desde"
+          let arrayTempHastaFinal=[];
+          for(const unArrayTempHasta of arrayTempHasta ){
+            
+            if(arrayTempHasta.fecha_inicio_hasta >= this.fechaInicioDesde){
+              arrayTempHastaFinal.push(unArrayTempHasta);
+            }
+          }
+
+          arrayTemp = arrayTempInicioFinal.concat(arrayTempHastaFinal);
+          
+          return arrayTemp;
+        }
+        else{
+          this.listaTareasProyectosAux.forEach(tarea => {
+            let obj = { id: tarea.id_tarea, fecha_inicio: tarea.fecha_inicio };
+            arrayTemp.push(obj);
+          });
+          
+          arrayTabla = new MatTableDataSource(arrayTemp);
+          
+          arrayTabla.filterPredicate = (arrayTabla: any, valor: string): boolean => {
+            return ((arrayTabla.fecha_inicio >= valor))
+          }
+          arrayTabla.filter = valor.trim().toLowerCase();
+          arrayTemp = arrayTabla.filteredData;
+          
+          return arrayTemp;
+        }
+        
+
+      case 6://fecha_inicio hasta
+        if (this.fechaInicioDesde != '') {
+          this.listaTareasProyectosAux.forEach(tarea => {
+            let obj = { id: tarea.id_tarea, fecha_inicio: tarea.fecha_inicio };
+            arrayTemp.push(obj);
+          });
+
+          arrayTabla = new MatTableDataSource(arrayTemp);
+
+          arrayTabla.filterPredicate = (arrayTabla: any, valor: string): boolean => {
+            return (arrayTabla.fecha_inicio >= valor);
+          }
+
+          arrayTabla.filter = this.fechaInicioDesde.trim().toLowerCase();
+          let arrayTempInicio = arrayTabla.filteredData;
+          
+
+          this.listaTareasProyectosAux.forEach(tarea => {
+            let obj = { id: tarea.id_tarea, fecha_inicio_hasta: tarea.fecha_inicio };
+            arrayTemp.push(obj);
+          });
+
+          arrayTabla = new MatTableDataSource(arrayTemp);
+
+          arrayTabla.filterPredicate = (arrayTabla: any, valor: string): boolean => {
+            return (arrayTabla.fecha_inicio_hasta <= valor);
+          }
+
+          arrayTabla.filter = this.fechaInicioHasta.trim().toLowerCase();
+          let arrayTempHasta = arrayTabla.filteredData;
+          
+
+
+
+          let arrayTempInicioFinal = [];
+          //Capturo tareas cuya fecha de inicio es menor a "fecha de inicio hasta"
+
+          for (const unArrayTempInicio of arrayTempInicio) {
+
+            if (unArrayTempInicio.fecha_inicio <= this.fechaInicioHasta) {
+              arrayTempInicioFinal.push(unArrayTempInicio)
+            }
+          }
+          
+
+          //Capturo tareas cuya fecha de inicio es mayor a "fecha de inicio desde"
+          let arrayTempHastaFinal = [];
+          for (const unArrayTempHasta of arrayTempHasta) {
+
+            if (arrayTempHasta.fecha_inicio_hasta >= this.fechaInicioDesde) {
+              arrayTempHastaFinal.push(unArrayTempHasta);
+            }
+          }
+
+          arrayTemp = arrayTempInicioFinal.concat(arrayTempHastaFinal);
+
+          return arrayTemp;
+        }
+        else{
+          this.listaTareasProyectosAux.forEach(tarea => {
+            let obj = { id: tarea.id_tarea, fecha_fin: tarea.fecha_fin };
+            arrayTemp.push(obj);
+          });
+
+          arrayTabla = new MatTableDataSource(arrayTemp);
+          arrayTabla.filterPredicate = (arrayTabla: any, valor: string): boolean => {
+            return ((arrayTabla.fecha_fin <= valor))
+          }
+          arrayTabla.filter = valor.trim().toLowerCase();
+          arrayTemp = arrayTabla.filteredData;
+
+          return arrayTemp;
+        }
+
+      case 7: //Planificada desde fecha_planificada
+      if (this.fechaPlanificadaHasta != '') {
+        this.listaTareasProyectosAux.forEach(tarea => {
+          let obj = { id: tarea.id_tarea, fecha_planificada_desde: tarea.fecha_planificada };
+          arrayTemp.push(obj);
+        });
+
+        arrayTabla = new MatTableDataSource(arrayTemp);
+
+        arrayTabla.filterPredicate = (arrayTabla: any, valor: string): boolean => {
+          console.log(valor);
+          return (arrayTabla.fecha_planificada_desde >= valor);
+        }
+        console.log(valor);
+        arrayTabla.filter = valor.trim().toLowerCase();
+        let arrayTempInicio = arrayTabla.filteredData;
+        console.log(arrayTempInicio)
+
+        this.listaTareasProyectosAux.forEach(tarea => {
+          let obj = { id: tarea.id_tarea, fecha_planificada_hasta: tarea.fecha_planificada };
+          arrayTemp.push(obj);
+        });
+
+        arrayTabla = new MatTableDataSource(arrayTemp);
+
+        arrayTabla.filterPredicate = (arrayTabla: any, valor: string): boolean => {
+          console.log(valor);
+          return (arrayTabla.fecha_planificada_hasta <= valor);
+        }
+        
+
+        arrayTabla.filter = this.fechaPlanificadaHasta.trim().toLowerCase();
+        let arrayTempHasta = arrayTabla.filteredData;
+        console.log(arrayTempHasta)
+        
+
+
+
+        let arrayTempInicioFinal = [];
+        //Capturo tareas cuya fecha de planificada es menor a "fecha planificada hasta"
+
+        for (const unArrayTempInicio of arrayTempInicio) {
+          console.log(unArrayTempInicio.fecha_planificada_desde <= this.fechaPlanificadaHasta)
+          if (unArrayTempInicio.fecha_planificada_desde <= this.fechaPlanificadaHasta) {
+            arrayTempInicioFinal.push(unArrayTempInicio)
+          }
+        }
+        console.log(arrayTempInicioFinal)
+
+
+        //Capturo tareas cuya fecha de planificación es mayor a "fecha planificada desde"
+        let arrayTempHastaFinal = [];
+        for (const unArrayTempHasta of arrayTempHasta) {
+
+          if (arrayTempHasta.fecha_planificada_hasta >= this.fechaPlanificadaDesde) {
+            arrayTempHastaFinal.push(unArrayTempHasta);
+          }
+        }
+        
+        console.log(arrayTempHastaFinal)
+        for(const tareaTempInicio of arrayTempInicioFinal){
+          if(tareaTempInicio.fecha_planificada_desde >= this.fechaPlanificadaDesde){
+            arrayTemp.push(tareaTempInicio); //retornar este array
+          }
+        }
+
+        
+        
         console.log(arrayTemp)
         return arrayTemp;
+      }
+      else{
+        this.listaTareasProyectosAux.forEach(tarea => {
+          let obj = { id: tarea.id_tarea, fecha_planificada: tarea.fecha_planificada };
+          arrayTemp.push(obj);
+        });
 
-      // case 5:
-      //   this.listaTareasProyectosAux.forEach(tarea => {
-      //     let obj = { id: tarea.id_tarea, facilitador: tarea.usuario_asignado };
-      //     arrayTemp.push(obj);
-      //   });
-      //   arrayTabla = new MatTableDataSource(arrayTemp);
-      //   arrayTabla.filter = valor.trim().toLowerCase();
-      //   arrayTemp = arrayTabla.filteredData;
-      //   console.log(arrayTemp)
-      //   return arrayTemp;
+        arrayTabla = new MatTableDataSource(arrayTemp);
+        arrayTabla.filterPredicate = (arrayTabla: any, valor: string): boolean => {
+          return ((arrayTabla.fecha_planificada == valor))
+        }
+        arrayTabla.filter = valor.trim().toLowerCase();
+        arrayTemp = arrayTabla.filteredData;
+
+        return arrayTemp;
+      }
+      
+
+      case 8: //Planificada hasta
+      if(this.fechaPlanificadaDesde != ''){
+        this.listaTareasProyectosAux.forEach(tarea => {
+          let obj = { id: tarea.id_tarea, fecha_planificada_desde: tarea.fecha_planificada };
+          arrayTemp.push(obj);
+        });
+
+        arrayTabla = new MatTableDataSource(arrayTemp);
+
+        arrayTabla.filterPredicate = (arrayTabla: any, valor: string): boolean => {
+          console.log(valor);
+          return (arrayTabla.fecha_planificada_desde >= valor);
+        }
+        console.log(valor);
+        arrayTabla.filter = valor.trim().toLowerCase();
+        let arrayTempInicio = arrayTabla.filteredData;
+
+        this.listaTareasProyectosAux.forEach(tarea => {
+          let obj = { id: tarea.id_tarea, fecha_planificada_hasta: tarea.fecha_planificada };
+          arrayTemp.push(obj);
+        });
+
+        arrayTabla = new MatTableDataSource(arrayTemp);
+
+        arrayTabla.filterPredicate = (arrayTabla: any, valor: string): boolean => {
+          console.log(valor);
+          return (arrayTabla.fecha_planificada_hasta <= valor);
+        }
+        console.log(valor);
+
+        arrayTabla.filter = this.fechaPlanificadaHasta.trim().toLowerCase();
+        let arrayTempHasta = arrayTabla.filteredData;
+
+
+
+        let arrayTempInicioFinal = [];
+        //Capturo tareas cuya fecha de planificada es menor a "fecha planificada hasta"
+
+        for (const unArrayTempInicio of arrayTempInicio) {
+          if (unArrayTempInicio.fecha_planificada_desde <= this.fechaPlanificadaHasta) {
+            arrayTempInicioFinal.push(unArrayTempInicio)
+          }
+        }
+        console.log(arrayTempInicioFinal)
+
+        //Capturo tareas cuya fecha de planificación es mayor a "fecha planificada desde"
+        let arrayTempHastaFinal = [];
+        for (const unArrayTempHasta of arrayTempHasta) {
+
+          if (arrayTempHasta.fecha_planificada_hasta >= this.fechaPlanificadaDesde) {
+            arrayTempHastaFinal.push(unArrayTempHasta);
+          }
+        }
+        console.log(arrayTempHastaFinal);
+        
+
+        arrayTemp = arrayTempInicioFinal.concat(arrayTempHastaFinal);
+
+        return arrayTemp;
+      }
+      else{
+
+      }
+        
     }
   }
 
-  buscarCoincidencias(arrayNombre: any, arrPrioridad:any, arrayFacilitador: any, arrAsignado:any) {
+  buscarCoincidencias(arrayNombre: any, arrPrioridad:any, arrayFacilitador: any, arrAsignado:any, arrFechaInicio:any, arrFechaFin:any, arrFechaPlanificadaDesde:any, arrFechaPlanificadaHasta:any,arrFechaFinDesde:any, arrFechaFinHasta:any ) {
     let encontrados: any = [];
 
     this.listaTareasProyectosAux.forEach(tarea => {
@@ -646,9 +962,11 @@ export class DialogComponent implements OnInit {
       let encontradoPrioridad = false;
       let encontradoFacilitador = false;
       let encontradoAsignado = false;
+      let encontradoFechaInicio = false;
+      let encontradoFechaFin = false;
       
       arrayNombre.forEach((element: any) => {
-        console.log(element)
+        
         if (tarea.id_tarea == element.id) {
           encontradoNombre = true;
         }
@@ -673,9 +991,21 @@ export class DialogComponent implements OnInit {
           encontradoAsignado = true;
         }
       });
+      arrFechaInicio.forEach((element: any) => {
+        
+        if (tarea.id_tarea == element.id) {
+          encontradoFechaInicio = true;
+        }
+      });
+      arrFechaFin.forEach((element: any) => {
+        
+        if (tarea.id_tarea == element.id) {
+          encontradoFechaFin = true;
+        }
+      });
       
       
-      if (encontradoNombre && encontradoPrioridad && encontradoFacilitador && encontradoAsignado) {
+      if (encontradoNombre && encontradoPrioridad && encontradoFacilitador && encontradoAsignado && encontradoFechaInicio) {
         encontrados.push(tarea);
       }
     });
@@ -706,23 +1036,11 @@ export class DialogComponent implements OnInit {
     this.facilitadorTarea = facilitador;
     console.log(this.facilitadorTarea);
   }
-  fechaInicio!: MatDatepickerInputEvent<any, any>;
-  fechaFin!: MatDatepickerInputEvent<any, any>;
+  
 
-  getFechaInicio(event: MatDatepickerInputEvent<any, any>){
-    this.fechaInicio= event.value
-    
-  }
+  
 
-  getFechaFin(event: MatDatepickerInputEvent<any, any>){
-    this.fechaFin = event.value
-    this.comparaFechas(this.fechaInicio,this.fechaFin );
-  }
-
-  comparaFechas(fechaInicio:MatDatepickerInputEvent<any, any>,fechaFin: MatDatepickerInputEvent<any, any>){
-    console.log(fechaInicio < fechaFin)
-    return fechaInicio < fechaFin;
-  }
+  
   
  
   getAsignadoAtarea(programador:any){//Programadores
