@@ -70,7 +70,7 @@ export class ActividadComponent implements OnInit {
               public dialogRef: MatDialogRef<ActividadComponent>,
               public dialogRefModal: MatDialogRef<ModalActividadComponent>,
               private cd: ChangeDetectorRef,
-              @Inject(MAT_DIALOG_DATA) public data:Actividad,
+              @Inject(MAT_DIALOG_DATA) public data:Actividad
                ) { }
 
   ngOnInit(): void {
@@ -330,7 +330,7 @@ export class ActividadComponent implements OnInit {
       this._actividadService.form.patchValue({
         tareaAsociada: this.dataSource.data[0].nombre_tarea
       })
-      const dialogRef = this.dialog.open(ModalActividadComponent,{data:{idTarea: this.idTarea}});
+      const dialogRef = this.dialog.open(ModalActividadComponent,{data: {idTarea: this.idTarea}});
   // this.dialog.open(ModalActividadComponent);
     dialogRef.afterClosed().subscribe(res =>{
       if(res){

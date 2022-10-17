@@ -160,7 +160,7 @@ console.log('ACTIVIDAD SSSS FECHAAA',actividadS.fecha)
   this._actividadService.form.reset()
   
    
-      this._actividadService.agregarActividad(actividadS, this.data.idTarea).subscribe((response:any)=>{
+      this._actividadService.agregarActividad(actividadS,this.data.idTarea).subscribe((response:any)=>{
         console.log("INSERT EXITOSO", response);
     });
   
@@ -258,7 +258,7 @@ editarActividadSuite(){
 
   this._actividadService.form.reset();
   
-  this._actividadService.editarActividad(actividadS, this.data.idTarea).subscribe((response:any)=>{
+  this._actividadService.editarActividad(actividadS,this.data.idTarea).subscribe((response:any)=>{
     console.log("UPDATE EXITOSO", response);
 });
   }

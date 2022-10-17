@@ -136,7 +136,7 @@ id!: string;
     return this.rest.callProcedimientoVisor(jsbody,"AbmActividades");
   }
 
-  par_modoI(idTarea: string){
+  par_modoI(){
     let jsbody: string = JSON.stringify({
       par_modo : "I",
     titulo: "",
@@ -146,7 +146,7 @@ id!: string;
     horas_ejecutadas: 0,
     tipo_actividad : "",
     asignado_a : "",
-    id_tarea: idTarea
+    id_tarea: "a0287b5d-14c5-11ed-965a-00505601020a"
     });
     return this.rest.callProcedimientoVisor(jsbody,"AbmActividades");
   }

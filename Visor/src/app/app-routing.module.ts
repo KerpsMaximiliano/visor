@@ -30,6 +30,8 @@ const routes: Routes = [
     path: "recuperar-contraseña",
     component: RecuperarcontraseniaComponent
   },
+  { path: 'app-actividad', component: ActividadComponent
+},
   {
     path: "dashboard",
     canActivate: [AuthGuard],
@@ -40,8 +42,7 @@ const routes: Routes = [
         children: [
         { path: 'roles-usuarios', component: RolesUsuariosComponent },
         { path: 'permisos-roles', component: PermisosRolesComponent }
-    ] },
-    {path: 'actividades', component: ActividadComponent}
+    ] }
     ]
   }
 ];
