@@ -41,7 +41,7 @@ const routes: Routes = [
         { path: 'roles-usuarios', component: RolesUsuariosComponent },
         { path: 'permisos-roles', component: PermisosRolesComponent }
     ] },
-    {path: 'actividades', component: ActividadComponent}
+    {path: 'tareas', component: TareasComponent}
     ]
   }
 ];
