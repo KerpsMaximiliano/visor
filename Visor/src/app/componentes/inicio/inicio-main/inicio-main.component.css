@@ -9,8 +9,14 @@
     margin-top: 3%;
 }
 
-.componente {
-    width: 50%;
+.componenteEstado {
+    width: 55%;
+    margin: 0px;
+}
+
+.componenteDisponibilidad {
+    width: 45%;
+    margin: 0px;
 }
 
 .fecha-hoy {
