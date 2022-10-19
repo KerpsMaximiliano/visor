@@ -10,7 +10,7 @@ import { FiltroService } from '../../../services/i2t/filtro.service';
 })
 export class FiltroProyectosComponent implements OnInit {
 
-  result = {numero: '', nombre: '', asignadoA: '', cliente: '', seleccion: '', filtrar: true, limpiar: false, misProyectos: false, proyectosAbiertos: false}
+  result = {numero: '', nombre: '', asignadoA: '', cliente: '', seleccion: '', filtrar: true, limpiar: false, misProyectos: false, proyectosAbiertos: false, ultimosProyectosFiltrados: []}
   activarBoton: boolean;
   save_search_id = '';
 
@@ -28,6 +28,7 @@ export class FiltroProyectosComponent implements OnInit {
     this.save_search_id = this.data.search_id;
     this.result.misProyectos = this.data.misProyectos;
     this.result.proyectosAbiertos = this.data.proyectosAbiertos;
+    this.result.ultimosProyectosFiltrados = this.data.proyectosFiltrados;
   }
 
   limpiarFiltro() {
@@ -73,7 +74,8 @@ export class FiltroProyectosComponent implements OnInit {
       asignadoA: this.result.asignadoA,
       funcion : this.result.seleccion,
       misProyectos: this.result.misProyectos,
-      proyectosAbiertos: this.result.proyectosAbiertos
+      proyectosAbiertos: this.result.proyectosAbiertos,
+      ultimosProyectosFiltrados: this.result.ultimosProyectosFiltrados
     });
     const encodedData = btoa(contenido);
     if (this.save_search_id == '') {
