@@ -45,6 +45,7 @@ export class VistaDisenioTecnicoComponent implements OnInit{
       }
     });;*/
       if(this.tareasSP.length > 0){
+        console.log(this.tareasSP)
         this.noHayProyecto= false;
         this.organizarTareas();
         console.log(this.tareasOrg);
@@ -56,9 +57,14 @@ export class VistaDisenioTecnicoComponent implements OnInit{
         }
       }
       else{
+        console.log(this.tareasSP)
         this.noHayProyecto = true;
       }
 
+  }
+
+  ngOnChanges(changes: SimpleChange){
+    console.log(changes)
   }
 
   organizarTareas() {

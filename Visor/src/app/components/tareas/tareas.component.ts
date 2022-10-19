@@ -51,7 +51,8 @@ export class TareasComponent implements OnInit {
   listaProyectos: PropiedadesProyecto[] = [];
   dataSource: MatTableDataSource<PropiedadesProyecto>;
   dataSourceService: any
-  nombreProyecto='';
+  nombreProyecto:string = '';
+  idProyectoSeleccionado: string = ''
   estiloListaProyectos: string = 'ocultarTabla';
   seleccionoProyecto = '';
   horizontalPosition: MatSnackBarHorizontalPosition = 'start';
@@ -87,6 +88,7 @@ export class TareasComponent implements OnInit {
   tareasFiltradasPorVista: any= []; 
   columnas: string[] = ['nombre'];
 
+  valorInputProyecto:string = ''
 
   constructor(public dialog: MatDialog, private _snackBar: MatSnackBar, private _tareaService: TareaService) {
     
@@ -119,25 +121,25 @@ export class TareasComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  buscarProyectos(event: Event) {    
+  buscarProyectos(event: Event) {
                                              
     const filterValue = (event.target as HTMLInputElement).value;
+    this.valorInputProyecto = (event.target as HTMLInputElement).value;
     
-    if(this.nombreProyecto == ''){
+    if(this.valorInputProyecto == ''){
       this.estiloListaProyectos = 'ocultarTabla';
-      console.log("vacio")
     }
     else{
-      this.estiloListaProyectos = 'mostrarTabla'
+      this.estiloListaProyectos = 'mostrarTabla';
       this.dataSourceService.filter = filterValue.trim().toLowerCase();
-      console.log("No vacio")
-
     }
   }
   seleccionarProyecto(unProyecto: any){
     this.nombreProyecto = unProyecto.nombre_projecto;
+    this.idProyectoSeleccionado = unProyecto.id_projecto
+    this.filtrosTarea.idProyectoSeleccionado = this.idProyectoSeleccionado; //Para que no aparezca mensaje al abrir modal de filtro de tareas
     this.estiloListaProyectos = 'ocultarTabla'; //nombre clase css
-    console.log(this.nombreProyecto)
+    this.valorInputProyecto = '';
   }
 
   abrirDialogProyecto(event: Event){
@@ -173,31 +175,18 @@ export class TareasComponent implements OnInit {
     const dialogRef = this.dialog.open(DialogComponent,{width:'72%', data:{buscaTareas: true, filtros:this.filtrosTarea}});
     dialogRef.afterClosed().pipe(
       finalize(() => {
-          console.log("Actualiza autoridades")
+
       })
     )
     .subscribe(result => {
       this.tareasFiltradas= result;
+      console.log(this.tareasFiltradas)
          
     })
   }
 
-  proyectoSeleccionado(event: Event){
-    console.log(this.nombreProyecto)
-    if(this.nombreProyecto == ''){
-      console.log(this.nombreProyecto)
-      this.openSnackBar();
-     
-    }
-    else{
-      this.setSubtituloProyecto(event);
-      if(this.nombreProyecto == 'cancelar'){
-        this.nombreProyecto = '';
-      }
-      else{
-      }
-      
-    } 
+  verTareasDeVista(event: Event){
+    this.setSubtituloProyecto(event);
   }
 
   setSubtituloProyecto(event: Event){
@@ -205,6 +194,13 @@ export class TareasComponent implements OnInit {
     switch(vistaSeleccionada){
       case 'Analista Funcional':
         this.subtituloProyecto = ' Avance de Diseño funcional';
+        this.subtituloProyecto = ' Avance de Diseño técnico';
+        this.tareasFiltradasPorVista= [];
+        this.tareasFiltradas.forEach( (tarea:any) => {
+          if(tarea.tipo_tarea == "design"){
+            this.tareasFiltradasPorVista.push(tarea);
+          }
+        });
       break;
       case 'Analista Tecnico':
         this.subtituloProyecto = ' Avance de Diseño técnico';

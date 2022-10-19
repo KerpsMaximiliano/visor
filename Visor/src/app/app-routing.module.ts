@@ -36,6 +36,7 @@ const routes: Routes = [
     component: DashboardComponent,
     children:[
       { path: 'inicio', component: InicioMainComponent },
+      { path: 'tareas', component: TareasComponent },
       { path: 'configuraciones', component: ConfiguracionesComponent,
         children: [
         { path: 'roles-usuarios', component: RolesUsuariosComponent },

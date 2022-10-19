@@ -62,7 +62,7 @@ export class VistaDesarrolladorComponent implements OnInit {
       }
     }
     else{
-      this.noHayProyecto = true;
+      //this.noHayProyecto = true;
     }
   }
 
