@@ -54,7 +54,7 @@ export class RestService {
           }
           else{
             if (showSnack)
-              this.snackBar.restError(data.returnset[0]);
+              /* this.snackBar.restError(data.returnset[0]); */
             throw data.returnset[0];
           }
         }));
@@ -101,7 +101,7 @@ export class RestService {
           }
           else{
             if (showSnack)
-              this.snackBar.restError(data.returnset[0]);
+              /* this.snackBar.restError(data.returnset[0]); */
             throw data.returnset[0];
           }
         }));
@@ -122,7 +122,7 @@ export class RestService {
           }
           else{
             if (showSnack)
-              this.snackBar.restError(data.returnset[0]);
+              /* this.snackBar.restError(data.returnset[0]); */
             throw data.returnset[0];
           }
         }));

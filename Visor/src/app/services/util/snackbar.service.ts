@@ -26,8 +26,8 @@ export class SnackbarService {
   }
 
   /** Errores esperables de la api rest **/
-  restError(response: any){
+  /* restError(response: any){
     this.message(response.RTxt);
     console.log('%c Fallo ', 'background: #b60; color: #fff', response.RTxt);
-  }
+  } */
 }
