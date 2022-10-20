@@ -39,7 +39,7 @@ export class RestService {
 
 
   /** Wrapper para manejo de errores http y rcode **/
-  callLogin(body: string, showSnack: boolean = true){
+  callLogin(body: string, showSnack: boolean = false){
     let result = this.doLogin(body)
     .pipe(catchError( (e: any) => {
         this.snackBar.restException(e);
@@ -54,8 +54,8 @@ export class RestService {
           }
           else{
             if (showSnack)
-              /* this.snackBar.restError(data.returnset[0]); */
-            throw data.returnset[0];
+              this.snackBar.restError(data.returnset[0]);
+              return data; //throw data.returnset[0]; Esta linea fue modificada ya que interfería al obtener el RCode de la respuesta.
           }
         }));
 

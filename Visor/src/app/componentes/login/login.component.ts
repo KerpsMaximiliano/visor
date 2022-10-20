@@ -50,9 +50,8 @@ export class LoginComponent implements OnInit {
         this.visibilidadMensaje = false;
         this._router.navigate(['inicio-main']);
       }
-      if(resp.returnset.RCode == -6001){
+      if(resp.returnset[0].RCode == -6001){
         this.visibilidadMensaje = true;
-        console.log("Hola")
       }
     });
   }
@@ -77,5 +76,11 @@ export class LoginComponent implements OnInit {
    */
   openModal(){
     this._dialog.open(ModalenviarcorreoComponent);   
+  }
+
+  validarTecla(e: KeyboardEvent){
+    if(e.key == "Enter"){
+      this.comprobarCredenciales();
+    }
   }
 }
