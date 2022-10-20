@@ -103,9 +103,9 @@
           <div class="seccionAvanceArea">
               <mat-expansion-panel hideToggle>
                 <mat-expansion-panel-header>
-                  <mat-panel-title> 
+                  <mat-panel-title id="tituloAvanceArea"> 
                     <div id="seccionAvanceArea">
-                      <b><p>Avance por área</p></b>
+                      <b><p class="subtitulo">Avance por área</p></b>
                     </div> 
                   </mat-panel-title>
                   <mat-panel-description>
@@ -113,7 +113,7 @@
                 </mat-expansion-panel-header>
                   <div class="containerBarrasArea">
                     <div class="barraAvance">
-                      <div style="font-style: italic;">Diseño funcional:</div>
+                      <div>Diseño funcional</div>
                       <div class="espacio"></div>
                       <div class="barraAreaRoja">{{retornarPorcentajeAvanceFuncionalNoIniciadas(i)}}%</div>
                       <div class="barraAreaAmarilla">{{retornarPorcentajeAvanceFuncionalEnProgreso(i)}}%</div>
@@ -121,7 +121,7 @@
                       <div class="barraAreaVerde">{{retornarPorcentajeAvanceFuncionalCompletadas(i)}}%</div>
                     </div>
                     <div class="barraAvance">
-                      <div style="font-style: italic;">Diseño técnico:</div>
+                      <div>Diseño técnico</div>
                       <div id="espacioTecnico"></div>
                       <div class="barraAreaRoja">{{retornarPorcentajeAvanceTecnicoNoIniciadas(i)}}%</div>
                       <div class="barraAreaAmarilla">{{retornarPorcentajeAvanceTecnicoEnProgreso(i)}}%</div>
@@ -129,7 +129,7 @@
                       <div class="barraAreaVerde">{{retornarPorcentajeAvanceTecnicoCompletadas(i)}}%</div>
                     </div>
                     <div class="barraAvance">
-                      <div style="font-style: italic;">Desarrollo:</div>
+                      <div>Desarrollo</div>
                       <div id="espacioDesarrollo"></div>
                       <div class="barraAreaRoja">{{retornarPorcentajeAvanceDesarrolloNoIniciadas(i)}}%</div>
                       <div class="barraAreaAmarilla">{{retornarPorcentajeAvanceDesarrolloEnProgreso(i)}}%</div>
@@ -138,7 +138,7 @@
                     </div>
 
                     <div class="barraAvance">
-                      <div style="font-style: italic;">Testing:</div>
+                      <div>Testing</div>
                       <div id="espacioTesting"></div>
                       <div class="barraAreaRoja">{{retornarPorcentajeAvanceTestingNoIniciadas(i)}}%</div>
                       <div class="barraAreaAmarilla">{{retornarPorcentajeAvanceTestingEnProgreso(i)}}%</div>

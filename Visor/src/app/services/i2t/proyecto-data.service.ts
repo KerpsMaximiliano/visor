@@ -35,7 +35,7 @@ export class ProyectoDataService {
   });
   return this.restService.callProcedimientoVisor(jsbody,"EstadoProyectos");
 }
-  public getPorcentajeHP(id_caso: string) {
+  public getPorcentajeHP(id_caso: number) {
     let jsbody: string = JSON.stringify({
       "nivel":"2",
       "id_caso": id_caso,
@@ -45,7 +45,7 @@ export class ProyectoDataService {
     return this.restService.callProcedimientoVisor(jsbody,"EstadoProyectos");
   }
 
-  public getPorcentajeHPAreas(id_caso: string) {
+  public getPorcentajeHPAreas(id_caso: number) {
     let jsbody: string = JSON.stringify({
       "nivel":"3",
       "id_caso": id_caso,

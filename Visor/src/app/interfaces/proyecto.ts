@@ -1,7 +1,7 @@
 
 
 export interface Proyecto {
-    numero: string,
+    numero: number,
     nombre: string,
     cliente: string,
     asignado: string,

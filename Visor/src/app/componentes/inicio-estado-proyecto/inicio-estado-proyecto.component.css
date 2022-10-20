@@ -276,6 +276,10 @@ max-height: 30%;
   font-size: 15px;
 }
 
+#tituloAvanceArea{
+  padding-left: 41%;
+}
+
 .contenido{
   width: 100%;
 }
@@ -309,6 +313,7 @@ max-height: 30%;
   font-size: 15px;
   border-radius: 3px;
   padding-top: 10px;
+  height: 5%;
 }
 
 #barraRoja{
@@ -320,6 +325,7 @@ max-height: 30%;
   font-size: 15px;
   border-radius: 3px;
   padding-top: 10px;
+  height: 5%;
 }
 
 #barraAmarilla{
@@ -330,6 +336,7 @@ max-height: 30%;
   font-size: 15px;
   border-radius: 3px;
   padding-top: 10px;
+  height: 5%;
 }
 
 #barraEnPrueba{
@@ -341,6 +348,7 @@ max-height: 30%;
   font-size: 15px;
   border-radius: 3px;
   padding-top: 10px;
+  height: 5%;
 } 
 
 .barraAvance{

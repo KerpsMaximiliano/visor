@@ -114,7 +114,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
         let contadorHorasTotalesPlanificadas = 0;
         for(let i = 0;i<resp.dataset.length;i++){
           let objetoTemporal: Proyecto = {
-            numero: resp.dataset[i].Id_Caso,
+            numero: resp.dataset[i].Numero_Caso,
             nombre: resp.dataset[i].Caso,
             cliente: resp.dataset[i].Cliente,
             asignado: resp.dataset[i].Asignado_a,
@@ -316,7 +316,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
       if(resp.returnset[0].RCode == 1){
         for(let i = 0;i<resp.dataset.length;i++){
           let objetoTemporal: Proyecto = {
-            numero: resp.dataset[i].Id_Caso,
+            numero: resp.dataset[i].Numero_Caso,
             nombre: resp.dataset[i].Caso,
             cliente: resp.dataset[i].Cliente,
             asignado: resp.dataset[i].Asignado_a,
@@ -512,11 +512,27 @@ export class InicioEstadoProyectoComponent implements OnInit {
   }
 
   applyFilter(event: Event) {
+    this.verificarCheckBoxs();  
     this.filterValue = (event.target as HTMLInputElement).value;
     this.data.filter = this.filterValue.trim().toLowerCase();
+    let proyectosFiltro: any[] = [];
+    this.proyectos.forEach(project => {
+      proyectosFiltro.push({ numero: project.numero ,nombre: project.nombre.toLowerCase()});
+    });
+    this.data = new MatTableDataSource(proyectosFiltro);
+    this.data.filter = this.filterValue.trim().toLowerCase();
+    proyectosFiltro = this.data.filteredData;
+    let arrayAux: Proyecto[] = []; 
+    this.proyectos.forEach( project => {
+      proyectosFiltro.forEach( projectBuscado =>{
+        if(project.numero == projectBuscado.numero){
+          arrayAux.push(project);
+        }
+      });
+    }) 
+    this.proyectos = arrayAux;
     this.nombre = this.filterValue;
-    this.verificarCheckBoxs();
-    this.prepararFiltro();
+    this.aplicarFiltros();
   }
 
   retornarPorcentajeCompletadas(index: number): number{
@@ -695,7 +711,6 @@ export class InicioEstadoProyectoComponent implements OnInit {
     }
     this.verificarCheckMisProyectos();
     this.data = new MatTableDataSource(this.proyectos);
-    this.actualizarDisponibilidadProyecto();
   }
 
   private verificarCheckMisProyectos(){
@@ -707,6 +722,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
       }
       this.proyectos = this.proyectosAsignados;
     }
+    this.aplicarFiltros();
     this.proyectosAsignados = [];
   }
 
