@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+
+import { Component, Input, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { UsuarioRol } from 'src/app/interfaces/usuario-rol';
@@ -23,10 +24,11 @@ export class RolesUsuariosComponent implements OnInit {
   auxUser: any;
   auxEvent: any;
   privilegio: boolean = false;
-
+  filtroLS: any;
+  
   constructor(private _usuarioService: UsuarioService,
               private dialogService: DialogService,
-              private _snackBar: MatSnackBar) { }
+              private _snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.usuarios = this._usuarioService.getUsuarios();
@@ -74,8 +76,18 @@ export class RolesUsuariosComponent implements OnInit {
   }
 
   applyFilter(event: Event) {
+    this.cargarTabla();
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+    localStorage.setItem('filtroLS',filterValue);
+    localStorage.setItem('filtroLS',JSON.stringify(filterValue));
+  }
+  applyFilter2(){
+    this.cargarTabla();
+    let aux:string;
+    aux = JSON.parse(localStorage.getItem('filtroLS')||'{}');
+    this.dataSource.filter = aux;
+    //this.filtrarRoles();
   }
 
   marcarCheckbox(event: any) {
@@ -87,6 +99,7 @@ export class RolesUsuariosComponent implements OnInit {
         }});
       this.tempArray = this.arrayBack.filter((e: any) => e.rol == event.source.value);
       this.filtrarRoles();
+      this.applyFilter2();
     } else {
       this.roles.forEach(rol => {
         if (rol.nombre == event.source.value) {
@@ -95,8 +108,8 @@ export class RolesUsuariosComponent implements OnInit {
       this.tempArray = this.usuarios.filter((e: any) => e.rol != event.source.value);
       this.newArray = [];
       this.filtrarRoles();
-    }
-    this.cargarTabla();
+      this.applyFilter2();
+    } 
 }
 
 filtrarRoles() {
@@ -107,7 +120,6 @@ filtrarRoles() {
     for (let i=0;i<firstArray.length;i++) {
       let obj = firstArray[i];
       this.usuarios.push(obj);
-      this.cargarTabla();
     }
   });
 }
@@ -144,19 +156,22 @@ filtrarRoles() {
               if (this.privilegio == true) {
                 this.cambioExitoso(rolCambio);
               } else {
-                this.mensajeCambio('Su usuario no tiene los privilegios para cambiar roles');
+                this.mensajeCambio('Su usuario no tiene los permisos requeridos para realizar el cambio');
               }
             }
           } else {
             if (this.privilegio == true) {
               this.cambioExitoso(rolCambio);
             } else {
-              this.mensajeCambio('Su usuario no tiene los privilegios para cambiar roles');
+              this.mensajeCambio('Su usuario no tiene los permisos requeridos para realizar el cambio');
             }
           }
           let input = document.querySelector('input');
           if (input != null) {
-            input.value = "";
+            this.filtroLS = localStorage.getItem('filtroLS');
+            input.value = this.filtroLS.replace(/['"]+/g, '');;
+            input.focus();
+            this.applyFilter2();
           }
         }
     })
@@ -167,19 +182,22 @@ filtrarRoles() {
       if (user.usuario == this.auxUser.usuario) {
         const idUsuario = user.id_usuario;
         let idRol = '';
-        user.rol = rolCambio;
-        this.cargarTabla();
+        user.rol = rolCambio;    
+        //this.cargarTabla();
         this.roles.forEach(rol => {
           if (rol.nombre == rolCambio) {
             idRol = rol.id_rol;
+            this.applyFilter2();
           }
         });
+       
         this._usuarioService.setRolUsuario(idRol, idUsuario).subscribe(
           (response: any) => {
             console.log("RESPUESTA DEL BACKEND = ", response);
         });
       }
     });
+  
     this.mensajeCambio('El cambio de rol fue realizado con éxito');
   }
 

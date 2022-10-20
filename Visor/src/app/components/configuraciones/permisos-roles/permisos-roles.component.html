@@ -4,7 +4,7 @@
         <div mat-dialog-content class="form">
             <mat-form-field appearance="outline">
                 <mat-label><mat-icon>search</mat-icon> Buscar...</mat-label>
-                <input matInput name="usuario" (keyup)="applyFilter($event)">
+                <input matInput name="usuario" (keyup)="applyFilter($event)" type="text" type="text" onkeydown="return /[a-zA-ZñÑá-úÁ-Ú ]/i.test(event.key)">
             </mat-form-field>
         </div>
     </div>

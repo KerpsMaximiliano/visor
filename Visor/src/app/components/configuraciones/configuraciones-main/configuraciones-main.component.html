@@ -1,16 +1,18 @@
 <div id="titulo"><h1>CONFIGURACIONES</h1></div>
 
 <div class="container">
-    
+
 <div class="botonera">
-    <button mat-button>Configuraciones 1</button>
-    <button mat-button (click)="rolesUsuarios()">Roles de Usuario</button>
-    <button mat-button (click)="permisosRoles()">Permisos por Rol</button>
-    <button mat-button>Configuraciones 4</button>
-    <button mat-button>Configuraciones 5</button>
-    <button mat-button>Configuraciones 6</button>
-    <button mat-button>Configuraciones 7</button>
-    <button mat-button>Configuraciones 8</button>
+    <mat-button-toggle-group  [vertical] ="true">
+        <mat-button-toggle mat-button>Configuraciones 1</mat-button-toggle>
+        <mat-button-toggle mat-button (click)="rolesUsuarios()">Roles de Usuarios</mat-button-toggle>
+        <mat-button-toggle mat-button (click)="permisosRoles()">Permisos por Rol</mat-button-toggle>
+        <mat-button-toggle mat-button>Configuraciones 4</mat-button-toggle>
+        <mat-button-toggle mat-button>Configuraciones 5</mat-button-toggle>
+        <mat-button-toggle mat-button>Configuraciones 6</mat-button-toggle>
+        <mat-button-toggle mat-button>Configuraciones 7</mat-button-toggle>
+        <mat-button-toggle mat-button>Configuraciones 8</mat-button-toggle>
+    </mat-button-toggle-group>
 </div>
 
 <router-outlet></router-outlet>
