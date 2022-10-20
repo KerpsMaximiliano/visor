@@ -9,7 +9,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { ViewChild } from '@angular/core';
 import { MatAccordion } from '@angular/material/expansion';
 import { FiltroService } from '../../services/i2t/filtro.service';
-import { TipoDeFiltro } from '../../interfaces/tipo-de-filtro';
 import { FiltroProyectosComponent } from 'src/app/shared/modal-filtro-proyectos/filtro-proyectos/filtro-proyectos.component';
 
 @Component({
@@ -30,6 +29,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
 
   data: any;
   proyectosAsignados: Proyecto[] = [];
+  proyectosFiltrados: Proyecto[] = [];
   displayedColumns: string[] = ['nombre','tareasATiempo','tareasAtrasadas'];
   columnsToDisplayWithExpand = [...this.displayedColumns, 'expand'];
   expandedElement!: Proyecto;
@@ -38,7 +38,6 @@ export class InicioEstadoProyectoComponent implements OnInit {
   position = new FormControl(this.positionOptions[0]);
   noHayProyectos: boolean = false;
   estado: boolean = false;
-  ordenDeFiltrado: string;
   orden_saved_search_id = '';
   modal_saved_search_id = '';
   misProyectos: boolean = false;
@@ -55,16 +54,13 @@ export class InicioEstadoProyectoComponent implements OnInit {
   asignadoA: string = "";
   nombre: string = "";
   inputIzq: string = "";
+  filterValue: any;
 
-  tipoDeFiltro: TipoDeFiltro[] = [
-    {value: 'abecedario', viewValue: 'Abecedario'},
-    {value: 'tareasAtrasadas', viewValue: 'Tareas atrasadas'},
-    {value: 'tareasATiempo', viewValue: 'Tareas a tiempo'}
-  ];
+  orden = ['Alfabetico', 'Tareas atrasadas', 'Tareas a tiempo'];
+  ordenSeleccion = 'Alfabetico';
 
 
   constructor(private _dataProyecto: ProyectoDataService, private _dialog: MatDialog, private _filtroService: FiltroService) {
-    this.ordenDeFiltrado = "";
   }
 
   ngOnInit(): void {
@@ -78,17 +74,17 @@ export class InicioEstadoProyectoComponent implements OnInit {
             if (filtro.nombre == 'filtro_abecedario') {
               this.orden_saved_search_id = filtro.saved_search_id;
               const contenido = JSON.parse(atob(filtro.contenido));
-              this.ordenDeFiltrado = contenido.ordenSeleccion; 
+              this.ordenSeleccion = contenido.ordenSeleccion; 
             }
             if (filtro.nombre == 'filtro_tareasAtrasadas') {
               this.orden_saved_search_id = filtro.saved_search_id;
               const contenido = JSON.parse(atob(filtro.contenido));
-              this.ordenDeFiltrado = contenido.ordenSeleccion; 
+              this.ordenSeleccion = contenido.ordenSeleccion; 
             }
             if (filtro.nombre == 'filtro_tareasATiempo') {
               this.orden_saved_search_id = filtro.saved_search_id;
               const contenido = JSON.parse(atob(filtro.contenido));
-              this.ordenDeFiltrado = contenido.ordenSeleccion; 
+              this.ordenSeleccion = contenido.ordenSeleccion; 
             }
             if (filtro.nombre == 'filtro_numero_nombre_cliente_asignadoa') {
               this.modal_saved_search_id = filtro.saved_search_id;
@@ -96,7 +92,8 @@ export class InicioEstadoProyectoComponent implements OnInit {
               this.numero = contenido.numero;
               this.nombre = contenido.nombre;
               this.cliente = contenido.cliente;
-              this.asignadoA = contenido.asignadoA;     
+              this.asignadoA = contenido.asignadoA;    
+              this.inputIzq = this.nombre; 
             } 
           });
         }
@@ -515,8 +512,11 @@ export class InicioEstadoProyectoComponent implements OnInit {
   }
 
   applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.data.filter = filterValue.trim().toLowerCase();
+    this.filterValue = (event.target as HTMLInputElement).value;
+    this.data.filter = this.filterValue.trim().toLowerCase();
+    this.nombre = this.filterValue;
+    this.verificarCheckBoxs();
+    this.prepararFiltro();
   }
 
   retornarPorcentajeCompletadas(index: number): number{
@@ -655,7 +655,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
     const dialogRef = this._dialog.open(FiltroProyectosComponent, {
       width: '400px',
       disableClose: true,
-      data: { numero: this.numero, nombre: this.nombre, cliente: this.cliente, asignadoA: this.asignadoA, seleccion: this.ordenDeFiltrado, search_id: this.modal_saved_search_id, misProyectos: this.misProyectos, proyectosAbiertos: this.proyectosAbiertos}
+      data: { numero: this.numero, nombre: this.nombre, cliente: this.cliente, asignadoA: this.asignadoA, seleccion: this.ordenSeleccion, search_id: this.modal_saved_search_id, misProyectos: this.misProyectos, proyectosAbiertos: this.proyectosAbiertos}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -665,13 +665,12 @@ export class InicioEstadoProyectoComponent implements OnInit {
       this.asignadoA = result.asignadoA;
       this.misProyectos = result.misProyectos;
       this.proyectosAbiertos = result.proyectosAbiertos;
+      this.inputIzq = this.nombre;
       let filtrar = result.filtrar;
       if (result.limpiar) { this.inputIzq = '', filtrar = true }
       if (filtrar) {
         this.verificarCheckBoxs();
         this.prepararFiltro();
-        this.data = new MatTableDataSource(this.proyectos);
-        this.aplicarFiltros();
       }
     });
   }
@@ -682,6 +681,8 @@ export class InicioEstadoProyectoComponent implements OnInit {
     const filtroAsignado = this.filtroAvanzado(3, this.asignadoA);
     const filtroNumero = this.filtroAvanzado(4, this.numero);
     this.proyectos = this.buscarCoincidencias(filtroNombre, filtroCliente, filtroAsignado, filtroNumero);
+    this.proyectosFiltrados = this.proyectos;
+    this.aplicarFiltros();
   }
 
   private verificarCheckBoxs(){
@@ -710,10 +711,10 @@ export class InicioEstadoProyectoComponent implements OnInit {
   }
 
   aplicarFiltros() {
+    this.data = new MatTableDataSource(this.proyectos);
     if (this.proyectos.length == 0) {
       this.noHayProyectos = true;
       this.disponibilidadProyectos = 0;
-      console.log("Paso por aca")
     } else if (this.proyectos.length == 1) {
       this.noHayProyectos = false;
       this.actualizarDisponibilidadProyecto();
@@ -823,100 +824,55 @@ export class InicioEstadoProyectoComponent implements OnInit {
   }
 
   dispararOrden(e: Event){
-    this.ordenDeFiltrado = (e.target as HTMLElement).innerText;
-    const contenido: string = JSON.stringify({ ordenSeleccion : this.ordenDeFiltrado });
+    this.ordenSeleccion = (e.target as HTMLElement).innerText;
+    const contenido: string = JSON.stringify({ ordenSeleccion : this.ordenSeleccion });
     const encodedData = btoa(contenido);
-    for(let i=0;i<this.tipoDeFiltro.length;i++){
-      if(this.ordenDeFiltrado == "Abecedario"){
-          if (this.orden_saved_search_id == '') {
-            this._filtroService.insertFiltro(
-              localStorage.getItem('userId')!,
-              'inicio-estado-proyecto',
-              'filtro_abecedario',
-              encodedData,
-              'Filtra los proyectos por orden alfabético').subscribe((rsp: any) => {
-                console.log('Filtro guardado: ', rsp);
-                this.cambiarOrden();
-                });
-          }
-          else {
-            this._filtroService.updateFiltro(this.orden_saved_search_id, encodedData).subscribe((rsp: any) => {
-              console.log('Filtro actualizado: ', rsp);
-              this.cambiarOrden();  
-            });
-          }
-        }
-        else if(this.ordenDeFiltrado == "Tareas a tiempo"){
-          let contenido: string = JSON.stringify({ ordenSeleccion : this.ordenDeFiltrado });
-          let encodedData = btoa(contenido);
-          if (this.orden_saved_search_id == '') {
-            this._filtroService.insertFiltro(
-              localStorage.getItem('userId')!,
-              'inicio-estado-proyecto',
-              'filtro_tareasATiempo',
-              encodedData,
-              'Filtra los proyectos por la cantidad de tareas a tiempo').subscribe((rsp: any) => {
-                console.log('Filtro guardado: ', rsp);
-                this.cambiarOrden();
-                });
-          }
-          else {
-            this._filtroService.updateFiltro(this.orden_saved_search_id, encodedData).subscribe((rsp: any) => {
-              console.log('Filtro actualizado: ', rsp);
-              this.cambiarOrden();
-            });
-          } 
-        }
-        else if(this.ordenDeFiltrado == "Tareas atrasadas"){
-          if (this.orden_saved_search_id == '') {
-            this._filtroService.insertFiltro(
-              localStorage.getItem('userId')!,
-              'inicio-estado-proyecto',
-              'filtro_tareasAtrasadas',
-              encodedData,
-              'Filtra los proyectos por la cantidad de tareas atrasadas').subscribe((rsp: any) => {
-                console.log('Filtro guardado: ', rsp);
-                this.cambiarOrden();
-                });
-          }
-          else {
-            this._filtroService.updateFiltro(this.orden_saved_search_id, encodedData).subscribe((rsp: any) => {
-              console.log('Filtro actualizado: ', rsp);
-              this.cambiarOrden();
-            });
-          }
-        } 
-      }
+    if (this.orden_saved_search_id == '') {
+      this._filtroService.insertFiltro(
+        localStorage.getItem('userId')!,
+        'inicio-estado-proyecto',
+        'filtro_orden',
+        encodedData,
+        'Filtra los colaboradores por orden alfabetico, tareas atrasadas o tareas a tiempo').subscribe((rsp: any) => {
+          console.log('Filtro guardado: ', rsp);
+          this.cambiarOrden();
+        });
+    } else {
+      this._filtroService.updateFiltro(this.orden_saved_search_id, encodedData).subscribe((rsp: any) => {
+        console.log('Filtro actualizado: ', rsp);
+        this.cambiarOrden();
+      });
     }
+  }
 
     cambiarOrden(){
-      console.log(this.ordenDeFiltrado)
-      if(this.ordenDeFiltrado == 'Abecedario') {
+      if(this.ordenSeleccion == 'Alfabetico') {
         this.proyectos.sort(function(a, b) {
-          if(a.nombre < b.nombre){
+          console.log("Ordeno por alfabeto");
+          if(a.nombre > b.nombre){
             return 1;
           }
-          if (a.nombre > b.nombre) {
+          if (a.nombre < b.nombre) {
             return -1;
           }
           return 0;
         });
       }
-      if(this.ordenDeFiltrado == 'Tareas atrasadas') {
+      if(this.ordenSeleccion == 'Tareas atrasadas') {
+        console.log("Ordeno por tareas atrasadas");
         this.proyectos.sort(function(a, b) {
           if(a.porcentajeTareasAtrasadas < b.porcentajeTareasAtrasadas){
             return 1;
-            console.log("1")
           }
           if(a.porcentajeTareasAtrasadas > b.porcentajeTareasAtrasadas){
             return -1;
-            console.log("-1")
+       
           }
           return 0;
-          console.log("0")
         });
       }
-      if(this.ordenDeFiltrado == 'Tareas a tiempo') {
+      if(this.ordenSeleccion == 'Tareas a tiempo') {
+        console.log("Ordeno por tareas a tiempo");
         this.proyectos.sort(function(a, b) {
           if(a.porcentajeTareasATiempo < b.porcentajeTareasATiempo){
             return 1;
@@ -927,5 +883,6 @@ export class InicioEstadoProyectoComponent implements OnInit {
           return 0;
         });
       }
+      this.data = new MatTableDataSource(this.proyectos);
     }
 }

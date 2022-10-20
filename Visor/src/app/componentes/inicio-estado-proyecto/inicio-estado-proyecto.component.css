@@ -147,6 +147,11 @@
   margin-left: 15px;
 }
 
+.menu-orden {
+  display: flex;
+  width: 170px;
+}
+
 /*
   Body
 */

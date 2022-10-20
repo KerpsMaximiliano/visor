@@ -2,19 +2,13 @@
   <div id="header">
       <div id="titulo"><h1>Estado de proyectos</h1></div>
       <mat-form-field appearance="outline" class="input-header">
-        <mat-label><mat-icon>search</mat-icon> Buscar proyectos...</mat-label>
+        <mat-label><mat-icon>search</mat-icon> Buscar proyecto... </mat-label>
         <input matInput name="proyecto" (keyup)="applyFilter($event)" #input autocomplete="off" [(ngModel)]="inputIzq">
       </mat-form-field>
       <button class="boton-icono" mat-mini-fab color="primary" (click)="openFiltro()" mat-button matTooltip="Filtro Avanzado"><mat-icon class="icon">filter_alt</mat-icon></button>
       <button class="boton-icono" mat-mini-fab color="primary" (click)="contraerProyectos()" mat-button matTooltip="Cerrar Proyectos"><mat-icon class="icon">close_fullscreen</mat-icon></button>
-      <mat-form-field appearance="outline" id="ordenarPor">
-        <mat-label>Ordenar por...</mat-label>
-        <mat-select [(value)]="ordenDeFiltrado">
-          <mat-option (click)="dispararOrden($event)" *ngFor="let filtro of tipoDeFiltro" [value]="filtro.value">
-            {{filtro.viewValue}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+      <button id="button-orden" mat-button [matMenuTriggerFor]="menuOrden"> {{ordenSeleccion}} <mat-icon>expand_more</mat-icon></button>
+      <mat-menu #menuOrden="matMenu"><button mat-button *ngFor="let o of orden" class="menu-orden" (click)="dispararOrden($event)">{{o}}</button></mat-menu>
 
       <div class="container-informacion">
         <div id="seccion-informacion" [ngClass]="{ 'visible': estado == true, 'noVisible': estado == false }">
