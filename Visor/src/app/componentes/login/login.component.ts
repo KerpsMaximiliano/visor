@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('auth_token', resp.dataset[0].jwt);
         localStorage.setItem('usuario', this.user.value);
         this.visibilidadMensaje = false;
-        this._router.navigate(['dashboard']);
+        this._router.navigate(['app-modal-colaborador']);
         // this._router.navigate(['vista-diseño-tecnico']);
       }
       else{

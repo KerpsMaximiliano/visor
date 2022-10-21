@@ -15,6 +15,8 @@ import { VistaDesarrolladorComponent } from './componentes/vista-desarrollador/v
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AuthGuard } from './guards/auth.guard';
 import { TareasComponent } from './components/tareas/tareas.component';
+import { ControlActividadModule } from './componentes/control-actividad/control-actividad.module';
+import { ModalColaboradorComponent } from './shared/modal-colaborador/modal-colaborador.component';
 
 const routes: Routes = [
   {
@@ -40,10 +42,10 @@ const routes: Routes = [
         children: [
         { path: 'roles-usuarios', component: RolesUsuariosComponent },
         { path: 'permisos-roles', component: PermisosRolesComponent }
-    ] },
-    {path: 'actividades', component: ActividadComponent}
+    ] }
     ]
-  }
+  },
+  {path: 'app-modal-colaborador',component: ModalColaboradorComponent},
 ];
 
 @NgModule({
