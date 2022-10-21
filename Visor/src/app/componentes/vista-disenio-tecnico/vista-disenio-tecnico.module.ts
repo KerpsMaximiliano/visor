@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { VistaDisenioTecnicoComponent } from './vista-disenio-tecnico.component';
 import { MyMaterialModule } from 'src/app/material';
+import { ControlActividadModule } from '../control-actividad/control-actividad.module';
 
 
 
@@ -11,7 +12,8 @@ import { MyMaterialModule } from 'src/app/material';
   ],
   imports: [
     CommonModule,
-    MyMaterialModule
+    MyMaterialModule,
+    ControlActividadModule
   ],
   exports: [
     VistaDisenioTecnicoComponent

@@ -1,0 +1,24 @@
+h1, h3{
+    text-align: center;
+}
+.mat_divider{
+    margin-bottom: 2px;
+    height: 1px;
+    background-color: black;
+}
+.icon{
+    font-size: 40px;
+    width: 45px;
+}
+
+.nav-end-btn {
+	font-size: 1.hem;
+	margin-left: 0.5em;
+	margin-right: 0.5em;
+    float: right;
+    
+}
+
+span{
+    padding-right: 0.5em;
+}
