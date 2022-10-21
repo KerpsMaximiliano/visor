@@ -64,7 +64,19 @@ export class VistaDisenioTecnicoComponent implements OnInit{
   }
 
   ngOnChanges(changes: SimpleChange){
-    console.log(changes)
+    if (this.tareasSP.length > 0) {
+      this.noHayProyecto = false;
+      console.log("Entra change")
+      this.organizarTareas();
+      console.log(this.tareasOrg);
+      this.cargarTareas();
+      this.poseeTareas();
+      if (!this.noHayProyecto) {
+        this.setearBarraProgreso();
+        this.ordenarListas();
+      }
+    }
+    this.tareasOrg=[];
   }
 
   organizarTareas() {

@@ -11,6 +11,7 @@ import { MatSelectChange } from '@angular/material/select';
 import { TareaService } from 'src/app/services/i2t/tarea.service';
 import { finalize } from 'rxjs/operators';
 import { MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { FiltroService } from 'src/app/services/i2t/filtro.service';
 
 
 export interface PropiedadesProyecto{
@@ -68,6 +69,7 @@ export class DialogComponent implements OnInit {
   numeroProyecto: string = '';
   nombreProyecto: string = '';
   clienteProyecto: string = '';
+  asignadasAmi: boolean = false;
   
   asignadoAproyecto: string = '';
   listaProyectos: any[] = [];
@@ -78,6 +80,7 @@ export class DialogComponent implements OnInit {
   clientesDeProyectos: String[] = [];
   usuariosDeProyectos: String[] = [];
   dataSourcePrueba!: MatTableDataSource<any>;
+  dataSourcePruebaCopia!: MatTableDataSource<any>;
   result: PropiedadesProyecto[] = [];
   valoresFiltros =  {
     id: '',
@@ -113,7 +116,7 @@ export class DialogComponent implements OnInit {
   }
 
   constructor(private _formBuilder: FormBuilder, @Inject(MAT_DIALOG_DATA) public buscarProyectoInterface: Proyectos, @Inject(MAT_DIALOG_DATA) public buscarTareasInterface: Tareas, private _adapter: DateAdapter<any>,
-  @Inject(MAT_DATE_LOCALE) private _locale: string, public dialogRef: MatDialogRef<DialogComponent>, private _tareaService: TareaService) {
+  @Inject(MAT_DATE_LOCALE) private _locale: string, public dialogRef: MatDialogRef<DialogComponent>, private _tareaService: TareaService, private _filtroService: FiltroService) {
     
     
     //Pregunto si el pop up se abrió para buscar PROYECTOS
@@ -132,6 +135,7 @@ export class DialogComponent implements OnInit {
         this.listaProyectosPrueba = response.dataset;
         console.log(this.listaProyectosPrueba)
         this.dataSourcePrueba = new MatTableDataSource(this.listaProyectosPrueba);
+        this.dataSourcePruebaCopia = new MatTableDataSource(this.listaProyectosPrueba);
         
          
         let cantProyectos = this.dataSourcePrueba.filteredData.length;
@@ -140,15 +144,31 @@ export class DialogComponent implements OnInit {
             this.clientesDeProyectos.push( this.dataSourcePrueba.filteredData[i].nombre_cliente);
           }
         }
+        console.log(this.clientesDeProyectos)
         for(let i = 0; i < cantProyectos ; i++){
           if(!this.usuariosDeProyectos.includes(this.dataSourcePrueba.filteredData[i].usuario_asignado)){
             this.usuariosDeProyectos.push( this.dataSourcePrueba.filteredData[i].usuario_asignado);
           }
         }
+
+        this.ordenarAfabeticamente(this.clientesDeProyectos);
+        this.ordenarAfabeticamente(this.usuariosDeProyectos);
         
         
 
 
+      });
+
+      //Obtengo filtros
+      this._filtroService.getUserId(localStorage.getItem('usuario')!).subscribe((response: any) => {
+        //localStorage.setItem('userId', response.dataset[0].id);
+        console.log(response);
+        this._filtroService.selectFiltro(response.dataset[0].id, 'proyectos').subscribe((resp: any) => {
+          console.log(resp)
+          if (resp.dataset.length == 0 ) {
+          } 
+          else {}
+        });
       });
     }
     
@@ -241,13 +261,31 @@ export class DialogComponent implements OnInit {
     
 
   }
+  ordenarAfabeticamente(arrayDatos: String[]){
+    arrayDatos = arrayDatos.sort();
+    console.log(arrayDatos)
+  }
   
   
-  toppings = this._formBuilder.group({
-    misProyectos: false,
-    extracheese: false,
-    mushroom: false,
-  });
+  
+
+  misProyectosAsignados(){
+    console.log(this.asignadasAmi)
+    console.log(this.asignadasAmi = !this.asignadasAmi)
+    if(this.asignadasAmi){
+      let usuarioRegistrado: any;
+      usuarioRegistrado = localStorage.getItem("usuario");
+      console.log(this.dataSourcePrueba)
+      this.dataSourcePrueba.filterPredicate = (data: any, filter: string): boolean => {
+        return ( data.usuario_asignado == usuarioRegistrado );
+      }
+      this.dataSourcePrueba.filter = usuarioRegistrado.trim().toLowerCase();
+
+    }
+    else{
+      this.dataSourcePrueba = new MatTableDataSource(this.listaProyectosPrueba);
+    }
+  }
 
   
   
@@ -340,7 +378,7 @@ export class DialogComponent implements OnInit {
       case 'nombreProyecto':
         this.nombreProyecto = valorParametroFiltro;
         this.filtrosProyectoDialog[1].nombreProyecto = this.nombreProyecto;//Para permanencia de filtro
-        this.valoresFiltros.nombre = valorParametroFiltro;
+        this.valoresFiltros.nombre = valorParametroFiltro.toLowerCase();
         const valoresN = Object.values(this.valoresFiltros);
 
 

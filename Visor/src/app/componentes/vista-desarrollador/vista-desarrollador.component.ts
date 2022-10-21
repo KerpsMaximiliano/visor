@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SimpleChange } from '@angular/core';
 import { Tarea } from 'src/app/interfaces/tarea';
 import { TareaService } from 'src/app/services/i2t/tarea.service';
 
@@ -62,8 +62,25 @@ export class VistaDesarrolladorComponent implements OnInit {
       }
     }
     else{
-      //this.noHayProyecto = true;
+      this.noHayProyecto = true;
     }
+  }
+
+  ngOnChanges(changes: SimpleChange) {
+
+    if (this.tareasSP.length > 0) {
+      this.noHayProyecto = false;
+      console.log("Entra change")
+      this.organizarTareas();
+      console.log(this.tareasOrg);
+      this.cargarTareas();
+      this.poseeTareas();
+      if (!this.noHayProyecto) {
+        this.setearBarraProgreso();
+        this.ordenarListas();
+      }
+    }
+    this.tareasOrg=[];
   }
 
   organizarTareas() {

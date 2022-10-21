@@ -1,6 +1,3 @@
-
-
-
 <div class="contenedor">
   <span class="buscadores">
     <div class="buscador" appearance="standard">
@@ -8,7 +5,7 @@
         <input matInput type="text" placeholder="Buscar proyecto..." autocomplete="off" [(ngModel)]="valorInputProyecto"  (keyup)="buscarProyectos($event)">
         <div class="lista_proyectos" [ngClass]= estiloListaProyectos >
           <div>
-            <table mat-table [dataSource]="dataSourceService" class="mat-elevation-z8 sugerenciasProyectos">
+            <table mat-table [dataSource]="dataSourceService" class="mat-elevation-z8 ">
               <ng-container matColumnDef="nombre">
                 <th mat-header-cell *matHeaderCellDef>Proyectos</th>
                 <td mat-cell *matCellDef="let unProyecto" (click)="seleccionarProyecto(unProyecto)"> {{ unProyecto.nombre_projecto }} </td>
@@ -22,26 +19,26 @@
       <!-- Lupa para buscar proyectos-->
       <mat-icon class="icon" (click)="abrirDialogProyecto($event)">search</mat-icon>
       
-      <button mat-button [matMenuTriggerFor]="menu">Vista</button>
+      <button class="botonVistas" mat-button [matMenuTriggerFor]="menu" [value] = "nombreVistaSeleccionada">{{nombreVistaSeleccionada}}</button>
       <mat-menu #menu="matMenu">
-        <button mat-menu-item (click)='verTareasDeVista($event)' id="Analista Funcional">Analista funcional</button>
-        <button mat-menu-item (click)='verTareasDeVista($event)' id="Analista Tecnico">Analsita Técnico</button>
-        <button mat-menu-item (click)='verTareasDeVista($event)' id="Desarrollador">Desarrollador</button>
-        <button mat-menu-item (click)='verTareasDeVista($event)' id="Tester">Tester</button>
-        <button mat-menu-item (click)='verTareasDeVista($event)' id="Project manager">Project manager</button>
+        <button  mat-menu-item (click)='verTareasDeVista($event)' id="Analista Funcional">Analista funcional</button>
+        <button  mat-menu-item (click)='verTareasDeVista($event)' id="Analista Tecnico">Analsita Técnico</button>
+        <button  mat-menu-item (click)='verTareasDeVista($event)' id="Desarrollador">Desarrollador</button>
+        <button  mat-menu-item (click)='verTareasDeVista($event)' id="Tester">Tester</button>
+        <button  mat-menu-item (click)='verTareasDeVista($event)' id="Project manager">Project manager</button>
       </mat-menu>
     </div>
     
     <div class="buscador">
       <mat-icon class="icon">add_circle</mat-icon>
       
-      <button [matMenuTriggerFor]="sprintMenu">Sprint 9</button>
+      <button mat-flat-button color="primary" [matMenuTriggerFor]="sprintMenu">Sprint 9</button>
       <mat-menu #sprintMenu="matMenu">
         <button mat-menu-item>10/22</button>
         <button mat-menu-item>11/12</button>
         <button mat-menu-item>12/12</button>
       </mat-menu>
-      <button (click)="getUsuarioTareasAsignadas()">Asignadas a mi</button>
+      <button mat-flat-button color="primary" (click)="getUsuarioTareasAsignadas()">Asignadas a mi</button>
       <mat-icon class="icon" (click)="buscarTarea()">filter_alt</mat-icon>
     </div>
   </span>
