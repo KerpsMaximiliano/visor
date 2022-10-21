@@ -1,0 +1,51 @@
+
+.header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.filtros > .mat-dialog-content{
+    padding: 15px;
+}
+
+.label{
+    padding-right: 10px;
+    width: 9%;
+}
+
+.example-form-field {
+    margin: 0 8px 16px 0;
+}
+
+.lista_proyectos {
+    overflow-y: scroll;
+    border: 1px solid black;
+    height: 15vw;
+}
+.mis_proyectos {
+    margin: 12px 0;
+}
+
+#text_checkbox{
+    margin: 0 0 -2px;
+}
+.titulo_fechas{
+    display: flex;
+    width: 80%;
+    justify-content: space-around;
+}
+.fechas{
+    width: 80%;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+}
+
+.accionesBotones{
+    display: flex;
+    justify-content: space-around;
+}
+  
+
+

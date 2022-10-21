@@ -6,15 +6,30 @@ import { RestService } from './rest.service';
 })
 export class TareaService {
 
-  constructor(private rest: RestService) { }
-  
-  getTareasDeProyecto(id_caso: string, tipo_tarea: string) {
-      let jsbody: string = JSON.stringify({
-          par_modo : 'G',
-          id_caso : id_caso,
-          tipo_tarea : tipo_tarea
-      });
-      return this.rest.callProcedimientoVisor(jsbody, "TareasProyecto");
-  }
-  
-  }
+    asignadasAmi: string = '';
+    
+    constructor(private rest: RestService) { }
+
+
+    
+
+getTareasDeProyecto(id_caso: string) {
+    let jsbody: string = JSON.stringify({
+        par_modo : 'G',
+        id_caso : id_caso
+    });
+    return this.rest.callProcedimientoVisor(jsbody, "TareasProyecto");
+}
+
+   
+
+    getABMproyectoService() {
+        let endPoint = 'AbmProyectos';
+        let jsbody: string = JSON.stringify({
+            par_modo: 'G'
+        });
+        return this.rest.getABMproyectoRest(jsbody, endPoint);
+    }
+
+
+}

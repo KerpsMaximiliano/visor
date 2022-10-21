@@ -1,4 +1,5 @@
 export interface Tarea {
+    idTarea: string,
     titulo: string,
     proyecto: string,
     prioridad: string,
