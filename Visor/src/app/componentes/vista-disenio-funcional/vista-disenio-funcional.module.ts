@@ -11,6 +11,8 @@ import { VistaAnalistaFuncionalComponent } from './vista-analista-funcional.comp
     CommonModule,
     MyMaterialModule
   ],
-  exports: [VistaAnalistaFuncionalComponent]
+  exports: [VistaAnalistaFuncionalComponent],
+  providers: [],
+  bootstrap: [VistaAnalistaFuncionalComponent]
 })
 export class VistaDisenioFuncionalModule { }

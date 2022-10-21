@@ -45,6 +45,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ControlActividadModule } from 'src/app/componentes/control-actividad/control-actividad.module';
 import { SharedModule } from './shared/shared.module';
 import { LoginService } from './services/i2t/login.service';
+import { VistaDisenioFuncionalModule } from './componentes/vista-disenio-funcional/vista-disenio-funcional.module';
 
 
 @NgModule({
@@ -75,7 +76,8 @@ import { LoginService } from './services/i2t/login.service';
     DialogModule,
     ControlActividadModule,
     SharedModule,
-    RecuperarcontraseniaModule
+    RecuperarcontraseniaModule,
+    VistaDisenioFuncionalModule
   ],
 
   //Proveedores agregados
