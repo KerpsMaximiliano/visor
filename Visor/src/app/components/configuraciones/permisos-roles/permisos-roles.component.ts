@@ -22,6 +22,7 @@ export class PermisosRolesComponent implements OnInit {
   displayedColumns: string[] = ['permiso', 'operativo', 'supervisor', 'administrador'];
   privilegio: boolean = false;
   permisosOrdenados!: Array<Permiso>;
+  arrayNoId: Permiso[] = [];
 
   constructor(private _permisoService: PermisoService,
               private _usuarioService: UsuarioService,
@@ -41,7 +42,11 @@ export class PermisosRolesComponent implements OnInit {
         this.privilegio = true;
       }
     });
-    console.log(this.permisos)
+ 
+    this.arrayNoId = this.permisos;
+    for(let i=0; i < this.permisos.length; i++){
+      this.arrayNoId[i].id = 0;
+    }
   }
 
   getRoles() {
@@ -115,10 +120,9 @@ export class PermisosRolesComponent implements OnInit {
   }
 
   applyFilter(event: Event) {
+    this.dataSource = new MatTableDataSource(this.arrayNoId);
     const filterValue = (event.target as HTMLInputElement).value;
-    
     this.dataSource.filter = filterValue.trim().toLowerCase();
-    
   }
 
   marcarCheckbox(event: any, rol: string, funcion: string) {

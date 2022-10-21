@@ -25,6 +25,7 @@ export class RolesUsuariosComponent implements OnInit {
   auxEvent: any;
   privilegio: boolean = false;
   filtroLS: any;
+
   
   constructor(private _usuarioService: UsuarioService,
               private dialogService: DialogService,
@@ -61,6 +62,7 @@ export class RolesUsuariosComponent implements OnInit {
       arrayAux.push({usuario: user.usuario, nombre: user.nombre, rol: user.rol});
     });
     this.dataSource = new MatTableDataSource(arrayAux);
+    console.log('cargarTabla()');
   }
 
   getRoles() {
@@ -73,6 +75,7 @@ export class RolesUsuariosComponent implements OnInit {
           }
         });
     });
+    console.log('getRoles()');
   }
 
   applyFilter(event: Event) {
@@ -81,6 +84,7 @@ export class RolesUsuariosComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
     localStorage.setItem('filtroLS',filterValue);
     localStorage.setItem('filtroLS',JSON.stringify(filterValue));
+    console.log('applyFilter(event: Event)');
   }
   applyFilter2(){
     this.cargarTabla();
@@ -88,9 +92,11 @@ export class RolesUsuariosComponent implements OnInit {
     aux = JSON.parse(localStorage.getItem('filtroLS')||'{}');
     this.dataSource.filter = aux;
     //this.filtrarRoles();
+    console.log('applyFilter2()');
   }
 
   marcarCheckbox(event: any) {
+    console.log('EVENT SOURCE VALUE',event.source.value)
     this.auxEvent = event;
     if (event.checked) {
       this.roles.forEach(rol => {
@@ -109,7 +115,8 @@ export class RolesUsuariosComponent implements OnInit {
       this.newArray = [];
       this.filtrarRoles();
       this.applyFilter2();
-    } 
+    }
+    console.log('marcarCheckbox(event: any)')
 }
 
 filtrarRoles() {
@@ -122,6 +129,7 @@ filtrarRoles() {
       this.usuarios.push(obj);
     }
   });
+  console.log('filtrarRoles()')
 }
 
   getRolesDisponibles(usuario: any) {
@@ -134,6 +142,7 @@ filtrarRoles() {
         this.rolesFaltantes.splice(aux, 1);
       }
     });
+    console.log('getRolesDisponibles(usuario: any) ')
   }
 
   cambiarRol(rolCambio: any) {
@@ -169,36 +178,50 @@ filtrarRoles() {
           let input = document.querySelector('input');
           if (input != null) {
             this.filtroLS = localStorage.getItem('filtroLS');
-            input.value = this.filtroLS.replace(/['"]+/g, '');;
+            input.value = this.filtroLS.replace(/['"]+/g, '');
             input.focus();
             this.applyFilter2();
           }
         }
     })
+    console.log('cambiarRol(rolCambio: any) ')
   }
 
   cambioExitoso(rolCambio: string) {
+    
     this.usuarios.forEach(user => {
       if (user.usuario == this.auxUser.usuario) {
         const idUsuario = user.id_usuario;
         let idRol = '';
         user.rol = rolCambio;    
         //this.cargarTabla();
+        
         this.roles.forEach(rol => {
           if (rol.nombre == rolCambio) {
             idRol = rol.id_rol;
+            this.checkAux(rol);
             this.applyFilter2();
           }
         });
-       
         this._usuarioService.setRolUsuario(idRol, idUsuario).subscribe(
           (response: any) => {
             console.log("RESPUESTA DEL BACKEND = ", response);
         });
       }
-    });
-  
+    }
+    );
     this.mensajeCambio('El cambio de rol fue realizado con éxito');
+    console.log('cambioExitoso(rolCambio: string)')
+    console.log('ROLES',this.roles);
+  }
+
+  checkAux(rol:any) {
+    if(rol.check == false){
+      this.tempArray = this.usuarios.filter((e: any) => e.rol != rol.nombre);
+      this.newArray = [];
+      this.filtrarRoles();
+      this.applyFilter2();
+    }
   }
 
   mensajeCambio(msj: string) {
@@ -207,6 +230,7 @@ filtrarRoles() {
       horizontalPosition: 'center',
       verticalPosition:  'bottom'
     })
+    console.log('mensajeCambio(msj: string)')
   }
 
 }
