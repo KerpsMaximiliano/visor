@@ -62,7 +62,6 @@ export class RolesUsuariosComponent implements OnInit {
       arrayAux.push({usuario: user.usuario, nombre: user.nombre, rol: user.rol});
     });
     this.dataSource = new MatTableDataSource(arrayAux);
-    console.log('cargarTabla()');
   }
 
   getRoles() {
@@ -75,7 +74,6 @@ export class RolesUsuariosComponent implements OnInit {
           }
         });
     });
-    console.log('getRoles()');
   }
 
   applyFilter(event: Event) {
@@ -84,19 +82,15 @@ export class RolesUsuariosComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
     localStorage.setItem('filtroLS',filterValue);
     localStorage.setItem('filtroLS',JSON.stringify(filterValue));
-    console.log('applyFilter(event: Event)');
   }
   applyFilter2(){
     this.cargarTabla();
     let aux:string;
     aux = JSON.parse(localStorage.getItem('filtroLS')||'{}');
     this.dataSource.filter = aux;
-    //this.filtrarRoles();
-    console.log('applyFilter2()');
   }
 
   marcarCheckbox(event: any) {
-    console.log('EVENT SOURCE VALUE',event.source.value)
     this.auxEvent = event;
     if (event.checked) {
       this.roles.forEach(rol => {
@@ -116,7 +110,6 @@ export class RolesUsuariosComponent implements OnInit {
       this.filtrarRoles();
       this.applyFilter2();
     }
-    console.log('marcarCheckbox(event: any)')
 }
 
 filtrarRoles() {
@@ -129,7 +122,6 @@ filtrarRoles() {
       this.usuarios.push(obj);
     }
   });
-  console.log('filtrarRoles()')
 }
 
   getRolesDisponibles(usuario: any) {
@@ -142,7 +134,6 @@ filtrarRoles() {
         this.rolesFaltantes.splice(aux, 1);
       }
     });
-    console.log('getRolesDisponibles(usuario: any) ')
   }
 
   cambiarRol(rolCambio: any) {
@@ -184,7 +175,6 @@ filtrarRoles() {
           }
         }
     })
-    console.log('cambiarRol(rolCambio: any) ')
   }
 
   cambioExitoso(rolCambio: string) {
@@ -195,7 +185,6 @@ filtrarRoles() {
         let idRol = '';
         user.rol = rolCambio;    
         //this.cargarTabla();
-        
         this.roles.forEach(rol => {
           if (rol.nombre == rolCambio) {
             idRol = rol.id_rol;
@@ -211,8 +200,6 @@ filtrarRoles() {
     }
     );
     this.mensajeCambio('El cambio de rol fue realizado con éxito');
-    console.log('cambioExitoso(rolCambio: string)')
-    console.log('ROLES',this.roles);
   }
 
   checkAux(rol:any) {
@@ -230,7 +217,6 @@ filtrarRoles() {
       horizontalPosition: 'center',
       verticalPosition:  'bottom'
     })
-    console.log('mensajeCambio(msj: string)')
   }
 
 }
