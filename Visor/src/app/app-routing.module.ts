@@ -7,6 +7,7 @@ import { LoginComponent } from './componentes/login/login.component';
 import { RecuperarcontraseniaComponent } from './componentes/recuperar-contrasenia/recuperar-contrasenia.component';
 import { InicioEstadoProyectoComponent } from './componentes/inicio-estado-proyecto/inicio-estado-proyecto.component';
 import { VistaDisenioTecnicoComponent } from './componentes/vista-disenio-tecnico/vista-disenio-tecnico.component';
+import { VistaAnalistaFuncionalComponent } from './componentes/vista-disenio-funcional/vista-analista-funcional.component';
 import { InicioMainComponent } from './componentes/inicio/inicio-main/inicio-main.component';
 import { ConfiguracionesComponent } from './components/configuraciones/configuraciones-main/configuraciones-main.component';
 import { PermisosRolesComponent } from './components/configuraciones/permisos-roles/permisos-roles.component';
@@ -44,6 +45,10 @@ const routes: Routes = [
     ] },
     {path: 'actividades', component: ActividadComponent}
     ]
+  },
+  {
+    path: "vista-disenio-funcional",
+    component: VistaAnalistaFuncionalComponent
   }
 ];
 
