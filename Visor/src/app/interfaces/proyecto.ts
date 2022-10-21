@@ -2,6 +2,7 @@
 
 export interface Proyecto {
     numero: number,
+    id: string,
     nombre: string,
     cliente: string,
     asignado: string,

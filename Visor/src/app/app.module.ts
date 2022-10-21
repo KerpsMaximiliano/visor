@@ -15,7 +15,7 @@ import { MyMaterialModule } from './material';
 // Componentes
 import { LoginModule } from './componentes/login/login.module';
 import { RecuperarcontraseniaModule } from './componentes/recuperar-contrasenia/recuperar-contrasenia.module';
-import { InicioEstadoModule } from './componentes/inicio-estado-proyecto/inicio-estado.module';
+import { InicioEstadoModule } from './componentes/inicio/inicio-estado-proyecto/inicio-estado.module';
 import { HttpClientModule } from '@angular/common/http';
 import { RestService } from './services/i2t/rest.service';
 import { Config } from './services/i2t/config.service';

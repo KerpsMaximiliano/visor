@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
-import { ProyectoDataService } from '../../services/i2t/proyecto-data.service';
+import { MatTableDataSource } from '@angular/material/table';
+import { ProyectoDataService } from 'src/app/services/i2t/proyecto-data.service';
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import { Proyecto } from '../../interfaces/proyecto';
+import { Proyecto } from 'src/app/interfaces/proyecto';
 import { TooltipPosition } from '@angular/material/tooltip';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ViewChild } from '@angular/core';
 import { MatAccordion } from '@angular/material/expansion';
-import { FiltroService } from '../../services/i2t/filtro.service';
+import { FiltroService } from '../../../services/i2t/filtro.service';
 import { FiltroProyectosComponent } from 'src/app/shared/modal-filtro-proyectos/filtro-proyectos/filtro-proyectos.component';
 
 @Component({
@@ -28,8 +28,6 @@ export class InicioEstadoProyectoComponent implements OnInit {
   @ViewChild(MatAccordion) accordion!: MatAccordion;
 
   data: any;
-  proyectosAsignados: Proyecto[] = [];
-  proyectosFiltrados: Proyecto[] = [];
   displayedColumns: string[] = ['nombre','tareasATiempo','tareasAtrasadas'];
   columnsToDisplayWithExpand = [...this.displayedColumns, 'expand'];
   expandedElement!: Proyecto;
@@ -47,6 +45,8 @@ export class InicioEstadoProyectoComponent implements OnInit {
   proyectos: Proyecto[] = [];
   proyectosAbiertosArray: Proyecto[] = [];
   proyectosTotalesArray: Proyecto[] = [];
+  proyectosAsignados: Proyecto[] = [];
+  proyectosFiltrados: Proyecto[] = [];
 
   //Variables del filtro
   numero: string = "";
@@ -92,8 +92,11 @@ export class InicioEstadoProyectoComponent implements OnInit {
               this.numero = contenido.numero;
               this.nombre = contenido.nombre;
               this.cliente = contenido.cliente;
-              this.asignadoA = contenido.asignadoA;    
-              this.inputIzq = this.nombre; 
+              this.asignadoA = contenido.asignadoA; 
+              this.misProyectos = contenido.misProyectos;
+              this.proyectosAbiertos = contenido.proyectosAbiertos;   
+              this.inputIzq = contenido.nombre; 
+              this.data = new MatTableDataSource(this.proyectos);
             } 
           });
         }
@@ -115,6 +118,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
         for(let i = 0;i<resp.dataset.length;i++){
           let objetoTemporal: Proyecto = {
             numero: resp.dataset[i].Numero_Caso,
+            id: resp.dataset[i].Id_Caso,
             nombre: resp.dataset[i].Caso,
             cliente: resp.dataset[i].Cliente,
             asignado: resp.dataset[i].Asignado_a,
@@ -144,7 +148,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
             porcentajeHPEnProgresoTesting: 0
           }
           this.proyectosTotalesArray.push(objetoTemporal);
-          this._dataProyecto.getPorcentajeHP(this.proyectosTotalesArray[i].numero).subscribe((resp: any) => {
+          this._dataProyecto.getPorcentajeHP(this.proyectosTotalesArray[i].id).subscribe((resp: any) => {
             for(let x = 0; x < resp.dataset.length; x++){ 
               contadorHorasTotalesPlanificadas = contadorHorasTotalesPlanificadas + resp.dataset[x].Horas;
             }
@@ -183,7 +187,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
           let contadorHPEnPruebaTesting = 0;
           let contadorHPTotalAreaTesting = 0;
 
-          this._dataProyecto.getPorcentajeHPAreas(this.proyectosTotalesArray[i].numero).subscribe((resp: any) => {
+          this._dataProyecto.getPorcentajeHPAreas(this.proyectosTotalesArray[i].id).subscribe((resp: any) => {
             for(let r = 0;r<resp.dataset.length;r++)
             {
               switch (resp.dataset[r].Area){
@@ -317,6 +321,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
         for(let i = 0;i<resp.dataset.length;i++){
           let objetoTemporal: Proyecto = {
             numero: resp.dataset[i].Numero_Caso,
+            id: resp.dataset[i].id,
             nombre: resp.dataset[i].Caso,
             cliente: resp.dataset[i].Cliente,
             asignado: resp.dataset[i].Asignado_a,
@@ -347,7 +352,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
           }
           let contadorHorasTotalesPlanificadas = 0;
           this.proyectosAbiertosArray.push(objetoTemporal);
-          this._dataProyecto.getPorcentajeHP(this.proyectosAbiertosArray[i].numero).subscribe((resp: any) => {
+          this._dataProyecto.getPorcentajeHP(this.proyectosAbiertosArray[i].id).subscribe((resp: any) => {
             for(let x = 0; x < resp.dataset.length; x++){ 
               contadorHorasTotalesPlanificadas = contadorHorasTotalesPlanificadas + resp.dataset[x].Horas;
             }
@@ -386,7 +391,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
           let contadorHPEnPruebaTesting = 0;
           let contadorHPTotalAreaTesting = 0;
 
-          this._dataProyecto.getPorcentajeHPAreas(this.proyectosAbiertosArray[i].numero).subscribe((resp: any) => {
+          this._dataProyecto.getPorcentajeHPAreas(this.proyectosAbiertosArray[i].id).subscribe((resp: any) => {
             for(let r = 0;r<resp.dataset.length;r++)
             {
               switch (resp.dataset[r].Area){
@@ -727,7 +732,6 @@ export class InicioEstadoProyectoComponent implements OnInit {
   }
 
   aplicarFiltros() {
-    this.data = new MatTableDataSource(this.proyectos);
     if (this.proyectos.length == 0) {
       this.noHayProyectos = true;
       this.disponibilidadProyectos = 0;

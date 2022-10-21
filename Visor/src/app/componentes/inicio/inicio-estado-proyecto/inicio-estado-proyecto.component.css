@@ -26,22 +26,21 @@
 
 .boton-informacion{
   margin-top: 10px;
-  margin-right: 10px;
+  margin-right: 0px;
   margin-left: 5px;
 }
 
 #seccion-informacion{
   background-color: white;
   border: 1px solid black;
-  height: 140px;
-  width: 120px;
+  height: 126px;
+  width: 85px;
   border-radius: 5px;
-  padding: 5px;
+  padding: 3px;
 }
 
 .letrasSeccionInformacion{
-  font-size: 11px;
-  margin-top: 2px;
+  font-size: 9px;
   margin-left: 2px;
 }
 
@@ -66,32 +65,32 @@
 }
 
 .cc-no-iniciadas{
-  height: 20px;
-  width: 20px;
+  height: 15px;
+  width: 15px;
   background-color: red;
   border-radius: 5px;
   border: solid 1px black;
 }
 
 .cc-en-progreso{
-  height: 20px;
-  width: 20px;
+  height: 15px;
+  width: 15px;
   border-radius: 5px;
   background-color: yellow;
   border: solid 1px black;
 }
 
 .cc-en-prueba{
-  height: 20px;
-  width: 20px;
+  height: 15px;
+  width: 15px;
   border-radius: 5px;
   background-color: rgb(0, 177, 0);
   border: solid 1px black;
 }
 
 .cc-completadas{
-  height: 20px;
-  width: 20px;
+  height: 15px;
+  width: 15px;
   border-radius: 5px;
   background-color: green;
   border: solid 1px black;
@@ -131,7 +130,7 @@
 }
 
 .acomodar{
-  padding-left: 175px;
+  padding-left: 130px;
 }
 
 #porcentaje-disponibilidad-proyectos {
@@ -174,6 +173,10 @@
 /*
   Tabla
 */
+
+.letrasSegundoNivel{
+  font-size: 12px;
+}
 
 table {
   width: 100%;
@@ -226,8 +229,8 @@ tr.example-element-row:not(.example-expanded-row):active {
 #tareasATiempo{
   background-color: green;
   text-align: center;
-  margin-right: 35%;
-  margin-left: 35%;
+  margin-right: 29%;
+  margin-left: 29%;
   border-radius: 5px;
   border: solid 1.50px black;
   color: #efefef;
@@ -236,8 +239,8 @@ tr.example-element-row:not(.example-expanded-row):active {
 #tareasAtrasadas{
 background-color: red;
 text-align: center;
-margin-right: 35%;
-margin-left: 35%;
+margin-right: 29%;
+margin-left: 29%;
 border-radius: 5px;
 border: solid 1.50px black;
 color: #efefef;
@@ -277,7 +280,7 @@ max-height: 30%;
 }
 
 #tituloAvanceArea{
-  padding-left: 41%;
+  padding-left: 38%;
 }
 
 .contenido{
@@ -313,7 +316,7 @@ max-height: 30%;
   font-size: 15px;
   border-radius: 3px;
   padding-top: 10px;
-  height: 5%;
+  height: 10%;
 }
 
 #barraRoja{
@@ -325,7 +328,7 @@ max-height: 30%;
   font-size: 15px;
   border-radius: 3px;
   padding-top: 10px;
-  height: 5%;
+  height: 10%;
 }
 
 #barraAmarilla{
@@ -336,7 +339,7 @@ max-height: 30%;
   font-size: 15px;
   border-radius: 3px;
   padding-top: 10px;
-  height: 5%;
+  height: 10%;
 }
 
 #barraEnPrueba{
@@ -348,7 +351,7 @@ max-height: 30%;
   font-size: 15px;
   border-radius: 3px;
   padding-top: 10px;
-  height: 5%;
+  height: 10%;
 } 
 
 .barraAvance{
@@ -360,19 +363,19 @@ max-height: 30%;
 }
 
 #espacio{
-  padding-right: 10px;
-}
-
-#espacioTecnico{
   padding-right: 12px;
 }
 
+#espacioTecnico{
+  padding-right: 11px;
+}
+
 #espacioDesarrollo{
-  padding-right: 40px;
+  padding-right: 35px;
 }
 
 #espacioTesting{
-  padding-right: 58px;
+  padding-right: 50px;
 }
 
 .barraAreaVerde{
@@ -383,6 +386,7 @@ max-height: 30%;
   border: solid 0.5px black;
   font-size: 15px;
   border-radius: 3px;
+  height: 10%;
 }
 
 .barraAreaRoja{
@@ -393,6 +397,7 @@ max-height: 30%;
   border: solid 0.5px black;
   font-size: 15px;
   border-radius: 3px;
+  height: 10%;
 }
 
 .barraAreaAmarilla{
@@ -402,6 +407,7 @@ max-height: 30%;
   border: solid 0.5px black;
   font-size: 15px;
   border-radius: 3px;
+  height: 10%;
 }
 
 .barraAreaEnPrueba{
@@ -412,6 +418,7 @@ max-height: 30%;
   border: solid 0.5px black;
   font-size: 15px;
   border-radius: 3px;
+  height: 10%;
 }
 
 #container-indicadores{
