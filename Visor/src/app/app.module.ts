@@ -45,6 +45,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ControlActividadModule } from 'src/app/componentes/control-actividad/control-actividad.module';
 import { SharedModule } from './shared/shared.module';
 import { LoginService } from './services/i2t/login.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @NgModule({
