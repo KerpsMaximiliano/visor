@@ -1,17 +1,17 @@
-import { Component, Input, OnInit, SimpleChange } from '@angular/core';
-import { Tarea } from 'src/app/interfaces/tarea';
+import { Component, OnInit } from '@angular/core';
 import { TareaService } from 'src/app/services/i2t/tarea.service';
+import { Tarea } from 'src/app/interfaces/tarea';
 
 @Component({
-  selector: 'app-vista-disenio-tecnico',
-  templateUrl: './vista-disenio-tecnico.component.html',
-  styleUrls: ['./vista-disenio-tecnico.component.css']
+  selector: 'app-vista-analista-funcional',
+  templateUrl: './vista-analista-funcional.component.html',
+  styleUrls: ['./vista-analista-funcional.component.css']
 })
-export class VistaDisenioTecnicoComponent implements OnInit{
+export class VistaAnalistaFuncionalComponent implements OnInit {
 
   proyectoId: any;
   proyectoNombre?: string;
-  //tareasSP: any;
+  tareasSP: any;
   tareasOrg: any[]=[];
   tareasNoIniciadas: Tarea[]=[];
   tareasEnProgreso: Tarea[]=[];
@@ -24,15 +24,12 @@ export class VistaDisenioTecnicoComponent implements OnInit{
   horasEnProgreso: number = 0;
   horasCompleatadas: number = 0;
   horasTotales: number = 0;
-  panelActividadesAbierto: boolean= false;
 
   constructor(private _tareaService: TareaService) {  }
 
-  @Input() tareasSP: any = [];
-
   ngOnInit(): void {
     this.proyectoId = "d31cfdaa-049e-e6e3-999d-62b5b2f778b7"; // este dato viene del commponente tareas
-    /*this._tareaService.getTareasDeProyecto(this.proyectoId, 'RelevamientoReq').subscribe((response: any) => {
+    this._tareaService.getTareasDeProyecto(this.proyectoId).subscribe((response: any) => {
       this.tareasSP = response.dataset;
       this.proyectoNombre = this.tareasSP[0].nombre_proyecto;
       this.organizarTareas();
@@ -43,46 +40,12 @@ export class VistaDisenioTecnicoComponent implements OnInit{
         this.setearBarraProgreso();
         this.ordenarListas();
       }
-    });;*/
-      if(this.tareasSP.length > 0){
-        console.log(this.tareasSP)
-        this.noHayProyecto= false;
-        this.organizarTareas();
-        console.log(this.tareasOrg);
-        this.cargarTareas();
-        this.poseeTareas();
-        if (!this.noHayProyecto) {
-          this.setearBarraProgreso();
-          this.ordenarListas();
-        }
-      }
-      else{
-        console.log(this.tareasSP)
-        this.noHayProyecto = true;
-      }
-
-  }
-
-  ngOnChanges(changes: SimpleChange){
-    if (this.tareasSP.length > 0) {
-      this.noHayProyecto = false;
-      console.log("Entra change")
-      this.organizarTareas();
-      console.log(this.tareasOrg);
-      this.cargarTareas();
-      this.poseeTareas();
-      if (!this.noHayProyecto) {
-        this.setearBarraProgreso();
-        this.ordenarListas();
-      }
-    }
-    this.tareasOrg=[];
+    });;
   }
 
   organizarTareas() {
     this.tareasSP.forEach((tarea: any) => {
       this.tareasOrg.push({
-        idTarea: tarea.id_trea,
         titulo: tarea.nombre_tarea,
         proyecto: tarea.nombre_proyecto,
         prioridad: tarea.prioridad,
@@ -275,10 +238,6 @@ export class VistaDisenioTecnicoComponent implements OnInit{
     }});
     console.log(arrayOrdenado);
     return arrayOrdenado;
-  }
-
-  abrirActividades(){
-    this.panelActividadesAbierto= this.panelActividadesAbierto ? false : true;
   }
 
 }

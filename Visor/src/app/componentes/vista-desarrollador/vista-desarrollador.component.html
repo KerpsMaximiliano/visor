@@ -15,7 +15,7 @@
 
 
 <!-- Contenedor para las columnas de las tareas -->
-<div class="conteiner-all" *ngIf="!noHayProyecto">
+<div class="conteiner-all" >
 
     <div class="card-columna">
         <mat-card [ngClass]="{'card': poseeTareasNoIniciadas, 'container-vacio': !poseeTareasNoIniciadas}">
@@ -312,7 +312,7 @@
     </div>
 
     <div class="card-columna">
-        <mat-card [ngClass]="{'card': poseeTareasCompletadas, 'conteiner-vacio': !poseeTareasCompletadas}">
+        <mat-card [ngClass]="{'card': poseeTareasCompletadas, 'container-vacio': !poseeTareasCompletadas}">
             <div id="completadas" class="titulo-container">
                 <h4>COMPLETADAS</h4>
             </div>

@@ -11,6 +11,7 @@ import { MatSelectChange } from '@angular/material/select';
 import { TareaService } from 'src/app/services/i2t/tarea.service';
 import { finalize } from 'rxjs/operators';
 import { MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { FiltroService } from 'src/app/services/i2t/filtro.service';
 
 
 export interface PropiedadesProyecto{
@@ -68,6 +69,7 @@ export class DialogComponent implements OnInit {
   numeroProyecto: string = '';
   nombreProyecto: string = '';
   clienteProyecto: string = '';
+  asignadasAmi: boolean = false;
   
   asignadoAproyecto: string = '';
   listaProyectos: any[] = [];
@@ -78,6 +80,7 @@ export class DialogComponent implements OnInit {
   clientesDeProyectos: String[] = [];
   usuariosDeProyectos: String[] = [];
   dataSourcePrueba!: MatTableDataSource<any>;
+  dataSourcePruebaCopia!: MatTableDataSource<any>;
   result: PropiedadesProyecto[] = [];
   valoresFiltros =  {
     id: '',
@@ -113,7 +116,7 @@ export class DialogComponent implements OnInit {
   }
 
   constructor(private _formBuilder: FormBuilder, @Inject(MAT_DIALOG_DATA) public buscarProyectoInterface: Proyectos, @Inject(MAT_DIALOG_DATA) public buscarTareasInterface: Tareas, private _adapter: DateAdapter<any>,
-  @Inject(MAT_DATE_LOCALE) private _locale: string, public dialogRef: MatDialogRef<DialogComponent>, private _tareaService: TareaService) {
+  @Inject(MAT_DATE_LOCALE) private _locale: string, public dialogRef: MatDialogRef<DialogComponent>, private _tareaService: TareaService, private _filtroService: FiltroService) {
     
     
     //Pregunto si el pop up se abrió para buscar PROYECTOS
@@ -132,6 +135,7 @@ export class DialogComponent implements OnInit {
         this.listaProyectosPrueba = response.dataset;
         console.log(this.listaProyectosPrueba)
         this.dataSourcePrueba = new MatTableDataSource(this.listaProyectosPrueba);
+        this.dataSourcePruebaCopia = new MatTableDataSource(this.listaProyectosPrueba);
         
          
         let cantProyectos = this.dataSourcePrueba.filteredData.length;
@@ -140,15 +144,31 @@ export class DialogComponent implements OnInit {
             this.clientesDeProyectos.push( this.dataSourcePrueba.filteredData[i].nombre_cliente);
           }
         }
+        console.log(this.clientesDeProyectos)
         for(let i = 0; i < cantProyectos ; i++){
           if(!this.usuariosDeProyectos.includes(this.dataSourcePrueba.filteredData[i].usuario_asignado)){
             this.usuariosDeProyectos.push( this.dataSourcePrueba.filteredData[i].usuario_asignado);
           }
         }
+
+        this.ordenarAfabeticamente(this.clientesDeProyectos);
+        this.ordenarAfabeticamente(this.usuariosDeProyectos);
         
         
 
 
+      });
+
+      //Obtengo filtros
+      this._filtroService.getUserId(localStorage.getItem('usuario')!).subscribe((response: any) => {
+        //localStorage.setItem('userId', response.dataset[0].id);
+        console.log(response);
+        this._filtroService.selectFiltro(response.dataset[0].id, 'proyectos').subscribe((resp: any) => {
+          console.log(resp)
+          if (resp.dataset.length == 0 ) {
+          } 
+          else {}
+        });
       });
     }
     
@@ -241,13 +261,31 @@ export class DialogComponent implements OnInit {
     
 
   }
+  ordenarAfabeticamente(arrayDatos: String[]){
+    arrayDatos = arrayDatos.sort();
+    console.log(arrayDatos)
+  }
   
   
-  toppings = this._formBuilder.group({
-    misProyectos: false,
-    extracheese: false,
-    mushroom: false,
-  });
+  
+
+  misProyectosAsignados(){
+    console.log(this.asignadasAmi)
+    console.log(this.asignadasAmi = !this.asignadasAmi)
+    if(this.asignadasAmi){
+      let usuarioRegistrado: any;
+      usuarioRegistrado = localStorage.getItem("usuario");
+      console.log(this.dataSourcePrueba)
+      this.dataSourcePrueba.filterPredicate = (data: any, filter: string): boolean => {
+        return ( data.usuario_asignado == usuarioRegistrado );
+      }
+      this.dataSourcePrueba.filter = usuarioRegistrado.trim().toLowerCase();
+
+    }
+    else{
+      this.dataSourcePrueba = new MatTableDataSource(this.listaProyectosPrueba);
+    }
+  }
 
   
   
@@ -307,6 +345,7 @@ export class DialogComponent implements OnInit {
     const idParametroFiltro = (event.currentTarget as HTMLInputElement).id;
     const valorParametroFiltro = (event.currentTarget as HTMLInputElement).value;
     this.filtrarProyectos(idParametroFiltro,valorParametroFiltro);
+    console.log("Llama")
   }
   public selectProyecto(select:MatSelectChange) {
     const id = select.source.id
@@ -339,7 +378,7 @@ export class DialogComponent implements OnInit {
       case 'nombreProyecto':
         this.nombreProyecto = valorParametroFiltro;
         this.filtrosProyectoDialog[1].nombreProyecto = this.nombreProyecto;//Para permanencia de filtro
-        this.valoresFiltros.nombre = valorParametroFiltro;
+        this.valoresFiltros.nombre = valorParametroFiltro.toLowerCase();
         const valoresN = Object.values(this.valoresFiltros);
 
 
@@ -374,10 +413,9 @@ export class DialogComponent implements OnInit {
   armarFilterPredicateProyectos( valores:string[] ): boolean{                                     
     let respuesta: any;
     respuesta = this.dataSourcePrueba.filterPredicate = (data: any, filter: string): boolean => {
-      //Filtra solo por id_projecto
+      //Filtra solo por numero_proyecto
       if(valores[0] != '' && valores[1] == '' && valores[2] == '' && valores[3] == ''){
-        console.log("data.id = " + data.id_projecto + " valores[0] = " + valores[0] + " = " + (String(data.id).indexOf(valores[0]) != -1))
-        return ( (data.id_projecto.split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1);
+        return ( (String(data.numero_proyecto).split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1);
       }
 
       //Filtra solo por nombre_projecto
@@ -411,33 +449,34 @@ export class DialogComponent implements OnInit {
       else if(valores[0] == '' && valores[1] != '' && valores[2] != '' && valores[3] != ''){
         return ( ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1) && (data.nombre_cliente == valores[2]) && (data.usuario_asignado == valores[3])  );
       }
-      //Filtra por id_projecto y Asignado
+      //Filtra por numero_proyecto y Asignado
       else if(valores[0] != '' && valores[1] == '' && valores[2] == '' && valores[3] != ''){
-        return ( ((data.id_projecto.split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1) && (data.usuario_asignado == valores[3])  );
+        return ( ((String(data.numero_proyecto).split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1) && (data.usuario_asignado == valores[3])  );
       }
-      //Filtra por id_projecto y Cliente
+      //Filtra por numero_proyecto y Cliente
       else if(valores[0] != '' && valores[1] == '' && valores[2] != '' && valores[3] == ''){
-        return ( ((data.id_projecto.split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1) && (data.nombre_cliente == valores[2])  );
+        return ( (String(data.numero_proyecto.split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1) && (data.nombre_cliente == valores[2])  );
       }
-      //Filtra por id_projecto, Cliente y Asignado
+      //Filtra por numero_proyecto, Cliente y Asignado
       else if(valores[0] != '' && valores[1] == '' && valores[2] != '' && valores[3] != ''){
-        return ( ((data.id_projecto.split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1) && (data.nombre_cliente == valores[2]) && (data.usuario_asignado == valores[3])  );
+        return ( (String(data.numero_proyecto.split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1) && (data.nombre_cliente == valores[2]) && (data.usuario_asignado == valores[3])  );
       }
-      //id_projecto y Nombre
+      //numero_proyecto y Nombre
       else if(valores[0] != '' && valores[1] != '' && valores[2] == '' && valores[3] == ''){
-        return ( ((data.id_projecto.split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1) && ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valores[1])) != -1 );
+        console.log("aca")
+        return ( ((data.numero_proyecto.split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1) && ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valores[1])) != -1 );
       }
-      //Filtra por id_projecto, Nombre y Asignado
+      //Filtra por numero_proyecto, Nombre y Asignado
       else if(valores[0] != '' && valores[1] != '' && valores[2] == '' && valores[2] != ''){
-        return ( ((data.id_projecto.split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1) && ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1) && (String(data.usuario_asignado) == (valores[3])) );
+        return ( ((data.numero_proyecto.split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1) && ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1) && (String(data.usuario_asignado) == (valores[3])) );
       }
-      //Filtra id_projecto, Nombre y Cliente
+      //Filtra numero_proyecto, Nombre y Cliente
       else if(valores[0] != '' && valores[1] != '' && valores[2] != '' && valores[3] == ''){
-        return ( ((data.id_projecto.split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1) && ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1) && (data.nombre_cliente == valores[2])  );
+        return ( ((data.numero_proyecto.split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1) && ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1) && (data.nombre_cliente == valores[2])  );
       }
-      //id_projecto, Nombre, Cliente y Asignado
+      //numero_proyecto, Nombre, Cliente y Asignado
       else{
-        return ( ((data.id_projecto.split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1) && ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1) &&  (data.nombre_cliente == valores[2]) && (data.usuario_asignado) == valores[3]    );                                                                                                ;
+        return ( ((data.numero_proyecto.split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1) && ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1) &&  (data.nombre_cliente == valores[2]) && (data.usuario_asignado) == valores[3]    );                                                                                                ;
       }
       
     }
@@ -446,8 +485,8 @@ export class DialogComponent implements OnInit {
 
   filtrarProyectosPor(valores:string[]){
     if (valores[0] != '' && valores[1] == '' && valores[2] == '' && valores[3] == '') {
-      console.log("Esta condicion" )
       this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
+      
     }
 
     //Filtra solo por nombre_projecto
@@ -487,36 +526,37 @@ export class DialogComponent implements OnInit {
       this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
 
     }
-    //Filtra por id_projecto y Asignado
+    //Filtra por numero_proyecto y Asignado
     else if (valores[0] != '' && valores[1] == '' && valores[2] == '' && valores[3] != '') {
       this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
       this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
     }
-    //Filtra por id_projecto y Cliente
+    //Filtra por numero_proyecto y Cliente
     else if (valores[0] != '' && valores[1] == '' && valores[2] != '' && valores[3] == '') {
       this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
       this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
     }
-    //Filtra por id_projecto, Cliente y Asignado
+    //Filtra por numero_proyecto, Cliente y Asignado
     else if (valores[0] != '' && valores[1] == '' && valores[2] != '' && valores[3] != '') {
       this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
       this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
       this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
 
     }
-    //id_projecto y Nombre
+    //numero_proyecto y Nombre
     else if (valores[0] != '' && valores[1] != '' && valores[2] == '' && valores[3] == '') {
+      console.log(this.dataSourcePrueba)
       this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
       this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
     }
-    //Filtra por id_projecto, Nombre y Asignado
+    //Filtra por numero_proyecto, Nombre y Asignado
     else if (valores[0] != '' && valores[1] != '' && valores[2] == '' && valores[2] != '') {
       this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
       this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
       this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
 
     }
-    //Filtra id_projecto, Nombre y Cliente
+    //Filtra numero_proyecto, Nombre y Cliente
     else if (valores[0] != '' && valores[1] != '' && valores[2] != '' && valores[3] == '') {
       this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
       this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
@@ -590,7 +630,6 @@ export class DialogComponent implements OnInit {
         }
         arrayTabla.filter = valor.trim().toLowerCase();
         arrayTemp = arrayTabla.filteredData;
-        console.log(arrayTemp)
         return arrayTemp;
 
       case 2:
@@ -648,7 +687,6 @@ export class DialogComponent implements OnInit {
       let encontradoAsignado = false;
       
       arrayNombre.forEach((element: any) => {
-        console.log(element)
         if (tarea.id_tarea == element.id) {
           encontradoNombre = true;
         }
@@ -728,7 +766,6 @@ export class DialogComponent implements OnInit {
   getAsignadoAtarea(programador:any){//Programadores
     //Obtener token
     
-    console.log(this.asignadoAtarea)
   }
 
   
