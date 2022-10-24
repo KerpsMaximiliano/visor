@@ -239,7 +239,7 @@ export class TareasComponent implements OnInit {
         }
         else if(this.idProyectoSeleccionado != '' && this.tareasFiltradas == ''){ //Selecciona proyecto y vista. Muestra tareas de ese tipo de vista
           this.listaTareasService.forEach( (tarea:any) => {
-            if(tarea.tipo_tarea == "design"){
+            if(tarea.tipo_tarea == "Design"){
               this.tareasFiltradasPorVista.push(tarea);
             }
           });
@@ -247,7 +247,7 @@ export class TareasComponent implements OnInit {
         }
         else{ //Filtró tareas
           this.tareasFiltradas.forEach( (tarea:any) => {
-            if(tarea.tipo_tarea == "design"){
+            if(tarea.tipo_tarea == "Design"){
               this.tareasFiltradasPorVista.push(tarea);
             }
           });
