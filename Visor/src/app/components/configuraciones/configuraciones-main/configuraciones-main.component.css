@@ -12,10 +12,24 @@
     width: 20%;
     display: flex;
     flex-direction: column;
-    margin-left: 5%;
+    margin-left: -5%;
 }
 
-button {
-    border: 1px solid black;
-    min-width: 150px;
+mat-button-toggle:hover {
+    background-color: gray;
+}
+
+button:focus{
+    background-color: gray;
+}
+
+mat-button-toggle:active{
+    background-color: gray;
+}
+
+
+
+mat-button-toggle{
+    border: 1px solid black !important;
+    margin-bottom: 1px;
 }
