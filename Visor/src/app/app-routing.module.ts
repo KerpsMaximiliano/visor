@@ -45,10 +45,6 @@ const routes: Routes = [
     ] },
     {path: 'tareas', component: TareasComponent}
     ]
-  },
-  {
-    path: "vista-disenio-funcional",
-    component: VistaAnalistaFuncionalComponent
   }
 ];
 
