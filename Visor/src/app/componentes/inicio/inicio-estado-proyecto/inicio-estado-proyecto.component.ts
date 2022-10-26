@@ -64,6 +64,9 @@ export class InicioEstadoProyectoComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //Obtenemos los proyectos.
+    this.obtenerProyectos();
+    this.obtenerProyectosAbiertos();
     this._filtroService.getUserId(localStorage.getItem('usuario')!).subscribe((response: any) => {
       localStorage.setItem('userId', response.dataset[0].id);
       this._filtroService.selectFiltro(response.dataset[0].id, 'inicio-estado-proyecto').subscribe((resp: any) => {
@@ -71,17 +74,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
         } else {
           console.log('hay datos', resp);
           resp.dataset.forEach((filtro: any) => {
-            if (filtro.nombre == 'filtro_abecedario') {
-              this.orden_saved_search_id = filtro.saved_search_id;
-              const contenido = JSON.parse(atob(filtro.contenido));
-              this.ordenSeleccion = contenido.ordenSeleccion; 
-            }
-            if (filtro.nombre == 'filtro_tareasAtrasadas') {
-              this.orden_saved_search_id = filtro.saved_search_id;
-              const contenido = JSON.parse(atob(filtro.contenido));
-              this.ordenSeleccion = contenido.ordenSeleccion; 
-            }
-            if (filtro.nombre == 'filtro_tareasATiempo') {
+            if (filtro.nombre == 'filtro_orden') {
               this.orden_saved_search_id = filtro.saved_search_id;
               const contenido = JSON.parse(atob(filtro.contenido));
               this.ordenSeleccion = contenido.ordenSeleccion; 
@@ -95,19 +88,15 @@ export class InicioEstadoProyectoComponent implements OnInit {
               this.asignadoA = contenido.asignadoA; 
               this.misProyectos = contenido.misProyectos;
               this.proyectosAbiertos = contenido.proyectosAbiertos;   
-              this.inputIzq = contenido.nombre; 
-              this.data = new MatTableDataSource(this.proyectos);
+              this.inputIzq = contenido.nombre;
             } 
           });
+        //Verificamos los checksbox del filtro.
+        this.verificarCheckBoxs();
+        //Filtra proyectos.
+        this.prepararFiltro();
         }
       });
-      //Obtenemos los proyectos.
-      this.obtenerProyectos();
-      this.obtenerProyectosAbiertos();
-      //Verificamos los checksbox del filtro.
-      this.verificarCheckBoxs();
-      //Actualizamos la disponibilidad del proyecto.
-      this.actualizarDisponibilidadProyecto();  
   });
   }
 
@@ -152,7 +141,6 @@ export class InicioEstadoProyectoComponent implements OnInit {
             for(let x = 0; x < resp.dataset.length; x++){ 
               contadorHorasTotalesPlanificadas = contadorHorasTotalesPlanificadas + resp.dataset[x].Horas;
             }
-            console.log(contadorHorasTotalesPlanificadas)
             this.proyectosTotalesArray[i].porcentajeHPEnProgreso = Math.round(((0 + resp.dataset[1].Horas) / contadorHorasTotalesPlanificadas) * 100);
             this.proyectosTotalesArray[i].porcentajeHPCompletadas = Math.round(((0 + resp.dataset[0].Horas) / contadorHorasTotalesPlanificadas) * 100);
             this.proyectosTotalesArray[i].porcentajeHPNoIniciadas = Math.round(((0 + resp.dataset[2].Horas) / contadorHorasTotalesPlanificadas) * 100);
@@ -306,9 +294,6 @@ export class InicioEstadoProyectoComponent implements OnInit {
               }
               contadorHorasTotalesPlanificadas = 0;
             }
-            this.proyectos = this.proyectosTotalesArray
-            this.data = new MatTableDataSource(this.proyectos);
-            this.actualizarDisponibilidadProyecto();
           });
         }
       }
@@ -321,7 +306,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
         for(let i = 0;i<resp.dataset.length;i++){
           let objetoTemporal: Proyecto = {
             numero: resp.dataset[i].Numero_Caso,
-            id: resp.dataset[i].id,
+            id: resp.dataset[i].Id_Caso,
             nombre: resp.dataset[i].Caso,
             cliente: resp.dataset[i].Cliente,
             asignado: resp.dataset[i].Asignado_a,
@@ -702,7 +687,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
     const filtroAsignado = this.filtroAvanzado(3, this.asignadoA);
     const filtroNumero = this.filtroAvanzado(4, this.numero);
     this.proyectos = this.buscarCoincidencias(filtroNombre, filtroCliente, filtroAsignado, filtroNumero);
-    this.proyectosFiltrados = this.proyectos;
+    console.log(this.proyectos);  
     this.aplicarFiltros();
   }
 
@@ -728,10 +713,11 @@ export class InicioEstadoProyectoComponent implements OnInit {
       this.proyectos = this.proyectosAsignados;
     }
     this.aplicarFiltros();
-    this.proyectosAsignados = [];
+    this.proyectosAsignados = []; 
   }
 
   aplicarFiltros() {
+    console.log(this.proyectos.length);
     if (this.proyectos.length == 0) {
       this.noHayProyectos = true;
       this.disponibilidadProyectos = 0;

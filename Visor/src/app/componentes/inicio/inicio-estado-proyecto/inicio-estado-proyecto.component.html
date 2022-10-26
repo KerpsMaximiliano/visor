@@ -29,7 +29,7 @@
             <p class="letrasSeccionInformacion">Completadas</p>
           </div>
         </div>
-        <button class="boton-informacion" (click)="mostrarInformacion()" mat-mini-fab color="primary"><mat-icon class="icony">info</mat-icon></button>
+        <button class="boton-informacion" (click)="mostrarInformacion()" matTooltip="Información" mat-mini-fab color="primary"><mat-icon class="icony">info</mat-icon></button>
       </div>
       <div class="disponibilidad-proyectos" [ngClass]="{'acomodar': estado == true}">
         <h3>Tareas atrasadas<mat-divider></mat-divider></h3>
@@ -47,7 +47,7 @@
 
     <div class="mensaje-no-proyectos" *ngIf="noHayProyectos"><h1>No coinciden proyectos con la busqueda</h1></div>
     <div id="container-body" *ngIf="!noHayProyectos">
-      <mat-accordion>
+      <mat-accordion [multi]="true">
       <table mat-table [dataSource]="data" multiTemplateDataRows class="mat-elevation-z8">
       <!-- Nombre Column -->
       <ng-container matColumnDef="nombre" class="columna">
