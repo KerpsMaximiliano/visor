@@ -13,13 +13,13 @@ export class TareaService {
 
     
 
-getTareasDeProyecto(id_caso: string) {
-    let jsbody: string = JSON.stringify({
-        par_modo : 'G',
-        id_caso : id_caso
-    });
-    return this.rest.callProcedimientoVisor(jsbody, "TareasProyecto");
-}
+    getTareasDeProyecto(id_caso: string) {
+        let jsbody: string = JSON.stringify({
+            par_modo: 'G',
+            id_caso: id_caso
+        });
+        return this.rest.callProcedimientoVisor(jsbody, "TareasProyecto");
+    }
 
    
 

@@ -38,7 +38,7 @@
             <mat-checkbox color="primary" *ngFor="let rol of roles" [value]="rol.nombre" [checked]="rol.check" (change)="marcarCheckbox($event)"> {{ rol.nombre }} </mat-checkbox>
         </mat-menu>
 
-        <mat-menu #menuRol="matMenu">
+        <mat-menu #menuRol="matMenu"> 
             <div class="seleccionRoles" *ngFor="let rol of rolesFaltantes"> <button mat-button class="botonTabla" (click)="cambiarRol( rol )"> {{ rol }} </button>  </div>
         </mat-menu>
 
