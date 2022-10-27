@@ -47,6 +47,7 @@ export interface FiltrosTarea{
 })
 
 export class TareasComponent implements OnInit {
+  proyectoSeleccionado: any;
   nombreVistaSeleccionada: string = "Vista"
   idVistaSeleccionada: string = "Vista"
   listaProyectosService: ResponseService[] = [] ;
@@ -60,12 +61,7 @@ export class TareasComponent implements OnInit {
   horizontalPosition: MatSnackBarHorizontalPosition = 'start';
   verticalPosition: MatSnackBarVerticalPosition = 'bottom';
   subtituloProyecto: string ='';
-  filtrosBusquedaProyecto: Object[] = [
-    {numeroProyecto: ''},
-    {nombreProyecto: ''},
-    {clienteProyecto: ''},
-    {asignadoAproyecto: ''}
-  ]
+  
   filtrosBusquedaTareas: Object[] = [
     {nombreTarea: ''},
     {prioridadTarea: ''},
@@ -150,7 +146,6 @@ export class TareasComponent implements OnInit {
         this.listaTareasService = this.listaTareasService.dataset;
         console.log(this.listaTareasService)
         if(this.nombreVistaSeleccionada != 'Vista'){ //Pregunto si hay una vista seleccionada
-          console.log(this.idVistaSeleccionada)
           this.setSubtituloProyecto(this.idVistaSeleccionada);
         }
       })
@@ -165,31 +160,24 @@ export class TareasComponent implements OnInit {
 
   abrirDialogProyecto(event: Event){
     event.preventDefault();
-    console.log(this.filtrosBusquedaProyecto)
-    const dialogRef = this.dialog.open(DialogComponent,{width:'600px', data:{buscaProyectos: true, filtros: this.filtrosBusquedaProyecto}});
+    //console.log(this.filtrosBusquedaProyecto)
+    const dialogRef = this.dialog.open(DialogComponent,{width:'600px', data:{buscaProyectos: true}});
     dialogRef.afterClosed().pipe(
       finalize(() => {
-        if(this.nombreVistaSeleccionada != 'Vista'){ //Pregunto si hay una vista seleccionada
-          this.setSubtituloProyecto(this.idVistaSeleccionada);
+        console.log("finalize")
+        if(this.proyectoSeleccionado != undefined){
+          this.seleccionarProyecto(this.proyectoSeleccionado);
         }
       })
     )
     .subscribe(result => {
-      console.log(result)
-      this.filtrosTarea.idProyectoSeleccionado = result.idProyectoSeleccionado
-      console.log(this.filtrosTarea.idProyectoSeleccionado)
-      
-      
-      
-      if (result.proyectoSeleccionado !== undefined) {
-
-        this.nombreProyecto = result.proyectoSeleccionado
-        //No utilizó filtros para encontrar el proyecto
-        console.log(this.nombreProyecto)
-      }
-
-        
-      
+      console.log(result);
+      if(result != undefined){
+        this.proyectoSeleccionado = result;
+        //this.idProyectoSeleccionado = this.proyectoSeleccionado.id_projecto
+        this.filtrosTarea.idProyectoSeleccionado = result.id_projecto
+        console.log(this.filtrosTarea.idProyectoSeleccionado)
+      }   
     })
   }
 
@@ -223,14 +211,17 @@ export class TareasComponent implements OnInit {
 
   setSubtituloProyecto(idVistaSeleccionada: string){
     console.log(idVistaSeleccionada)
-    if(this.idProyectoSeleccionado != '' &&  this.tareasFiltradas == ''){ // Seleccionó proyecto y no filtró tareas
-      
-    }
+    
 
     const vistaSeleccionada = idVistaSeleccionada;
     
     this.tareasFiltradasPorVista = [];
     switch(vistaSeleccionada){
+      case 'Vista':
+        this.subtituloProyecto = '';
+        this.tareasFiltradasPorVista= [];
+      break;
+      
       case 'Analista Funcional':
         this.subtituloProyecto = ' Avance de Diseño funcional';
         this.tareasFiltradasPorVista= [];
@@ -239,7 +230,7 @@ export class TareasComponent implements OnInit {
         }
         else if(this.idProyectoSeleccionado != '' && this.tareasFiltradas == ''){ //Selecciona proyecto y vista. Muestra tareas de ese tipo de vista
           this.listaTareasService.forEach( (tarea:any) => {
-            if(tarea.tipo_tarea == "design"){
+            if(tarea.tipo_tarea == "Design"){
               this.tareasFiltradasPorVista.push(tarea);
             }
           });
@@ -247,7 +238,7 @@ export class TareasComponent implements OnInit {
         }
         else{ //Filtró tareas
           this.tareasFiltradas.forEach( (tarea:any) => {
-            if(tarea.tipo_tarea == "design"){
+            if(tarea.tipo_tarea == "Design"){
               this.tareasFiltradasPorVista.push(tarea);
             }
           });
