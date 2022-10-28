@@ -31,6 +31,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
   displayedColumns: string[] = ['nombre','tareasATiempo','tareasAtrasadas'];
   columnsToDisplayWithExpand = [...this.displayedColumns, 'expand'];
   expandedElement!: Proyecto;
+  expandedElements: any[] = [];
   disponibilidadProyectos: number = 0;
   positionOptions: TooltipPosition[] = ['after', 'before', 'above', 'below', 'left', 'right'];
   position = new FormControl(this.positionOptions[0]);
@@ -104,6 +105,11 @@ export class InicioEstadoProyectoComponent implements OnInit {
     this._dataProyecto.getProyectos().subscribe((resp: any) => {
       if(resp.returnset[0].RCode == 1){
         let contadorHorasTotalesPlanificadas = 0;
+        let contadorHTCompletadas = 0;
+        let contadorHTEnProgreso = 0;
+        let contadorHTEnPrueba = 0;
+        let contadorHTNoIniciadas = 0;
+        
         for(let i = 0;i<resp.dataset.length;i++){
           let objetoTemporal: Proyecto = {
             numero: resp.dataset[i].Numero_Caso,
@@ -141,10 +147,6 @@ export class InicioEstadoProyectoComponent implements OnInit {
             for(let x = 0; x < resp.dataset.length; x++){ 
               contadorHorasTotalesPlanificadas = contadorHorasTotalesPlanificadas + resp.dataset[x].Horas;
             }
-            this.proyectosTotalesArray[i].porcentajeHPEnProgreso = Math.round(((0 + resp.dataset[1].Horas) / contadorHorasTotalesPlanificadas) * 100);
-            this.proyectosTotalesArray[i].porcentajeHPCompletadas = Math.round(((0 + resp.dataset[0].Horas) / contadorHorasTotalesPlanificadas) * 100);
-            this.proyectosTotalesArray[i].porcentajeHPNoIniciadas = Math.round(((0 + resp.dataset[2].Horas) / contadorHorasTotalesPlanificadas) * 100);
-            this.proyectosTotalesArray[i].porcentajeHPEnPrueba = Math.round(((0 + resp.dataset[3].Horas) / contadorHorasTotalesPlanificadas) * 100);
           });
           
           //Funcional.
@@ -296,7 +298,23 @@ export class InicioEstadoProyectoComponent implements OnInit {
             }
           });
         }
-      }
+
+        //////////////////////////SEGUIR ACA //////////////////////////////
+        let chtp = 0;
+        for(let i = 0; i < this.proyectosTotalesArray.length; i++){
+          this._dataProyecto.getPorcentajeHP(this.proyectosAbiertosArray[i].id).subscribe((resp: any) => {
+            
+            for(let r = 0; r < resp.dataset.length; r++){
+              chtp = chtp + resp.dataset[r].Horas;
+              console.log(contadorHorasTotalesPlanificadas)
+            }
+            /* this.proyectosTotalesArray[r].porcentajeHPEnProgreso = Math.round(((0 + resp.dataset[1].Horas) / contadorHorasTotalesPlanificadas) * 100); */
+            this.proyectosTotalesArray[i].porcentajeHPCompletadas = Math.round((contadorHTCompletadas / contadorHorasTotalesPlanificadas) * 100);
+            /* this.proyectosTotalesArray[r].porcentajeHPNoIniciadas = Math.round(((0 + resp.dataset[2].Horas) / contadorHorasTotalesPlanificadas) * 100);
+            this.proyectosTotalesArray[r].porcentajeHPEnPrueba = Math.round(((0 + resp.dataset[3].Horas) / contadorHorasTotalesPlanificadas) * 100); */
+          });
+        }
+    }  
     });
   }
 
@@ -341,10 +359,10 @@ export class InicioEstadoProyectoComponent implements OnInit {
             for(let x = 0; x < resp.dataset.length; x++){ 
               contadorHorasTotalesPlanificadas = contadorHorasTotalesPlanificadas + resp.dataset[x].Horas;
             }
-            this.proyectosAbiertosArray[i].porcentajeHPEnProgreso = Math.round(((0 + resp.dataset[1].Horas) / contadorHorasTotalesPlanificadas) * 100);
-            this.proyectosAbiertosArray[i].porcentajeHPCompletadas = Math.round(((0 + resp.dataset[0].Horas) / contadorHorasTotalesPlanificadas) * 100);
-            this.proyectosAbiertosArray[i].porcentajeHPNoIniciadas = Math.round(((0 + resp.dataset[2].Horas) / contadorHorasTotalesPlanificadas) * 100);
-            this.proyectosAbiertosArray[i].porcentajeHPEnPrueba = Math.round(((0 + resp.dataset[3].Horas) / contadorHorasTotalesPlanificadas) * 100)
+           /*  this.proyectosAbiertosArray[i].porcentajeHPEnProgreso = Math.round(((0 + resp.dataset[1].Horas) / contadorHorasTotalesPlanificadas) * 100); */
+           /*  this.proyectosAbiertosArray[i].porcentajeHPCompletadas = Math.round(((0 + resp.dataset[0].Horas) / contadorHorasTotalesPlanificadas) * 100); */
+           /*  this.proyectosAbiertosArray[i].porcentajeHPNoIniciadas = Math.round(((0 + resp.dataset[2].Horas) / contadorHorasTotalesPlanificadas) * 100); */
+           /*  this.proyectosAbiertosArray[i].porcentajeHPEnPrueba = Math.round(((0 + resp.dataset[3].Horas) / contadorHorasTotalesPlanificadas) * 100) */
           });
           contadorHorasTotalesPlanificadas = 0;
           
@@ -687,7 +705,6 @@ export class InicioEstadoProyectoComponent implements OnInit {
     const filtroAsignado = this.filtroAvanzado(3, this.asignadoA);
     const filtroNumero = this.filtroAvanzado(4, this.numero);
     this.proyectos = this.buscarCoincidencias(filtroNombre, filtroCliente, filtroAsignado, filtroNumero);
-    console.log(this.proyectos);  
     this.aplicarFiltros();
   }
 
@@ -717,7 +734,6 @@ export class InicioEstadoProyectoComponent implements OnInit {
   }
 
   aplicarFiltros() {
-    console.log(this.proyectos.length);
     if (this.proyectos.length == 0) {
       this.noHayProyectos = true;
       this.disponibilidadProyectos = 0;
