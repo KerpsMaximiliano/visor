@@ -22,13 +22,18 @@ h1, h3{
     flex-direction: row;
     align-items: baseline;
 }
+
+.contenedor > h1{
+    width: 65%;
+    text-align: center;
+}
 .buscadores{
-    width: 42%;
+    width: 23%;
 }
 
 .buscador{
     margin-top: 1%;
-    width: 57%;
+    width: 100%;
     height: 5%;
     display: flex;
     justify-content: space-between;
@@ -44,6 +49,9 @@ h1, h3{
     z-index: 100;
 }
 .botonVistas{
-    width: 100%;
-    width: 100px;
+    transition: opacity 200ms cubic-bezier(0.35, 0, 0.25, 1),background-color 200ms cubic-bezier(0.35, 0, 0.25, 1);
+    
+}
+::ng-deep .mat-button-ripple.mat-ripple, .mat-button-focus-overlay{
+    width: 135px;
 }

@@ -70,7 +70,7 @@ export class VistaDesarrolladorComponent implements OnInit {
 
     if (this.tareasSP.length > 0) {
       this.noHayProyecto = false;
-      console.log("Entra change")
+      console.log("Tareas SP: ", this.tareasSP)
       this.organizarTareas();
       console.log(this.tareasOrg);
       this.cargarTareas();
@@ -326,7 +326,7 @@ export class VistaDesarrolladorComponent implements OnInit {
 
   solicitudAyuda(tarea: any) {
     if (tarea.asignado === localStorage.getItem('usuario')) {
-      if (this.tareasAyuda.length === 0) {
+      if (this.tareasAyuda.length === 0) { 
         this.tareasAyuda.push({
           titulo: tarea.titulo,
           proyecto: tarea.proyecto,
