@@ -66,20 +66,17 @@
           <th mat-header-cell *matHeaderCellDef class="tituloColumna"> Tareas atrasadas </th>
           <td mat-cell *matCellDef="let element"><div id="tareasAtrasadas">{{element.porcentajeTareasAtrasadas}}%</div></td>
         </ng-container>
-      <ng-container matColumnDef="expand">
-        <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
-        <td mat-cell *matCellDef="let element">
-        <button mat-icon-button aria-label="expand row" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
-          <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
-          <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
-        </button>
+      <ng-container matColumnDef="expand" class="columna">
+      <th mat-header-cell *matHeaderCellDef class="tituloColumna"></th>
+      <td mat-cell *matCellDef="let element">
+        <a mat-button href="javascript:void()" (click)="element.isExpanded = !element.isExpanded">Expandir</a>
       </td>
     </ng-container>
 
     <!-- Columna expandible -->
     <ng-container matColumnDef="expandedDetail">
       <td mat-cell *matCellDef="let proyecto; let i = dataIndex" [attr.colspan]="columnsToDisplayWithExpand.length">
-      <div class="example-element-detail" [@detailExpand]="proyecto == expandedElement ? 'expanded' : 'collapsed'">
+      <div class="row example-element-detail" [@detailExpand]="proyecto.isExpanded ? 'expanded' : 'collapsed'">
         <div class="contenido">
           <div id="seccionAvance">
             <b><p class="subtitulo">Avance del proyecto</p></b>
@@ -152,7 +149,7 @@
       </div>
       </td>
       </ng-container>
-      <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand;sticky: true"></tr>
       <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;" class="example-element-row" [class.example-expanded-row]="expandedElement === element" (click)="expandedElement = expandedElement === element ? null : element"></tr>
       <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
       </table>

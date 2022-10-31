@@ -21,7 +21,8 @@
 
 .boton-icono {
   margin-top: 10px;
-  margin-left: 15px;
+  margin-left: 3px;
+  margin-right: 3px;
 }
 
 .boton-informacion{
@@ -280,7 +281,7 @@ max-height: 30%;
 }
 
 #tituloAvanceArea{
-  padding-left: 37%;
+  padding-left: 39%;
 }
 
 .contenido{
