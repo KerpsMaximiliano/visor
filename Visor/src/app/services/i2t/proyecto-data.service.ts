@@ -35,22 +35,22 @@ export class ProyectoDataService {
   });
   return this.restService.callProcedimientoVisor(jsbody,"EstadoProyectos");
 }
-  public getPorcentajeHP(id_caso: string) {
+  public getPorcentajeHP(id_caso: string, abierto: string) {
     let jsbody: string = JSON.stringify({
       "nivel":"2",
       "id_caso": id_caso,
       "id_usuario": null,
-      "abierto": "FALSE"
+      "abierto": abierto
     });
     return this.restService.callProcedimientoVisor(jsbody,"EstadoProyectos");
   }
 
-  public getPorcentajeHPAreas(id_caso: string) {
+  public getPorcentajeHPAreas(id_caso: string, abierto: string) {
     let jsbody: string = JSON.stringify({
       "nivel":"3",
       "id_caso": id_caso,
       "id_usuario": null,
-      "abierto": "FALSE"
+      "abierto": abierto
     });
     return this.restService.callProcedimientoVisor(jsbody,"EstadoProyectos");
   }
