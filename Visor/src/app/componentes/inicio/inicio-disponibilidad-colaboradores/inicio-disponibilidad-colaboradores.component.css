@@ -96,8 +96,9 @@ h3 {
 }
 
 .columna-equipo {
-    width: 50%;
+    width: 70%;
     text-align: center;
+    left: 5%;
 }
 
 .cajaPorcentaje {

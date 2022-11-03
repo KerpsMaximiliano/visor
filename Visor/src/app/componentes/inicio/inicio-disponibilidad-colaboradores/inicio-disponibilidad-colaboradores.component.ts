@@ -8,6 +8,9 @@ import { TooltipPosition } from '@angular/material/tooltip';
 import { Colaborador } from 'src/app/interfaces/colaborador';
 import { ColaboradorService } from 'src/app/services/i2t/colaborador.service';
 import { FiltroService } from 'src/app/services/i2t/filtro.service';
+import { end } from '@popperjs/core';
+import { filter } from 'rxjs';
+import { Pipe, PipeTransform } from "@angular/core";
 
 @Component({
   selector: 'app-inicio-disponibilidad-colaboradores',
@@ -21,6 +24,7 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   colaboradoresSP: any[] = [];
   planificacion: any[] = [];
   colaboradores: Colaborador[] = [];
+  colaboradores2: Colaborador[] = [];
   columna1!: Colaborador[];
   columna2!: Colaborador[];
   dataSource!: any;
@@ -42,6 +46,8 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   positionOptions: TooltipPosition[] = ['after', 'before', 'above', 'below', 'left', 'right'];
   position = new FormControl(this.positionOptions[0]);
   position2 = new FormControl(this.positionOptions[3]);
+  completo = '';
+search: any;
 
   constructor(private _colaboradorService: ColaboradorService, private dialog: MatDialog, private _filtroService: FiltroService) { }
 
@@ -63,10 +69,11 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
               const contenido = JSON.parse(atob(filtro.contenido));
               this.nombre = contenido.nombre;
               this.apellido = contenido.apellido;
+              this.completo = contenido.nombre + ' ' + contenido.apellido;
               this.funcion = contenido.funcion;
             }
           });
-        }
+        } 
       this.mesesPlanificacion[0].mes = this._colaboradorService.getMesString(this.fechaHoy.getMonth());
       this._colaboradorService.disponibilidadUsuario(1, 1, this.formatearFecha(this.fechaHoy)).subscribe((response: any) => {
         this.colaboradoresSP = response.dataset;
@@ -109,6 +116,7 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
       contId++;
     });
     this.dataSource = new MatTableDataSource(this.colaboradores);
+    this.completo = this.dataSource.nombre + ' ' + this.dataSource.apellido;
   }
 
   nullCheck(check: any) {
@@ -245,24 +253,42 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
+  
+    localStorage.setItem('fv',filterValue);
+    let ls = localStorage.getItem('fv');
     this.contraerColaboradores();
     this.organizarColaboradores();
     this.getTareasAtrasadas();
     let colaboradoresFiltro: any[] = [];
+
+    //let FV = filterValue.split(" ",3);
+
+    console.log("colaboradores 1",this.colaboradores);
+    console.log("colaboradores 2",this.colaboradores2);
     this.colaboradores.forEach(colab => {
       colaboradoresFiltro.push({ nombre: colab.nombre, apellido: colab.apellido });
     });
+
     this.dataSource = new MatTableDataSource(colaboradoresFiltro);
     this.dataSource.filter = filterValue.trim().toLowerCase();
     colaboradoresFiltro = this.dataSource.filteredData;
+    console.log("filterValue",filterValue);
+
     let arrayAux: Colaborador[] = [];
-    this.colaboradores.forEach(colab => {
-      colaboradoresFiltro.forEach(user => {
-        if (colab.nombre == user.nombre && colab.apellido == user.apellido) {
-          arrayAux.push(colab);
-        }
-      });
-    });
+     
+
+      this.colaboradores.forEach(colab => {
+          colaboradoresFiltro.forEach(user => {
+            if (colab.nombre == user.nombre && colab.apellido == user.apellido) {
+              this.colaboradores2.push(colab);
+              arrayAux.push(colab);
+            }
+          });
+        });
+
+        
+      
+      
     this.colaboradores = arrayAux;
     this.aplicarFiltros();
   }
@@ -292,8 +318,9 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     const dialogRef = this.dialog.open(ModalFiltroComponent, {
       width: '400px',
       disableClose: true,
-      data: { nombre: this.nombre, apellido: this.apellido, funcion: this.funcion, search_id: this.modal_saved_search_id }
+      data: { nombre: this.nombre, apellido: this.apellido,funcion: this.funcion, search_id: this.modal_saved_search_id }
     });
+    
     dialogRef.afterClosed().subscribe(result => {
       this.inputIzq = '';
       this.nombre = result.nombre;
