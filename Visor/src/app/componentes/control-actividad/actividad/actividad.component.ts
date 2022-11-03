@@ -77,8 +77,6 @@ export class ActividadComponent implements OnInit {
   ngOnInit(): void {
     
     //this.cargarActividades();
-    console.log("ID TAREAAA",this.tareasSP);
-    console.log("ID TAREAAA",this.idTarea);
 
     this.cargarActividadesSuite();
     
@@ -89,17 +87,14 @@ export class ActividadComponent implements OnInit {
     this._actividadService.enviarIdActividadObservable.subscribe(response => {
       this.id = response;
     })
-    console.log("muestra ID PPIO",this.id);
-    console.log('todas las actividades',this._actividadService.listActividades)
+   
     let usuario: Usuario ={
       usuario: 'admin',
       password: '1q2w'
     }
     this._loginService.obtenerToken(usuario).subscribe(res =>{
         if(res){
-          console.log('res???',res);
-          console.log('usuario???',usuario);
-          console.log('token',localStorage.getItem('auth_token'));
+        
           this.token = localStorage.getItem('auth_token');
           this.user = usuario;
         
@@ -107,12 +102,6 @@ export class ActividadComponent implements OnInit {
     });
     this.cargarActividadesSuite();
   } 
-
-  ngOnChanges(changes: SimpleChange){
-    this.cd.detectChanges();
-    if(this.cd){console.log("ID TAREAAA",this.tareasSP);}
-    
-  }
   
 
   /*toggleOn(horas: Number){
@@ -141,8 +130,8 @@ export class ActividadComponent implements OnInit {
 
 //ELIMINAR HARDCODE
   onEliminarActividad(index: number){
-    console.log('posicion inicial',index);
-      console.log('actividades',this._actividadService.listActividades)
+    //console.log('posicion inicial',index);
+      
     this.dialogService.openConfirmDialog('¿Usted está seguro de que desea eliminar esa actividad?' )
     .afterClosed().subscribe(res =>{
       if(res){
@@ -160,22 +149,20 @@ export class ActividadComponent implements OnInit {
 
   cargarActividadesSuite(){
     this.cd.detectChanges();
-      console.log("CDCDCDCDCD",this.cd);
-      console.log("ID TAREAAA",this.idTarea);
+      
       this._actividadService.par_modoG(this.idTarea).subscribe((response: any) =>{
-      console.log("ID TAREAAA",this.idTarea);
-        console.log("dataSource",this.dataSource);
+      
         response.dataset.forEach((y: any) =>{
           if(y.descripcion == null || y.descripcion.length < 1 || y.descripcion === ""){
             y.descripcion = 'Esta actividad no tiene descripción';
           }   
-        console.log(y.descripcion)
+        //console.log("DATA SET PRUEBA FABIO",y)
       });
-        console.log("RESPONSE DATASET",response.dataset)
+        //console.log("RESPONSE DATASET",response.dataset)
         
         this.dataSource = new MatTableDataSource(response.dataset)
         this.cd.detectChanges();
-        console.log("DATA SOURCE",this.dataSource)
+        //console.log("DATA SOURCE",this.dataSource)
         
       });
     
@@ -216,7 +203,7 @@ export class ActividadComponent implements OnInit {
     this.dialogService.openConfirmDialog('¿Usted está seguro de que desea eliminar esa actividad?' )
     .afterClosed().subscribe(res =>{
       if(res){ 
-        console.log(res);
+        //console.log(res);
          this._actividadService.deleteActividad(this.dataSource.data[index].id_actividad).subscribe((response:any)=>{
             console.log("DELETE EXITOSO", response);
             this.cargarActividadesSuite();
@@ -233,18 +220,18 @@ export class ActividadComponent implements OnInit {
   }
 
  cambioIndex(index: number){
-  console.log('index del boton editar',index);
+  //console.log('index del boton editar',index);
   this._actividadService.enviarIndex(index);
  }
  
   onEditarActividad(index: number){
 
-   console.log("posicion incial",index);
+   //console.log("posicion incial",index);
     let aux = index;
   this._actividadService.enviarIndex(index);
    this._actividadService.listActividades.find( (elemento, aux) => {
     if(aux == index){
-    console.log("actividad a editar",elemento);
+    //console.log("actividad a editar",elemento);
     this._actividadService.form.patchValue({
     
       position: elemento.position,
@@ -255,14 +242,12 @@ export class ActividadComponent implements OnInit {
       tareaAsociada: elemento.tareas
      })}
    })
-  
-   console.log('actividad final',this.actividad)
    
    //this._actividadService.openModalActividad(8);
    const dialogRef = this.dialog.open(ModalActividadComponent,{data: {idTarea: this.idTarea}});
    dialogRef.afterClosed().subscribe(res =>{
     if(res){
-      console.log(res);
+      //console.log(res);
       this.cargarActividades();
       this._snackBar.open('Actividad actualizada','',{
         duration: 1500,
@@ -293,7 +278,7 @@ export class ActividadComponent implements OnInit {
 
     const fechaA:string = year+'-'+month+'-'+day;
     const fecha =new Date(fechaA);
-    console.log("prueba fecha",fecha) ;   
+    //console.log("prueba fecha",fecha) ;   
     
     
     
@@ -304,14 +289,14 @@ export class ActividadComponent implements OnInit {
        asunto: this.dataSource.data[index].asunto_actividad,
        tareaAsociada: this.dataSource.data[index].nombre_tarea
       })
-      console.log("FORM 555",this.form)
-    console.log('actividad final',this.dataSource.data[index])
+      //console.log("FORM 555",this.form)
+    //console.log('actividad final',this.dataSource.data[index])
     
     //this._actividadService.openModalActividad(8);
     const dialogRef = this.dialog.open(ModalActividadComponent,{data: {idTarea: this.idTarea}});
     dialogRef.afterClosed().subscribe(res =>{
      if(res){
-       console.log(res);
+       //console.log(res);
        this.cargarActividadesSuite();
        this._snackBar.open('Actividad actualizada','',{
          duration: 1500,
@@ -337,14 +322,21 @@ export class ActividadComponent implements OnInit {
   onAgregarActividad(){
       // Agregamos una nueva Actividad
       this._actividadService.form.reset();
-      this._actividadService.form.patchValue({
-        tareaAsociada: this.dataSource.data[0].nombre_tarea
-      })
+      //console.log("Fabio DATA SOURCE", this.dataSource.data[0] == undefined)
+      if (this.dataSource.data[0] != undefined ){
+        this._actividadService.form.patchValue({
+          tareaAsociada: this.dataSource.data[0].nombre_tarea
+        })
+      }
+      console.log("DATA SOURCE",this.dataSource);
+      console.log("DATA",this.dataSource.data);
+      console.log("ID1",this.idTarea);
       const dialogRef = this.dialog.open(ModalActividadComponent,{data:{idTarea: this.idTarea}});
+      console.log("ID2",this.idTarea);
   // this.dialog.open(ModalActividadComponent);
     dialogRef.afterClosed().subscribe(res =>{
       if(res){
-        console.log(res);
+        //console.log(res);
         this.cargarActividadesSuite();
         this._snackBar.open('Actividad agregada','',{
           duration: 1500,

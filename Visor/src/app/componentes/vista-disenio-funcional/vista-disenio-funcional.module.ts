@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MyMaterialModule } from '../../material';
 import { VistaAnalistaFuncionalComponent } from './vista-analista-funcional.component';
+import { ControlActividadModule } from '../control-actividad/control-actividad.module';
 
 
 
@@ -9,7 +10,8 @@ import { VistaAnalistaFuncionalComponent } from './vista-analista-funcional.comp
   declarations: [VistaAnalistaFuncionalComponent],
   imports: [
     CommonModule,
-    MyMaterialModule
+    MyMaterialModule,
+    ControlActividadModule
   ],
   exports: [VistaAnalistaFuncionalComponent]
 })
