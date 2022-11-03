@@ -1,3 +1,8 @@
+.container-all{
+    width: 100%;
+}
+
+
 #titulo {
     text-align: center;
     margin-top: 40px;
@@ -7,8 +12,6 @@
 .header {
     display: flex;
     height: 60px;
-    justify-content: space-evenly;
-    margin-left: 10%;
 }
 
 .input-header {
@@ -33,10 +36,6 @@
 .menu-orden {
     display: flex;
     width: 170px;
-}
-
-.fecha-hasta {
-    margin-right: 20px;
 }
 
 h3 {

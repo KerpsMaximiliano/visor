@@ -151,6 +151,7 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
         this.planificacion.push({ id: colab.id_usuario, proyecto: colab.nombre_proyecto, mes: colab.mes-1, horas_planificadas: colab.horas_planificadas });
       });
     });
+    console.log(this.planificacion)
   }
 
   calcularPorcentajeTiempoDisponible(id: any) {

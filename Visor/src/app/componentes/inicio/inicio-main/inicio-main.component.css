@@ -1,5 +1,4 @@
 #titulo {
-    text-align: center;
     margin-top: 40px;
     margin-bottom: 40px;
 }
@@ -7,16 +6,7 @@
 .container {
     display: flex;
     margin-top: 3%;
-}
-
-.componenteEstado {
-    width: 55%;
-    margin: 0px;
-}
-
-.componenteDisponibilidad {
-    width: 45%;
-    margin: 0px;
+    width: 100%;
 }
 
 .fecha-hoy {
@@ -39,4 +29,17 @@
 .division {
     height: 1100px;
     background: linear-gradient(#000, #000) no-repeat center/2px 100%;
+}
+
+.barraDivisoria{
+    text-align: center;
+    margin-right: 0.5%;
+}
+
+.componenteDisponibilidad{
+    width: 100%;
+}
+
+.componenteEstado{
+    width: 100%;
 }
