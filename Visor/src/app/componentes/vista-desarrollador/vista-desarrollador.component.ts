@@ -167,7 +167,7 @@ export class VistaDesarrolladorComponent implements OnInit {
   getTareasEnPrueba() {
     const respuesta: Tarea[] = [];
     this.tareasOrg.forEach(tarea => {
-      if(tarea.estado == "In Testing") {
+      if(tarea.estado == "EnPrueba") {
         respuesta.push(tarea);
       }
     });
