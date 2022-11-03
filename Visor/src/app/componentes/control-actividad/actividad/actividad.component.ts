@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Input, OnInit, SimpleChange, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { Actividad } from 'src/app/interfaces/actividades';
@@ -58,6 +58,7 @@ export class ActividadComponent implements OnInit {
   panelOpenState = false;
 
   @Input() idTarea: string= '';
+  @Input() tareasSP: any = [];
 
   //inyecto el servicio 
   constructor(private _actividadService: ActividadService,
@@ -76,7 +77,9 @@ export class ActividadComponent implements OnInit {
   ngOnInit(): void {
     
     //this.cargarActividades();
-    
+    console.log("ID TAREAAA",this.tareasSP);
+    console.log("ID TAREAAA",this.idTarea);
+
     this.cargarActividadesSuite();
     
     
@@ -104,6 +107,12 @@ export class ActividadComponent implements OnInit {
     });
     this.cargarActividadesSuite();
   } 
+
+  ngOnChanges(changes: SimpleChange){
+    this.cd.detectChanges();
+    if(this.cd){console.log("ID TAREAAA",this.tareasSP);}
+    
+  }
   
 
   /*toggleOn(horas: Number){
@@ -151,9 +160,10 @@ export class ActividadComponent implements OnInit {
 
   cargarActividadesSuite(){
     this.cd.detectChanges();
-   
+      console.log("CDCDCDCDCD",this.cd);
+      console.log("ID TAREAAA",this.idTarea);
       this._actividadService.par_modoG(this.idTarea).subscribe((response: any) =>{
-      
+      console.log("ID TAREAAA",this.idTarea);
         console.log("dataSource",this.dataSource);
         response.dataset.forEach((y: any) =>{
           if(y.descripcion == null || y.descripcion.length < 1 || y.descripcion === ""){

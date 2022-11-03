@@ -37,7 +37,7 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
     RouterModule
   ],*/
   entryComponents:[ModalActividadComponent,ActividadComponent],
-  exports:[ActividadComponent,ModalActividadComponent],
+  exports:[ModalActividadComponent, ActividadComponent],
   providers:[ModalActividadComponent,ActividadComponent,{provide:MatDialogRef,useValue:{}},{ provide: MAT_DIALOG_DATA, useValue: {} },DialogService]
 })
 export class ControlActividadModule { }

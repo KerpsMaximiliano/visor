@@ -241,6 +241,7 @@ editarActividadSuite(){
     //children: this._actividadService.form.value.children,  
     asunto_actividad: this._actividadService.form.value.asunto,
     nombre_tarea: this._actividadService.form.value.tareaAsociada,
+    
     descripcion: this._actividadService.form.value.descripcion,
     par_modo: 'U',
     titulo: this._actividadService.form.value.asunto,
