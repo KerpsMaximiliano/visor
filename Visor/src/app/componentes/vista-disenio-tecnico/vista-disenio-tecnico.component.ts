@@ -31,19 +31,6 @@ export class VistaDisenioTecnicoComponent implements OnInit{
   @Input() tareasSP: any = [];
 
   ngOnInit(): void {
-    this.proyectoId = "d31cfdaa-049e-e6e3-999d-62b5b2f778b7"; // este dato viene del commponente tareas
-    /*this._tareaService.getTareasDeProyecto(this.proyectoId, 'RelevamientoReq').subscribe((response: any) => {
-      this.tareasSP = response.dataset;
-      this.proyectoNombre = this.tareasSP[0].nombre_proyecto;
-      this.organizarTareas();
-      console.log(this.tareasOrg);
-      this.cargarTareas();
-      this.poseeTareas();
-      if (!this.noHayProyecto) {
-        this.setearBarraProgreso();
-        this.ordenarListas();
-      }
-    });;*/
       if(this.tareasSP.length > 0){
         console.log(this.tareasSP)
         this.noHayProyecto= false;

@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, SimpleChange } from '@angular/core';
 import { TareaService } from 'src/app/services/i2t/tarea.service';
 import { Tarea } from 'src/app/interfaces/tarea';
-import { Input } from '@angular/core';
 
 @Component({
   selector: 'app-vista-analista-funcional',
@@ -33,9 +32,18 @@ export class VistaAnalistaFuncionalComponent implements OnInit {
 
   ngOnInit(): void {
     if(this.tareasSP.length > 0){
+      console.log(this.tareasSP)
       this.noHayProyecto= false;
+      this.organizarTareas();
+      this.cargarTareas();
+      this.poseeTareas();
+      if (!this.noHayProyecto) {
+        this.setearBarraProgreso();
+        this.ordenarListas();
+      }
     }
     else{
+      console.log(this.tareasSP)
       this.noHayProyecto = true;
     }
   }
@@ -65,7 +73,7 @@ export class VistaAnalistaFuncionalComponent implements OnInit {
   };
 
   ngOnChanges(changes: SimpleChange) {
-
+    this.tareasOrg = [];
     if (this.tareasSP.length > 0) {
       this.noHayProyecto = false;
       console.log("Entra change")
