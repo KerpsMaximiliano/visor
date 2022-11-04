@@ -24,7 +24,6 @@ export class VistaAnalistaFuncionalComponent implements OnInit {
   horasEnProgreso: number = 0;
   horasCompleatadas: number = 0;
   horasTotales: number = 0;
-  hola: string = "hola";
 
   constructor(private _tareaService: TareaService) {  }
 
