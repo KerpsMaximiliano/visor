@@ -11,6 +11,7 @@ import { MatSelectChange } from '@angular/material/select';
 import { TareaService } from 'src/app/services/i2t/tarea.service';
 import { finalize } from 'rxjs/operators';
 import { MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { FiltroService } from 'src/app/services/i2t/filtro.service';
 
 
 export interface PropiedadesProyecto{
@@ -51,6 +52,13 @@ export interface PropiedadesTarea{
 
 }
 
+export interface Contenido{
+  id: string,
+  nombre: string,
+  cliente: string,
+  asignado: string
+}
+
 @Component({
   selector: 'app-dialog',
   templateUrl: './dialog.component.html',
@@ -61,13 +69,17 @@ export interface PropiedadesTarea{
 
 export class DialogComponent implements OnInit {
 
+  encodedData: string = ''
+  contenido: Contenido = {id:'', nombre:'', cliente:'', asignado:''};
+  saved_search_id: string = ''
   buscarProyecto: boolean = false;
-  filtrosProyectoDialog: any;
+  //filtrosProyectoDialog: any;
   prioridadProyecto:any
   proyectoSeleccionado: string = '';
   numeroProyecto: string = '';
   nombreProyecto: string = '';
   clienteProyecto: string = '';
+  asignadasAmi: boolean = false;
   
   asignadoAproyecto: string = '';
   listaProyectos: any[] = [];
@@ -78,6 +90,7 @@ export class DialogComponent implements OnInit {
   clientesDeProyectos: String[] = [];
   usuariosDeProyectos: String[] = [];
   dataSourcePrueba!: MatTableDataSource<any>;
+  dataSourcePruebaCopia!: MatTableDataSource<any>;
   result: PropiedadesProyecto[] = [];
   valoresFiltros =  {
     id: '',
@@ -85,6 +98,9 @@ export class DialogComponent implements OnInit {
     cliente: '',
     asignado: ''
   }
+  
+  filtrosAnteriores: Contenido = {id:'', nombre:'', cliente:'', asignado:''};
+  filtrosAnterioresAux: Contenido = {id:'', nombre:'', cliente:'', asignado:''};
 
   dataSourceTareas!: MatTableDataSource<PropiedadesTarea>;
   prioridadDeTareas: String[] = [];
@@ -113,25 +129,19 @@ export class DialogComponent implements OnInit {
   }
 
   constructor(private _formBuilder: FormBuilder, @Inject(MAT_DIALOG_DATA) public buscarProyectoInterface: Proyectos, @Inject(MAT_DIALOG_DATA) public buscarTareasInterface: Tareas, private _adapter: DateAdapter<any>,
-  @Inject(MAT_DATE_LOCALE) private _locale: string, public dialogRef: MatDialogRef<DialogComponent>, private _tareaService: TareaService) {
+  @Inject(MAT_DATE_LOCALE) private _locale: string, public dialogRef: MatDialogRef<DialogComponent>, private _tareaService: TareaService, private _filtroService: FiltroService) {
     
     
     //Pregunto si el pop up se abrió para buscar PROYECTOS
     if(buscarProyectoInterface.buscaProyectos){
       this.buscarProyecto = buscarProyectoInterface.buscaProyectos;
-      this.filtrosProyectoDialog = this.buscarProyectoInterface.filtros;
-      
-      if (buscarProyectoInterface.filtros.length != 0) {
-        this.numeroProyecto = JSON.parse(JSON.stringify(buscarProyectoInterface.filtros[0])).numeroProyecto;
-        this.nombreProyecto = JSON.parse(JSON.stringify(buscarProyectoInterface.filtros[1])).nombreProyecto;
-        this.clienteProyecto = JSON.parse(JSON.stringify(buscarProyectoInterface.filtros[2])).clienteProyecto;
-        this.asignadoAproyecto = JSON.parse(JSON.stringify(buscarProyectoInterface.filtros[3])).asignadoAproyecto;
-      }
+      //this.filtrosProyectoDialog = this.buscarProyectoInterface.filtros;
 
       this._tareaService.getABMproyectoService().subscribe((response: any) => {
         this.listaProyectosPrueba = response.dataset;
         console.log(this.listaProyectosPrueba)
         this.dataSourcePrueba = new MatTableDataSource(this.listaProyectosPrueba);
+        this.dataSourcePruebaCopia = new MatTableDataSource(this.listaProyectosPrueba);
         
          
         let cantProyectos = this.dataSourcePrueba.filteredData.length;
@@ -140,16 +150,57 @@ export class DialogComponent implements OnInit {
             this.clientesDeProyectos.push( this.dataSourcePrueba.filteredData[i].nombre_cliente);
           }
         }
+        //console.log(this.clientesDeProyectos)
         for(let i = 0; i < cantProyectos ; i++){
           if(!this.usuariosDeProyectos.includes(this.dataSourcePrueba.filteredData[i].usuario_asignado)){
             this.usuariosDeProyectos.push( this.dataSourcePrueba.filteredData[i].usuario_asignado);
           }
         }
-        
-        
 
+        this.ordenarAfabeticamente(this.clientesDeProyectos);
+        this.ordenarAfabeticamente(this.usuariosDeProyectos);
+
+        //Obtengo filtros
+        this._filtroService.getUserId(localStorage.getItem('usuario')!).subscribe((response: any) => {
+          localStorage.setItem('userId', response.dataset[0].id);
+
+          this._filtroService.selectFiltro(response.dataset[0].id, 'proyectos').subscribe(resp => {
+            console.log(resp)
+            if (resp.dataset.length != 0) {
+              this.saved_search_id = resp.dataset[0].saved_search_id;
+              this.contenido = JSON.parse(atob(resp.dataset[0].contenido)).filtros;
+              console.log(this.contenido);
+
+
+              this.filtrosAnteriores.id = this.contenido.id;
+              this.filtrosAnteriores.nombre = this.contenido.nombre;
+              this.filtrosAnteriores.cliente = this.contenido.cliente;
+              this.filtrosAnteriores.asignado = this.contenido.asignado;
+
+              this.valoresFiltros.id = this.contenido.id;
+              this.valoresFiltros.nombre = this.contenido.nombre;
+              this.valoresFiltros.cliente = this.contenido.cliente;
+              this.valoresFiltros.asignado = this.contenido.asignado;
+
+              //Set variables para mostrar valores en el dialog
+              this.numeroProyecto = this.filtrosAnteriores.id;
+              this.nombreProyecto = this.filtrosAnteriores.nombre;
+              this.clienteProyecto = this.filtrosAnteriores.cliente;
+              this.asignadoAproyecto = this.filtrosAnteriores.asignado;
+
+              
+            }
+            
+            const valores = Object.values(this.filtrosAnteriores);
+            this.armarFilterPredicateProyectos(valores);
+            this.filtrarProyectosPor(valores);
+
+
+          })
+        });
 
       });
+      
     }
     
     //Pregunto si el pop up se abrió para buscar TAREAS
@@ -241,13 +292,31 @@ export class DialogComponent implements OnInit {
     
 
   }
+  ordenarAfabeticamente(arrayDatos: String[]){
+    arrayDatos = arrayDatos.sort();
+    //console.log(arrayDatos)
+  }
   
   
-  toppings = this._formBuilder.group({
-    misProyectos: false,
-    extracheese: false,
-    mushroom: false,
-  });
+  
+
+  misProyectosAsignados(){
+    console.log(this.asignadasAmi)
+    console.log(this.asignadasAmi = !this.asignadasAmi)
+    if(this.asignadasAmi){
+      let usuarioRegistrado: any;
+      usuarioRegistrado = localStorage.getItem("usuario");
+      console.log(this.dataSourcePrueba)
+      this.dataSourcePrueba.filterPredicate = (data: any, filter: string): boolean => {
+        return ( data.usuario_asignado == usuarioRegistrado );
+      }
+      this.dataSourcePrueba.filter = usuarioRegistrado.trim().toLowerCase();
+
+    }
+    else{
+      this.dataSourcePrueba = new MatTableDataSource(this.listaProyectosPrueba);
+    }
+  }
 
   
   
@@ -318,15 +387,13 @@ export class DialogComponent implements OnInit {
   filtrarProyectos(id:string,valor:string){
     const idParametroFiltro = id;
     var valorParametroFiltro = valor;
-    console.log(idParametroFiltro)
-    console.log(valorParametroFiltro)
     
     //Swmitch servicio
     
     switch(idParametroFiltro){
       case 'nroProyecto':
         this.numeroProyecto = valorParametroFiltro;
-        this.filtrosProyectoDialog[0].numeroProyecto = this.numeroProyecto;//Para permanencia de filtro
+        //this.filtrosProyectoDialog[0].numeroProyecto = this.numeroProyecto;//Para permanencia de filtro
         this.valoresFiltros.id = valorParametroFiltro;
         const valores = Object.values(this.valoresFiltros)
         console.log(valores)
@@ -338,8 +405,8 @@ export class DialogComponent implements OnInit {
       break;
       case 'nombreProyecto':
         this.nombreProyecto = valorParametroFiltro;
-        this.filtrosProyectoDialog[1].nombreProyecto = this.nombreProyecto;//Para permanencia de filtro
-        this.valoresFiltros.nombre = valorParametroFiltro;
+        //this.filtrosProyectoDialog[1].nombreProyecto = this.nombreProyecto;//Para permanencia de filtro
+        this.valoresFiltros.nombre = valorParametroFiltro.toLowerCase();
         const valoresN = Object.values(this.valoresFiltros);
 
 
@@ -349,18 +416,18 @@ export class DialogComponent implements OnInit {
       break;
       case 'clienteProyecto':
         this.clienteProyecto = valorParametroFiltro;
-        this.filtrosProyectoDialog[2] = this.clienteProyecto;
+        //this.filtrosProyectoDialog[2] = this.clienteProyecto;
         this.valoresFiltros.cliente = valorParametroFiltro;
         const valoresC = Object.values(this.valoresFiltros);
 
         this.armarFilterPredicateProyectos(valoresC);
-        this.filtrarProyectosPor(valoresC);
+        //this.filtrarProyectosPor(valoresC);
 
         
       break;
       case 'asignadoAproyecto':
         this.asignadoAproyecto = valorParametroFiltro;
-        this.filtrosProyectoDialog[3] = this.asignadoAproyecto;
+        //this.filtrosProyectoDialog[3] = this.asignadoAproyecto;
         this.valoresFiltros.asignado = valorParametroFiltro;
         const valoresA = Object.values(this.valoresFiltros);
 
@@ -371,13 +438,12 @@ export class DialogComponent implements OnInit {
       break;
     }
   }
-  armarFilterPredicateProyectos( valores:string[] ): boolean{                                     
+  armarFilterPredicateProyectos( valores:string[] ): boolean{                                    
     let respuesta: any;
     respuesta = this.dataSourcePrueba.filterPredicate = (data: any, filter: string): boolean => {
-      //Filtra solo por id_projecto
+      //Filtra solo por numero_proyecto
       if(valores[0] != '' && valores[1] == '' && valores[2] == '' && valores[3] == ''){
-        console.log("data.id = " + data.id_projecto + " valores[0] = " + valores[0] + " = " + (String(data.id).indexOf(valores[0]) != -1))
-        return ( (data.id_projecto.split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1);
+        return ( (String(data.numero_proyecto).split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1);
       }
 
       //Filtra solo por nombre_projecto
@@ -411,33 +477,34 @@ export class DialogComponent implements OnInit {
       else if(valores[0] == '' && valores[1] != '' && valores[2] != '' && valores[3] != ''){
         return ( ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1) && (data.nombre_cliente == valores[2]) && (data.usuario_asignado == valores[3])  );
       }
-      //Filtra por id_projecto y Asignado
+      //Filtra por numero_proyecto y Asignado
       else if(valores[0] != '' && valores[1] == '' && valores[2] == '' && valores[3] != ''){
-        return ( ((data.id_projecto.split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1) && (data.usuario_asignado == valores[3])  );
+        return ( ((String(data.numero_proyecto).split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1) && (data.usuario_asignado == valores[3])  );
       }
-      //Filtra por id_projecto y Cliente
+      //Filtra por numero_proyecto y Cliente
       else if(valores[0] != '' && valores[1] == '' && valores[2] != '' && valores[3] == ''){
-        return ( ((data.id_projecto.split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1) && (data.nombre_cliente == valores[2])  );
+        return ( (String(data.numero_proyecto.split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1) && (data.nombre_cliente == valores[2])  );
       }
-      //Filtra por id_projecto, Cliente y Asignado
+      //Filtra por numero_proyecto, Cliente y Asignado
       else if(valores[0] != '' && valores[1] == '' && valores[2] != '' && valores[3] != ''){
-        return ( ((data.id_projecto.split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1) && (data.nombre_cliente == valores[2]) && (data.usuario_asignado == valores[3])  );
+        return ( (String(data.numero_proyecto.split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1) && (data.nombre_cliente == valores[2]) && (data.usuario_asignado == valores[3])  );
       }
-      //id_projecto y Nombre
+      //numero_proyecto y Nombre
       else if(valores[0] != '' && valores[1] != '' && valores[2] == '' && valores[3] == ''){
-        return ( ((data.id_projecto.split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1) && ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valores[1])) != -1 );
+        console.log("aca")
+        return ( ((data.numero_proyecto.split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1) && ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valores[1])) != -1 );
       }
-      //Filtra por id_projecto, Nombre y Asignado
+      //Filtra por numero_proyecto, Nombre y Asignado
       else if(valores[0] != '' && valores[1] != '' && valores[2] == '' && valores[2] != ''){
-        return ( ((data.id_projecto.split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1) && ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1) && (String(data.usuario_asignado) == (valores[3])) );
+        return ( ((data.numero_proyecto.split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1) && ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1) && (String(data.usuario_asignado) == (valores[3])) );
       }
-      //Filtra id_projecto, Nombre y Cliente
+      //Filtra numero_proyecto, Nombre y Cliente
       else if(valores[0] != '' && valores[1] != '' && valores[2] != '' && valores[3] == ''){
-        return ( ((data.id_projecto.split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1) && ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1) && (data.nombre_cliente == valores[2])  );
+        return ( ((data.numero_proyecto.split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1) && ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1) && (data.nombre_cliente == valores[2])  );
       }
-      //id_projecto, Nombre, Cliente y Asignado
+      //numero_proyecto, Nombre, Cliente y Asignado
       else{
-        return ( ((data.id_projecto.split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1) && ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1) &&  (data.nombre_cliente == valores[2]) && (data.usuario_asignado) == valores[3]    );                                                                                                ;
+        return ( ((data.numero_proyecto.split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1) && ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valores[1]) != -1) &&  (data.nombre_cliente == valores[2]) && (data.usuario_asignado) == valores[3]    );                                                                                                ;
       }
       
     }
@@ -446,8 +513,8 @@ export class DialogComponent implements OnInit {
 
   filtrarProyectosPor(valores:string[]){
     if (valores[0] != '' && valores[1] == '' && valores[2] == '' && valores[3] == '') {
-      console.log("Esta condicion" )
       this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
+      
     }
 
     //Filtra solo por nombre_projecto
@@ -487,36 +554,37 @@ export class DialogComponent implements OnInit {
       this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
 
     }
-    //Filtra por id_projecto y Asignado
+    //Filtra por numero_proyecto y Asignado
     else if (valores[0] != '' && valores[1] == '' && valores[2] == '' && valores[3] != '') {
       this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
       this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
     }
-    //Filtra por id_projecto y Cliente
+    //Filtra por numero_proyecto y Cliente
     else if (valores[0] != '' && valores[1] == '' && valores[2] != '' && valores[3] == '') {
       this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
       this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
     }
-    //Filtra por id_projecto, Cliente y Asignado
+    //Filtra por numero_proyecto, Cliente y Asignado
     else if (valores[0] != '' && valores[1] == '' && valores[2] != '' && valores[3] != '') {
       this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
       this.dataSourcePrueba.filter = this.valoresFiltros.cliente.trim().toLowerCase();
       this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
 
     }
-    //id_projecto y Nombre
+    //numero_proyecto y Nombre
     else if (valores[0] != '' && valores[1] != '' && valores[2] == '' && valores[3] == '') {
+      console.log(this.dataSourcePrueba)
       this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
       this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
     }
-    //Filtra por id_projecto, Nombre y Asignado
+    //Filtra por numero_proyecto, Nombre y Asignado
     else if (valores[0] != '' && valores[1] != '' && valores[2] == '' && valores[2] != '') {
       this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
       this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
       this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
 
     }
-    //Filtra id_projecto, Nombre y Cliente
+    //Filtra numero_proyecto, Nombre y Cliente
     else if (valores[0] != '' && valores[1] != '' && valores[2] != '' && valores[3] == '') {
       this.dataSourcePrueba.filter = this.valoresFiltros.id.trim().toLowerCase();
       this.dataSourcePrueba.filter = this.valoresFiltros.nombre.trim().toLowerCase();
@@ -530,6 +598,7 @@ export class DialogComponent implements OnInit {
       this.dataSourcePrueba.filter = this.valoresFiltros.asignado.trim().toLowerCase();
     }
   }
+  
 
   //Obtengo los datos para filtrar por tarea
   getNombreTarea(event: Event){
@@ -590,7 +659,6 @@ export class DialogComponent implements OnInit {
         }
         arrayTabla.filter = valor.trim().toLowerCase();
         arrayTemp = arrayTabla.filteredData;
-        console.log(arrayTemp)
         return arrayTemp;
 
       case 2:
@@ -648,7 +716,6 @@ export class DialogComponent implements OnInit {
       let encontradoAsignado = false;
       
       arrayNombre.forEach((element: any) => {
-        console.log(element)
         if (tarea.id_tarea == element.id) {
           encontradoNombre = true;
         }
@@ -686,7 +753,7 @@ export class DialogComponent implements OnInit {
   
   getAsignadoAProyecto(programador: any){
     this.asignadoAproyecto = programador;
-    this.filtrosProyectoDialog[3].asignadoAproyecto = this.asignadoAproyecto;
+    //this.filtrosProyectoDialog[3].asignadoAproyecto = this.asignadoAproyecto;
   }
   
   getProyecto(proyecto:any):void{
@@ -696,8 +763,65 @@ export class DialogComponent implements OnInit {
     console.log(this.proyectoSeleccionado)
     this.buscarProyectoInterface.proyectoSeleccionado = this.proyectoSeleccionado;
     this.buscarTareasInterface.idProyectoSeleccionado = proyecto.id_projecto;
-    this.dialogRef.close(this.buscarProyectoInterface);
-    console.log(this.nombreProyecto);
+
+    
+    
+    const valoresFiltrosActuales = Object.values(this.valoresFiltros);
+    console.log("Filtros actuales: " + valoresFiltrosActuales);
+    const valoresFiltrosAnteriores = Object.values(this.filtrosAnteriores);
+    console.log("Filtros anteriores: " + valoresFiltrosAnteriores);
+
+    //Pregunto si ya había filtros
+    let habiaFiltros = false;
+    let hayCambios = false;
+
+    for(let i= 0; i < valoresFiltrosAnteriores.length; i++){
+      if(valoresFiltrosAnteriores[i] != ''){
+        console.log("entró")
+        habiaFiltros = true;
+        i = valoresFiltrosAnteriores.length;
+      }
+    }
+
+    //Comparo filtros anteriores con los actuales
+    for(let i = 0; i < valoresFiltrosActuales.length; i++){
+      console.log("valoresFiltrosActuales[i]: " , valoresFiltrosActuales[i] ," valoresFiltrosAnteriores[i]: " ,valoresFiltrosAnteriores[i] , " : " , valoresFiltrosActuales[i] != valoresFiltrosAnteriores[i]  );
+      if(valoresFiltrosActuales[i] != valoresFiltrosAnteriores[i]){
+        hayCambios = true;
+        i = valoresFiltrosAnteriores.length;
+      }
+    }
+
+    if(habiaFiltros){ //Pregunta si había filtros anteriormente cargados
+      console.log("Filtros iguales")
+      if(hayCambios){
+        //Update de filtros
+        console.log("update")
+        const contenido: string = JSON.stringify({ filtros : this.valoresFiltros });
+        const encodedData = btoa(contenido);
+        this._filtroService.updateFiltro(this.saved_search_id, encodedData).subscribe((rsp: any) => {
+          console.log('Filtro actualizado: ', rsp);
+        });
+      }
+      
+    }
+    else{
+      //Insert de servicio
+      console.log("insert");
+      const contenido: string = JSON.stringify({ filtros : this.valoresFiltros });
+      const encodedData = btoa(contenido);
+      this._filtroService.insertFiltro(
+        localStorage.getItem('userId')!,
+        'proyectos', //modulo_busqueda
+        'filtro_proyectos', //nombre
+        encodedData,//contenido
+
+        'Actualiza filtros de búsqueda de proyectos').subscribe((rsp: any) => {
+          console.log('Filtro guardado: ', rsp);
+        });
+    }
+    
+    this.dialogRef.close(proyecto);
     
   }
 
@@ -728,7 +852,6 @@ export class DialogComponent implements OnInit {
   getAsignadoAtarea(programador:any){//Programadores
     //Obtener token
     
-    console.log(this.asignadoAtarea)
   }
 
   
@@ -751,37 +874,16 @@ export class DialogComponent implements OnInit {
   }
   
 
-  guardarValoresDeFiltro(){
-    if(this.buscarProyecto){
-      this.filtrosProyectoDialog = JSON.parse(JSON.stringify(this.buscarProyectoInterface.filtros));
-      this.filtrosProyectoDialog[0].numeroProyecto = this.numeroProyecto;
-      this.filtrosProyectoDialog[1].nombreProyecto = this.nombreProyecto;
-      this.filtrosProyectoDialog[2].clienteProyecto = this.clienteProyecto;
-      this.filtrosProyectoDialog[3].asignadoAproyecto = this.asignadoAproyecto;
-      this.dialogRef.close(this.filtrosProyectoDialog);
-    }
-    else{
-      //this.filtrosTareasDialog = JSON.parse(JSON.stringify(this.filtrosTarea));
-      this.filtrosTareasDialog[0].nombreTarea = this.nombreTarea;
-      this.filtrosTareasDialog[1].prioridadTarea = this.prioridadTarea;
-      this.filtrosTareasDialog[2].facilitadorTarea = this.facilitadorTarea;
-      this.filtrosTareasDialog[3].asignadoAtarea = this.asignadoAtarea;
-      this.filtrosTareasDialog[4].tecnologiatarea = this.tecnologiaTarea;
-      this.dialogRef.close(this.filtrosTareasDialog);
-    }
-
-  }
-
   limpiarValoresDeFiltros(){
     
     if(this.buscarProyecto){
-      //this.filtrosProyectoDialog = JSON.parse(JSON.stringify(this.buscarProyectoInterface.filtros));
-      console.log(this.filtrosProyectoDialog)
-      this.filtrosProyectoDialog[0].numeroProyecto = '';
-      this.filtrosProyectoDialog[1].nombreProyecto = '';
-      this.filtrosProyectoDialog[2].clienteProyecto= '';
-      this.filtrosProyectoDialog[3].asignadoAproyecto = '';
-      this.dialogRef.close(this.filtrosProyectoDialog);
+      if(this.saved_search_id != ''){
+
+        this._filtroService.deleteFiltro(this.saved_search_id).subscribe((rsp: any) => {
+            console.log('Filtros borrados: ', rsp);
+        });
+      }
+      this.dialogRef.close();
     }
     else{
       console.log(this.filtrosTareasDialog)
@@ -796,7 +898,8 @@ export class DialogComponent implements OnInit {
 
   cerrarDialog(){
     if(this.buscarProyecto){
-      this.dialogRef.close(this.filtrosProyectoDialog);
+      //this.dialogRef.close(this.filtrosProyectoDialog);
+      this.dialogRef.close();
     }
     else{
       this.dialogRef.close(this.filtrosTareasDialog);

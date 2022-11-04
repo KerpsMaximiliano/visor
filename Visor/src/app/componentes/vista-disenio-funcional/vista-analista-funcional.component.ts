@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, SimpleChange } from '@angular/core';
 import { TareaService } from 'src/app/services/i2t/tarea.service';
 import { Tarea } from 'src/app/interfaces/tarea';
 import { Input } from '@angular/core';
@@ -12,6 +12,7 @@ export class VistaAnalistaFuncionalComponent implements OnInit {
 
   proyectoId: any;
   proyectoNombre?: string;
+  //tareasSP: any;
   tareasOrg: any[]=[];
   tareasNoIniciadas: Tarea[]=[];
   tareasEnProgreso: Tarea[]=[];
@@ -24,36 +25,15 @@ export class VistaAnalistaFuncionalComponent implements OnInit {
   horasEnProgreso: number = 0;
   horasCompleatadas: number = 0;
   horasTotales: number = 0;
+  panelActividadesAbierto: boolean= false;
 
   constructor(private _tareaService: TareaService) {  }
 
   @Input() tareasSP: any = [];
 
   ngOnInit(): void {
-    this.proyectoId = "d31cfdaa-049e-e6e3-999d-62b5b2f778b7"; // este dato viene del commponente tareas
-    /* this._tareaService.getTareasDeProyecto(this.proyectoId).subscribe((response: any) => {
-      this.tareasSP = response.dataset;
-      this.proyectoNombre = this.tareasSP[0].nombre_proyecto;
-      this.organizarTareas();
-      console.log(this.tareasOrg);
-      this.cargarTareas();
-      this.poseeTareas();
-      if (!this.noHayProyecto) {
-        this.setearBarraProgreso();
-        this.ordenarListas();
-      }
-    });; */
-    
     if(this.tareasSP.length > 0){
       this.noHayProyecto= false;
-      this.organizarTareas();
-      console.log(this.tareasOrg);
-      this.cargarTareas();
-      this.poseeTareas();
-      if (!this.noHayProyecto) {
-        this.setearBarraProgreso();
-        this.ordenarListas();
-      }
     }
     else{
       this.noHayProyecto = true;
@@ -63,6 +43,7 @@ export class VistaAnalistaFuncionalComponent implements OnInit {
   organizarTareas() {
     this.tareasSP.forEach((tarea: any) => {
       this.tareasOrg.push({
+        idTarea: tarea.id_tarea,
         titulo: tarea.nombre_tarea,
         proyecto: tarea.nombre_proyecto,
         prioridad: tarea.prioridad,
@@ -82,6 +63,23 @@ export class VistaAnalistaFuncionalComponent implements OnInit {
       })
     });
   };
+
+  ngOnChanges(changes: SimpleChange) {
+
+    if (this.tareasSP.length > 0) {
+      this.noHayProyecto = false;
+      console.log("Entra change")
+      this.organizarTareas();
+      console.log(this.tareasOrg);
+      this.cargarTareas();
+      this.poseeTareas();
+      if (!this.noHayProyecto) {
+        this.setearBarraProgreso();
+        this.ordenarListas();
+      }
+    }
+    this.tareasOrg=[];
+  }
 
   calcularFecha(fecha: string) {
     if (fecha != null) {
@@ -255,6 +253,10 @@ export class VistaAnalistaFuncionalComponent implements OnInit {
     }});
     console.log(arrayOrdenado);
     return arrayOrdenado;
+  }
+
+  abrirActividades(){
+    this.panelActividadesAbierto= this.panelActividadesAbierto ? false : true;
   }
 
 }

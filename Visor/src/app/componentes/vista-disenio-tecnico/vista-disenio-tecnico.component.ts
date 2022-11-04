@@ -45,6 +45,7 @@ export class VistaDisenioTecnicoComponent implements OnInit{
       }
     });;*/
       if(this.tareasSP.length > 0){
+        console.log(this.tareasSP)
         this.noHayProyecto= false;
         this.organizarTareas();
         console.log(this.tareasOrg);
@@ -56,15 +57,32 @@ export class VistaDisenioTecnicoComponent implements OnInit{
         }
       }
       else{
+        console.log(this.tareasSP)
         this.noHayProyecto = true;
       }
 
   }
 
+  ngOnChanges(changes: SimpleChange){
+    if (this.tareasSP.length > 0) {
+      this.noHayProyecto = false;
+      console.log("Entra change")
+      this.organizarTareas();
+      console.log(this.tareasOrg);
+      this.cargarTareas();
+      this.poseeTareas();
+      if (!this.noHayProyecto) {
+        this.setearBarraProgreso();
+        this.ordenarListas();
+      }
+    }
+    this.tareasOrg=[];
+  }
+
   organizarTareas() {
     this.tareasSP.forEach((tarea: any) => {
       this.tareasOrg.push({
-        idTarea: tarea.id_trea,
+        idTarea: tarea.id_tarea,
         titulo: tarea.nombre_tarea,
         proyecto: tarea.nombre_proyecto,
         prioridad: tarea.prioridad,

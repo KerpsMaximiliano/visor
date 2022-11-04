@@ -47,22 +47,21 @@ export interface FiltrosTarea{
 })
 
 export class TareasComponent implements OnInit {
+  proyectoSeleccionado: any;
+  nombreVistaSeleccionada: string = "Vista"
+  idVistaSeleccionada: string = "Vista"
   listaProyectosService: ResponseService[] = [] ;
   listaProyectos: PropiedadesProyecto[] = [];
   dataSource: MatTableDataSource<PropiedadesProyecto>;
   dataSourceService: any
-  nombreProyecto='';
+  nombreProyecto:string = '';
+  idProyectoSeleccionado: string = ''
   estiloListaProyectos: string = 'ocultarTabla';
   seleccionoProyecto = '';
   horizontalPosition: MatSnackBarHorizontalPosition = 'start';
   verticalPosition: MatSnackBarVerticalPosition = 'bottom';
   subtituloProyecto: string ='';
-  filtrosBusquedaProyecto: Object[] = [
-    {numeroProyecto: ''},
-    {nombreProyecto: ''},
-    {clienteProyecto: ''},
-    {asignadoAproyecto: ''}
-  ]
+  
   filtrosBusquedaTareas: Object[] = [
     {nombreTarea: ''},
     {prioridadTarea: ''},
@@ -82,11 +81,12 @@ export class TareasComponent implements OnInit {
   }
   
 
-  
+  listaTareasService:any;
   tareasFiltradas: any = [];
   tareasFiltradasPorVista: any= []; 
   columnas: string[] = ['nombre'];
 
+  valorInputProyecto:string = ''
 
   constructor(public dialog: MatDialog, private _snackBar: MatSnackBar, private _tareaService: TareaService) {
     
@@ -107,64 +107,77 @@ export class TareasComponent implements OnInit {
     
     this.dataSource = new MatTableDataSource(this.listaProyectos);
 
-    this._tareaService.getABMproyectoService().subscribe((response: any) =>{
-    this.listaProyectosService = response.dataset;
-    this.dataSourceService = new MatTableDataSource(this.listaProyectosService);
+    this._tareaService.getABMproyectoService().subscribe((response: any) =>{ //Obtengo los proyectos
+      this.listaProyectosService = response.dataset;
+      this.dataSourceService = new MatTableDataSource(this.listaProyectosService);
     
-    console.log(this.dataSourceService.filteredData[0])
+      console.log(this.dataSourceService)
+    });
+
     
-  });
+
+
   }
 
   ngOnInit(): void {
   }
 
-  buscarProyectos(event: Event) {    
+  buscarProyectos(event: Event) {
                                              
     const filterValue = (event.target as HTMLInputElement).value;
+    this.valorInputProyecto = (event.target as HTMLInputElement).value;
     
-    if(this.nombreProyecto == ''){
+    if(this.valorInputProyecto == ''){
       this.estiloListaProyectos = 'ocultarTabla';
-      console.log("vacio")
     }
     else{
-      this.estiloListaProyectos = 'mostrarTabla'
+      this.estiloListaProyectos = 'mostrarTabla';
       this.dataSourceService.filter = filterValue.trim().toLowerCase();
-      console.log("No vacio")
-
     }
   }
   seleccionarProyecto(unProyecto: any){
     this.nombreProyecto = unProyecto.nombre_projecto;
+    this.idProyectoSeleccionado = unProyecto.id_projecto
+    this.filtrosTarea.idProyectoSeleccionado = this.idProyectoSeleccionado; //Para que no aparezca mensaje al abrir modal de filtro de tareas
     this.estiloListaProyectos = 'ocultarTabla'; //nombre clase css
-    console.log(this.nombreProyecto)
-  }
-
-  abrirDialogProyecto(event: Event){
-    event.preventDefault();
-    console.log(this.filtrosBusquedaProyecto)
-    const dialogRef = this.dialog.open(DialogComponent,{width:'600px', data:{buscaProyectos: true, filtros: this.filtrosBusquedaProyecto}});
-    dialogRef.afterClosed().pipe(
+    this.valorInputProyecto = '';
+    this._tareaService.getTareasDeProyecto(this.idProyectoSeleccionado).pipe(
       finalize(() => {
-        //this.proyectoSeleccionado();
+        this.listaTareasService = this.listaTareasService.dataset;
+        console.log(this.listaTareasService)
+        if(this.nombreVistaSeleccionada != 'Vista'){ //Pregunto si hay una vista seleccionada
+          this.setSubtituloProyecto(this.idVistaSeleccionada);
+        }
       })
     )
     .subscribe(result => {
       console.log(result)
-      this.filtrosTarea.idProyectoSeleccionado = result.idProyectoSeleccionado
-      console.log(this.filtrosTarea.idProyectoSeleccionado)
-      
-      
-      
-      if (result.proyectoSeleccionado !== undefined) {
+      this.listaTareasService = result;
+    })
+    
 
-        this.nombreProyecto = result.proyectoSeleccionado
-        //No utilizó filtros para encontrar el proyecto
-        console.log(this.nombreProyecto)
-      }
+  }
 
-        
-      
+  abrirDialogProyecto(event: Event){
+    event.preventDefault();
+    //console.log(this.filtrosBusquedaProyecto)
+    const dialogRef = this.dialog.open(DialogComponent,{width:'600px', data:{buscaProyectos: true}});
+    dialogRef.afterClosed().pipe(
+      finalize(() => {
+        console.log("finalize")
+        if(this.proyectoSeleccionado != undefined){
+          this.seleccionarProyecto(this.proyectoSeleccionado);
+        }
+      })
+    )
+    .subscribe(result => {
+      console.log(result);
+      if(result != undefined){
+        this.proyectoSeleccionado = result;
+        //this.idProyectoSeleccionado = this.proyectoSeleccionado.id_projecto
+        this.filtrosTarea.idProyectoSeleccionado = result.id_projecto
+        console.log(this.filtrosTarea.idProyectoSeleccionado)
+      }   
     })
   }
 
@@ -173,56 +186,104 @@ export class TareasComponent implements OnInit {
     const dialogRef = this.dialog.open(DialogComponent,{width:'72%', data:{buscaTareas: true, filtros:this.filtrosTarea}});
     dialogRef.afterClosed().pipe(
       finalize(() => {
-          console.log("Actualiza autoridades")
+        this.tareasFiltradas= this.tareasFiltradas.dataset;
+        if(this.nombreVistaSeleccionada != 'Vista'){ //Pregunto si hay una vista seleccionada
+          this.setSubtituloProyecto(this.idVistaSeleccionada);
+        }
       })
     )
     .subscribe(result => {
-      this.tareasFiltradas= result;
+      if(result != undefined){
+        this.tareasFiltradas= result;
+        
+      }
+      
          
     })
   }
 
-  proyectoSeleccionado(event: Event){
-    console.log(this.nombreProyecto)
-    if(this.nombreProyecto == ''){
-      console.log(this.nombreProyecto)
-      this.openSnackBar();
-     
-    }
-    else{
-      this.setSubtituloProyecto(event);
-      if(this.nombreProyecto == 'cancelar'){
-        this.nombreProyecto = '';
-      }
-      else{
-      }
-      
-    } 
+  verTareasDeVista(event: Event){
+    
+    this.idVistaSeleccionada = (event.target as HTMLInputElement).id;
+    this.nombreVistaSeleccionada = (event.target as HTMLInputElement).innerText;
+    this.setSubtituloProyecto(this.idVistaSeleccionada);
   }
 
-  setSubtituloProyecto(event: Event){
-    const vistaSeleccionada = (event.target as HTMLInputElement).id
+  setSubtituloProyecto(idVistaSeleccionada: string){
+    console.log(idVistaSeleccionada)
+    
+
+    const vistaSeleccionada = idVistaSeleccionada;
+    
+    this.tareasFiltradasPorVista = [];
     switch(vistaSeleccionada){
+      case 'Vista':
+        this.subtituloProyecto = '';
+        this.tareasFiltradasPorVista= [];
+      break;
+      
       case 'Analista Funcional':
         this.subtituloProyecto = ' Avance de Diseño funcional';
+        this.tareasFiltradasPorVista= [];
+        if(this.idProyectoSeleccionado == ''){ //Selecciona vista sin elegir proyecto. Muestra solo columnas
+          this.tareasFiltradasPorVista= [];
+        }
+        else if(this.idProyectoSeleccionado != '' && this.tareasFiltradas == ''){ //Selecciona proyecto y vista. Muestra tareas de ese tipo de vista
+          this.listaTareasService.forEach( (tarea:any) => {
+            if(tarea.tipo_tarea == "Design"){
+              this.tareasFiltradasPorVista.push(tarea);
+            }
+          });
+          console.log(this.tareasFiltradasPorVista)
+        }
+        else{ //Filtró tareas
+          this.tareasFiltradas.forEach( (tarea:any) => {
+            if(tarea.tipo_tarea == "Design"){
+              this.tareasFiltradasPorVista.push(tarea);
+            }
+          });
+        }
+        
       break;
       case 'Analista Tecnico':
         this.subtituloProyecto = ' Avance de Diseño técnico';
-        this.tareasFiltradasPorVista= [];
-        this.tareasFiltradas.forEach( (tarea:any) => {
-          if(tarea.tipo_tarea == "RelevamientoReq"){
-            this.tareasFiltradasPorVista.push(tarea);
-          }
-        });
+        if(this.idProyectoSeleccionado == ''){ //Si no hay un proyecto seleccionado muestra col 
+          this.tareasFiltradasPorVista= [];
+        }
+        else if(this.idProyectoSeleccionado != '' && this.tareasFiltradas == ''){ //Selecciona proyecto y vista. Muestra tareas de ese tipo de vista
+          this.listaTareasService.forEach( (tarea:any) => {
+            if(tarea.tipo_tarea == "RelevamientoReq"){
+              this.tareasFiltradasPorVista.push(tarea);
+            }
+          });
+        }
+        else{ //Filtró tareas
+          this.tareasFiltradas.forEach( (tarea:any) => {
+            if(tarea.tipo_tarea == "RelevamientoReq"){
+              this.tareasFiltradasPorVista.push(tarea);
+            }
+          });
+        }
       break;
       case 'Desarrollador':
         this.subtituloProyecto = ' Avance de Desarrollo';
-        this.tareasFiltradasPorVista= [];
-        this.tareasFiltradas.forEach( (tarea:any) => {
-          if(tarea.tipo_tarea == "Produccion"){
-            this.tareasFiltradasPorVista.push(tarea);
-          }
-        });
+        if(this.idProyectoSeleccionado == ''){ //Si no hay un proyecto seleccionado muestra col 
+          this.tareasFiltradasPorVista= [];
+        }
+        else if(this.idProyectoSeleccionado != '' && this.tareasFiltradas == ''){ //Selecciona proyecto y vista. Muestra tareas de ese tipo de vista
+          this.listaTareasService.forEach( (tarea:any) => {
+            if(tarea.tipo_tarea == "Produccion"){
+              this.tareasFiltradasPorVista.push(tarea);
+            }
+          });
+        }
+        else{ //Filtró tareas
+          this.tareasFiltradas.forEach( (tarea:any) => {
+            if(tarea.tipo_tarea == "Produccion"){
+              this.tareasFiltradasPorVista.push(tarea);
+            }
+          });
+        }
       break;
       case 'Tester':
         this.subtituloProyecto = ' Avance de Testing';

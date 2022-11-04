@@ -48,12 +48,10 @@
         </mat-dialog-content>
 
         <!-- Checkbox 'Mis Proyectos'  -->
-        <section class="mis_proyectos" [formGroup]="toppings">
-            <mat-checkbox formControlName="misProyectos" ><p id="text_checkbox">Mis Proyectos</p></mat-checkbox>
-            <!-- <section class="mis_proyectos" [formGroup]="toppings">
-                <h4>You chose:</h4>
-                {{toppings.value | json}}
-            </section> -->
+        <section class="mis_proyectos" >
+            <mat-checkbox  (click)="misProyectosAsignados()" >
+                <p id="text_checkbox">Mis Proyectos</p>
+            </mat-checkbox>
         </section>
           
         <!-- <mat-selection-list  [multiple]="false" class="lista_proyectos"  >
@@ -63,9 +61,9 @@
             </mat-list-option>
         </mat-selection-list> -->
 
-        <div class="resultados">
+        <div class="resultados lista_proyectos">
             <div>
-                <table mat-table [dataSource]="dataSourcePrueba" class="mat-elevation-z8">
+                <table mat-table [dataSource]="dataSourcePrueba" class="mat-elevation-z8 tabla_lista_proyectos">
                     <ng-container matColumnDef="nombre" >
                         <th mat-header-cell *matHeaderCellDef >Proyectos</th>
                         <td mat-cell *matCellDef="let unProyecto" (click)="getProyecto(unProyecto)"> {{ unProyecto.nombre_projecto }} </td>

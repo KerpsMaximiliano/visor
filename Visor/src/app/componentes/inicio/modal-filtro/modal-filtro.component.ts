@@ -73,4 +73,10 @@ export class ModalFiltroComponent implements OnInit {
     }
   }
 
+  validarTecla(e: KeyboardEvent){
+    if(e.key == "Enter"){
+      this.guardarFiltro();
+    }
+  }
+
 }

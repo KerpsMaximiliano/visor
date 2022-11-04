@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { BuiltinTypeName } from '@angular/compiler';
+import { Component, InjectionToken, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PermisoService } from 'src/app/services/i2t/permiso.service';
 import { UsuarioService } from 'src/app/services/i2t/usuario-rol.service';
+
 
 @Component({
   selector: 'app-configuraciones-main',
@@ -27,5 +29,5 @@ export class ConfiguracionesComponent implements OnInit {
   permisosRoles() {
     this.router.navigate(['permisos-roles'], {relativeTo: this.route});
   }
-
+  
 }

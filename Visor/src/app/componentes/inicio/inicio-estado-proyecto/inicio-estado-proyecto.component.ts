@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
-import { ProyectoDataService } from '../../services/i2t/proyecto-data.service';
+import { MatTableDataSource } from '@angular/material/table';
+import { ProyectoDataService } from 'src/app/services/i2t/proyecto-data.service';
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import { Proyecto } from '../../interfaces/proyecto';
+import { Proyecto } from 'src/app/interfaces/proyecto';
 import { TooltipPosition } from '@angular/material/tooltip';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ViewChild } from '@angular/core';
 import { MatAccordion } from '@angular/material/expansion';
-import { FiltroService } from '../../services/i2t/filtro.service';
+import { FiltroService } from '../../../services/i2t/filtro.service';
 import { FiltroProyectosComponent } from 'src/app/shared/modal-filtro-proyectos/filtro-proyectos/filtro-proyectos.component';
 
 @Component({
@@ -28,11 +28,10 @@ export class InicioEstadoProyectoComponent implements OnInit {
   @ViewChild(MatAccordion) accordion!: MatAccordion;
 
   data: any;
-  proyectosAsignados: Proyecto[] = [];
-  proyectosFiltrados: Proyecto[] = [];
   displayedColumns: string[] = ['nombre','tareasATiempo','tareasAtrasadas'];
   columnsToDisplayWithExpand = [...this.displayedColumns, 'expand'];
   expandedElement!: Proyecto;
+  expandedElements: any[] = [];
   disponibilidadProyectos: number = 0;
   positionOptions: TooltipPosition[] = ['after', 'before', 'above', 'below', 'left', 'right'];
   position = new FormControl(this.positionOptions[0]);
@@ -47,6 +46,8 @@ export class InicioEstadoProyectoComponent implements OnInit {
   proyectos: Proyecto[] = [];
   proyectosAbiertosArray: Proyecto[] = [];
   proyectosTotalesArray: Proyecto[] = [];
+  proyectosAsignados: Proyecto[] = [];
+  proyectosFiltrados: Proyecto[] = [];
 
   //Variables del filtro
   numero: string = "";
@@ -56,6 +57,9 @@ export class InicioEstadoProyectoComponent implements OnInit {
   inputIzq: string = "";
   filterValue: any;
 
+  //Tabla
+  isTableExpanded = false;
+
   orden = ['Alfabetico', 'Tareas atrasadas', 'Tareas a tiempo'];
   ordenSeleccion = 'Alfabetico';
 
@@ -64,6 +68,9 @@ export class InicioEstadoProyectoComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //Obtenemos los proyectos.
+    this.obtenerProyectos();
+    this.obtenerProyectosAbiertos();
     this._filtroService.getUserId(localStorage.getItem('usuario')!).subscribe((response: any) => {
       localStorage.setItem('userId', response.dataset[0].id);
       this._filtroService.selectFiltro(response.dataset[0].id, 'inicio-estado-proyecto').subscribe((resp: any) => {
@@ -71,17 +78,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
         } else {
           console.log('hay datos', resp);
           resp.dataset.forEach((filtro: any) => {
-            if (filtro.nombre == 'filtro_abecedario') {
-              this.orden_saved_search_id = filtro.saved_search_id;
-              const contenido = JSON.parse(atob(filtro.contenido));
-              this.ordenSeleccion = contenido.ordenSeleccion; 
-            }
-            if (filtro.nombre == 'filtro_tareasAtrasadas') {
-              this.orden_saved_search_id = filtro.saved_search_id;
-              const contenido = JSON.parse(atob(filtro.contenido));
-              this.ordenSeleccion = contenido.ordenSeleccion; 
-            }
-            if (filtro.nombre == 'filtro_tareasATiempo') {
+            if (filtro.nombre == 'filtro_orden') {
               this.orden_saved_search_id = filtro.saved_search_id;
               const contenido = JSON.parse(atob(filtro.contenido));
               this.ordenSeleccion = contenido.ordenSeleccion; 
@@ -92,19 +89,18 @@ export class InicioEstadoProyectoComponent implements OnInit {
               this.numero = contenido.numero;
               this.nombre = contenido.nombre;
               this.cliente = contenido.cliente;
-              this.asignadoA = contenido.asignadoA;    
-              this.inputIzq = this.nombre; 
+              this.asignadoA = contenido.asignadoA; 
+              this.misProyectos = contenido.misProyectos;
+              this.proyectosAbiertos = contenido.proyectosAbiertos;   
+              this.inputIzq = contenido.nombre;
             } 
           });
+        //Verificamos los checksbox del filtro.
+        this.verificarCheckBoxs();
+        //Filtra proyectos.
+        this.prepararFiltro();
         }
       });
-      //Obtenemos los proyectos.
-      this.obtenerProyectos();
-      this.obtenerProyectosAbiertos();
-      //Verificamos los checksbox del filtro.
-      this.verificarCheckBoxs();
-      //Actualizamos la disponibilidad del proyecto.
-      this.actualizarDisponibilidadProyecto();  
   });
   }
 
@@ -112,9 +108,15 @@ export class InicioEstadoProyectoComponent implements OnInit {
     this._dataProyecto.getProyectos().subscribe((resp: any) => {
       if(resp.returnset[0].RCode == 1){
         let contadorHorasTotalesPlanificadas = 0;
+        let contadorHTCompletadas = 0;
+        let contadorHTEnProgreso = 0;
+        let contadorHTEnPrueba = 0;
+        let contadorHTNoIniciadas = 0;
+        
         for(let i = 0;i<resp.dataset.length;i++){
           let objetoTemporal: Proyecto = {
-            numero: resp.dataset[i].Id_Caso,
+            numero: resp.dataset[i].Numero_Caso,
+            id: resp.dataset[i].Id_Caso,
             nombre: resp.dataset[i].Caso,
             cliente: resp.dataset[i].Cliente,
             asignado: resp.dataset[i].Asignado_a,
@@ -144,15 +146,10 @@ export class InicioEstadoProyectoComponent implements OnInit {
             porcentajeHPEnProgresoTesting: 0
           }
           this.proyectosTotalesArray.push(objetoTemporal);
-          this._dataProyecto.getPorcentajeHP(this.proyectosTotalesArray[i].numero).subscribe((resp: any) => {
+          this._dataProyecto.getPorcentajeHP(this.proyectosTotalesArray[i].id, "FALSE").subscribe((resp: any) => {
             for(let x = 0; x < resp.dataset.length; x++){ 
               contadorHorasTotalesPlanificadas = contadorHorasTotalesPlanificadas + resp.dataset[x].Horas;
             }
-            console.log(contadorHorasTotalesPlanificadas)
-            this.proyectosTotalesArray[i].porcentajeHPEnProgreso = Math.round(((0 + resp.dataset[1].Horas) / contadorHorasTotalesPlanificadas) * 100);
-            this.proyectosTotalesArray[i].porcentajeHPCompletadas = Math.round(((0 + resp.dataset[0].Horas) / contadorHorasTotalesPlanificadas) * 100);
-            this.proyectosTotalesArray[i].porcentajeHPNoIniciadas = Math.round(((0 + resp.dataset[2].Horas) / contadorHorasTotalesPlanificadas) * 100);
-            this.proyectosTotalesArray[i].porcentajeHPEnPrueba = Math.round(((0 + resp.dataset[3].Horas) / contadorHorasTotalesPlanificadas) * 100);
           });
           
           //Funcional.
@@ -183,7 +180,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
           let contadorHPEnPruebaTesting = 0;
           let contadorHPTotalAreaTesting = 0;
 
-          this._dataProyecto.getPorcentajeHPAreas(this.proyectosTotalesArray[i].numero).subscribe((resp: any) => {
+          this._dataProyecto.getPorcentajeHPAreas(this.proyectosTotalesArray[i].id, "FALSE").subscribe((resp: any) => {
             for(let r = 0;r<resp.dataset.length;r++)
             {
               switch (resp.dataset[r].Area){
@@ -302,21 +299,58 @@ export class InicioEstadoProyectoComponent implements OnInit {
               }
               contadorHorasTotalesPlanificadas = 0;
             }
-            this.proyectos = this.proyectosTotalesArray
-            this.data = new MatTableDataSource(this.proyectos);
-            this.actualizarDisponibilidadProyecto();
           });
         }
-      }
+        let chtp = 0;
+        for(let i = 0; i < this.proyectosTotalesArray.length; i++){
+          this._dataProyecto.getPorcentajeHP(this.proyectosTotalesArray[i].id, "FALSE").subscribe((resp: any) => {
+            for(let r = 0; r < resp.dataset.length; r++){
+              chtp = chtp + resp.dataset[r].Horas;
+              switch (resp.dataset[r].Estado){
+                case "Completed": {
+                  contadorHTCompletadas = contadorHTCompletadas + resp.dataset[r].Horas;
+                  break;
+                }
+                case "In Progress": {
+                  contadorHTEnProgreso = contadorHTEnProgreso + resp.dataset[r].Horas
+                  break;
+                }
+                case "Not Started": {
+                  contadorHTNoIniciadas = contadorHTNoIniciadas + resp.dataset[r].Horas;
+                  break;
+                }
+                case "In Testing": {
+                  contadorHTEnPrueba = contadorHTEnPrueba + resp.dataset[r].Horas;
+                }
+              }
+            }
+            this.proyectosTotalesArray[i].porcentajeHPEnProgreso = Math.round(( contadorHTEnProgreso / chtp) * 100); 
+            this.proyectosTotalesArray[i].porcentajeHPCompletadas = Math.round((contadorHTCompletadas / chtp) * 100);
+            this.proyectosTotalesArray[i].porcentajeHPNoIniciadas = Math.round(( contadorHTNoIniciadas / chtp) * 100);
+            this.proyectosTotalesArray[i].porcentajeHPEnPrueba = Math.round(( contadorHTEnPrueba / chtp) * 100); 
+            chtp = 0;
+            contadorHTCompletadas = 0;
+            contadorHTEnProgreso = 0;
+            contadorHTEnPrueba = 0;
+            contadorHTNoIniciadas = 0;
+          });
+        }
+    }  
     });
   }
 
   private obtenerProyectosAbiertos(){
+    let contadorHorasTotalesPlanificadas = 0;
+    let contadorHTCompletadas = 0;
+    let contadorHTEnProgreso = 0;
+    let contadorHTEnPrueba = 0;
+    let contadorHTNoIniciadas = 0;
     this._dataProyecto.getProyectosAbiertos().subscribe((resp: any) => {
       if(resp.returnset[0].RCode == 1){
         for(let i = 0;i<resp.dataset.length;i++){
           let objetoTemporal: Proyecto = {
-            numero: resp.dataset[i].Id_Caso,
+            numero: resp.dataset[i].Numero_Caso,
+            id: resp.dataset[i].Id_Caso,
             nombre: resp.dataset[i].Caso,
             cliente: resp.dataset[i].Cliente,
             asignado: resp.dataset[i].Asignado_a,
@@ -347,16 +381,11 @@ export class InicioEstadoProyectoComponent implements OnInit {
           }
           let contadorHorasTotalesPlanificadas = 0;
           this.proyectosAbiertosArray.push(objetoTemporal);
-          this._dataProyecto.getPorcentajeHP(this.proyectosAbiertosArray[i].numero).subscribe((resp: any) => {
+          this._dataProyecto.getPorcentajeHP(this.proyectosAbiertosArray[i].id, "TRUE").subscribe((resp: any) => {
             for(let x = 0; x < resp.dataset.length; x++){ 
               contadorHorasTotalesPlanificadas = contadorHorasTotalesPlanificadas + resp.dataset[x].Horas;
             }
-            this.proyectosAbiertosArray[i].porcentajeHPEnProgreso = Math.round(((0 + resp.dataset[1].Horas) / contadorHorasTotalesPlanificadas) * 100);
-            this.proyectosAbiertosArray[i].porcentajeHPCompletadas = Math.round(((0 + resp.dataset[0].Horas) / contadorHorasTotalesPlanificadas) * 100);
-            this.proyectosAbiertosArray[i].porcentajeHPNoIniciadas = Math.round(((0 + resp.dataset[2].Horas) / contadorHorasTotalesPlanificadas) * 100);
-            this.proyectosAbiertosArray[i].porcentajeHPEnPrueba = Math.round(((0 + resp.dataset[3].Horas) / contadorHorasTotalesPlanificadas) * 100)
           });
-          contadorHorasTotalesPlanificadas = 0;
           
           //Funcional.
           let contadorHPCompletadasFuncional = 0;
@@ -386,7 +415,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
           let contadorHPEnPruebaTesting = 0;
           let contadorHPTotalAreaTesting = 0;
 
-          this._dataProyecto.getPorcentajeHPAreas(this.proyectosAbiertosArray[i].numero).subscribe((resp: any) => {
+          this._dataProyecto.getPorcentajeHPAreas(this.proyectosAbiertosArray[i].id, "TRUE").subscribe((resp: any) => {
             for(let r = 0;r<resp.dataset.length;r++)
             {
               switch (resp.dataset[r].Area){
@@ -507,16 +536,66 @@ export class InicioEstadoProyectoComponent implements OnInit {
             }
           });
         }
+        let chtp = 0;
+        for(let i = 0; i < this.proyectosAbiertosArray.length; i++){
+          this._dataProyecto.getPorcentajeHP(this.proyectosAbiertosArray[i].id, "TRUE").subscribe((resp: any) => {
+            for(let r = 0; r < resp.dataset.length; r++){
+              chtp = chtp + resp.dataset[r].Horas;
+              switch (resp.dataset[r].Estado){
+                case "Completed": {
+                  contadorHTCompletadas = contadorHTCompletadas + resp.dataset[r].Horas;
+                  break;
+                }
+                case "In Progress": {
+                  contadorHTEnProgreso = contadorHTEnProgreso + resp.dataset[r].Horas
+                  break;
+                }
+                case "Not Started": {
+                  contadorHTNoIniciadas = contadorHTNoIniciadas + resp.dataset[r].Horas;
+                  break;
+                }
+                case "In Testing": {
+                  contadorHTEnPrueba = contadorHTEnPrueba + resp.dataset[r].Horas;
+                }
+              }
+            }
+            this.proyectosAbiertosArray[i].porcentajeHPEnProgreso = Math.round(( contadorHTEnProgreso / chtp) * 100); 
+            this.proyectosAbiertosArray[i].porcentajeHPCompletadas = Math.round((contadorHTCompletadas / chtp) * 100);
+            this.proyectosAbiertosArray[i].porcentajeHPNoIniciadas = Math.round(( contadorHTNoIniciadas / chtp) * 100);
+            this.proyectosAbiertosArray[i].porcentajeHPEnPrueba = Math.round(( contadorHTEnPrueba / chtp) * 100); 
+            chtp = 0;
+            contadorHTCompletadas = 0;
+            contadorHTEnProgreso = 0;
+            contadorHTEnPrueba = 0;
+            contadorHTNoIniciadas = 0;
+          });
       }
+    }
     });
   }
 
   applyFilter(event: Event) {
+    this.verificarCheckBoxs();  
     this.filterValue = (event.target as HTMLInputElement).value;
     this.data.filter = this.filterValue.trim().toLowerCase();
+    let proyectosFiltro: any[] = [];
+    this.proyectos.forEach(project => {
+      proyectosFiltro.push({ numero: project.numero ,nombre: project.nombre.toLowerCase()});
+    });
+    this.data = new MatTableDataSource(proyectosFiltro);
+    this.data.filter = this.filterValue.trim().toLowerCase();
+    proyectosFiltro = this.data.filteredData;
+    let arrayAux: Proyecto[] = []; 
+    this.proyectos.forEach( project => {
+      proyectosFiltro.forEach( projectBuscado =>{
+        if(project.numero == projectBuscado.numero){
+          arrayAux.push(project);
+        }
+      });
+    }) 
+    this.proyectos = arrayAux;
     this.nombre = this.filterValue;
-    this.verificarCheckBoxs();
-    this.prepararFiltro();
+    this.aplicarFiltros();
   }
 
   retornarPorcentajeCompletadas(index: number): number{
@@ -681,7 +760,6 @@ export class InicioEstadoProyectoComponent implements OnInit {
     const filtroAsignado = this.filtroAvanzado(3, this.asignadoA);
     const filtroNumero = this.filtroAvanzado(4, this.numero);
     this.proyectos = this.buscarCoincidencias(filtroNombre, filtroCliente, filtroAsignado, filtroNumero);
-    this.proyectosFiltrados = this.proyectos;
     this.aplicarFiltros();
   }
 
@@ -695,7 +773,6 @@ export class InicioEstadoProyectoComponent implements OnInit {
     }
     this.verificarCheckMisProyectos();
     this.data = new MatTableDataSource(this.proyectos);
-    this.actualizarDisponibilidadProyecto();
   }
 
   private verificarCheckMisProyectos(){
@@ -707,11 +784,11 @@ export class InicioEstadoProyectoComponent implements OnInit {
       }
       this.proyectos = this.proyectosAsignados;
     }
-    this.proyectosAsignados = [];
+    this.aplicarFiltros();
+    this.proyectosAsignados = []; 
   }
 
   aplicarFiltros() {
-    this.data = new MatTableDataSource(this.proyectos);
     if (this.proyectos.length == 0) {
       this.noHayProyectos = true;
       this.disponibilidadProyectos = 0;
@@ -811,7 +888,10 @@ export class InicioEstadoProyectoComponent implements OnInit {
 
 
   contraerProyectos(){
-    this.accordion.closeAll();
+    this.isTableExpanded = !this.isTableExpanded;
+    this.data.data.forEach((row: any) => {
+      row.isExpanded = false;
+    })
   }
 
   mostrarInformacion(){

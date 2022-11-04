@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SimpleChange } from '@angular/core';
 import { Tarea } from 'src/app/interfaces/tarea';
 import { TareaService } from 'src/app/services/i2t/tarea.service';
 
@@ -66,10 +66,27 @@ export class VistaDesarrolladorComponent implements OnInit {
     }
   }
 
+  ngOnChanges(changes: SimpleChange) {
+
+    if (this.tareasSP.length > 0) {
+      this.noHayProyecto = false;
+      console.log("Tareas SP: ", this.tareasSP)
+      this.organizarTareas();
+      console.log(this.tareasOrg);
+      this.cargarTareas();
+      this.poseeTareas();
+      if (!this.noHayProyecto) {
+        this.setearBarraProgreso();
+        this.ordenarListas();
+      }
+    }
+    this.tareasOrg=[];
+  }
+
   organizarTareas() {
     this.tareasSP.forEach((tarea: any) => {
       this.tareasOrg.push({
-        idTarea: tarea.id_trea,
+        idTarea: tarea.id_tarea,
         titulo: tarea.nombre_tarea,
         proyecto: tarea.nombre_proyecto,
         prioridad: tarea.prioridad,
@@ -150,7 +167,7 @@ export class VistaDesarrolladorComponent implements OnInit {
   getTareasEnPrueba() {
     const respuesta: Tarea[] = [];
     this.tareasOrg.forEach(tarea => {
-      if(tarea.estado == "In Testing") {
+      if(tarea.estado == "EnPrueba") {
         respuesta.push(tarea);
       }
     });
@@ -309,7 +326,7 @@ export class VistaDesarrolladorComponent implements OnInit {
 
   solicitudAyuda(tarea: any) {
     if (tarea.asignado === localStorage.getItem('usuario')) {
-      if (this.tareasAyuda.length === 0) {
+      if (this.tareasAyuda.length === 0) { 
         this.tareasAyuda.push({
           titulo: tarea.titulo,
           proyecto: tarea.proyecto,

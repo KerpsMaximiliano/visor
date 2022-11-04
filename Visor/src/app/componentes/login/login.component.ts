@@ -45,7 +45,6 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('usuario', this.user.value);
         this.visibilidadMensaje = false;
         this._router.navigate(['dashboard']);
-        // this._router.navigate(['vista-diseño-tecnico']);
       }
       else{
         this.visibilidadMensaje = true;
