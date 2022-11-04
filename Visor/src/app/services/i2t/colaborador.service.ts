@@ -8,11 +8,62 @@ export class ColaboradorService {
 
   constructor(private rest: RestService) { }
 
-  disponibilidadUsuario(nivel: number, cant_meses: number, fecha: string) {
+  disponibilidadUsuario(nivel: number, cant_meses: number, mesDeLaFecha: number, anioDeLaFecha: number) {
+    let formatoFecha: string = "";
+    switch (mesDeLaFecha){
+      case 0:
+        formatoFecha = anioDeLaFecha +"-"+"01"+"-"+"31"
+        break;
+
+      case 1:
+        formatoFecha = anioDeLaFecha +"-"+"02"+"-"+"28"
+        break;
+
+      case 2:
+        formatoFecha = anioDeLaFecha +"-"+"03"+"-"+"31"
+        break;
+
+      case 3:
+        formatoFecha = anioDeLaFecha +"-"+"04"+"-"+"30"
+        break;
+      
+      case 4:
+        formatoFecha = anioDeLaFecha +"-"+"05"+"-"+"31"
+        break;
+
+      case 5:
+        formatoFecha = anioDeLaFecha +"-"+"06"+"-"+"30"
+        break;
+
+      case 6:
+        formatoFecha = anioDeLaFecha +"-"+"07"+"-"+"31"
+        break;
+
+      case 7:
+        formatoFecha = anioDeLaFecha +"-"+"08"+"-"+"31"
+        break;
+
+      case 8:
+        formatoFecha = anioDeLaFecha +"-"+"09"+"-"+"30"
+        break;
+      
+      case 9:
+        formatoFecha = anioDeLaFecha +"-"+"10"+"-"+"31"
+        break;
+
+      case 10:
+        formatoFecha = anioDeLaFecha +"-"+"11"+"-"+"30"
+        break;
+
+      case 11:
+        formatoFecha = anioDeLaFecha +"-"+"12"+"-"+"31"
+        break;
+    }
+    console.log(formatoFecha)
     let jsbody: string = JSON.stringify({
       nivel : nivel,
       cant_meses : cant_meses,
-      fecha_fin : fecha
+      fecha_fin : formatoFecha
     });
     return this.rest.callProcedimientoVisor(jsbody, "DisponibilidadUsuario");
   }

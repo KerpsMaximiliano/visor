@@ -42,8 +42,15 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   positionOptions: TooltipPosition[] = ['after', 'before', 'above', 'below', 'left', 'right'];
   position = new FormControl(this.positionOptions[0]);
   position2 = new FormControl(this.positionOptions[3]);
+  mesFechaElegida: number;
+  anioFechaElegida: number;
+  diaFechaElegida: number;
 
-  constructor(private _colaboradorService: ColaboradorService, private dialog: MatDialog, private _filtroService: FiltroService) { }
+  constructor(private _colaboradorService: ColaboradorService, private dialog: MatDialog, private _filtroService: FiltroService) {
+    this.mesFechaElegida = 0;
+    this.anioFechaElegida = 0;
+    this.diaFechaElegida = 0;
+  }
 
   ngOnInit(): void {
     this._filtroService.getUserId(localStorage.getItem('usuario')!).subscribe((response: any) => {
@@ -68,7 +75,8 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
           });
         }
       this.mesesPlanificacion[0].mes = this._colaboradorService.getMesString(this.fechaHoy.getMonth());
-      this._colaboradorService.disponibilidadUsuario(1, 1, this.formatearFecha(this.fechaHoy)).subscribe((response: any) => {
+      this.setearFecha(this.fechaHoy);
+      this._colaboradorService.disponibilidadUsuario(1, 1, this.mesFechaElegida, this.anioFechaElegida).subscribe((response: any) => {
         this.colaboradoresSP = response.dataset;
         this.organizarColaboradores();
         this.getTareasAtrasadas();
@@ -79,7 +87,12 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     });
   }
 
+/* 
+  //No se utiza debido a una refactorización en el componente.
+
   formatearFecha(fecha: Date) {
+    this.anioFechaElegida = fecha.getFullYear();
+    this.mesFechaElegida = fecha.getMonth();
     const anio = fecha.getFullYear().toString();
     let mes: string = '';
     let mesN = fecha.getMonth()+1;
@@ -88,7 +101,13 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     let diaN = fecha.getDate();
     if (diaN<10) { dia = '0'+diaN } else { dia = ''+diaN }
     return anio+'-'+mes+'-'+dia;
-  }
+  }  */
+
+  //Nuevo método para el formato de la fecha.
+  setearFecha(fecha: Date) {
+    this.anioFechaElegida = fecha.getFullYear();
+    this.mesFechaElegida = fecha.getMonth();
+  } 
 
   organizarColaboradores() {
     this.colaboradores = [];
@@ -129,14 +148,16 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   }
 
   getTareasAtrasadas() {
-    this._colaboradorService.disponibilidadUsuario(2, 1, this.formatearFecha(this.fechaHoy)).subscribe((response: any) => {
+    this.setearFecha(this.fechaHoy);
+    this._colaboradorService.disponibilidadUsuario(2, 1, this.mesFechaElegida, this.anioFechaElegida).subscribe((response: any) => {
       response.dataset.forEach((obj: any) => {
         this.colaboradores.forEach(colab => {
           if (obj.id_usuario == colab.id) { colab.atrasadas = obj.tareas_atrasadas }
         });
       });
     });
-    this._colaboradorService.disponibilidadUsuario(4, 1, this.formatearFecha(this.fechaHoy)).subscribe((response: any) => {
+    this.setearFecha(this.fechaHoy);
+    this._colaboradorService.disponibilidadUsuario(4, 1,this.mesFechaElegida, this.anioFechaElegida).subscribe((response: any) => {
       response.dataset.forEach((obj: any) => {
         this.colaboradores.forEach(colab => {
           if (obj.id_usuario == colab.id) { colab.horasAtrasadas = obj.horas }
@@ -146,7 +167,8 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   }
 
   getPlanificacionColaboradores() {
-    this._colaboradorService.disponibilidadUsuario(5, this.mesesMostrados+1, this.formatearFecha(this.fechaHastaDate)).subscribe((resp: any) => {
+    this.setearFecha(this.fechaHoy);
+    this._colaboradorService.disponibilidadUsuario(5, this.mesesMostrados+1, this.mesFechaElegida, this.anioFechaElegida).subscribe((resp: any) => {
       resp.dataset.forEach((colab: any) => {
         this.planificacion.push({ id: colab.id_usuario, proyecto: colab.nombre_proyecto, mes: colab.mes-1, horas_planificadas: colab.horas_planificadas });
       });
@@ -383,7 +405,8 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     this.fechaHastaDate = event.value;
     this.mesesMostrados = this.getDiferenciaMeses(this.fechaHoy, this.fechaHastaDate);
     this.actualizarMesesPlanificacion();
-    this._colaboradorService.disponibilidadUsuario(1, this.mesesMostrados+1, this.formatearFecha(this.fechaHastaDate)).subscribe((response: any) => {
+    this.setearFecha(this.fechaHoy);
+    this._colaboradorService.disponibilidadUsuario(1, this.mesesMostrados+1, this.mesFechaElegida, this.anioFechaElegida).subscribe((response: any) => {
       this.colaboradoresSP = response.dataset;
       this.organizarColaboradores();
       this.getTareasAtrasadas();
@@ -509,6 +532,7 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   }
 
   separarProyectosDelMes(id: string, mes: string) {
+    console.log(mes)
     let proyectos:any = [];
     this.planificacion.forEach(tarea => {
       if (tarea.id == id && tarea.mes == this._colaboradorService.getMesDate(mes)) {
@@ -517,6 +541,7 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
         }
       }
     });
+    console.log(this.planificacion)
     return proyectos;
   }
 
