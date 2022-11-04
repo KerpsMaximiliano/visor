@@ -82,7 +82,7 @@ export class VistaDisenioTecnicoComponent implements OnInit{
   organizarTareas() {
     this.tareasSP.forEach((tarea: any) => {
       this.tareasOrg.push({
-        idTarea: tarea.id_trea,
+        idTarea: tarea.id_tarea,
         titulo: tarea.nombre_tarea,
         proyecto: tarea.nombre_proyecto,
         prioridad: tarea.prioridad,

@@ -48,7 +48,34 @@ table {
     height: 400px;
   }
 
-  
+  .icon-edit {
+    margin-right: 5px;
+    cursor: pointer;
+    color: blue;
+}
+
+.icon-x {
+    cursor: pointer;
+    color: red;
+}
+
+.pointer {
+  margin-inline: 5%;
+  size: 1%;
+}
+
+.col {
+  text-align: center;
+  margin-left: 5%;
+}
+.resto {
+  text-align: center;
+}
+
+.accion {
+  display:inline-block;
+  glyph-orientation-horizontal: 4px;
+}
 /*
 th {
     width: 20%;
