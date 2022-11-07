@@ -49,6 +49,7 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   mesFechaElegida: number;
   anioFechaElegida: number;
   diaFechaElegida: number;
+  completo= '';
 
   constructor(private _colaboradorService: ColaboradorService, private dialog: MatDialog, private _filtroService: FiltroService) {
     this.mesFechaElegida = 0;
