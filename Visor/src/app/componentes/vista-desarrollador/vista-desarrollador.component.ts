@@ -1,4 +1,5 @@
-import { Component, Input, OnInit, SimpleChange } from '@angular/core';
+import { Component, Input, OnInit, SimpleChange, Output, EventEmitter } from '@angular/core';
+import { TareasComponent } from 'src/app/components/tareas/tareas.component';
 import { Tarea } from 'src/app/interfaces/tarea';
 import { TareaService } from 'src/app/services/i2t/tarea.service';
 
@@ -32,9 +33,10 @@ export class VistaDesarrolladorComponent implements OnInit {
   filtroAyuda: boolean = false;
   panelActividadesAbierto: boolean= false;
   
-  constructor(private _tareaService: TareaService) { }
+  constructor(private _tareaService: TareaService, private _tareaComponent: TareasComponent) { }
 
   @Input() tareasSP: any = [];
+  @Output() vistaS = new EventEmitter<string>();
 
   ngOnInit(): void {
     this.proyectoId = "d31cfdaa-049e-e6e3-999d-62b5b2f778b7"; // este dato viene del commponente tareas
@@ -67,7 +69,7 @@ export class VistaDesarrolladorComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChange) {
-
+    this.tareasOrg = [];
     if (this.tareasSP.length > 0) {
       this.noHayProyecto = false;
       console.log("Tareas SP: ", this.tareasSP)
@@ -81,6 +83,7 @@ export class VistaDesarrolladorComponent implements OnInit {
       }
     }
     this.tareasOrg=[];
+    this._tareaService.enviarCambio();
   }
 
   organizarTareas() {

@@ -64,7 +64,7 @@ export class VistaAnalistaFuncionalComponent implements OnInit {
   };
 
   ngOnChanges(changes: SimpleChange) {
-
+    this.tareasOrg=[];
     if (this.tareasSP.length > 0) {
       this.noHayProyecto = false;
       console.log("Entra change")
@@ -78,6 +78,7 @@ export class VistaAnalistaFuncionalComponent implements OnInit {
       }
     }
     this.tareasOrg=[];
+    this._tareaService.enviarCambio();
   }
 
   calcularFecha(fecha: string) {

@@ -45,10 +45,8 @@ export class VistaDisenioTecnicoComponent implements OnInit{
       }
     });;*/
       if(this.tareasSP.length > 0){
-        console.log(this.tareasSP)
         this.noHayProyecto= false;
         this.organizarTareas();
-        console.log(this.tareasOrg);
         this.cargarTareas();
         this.poseeTareas();
         if (!this.noHayProyecto) {
@@ -60,15 +58,16 @@ export class VistaDisenioTecnicoComponent implements OnInit{
         console.log(this.tareasSP)
         this.noHayProyecto = true;
       }
-
-  }
+      
+  } 
 
   ngOnChanges(changes: SimpleChange){
+    
+    this.tareasOrg = [];
     if (this.tareasSP.length > 0) {
       this.noHayProyecto = false;
       console.log("Entra change")
       this.organizarTareas();
-      console.log(this.tareasOrg);
       this.cargarTareas();
       this.poseeTareas();
       if (!this.noHayProyecto) {
@@ -77,6 +76,8 @@ export class VistaDisenioTecnicoComponent implements OnInit{
       }
     }
     this.tareasOrg=[];
+
+    this._tareaService.enviarCambio();
   }
 
   organizarTareas() {

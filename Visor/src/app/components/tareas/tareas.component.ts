@@ -9,8 +9,6 @@ import {
 } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { TareaService } from 'src/app/services/i2t/tarea.service';
-import { Tarea } from 'src/app/interfaces/tarea';
-
 
 
 export interface PropiedadesProyecto{
@@ -61,6 +59,7 @@ export class TareasComponent implements OnInit {
   horizontalPosition: MatSnackBarHorizontalPosition = 'start';
   verticalPosition: MatSnackBarVerticalPosition = 'bottom';
   subtituloProyecto: string ='';
+  proyectoS: any;
   
   filtrosBusquedaTareas: Object[] = [
     {nombreTarea: ''},
@@ -114,16 +113,12 @@ export class TareasComponent implements OnInit {
       console.log(this.dataSourceService)
     });
 
-    
-
-
   }
 
   ngOnInit(): void {
-  }
+   }
 
-  buscarProyectos(event: Event) {
-                                             
+  buscarProyectos(event: Event) {                                        
     const filterValue = (event.target as HTMLInputElement).value;
     this.valorInputProyecto = (event.target as HTMLInputElement).value;
     
@@ -134,7 +129,9 @@ export class TareasComponent implements OnInit {
       this.estiloListaProyectos = 'mostrarTabla';
       this.dataSourceService.filter = filterValue.trim().toLowerCase();
     }
+
   }
+  
   seleccionarProyecto(unProyecto: any){
     this.nombreProyecto = unProyecto.nombre_projecto;
     this.idProyectoSeleccionado = unProyecto.id_projecto
@@ -144,39 +141,72 @@ export class TareasComponent implements OnInit {
     this._tareaService.getTareasDeProyecto(this.idProyectoSeleccionado).pipe(
       finalize(() => {
         this.listaTareasService = this.listaTareasService.dataset;
-        console.log(this.listaTareasService)
         if(this.nombreVistaSeleccionada != 'Vista'){ //Pregunto si hay una vista seleccionada
           this.setSubtituloProyecto(this.idVistaSeleccionada);
         }
       })
     )
     .subscribe(result => {
-      console.log(result)
       this.listaTareasService = result;
     })
-    
 
+    this._tareaService.enviarProyectoActual(unProyecto);
   }
+
+  recibirCambio(){
+    this._tareaService.getTareasDeProyecto(this.idProyectoSeleccionado).pipe(
+      finalize(() => {
+        this.listaTareasService = this.listaTareasService.dataset;
+        if(this.nombreVistaSeleccionada == 'Analsita Técnico'){ //Pregunto si hay una vista seleccionada
+          this.tareasFiltradasPorVista=[];
+          //this.setSubtituloProyecto("X",this.idVistaSeleccionada);
+          this.listaTareasService.forEach( (tarea:any) => {
+            if(tarea.tipo_tarea == "RelevamientoReq"){
+              this.tareasFiltradasPorVista.push(tarea);
+            }
+          });
+        }
+        else if(this.nombreVistaSeleccionada == 'Analista funcional'){
+          this.tareasFiltradasPorVista=[];
+          //this.setSubtituloProyecto("X",this.idVistaSeleccionada);
+          this.listaTareasService.forEach( (tarea:any) => {
+            if(tarea.tipo_tarea == "Design"){
+              this.tareasFiltradasPorVista.push(tarea);
+            }
+          });
+        }
+        else if(this.nombreVistaSeleccionada == 'Desarrollador'){
+          this.tareasFiltradasPorVista=[];
+          //this.setSubtituloProyecto("X",this.idVistaSeleccionada);
+          this.listaTareasService.forEach( (tarea:any) => {
+            if(tarea.tipo_tarea == "Produccion"){
+              this.tareasFiltradasPorVista.push(tarea);
+            }
+          });
+        }
+      })
+    )
+    .subscribe(result => {
+      this.listaTareasService = result;
+    })   
+  }
+ 
 
   abrirDialogProyecto(event: Event){
     event.preventDefault();
-    //console.log(this.filtrosBusquedaProyecto)
     const dialogRef = this.dialog.open(DialogComponent,{width:'600px', data:{buscaProyectos: true}});
     dialogRef.afterClosed().pipe(
       finalize(() => {
-        console.log("finalize")
         if(this.proyectoSeleccionado != undefined){
           this.seleccionarProyecto(this.proyectoSeleccionado);
         }
       })
     )
     .subscribe(result => {
-      console.log(result);
       if(result != undefined){
         this.proyectoSeleccionado = result;
         //this.idProyectoSeleccionado = this.proyectoSeleccionado.id_projecto
         this.filtrosTarea.idProyectoSeleccionado = result.id_projecto
-        console.log(this.filtrosTarea.idProyectoSeleccionado)
       }   
     })
   }
@@ -195,7 +225,6 @@ export class TareasComponent implements OnInit {
     .subscribe(result => {
       if(result != undefined){
         this.tareasFiltradas= result;
-        
       }
       
          
@@ -203,18 +232,15 @@ export class TareasComponent implements OnInit {
   }
 
   verTareasDeVista(event: Event){
-    
+    console.log("i vista seleccionada",this.idVistaSeleccionada)
     this.idVistaSeleccionada = (event.target as HTMLInputElement).id;
     this.nombreVistaSeleccionada = (event.target as HTMLInputElement).innerText;
     this.setSubtituloProyecto(this.idVistaSeleccionada);
   }
+  
 
   setSubtituloProyecto(idVistaSeleccionada: string){
-    console.log(idVistaSeleccionada)
-    
-
-    const vistaSeleccionada = idVistaSeleccionada;
-    
+    const vistaSeleccionada = idVistaSeleccionada; 
     this.tareasFiltradasPorVista = [];
     switch(vistaSeleccionada){
       case 'Vista':
@@ -296,6 +322,7 @@ export class TareasComponent implements OnInit {
         this.subtituloProyecto = '';
       break;
     }
+    this.recibirCambio();
   }
 
   getUsuarioTareasAsignadas(){
