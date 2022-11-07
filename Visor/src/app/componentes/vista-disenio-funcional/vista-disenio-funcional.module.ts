@@ -13,6 +13,8 @@ import { ControlActividadModule } from '../control-actividad/control-actividad.m
     MyMaterialModule,
     ControlActividadModule
   ],
-  exports: [VistaAnalistaFuncionalComponent]
+  exports: [VistaAnalistaFuncionalComponent],
+  providers: [],
+  bootstrap: [VistaAnalistaFuncionalComponent]
 })
 export class VistaDisenioFuncionalModule { }
