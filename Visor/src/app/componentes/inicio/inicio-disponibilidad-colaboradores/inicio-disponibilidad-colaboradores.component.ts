@@ -168,12 +168,12 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
 
   getPlanificacionColaboradores() {
     this.setearFecha(this.fechaHoy);
-    this._colaboradorService.disponibilidadUsuario(5, this.mesesMostrados+1, this.mesFechaElegida, this.anioFechaElegida).subscribe((resp: any) => {
+    this._colaboradorService.disponibilidadUsuario(5, this.mesesMostrados+1, this.mesFechaElegida+1, this.anioFechaElegida).subscribe((resp: any) => {
       resp.dataset.forEach((colab: any) => {
         this.planificacion.push({ id: colab.id_usuario, proyecto: colab.nombre_proyecto, mes: colab.mes-1, horas_planificadas: colab.horas_planificadas });
       });
     });
-    console.log(this.planificacion)
+    this.planificacion = [];
   }
 
   calcularPorcentajeTiempoDisponible(id: any) {
@@ -532,7 +532,6 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   }
 
   separarProyectosDelMes(id: string, mes: string) {
-    console.log(mes)
     let proyectos:any = [];
     this.planificacion.forEach(tarea => {
       if (tarea.id == id && tarea.mes == this._colaboradorService.getMesDate(mes)) {
@@ -541,7 +540,7 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
         }
       }
     });
-    console.log(this.planificacion)
+    //console.log(this.planificacion)
     return proyectos;
   }
 
