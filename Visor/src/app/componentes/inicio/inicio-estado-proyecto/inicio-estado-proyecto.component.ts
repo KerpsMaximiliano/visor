@@ -107,12 +107,10 @@ export class InicioEstadoProyectoComponent implements OnInit {
   private obtenerProyectos(){
     this._dataProyecto.getProyectos().subscribe((resp: any) => {
       if(resp.returnset[0].RCode == 1){
-        let contadorHorasTotalesPlanificadas = 0;
         let contadorHTCompletadas = 0;
         let contadorHTEnProgreso = 0;
         let contadorHTEnPrueba = 0;
         let contadorHTNoIniciadas = 0;
-        
         for(let i = 0;i<resp.dataset.length;i++){
           let objetoTemporal: Proyecto = {
             numero: resp.dataset[i].Numero_Caso,
@@ -146,11 +144,6 @@ export class InicioEstadoProyectoComponent implements OnInit {
             porcentajeHPEnProgresoTesting: 0
           }
           this.proyectosTotalesArray.push(objetoTemporal);
-          this._dataProyecto.getPorcentajeHP(this.proyectosTotalesArray[i].id, "FALSE").subscribe((resp: any) => {
-            for(let x = 0; x < resp.dataset.length; x++){ 
-              contadorHorasTotalesPlanificadas = contadorHorasTotalesPlanificadas + resp.dataset[x].Horas;
-            }
-          });
           
           //Funcional.
           let contadorHPCompletadasFuncional = 0;
@@ -297,7 +290,6 @@ export class InicioEstadoProyectoComponent implements OnInit {
                   break;
                 }
               }
-              contadorHorasTotalesPlanificadas = 0;
             }
           });
         }
@@ -340,7 +332,6 @@ export class InicioEstadoProyectoComponent implements OnInit {
   }
 
   private obtenerProyectosAbiertos(){
-    let contadorHorasTotalesPlanificadas = 0;
     let contadorHTCompletadas = 0;
     let contadorHTEnProgreso = 0;
     let contadorHTEnPrueba = 0;
@@ -379,13 +370,8 @@ export class InicioEstadoProyectoComponent implements OnInit {
             porcentajeHPCompletadasTesting: 0,
             porcentajeHPEnProgresoTesting: 0
           }
-          let contadorHorasTotalesPlanificadas = 0;
+
           this.proyectosAbiertosArray.push(objetoTemporal);
-          this._dataProyecto.getPorcentajeHP(this.proyectosAbiertosArray[i].id, "TRUE").subscribe((resp: any) => {
-            for(let x = 0; x < resp.dataset.length; x++){ 
-              contadorHorasTotalesPlanificadas = contadorHorasTotalesPlanificadas + resp.dataset[x].Horas;
-            }
-          });
           
           //Funcional.
           let contadorHPCompletadasFuncional = 0;
@@ -532,7 +518,6 @@ export class InicioEstadoProyectoComponent implements OnInit {
                   break;
                 }
               }
-              contadorHorasTotalesPlanificadas = 0;
             }
           });
         }

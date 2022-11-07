@@ -1,3 +1,4 @@
+
 /*
   Header
 */
@@ -15,8 +16,7 @@
 }
 
 .input-header {
-  width: 180px;
-  margin-left: 10px;
+  width: 150px;
 }
 
 .boton-icono {
@@ -68,7 +68,7 @@
 .cc-no-iniciadas{
   height: 15px;
   width: 15px;
-  background-color: red;
+  background-color: #FF0000;
   border-radius: 5px;
   border: solid 1px black;
 }
@@ -77,7 +77,7 @@
   height: 15px;
   width: 15px;
   border-radius: 5px;
-  background-color: yellow;
+  background-color: #FFFF00;
   border: solid 1px black;
 }
 
@@ -85,7 +85,7 @@
   height: 15px;
   width: 15px;
   border-radius: 5px;
-  background-color: rgb(0, 177, 0);
+  background-color: #00FF00;
   border: solid 1px black;
 }
 
@@ -93,7 +93,7 @@
   height: 15px;
   width: 15px;
   border-radius: 5px;
-  background-color: green;
+  background-color: #008000;
   border: solid 1px black;
 }
 
@@ -107,19 +107,19 @@
 }
 
 .porcentaje-rojo {
-  border: 2px solid red;
+  border: 2px solid #FF0000;
 }
 
 .porcentaje-amarillo {
-  border: 2px solid yellow;
+  border: 2px solid #FFFF00;
 }
 
 .porcentaje-verde-claro {
-  border: 2px solid lightgreen;
+  border: 2px solid #00FF00;
 }
 
 .porcentaje-verde-oscuro {
-  border: 2px solid green;
+  border: 2px solid #008000;
 }
 
 .disponibilidad-proyectos {
@@ -228,7 +228,7 @@ tr.example-element-row:not(.example-expanded-row):active {
 }
 
 #tareasATiempo{
-  background-color: green;
+  background-color: #008000;
   text-align: center;
   margin-right: 29%;
   margin-left: 29%;
@@ -238,7 +238,7 @@ tr.example-element-row:not(.example-expanded-row):active {
 }
 
 #tareasAtrasadas{
-background-color: red;
+background-color: #FF0000;
 text-align: center;
 margin-right: 29%;
 margin-left: 29%;
@@ -309,7 +309,7 @@ max-height: 30%;
 }
 
 #barraVerde{
-  background-color: green;
+  background-color: #008000;
   width: 25%;
   text-align: center;
   color: white;
@@ -321,7 +321,7 @@ max-height: 30%;
 }
 
 #barraRoja{
-  background-color: red;
+  background-color: #FF0000;
   width: 25%;
   text-align: center;
   color: white;
@@ -333,7 +333,7 @@ max-height: 30%;
 }
 
 #barraAmarilla{
-  background-color: rgb(221, 221, 27);
+  background-color: #FFFF00;
   width: 25%;
   text-align: center;
   border: solid 0.5px black;
@@ -344,7 +344,7 @@ max-height: 30%;
 }
 
 #barraEnPrueba{
-  background-color: rgb(1, 181, 1);
+  background-color: #00FF00;
   width: 25%;
   text-align: center;
   color: white;
@@ -380,7 +380,7 @@ max-height: 30%;
 }
 
 .barraAreaVerde{
-  background-color: green;
+  background-color: #008000;
   width: 20%;
   text-align: center;
   color: white;
@@ -391,7 +391,7 @@ max-height: 30%;
 }
 
 .barraAreaRoja{
-  background-color: red;
+  background-color: #FF0000;
   width: 20%;
   text-align: center;
   color: white;
@@ -402,7 +402,7 @@ max-height: 30%;
 }
 
 .barraAreaAmarilla{
-  background-color: rgb(221, 221, 27);
+  background-color: #FFFF00;
   width: 20%;
   text-align: center;
   border: solid 0.5px black;
@@ -412,7 +412,7 @@ max-height: 30%;
 }
 
 .barraAreaEnPrueba{
-  background-color: rgb(1, 181, 1);
+  background-color: #00FF00;
   width: 20%;
   text-align: center;
   color: white;
@@ -424,7 +424,6 @@ max-height: 30%;
 
 #container-indicadores{
   height: 10%;
-  background-color: green;
   width: 10%;
 }
 

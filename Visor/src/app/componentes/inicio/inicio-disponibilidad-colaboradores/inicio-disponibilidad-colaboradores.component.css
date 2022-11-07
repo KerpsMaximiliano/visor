@@ -1,3 +1,8 @@
+.container-all{
+    width: 100%;
+}
+
+
 #titulo {
     text-align: center;
     margin-top: 40px;
@@ -7,12 +12,11 @@
 .header {
     display: flex;
     height: 60px;
-    justify-content: space-evenly;
-    margin-left: 10%;
+    margin-bottom: 38px;
 }
 
 .input-header {
-    width: 180px;
+    width: 150px;
 }
 
 .icon {
@@ -33,10 +37,6 @@
 .menu-orden {
     display: flex;
     width: 170px;
-}
-
-.fecha-hasta {
-    margin-right: 20px;
 }
 
 h3 {
@@ -62,19 +62,19 @@ h3 {
 }
 
 .porcentaje-rojo {
-    border: 2px solid red;
+    border: 2px solid #FF0000;
 }
 
 .porcentaje-amarillo {
-    border: 2px solid yellow;
+    border: 2px solid #FFFF00;
 }
 
 .porcentaje-verde-claro {
-    border: 2px solid lightgreen;
+    border: 2px solid #00FF00;
 }
 
 .porcentaje-verde-oscuro {
-    border: 2px solid green;
+    border: 2px solid #008000;
 }
 .accordion {
     display: flex;
@@ -102,7 +102,7 @@ h3 {
 }
 
 .cajaPorcentaje {
-    width: 50px;
+    width: 35px;
     height: 20px;
     margin-left: auto;
     margin-right: 0;
@@ -110,26 +110,27 @@ h3 {
     border-radius: 5px;
 }
 
+
 .porcentaje-rojo-colaborador {
-    background-color: red;
+    background-color: #FF0000;
     color: white;
 }
 
 .porcentaje-amarillo-colaborador {
-    background-color: yellow;
+    background-color: #FFFF00;
 }
 
 .porcentaje-verde-claro-colaborador {
-    background-color: lightgreen;
+    background-color: #00FF00;
 }
 
 .porcentaje-verde-oscuro-colaborador {
-    background-color: green;
+    background-color: #008000;
     color: white;
 }
 
 .atrasadas {
-    color: red;
+    color: #FF0000;
 }
 
 .div-caja {
@@ -146,3 +147,4 @@ h3 {
 .mensaje-no-colaboradores {
     text-align: center;
 }
+
