@@ -32,9 +32,18 @@ export class VistaAnalistaFuncionalComponent implements OnInit {
 
   ngOnInit(): void {
     if(this.tareasSP.length > 0){
+      console.log(this.tareasSP)
       this.noHayProyecto= false;
+      this.organizarTareas();
+      this.cargarTareas();
+      this.poseeTareas();
+      if (!this.noHayProyecto) {
+        this.setearBarraProgreso();
+        this.ordenarListas();
+      }
     }
     else{
+      console.log(this.tareasSP)
       this.noHayProyecto = true;
     }
   }
@@ -64,7 +73,7 @@ export class VistaAnalistaFuncionalComponent implements OnInit {
   };
 
   ngOnChanges(changes: SimpleChange) {
-
+    this.tareasOrg = [];
     if (this.tareasSP.length > 0) {
       this.noHayProyecto = false;
       console.log("Entra change")
@@ -78,6 +87,7 @@ export class VistaAnalistaFuncionalComponent implements OnInit {
       }
     }
     this.tareasOrg=[];
+    this._tareaService.enviarCambio();
   }
 
   calcularFecha(fecha: string) {

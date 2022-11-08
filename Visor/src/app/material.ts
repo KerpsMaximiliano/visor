@@ -25,7 +25,6 @@ import { MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 
-
 const MATERIALES = [
   MatButtonModule,
   MatSliderModule,

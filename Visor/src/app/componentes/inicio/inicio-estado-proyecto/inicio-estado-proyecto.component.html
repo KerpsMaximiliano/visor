@@ -29,7 +29,7 @@
             <p class="letrasSeccionInformacion">Completadas</p>
           </div>
         </div>
-        <button class="boton-informacion" (click)="mostrarInformacion()" mat-mini-fab color="primary"><mat-icon class="icony">info</mat-icon></button>
+        <button class="boton-informacion" (click)="mostrarInformacion()" matTooltip="Información" mat-mini-fab color="primary"><mat-icon class="icony">info</mat-icon></button>
       </div>
       <div class="disponibilidad-proyectos" [ngClass]="{'acomodar': estado == true}">
         <h3>Tareas atrasadas<mat-divider></mat-divider></h3>
@@ -47,7 +47,7 @@
 
     <div class="mensaje-no-proyectos" *ngIf="noHayProyectos"><h1>No coinciden proyectos con la busqueda</h1></div>
     <div id="container-body" *ngIf="!noHayProyectos">
-      <mat-accordion>
+      <mat-accordion [multi]="true">
       <table mat-table [dataSource]="data" multiTemplateDataRows class="mat-elevation-z8">
       <!-- Nombre Column -->
       <ng-container matColumnDef="nombre" class="columna">
@@ -66,20 +66,17 @@
           <th mat-header-cell *matHeaderCellDef class="tituloColumna"> Tareas atrasadas </th>
           <td mat-cell *matCellDef="let element"><div id="tareasAtrasadas">{{element.porcentajeTareasAtrasadas}}%</div></td>
         </ng-container>
-      <ng-container matColumnDef="expand">
-        <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
-        <td mat-cell *matCellDef="let element">
-        <button mat-icon-button aria-label="expand row" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
-          <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
-          <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
-        </button>
+      <ng-container matColumnDef="expand" class="columna">
+      <th mat-header-cell *matHeaderCellDef class="tituloColumna"></th>
+      <td mat-cell *matCellDef="let element">
+        <a mat-button href="javascript:void()" (click)="element.isExpanded = !element.isExpanded">Expandir</a>
       </td>
     </ng-container>
 
     <!-- Columna expandible -->
     <ng-container matColumnDef="expandedDetail">
       <td mat-cell *matCellDef="let proyecto; let i = dataIndex" [attr.colspan]="columnsToDisplayWithExpand.length">
-      <div class="example-element-detail" [@detailExpand]="proyecto == expandedElement ? 'expanded' : 'collapsed'">
+      <div class="row example-element-detail" [@detailExpand]="proyecto.isExpanded ? 'expanded' : 'collapsed'">
         <div class="contenido">
           <div id="seccionAvance">
             <b><p class="subtitulo">Avance del proyecto</p></b>
@@ -103,9 +100,9 @@
           <div class="seccionAvanceArea">
               <mat-expansion-panel hideToggle>
                 <mat-expansion-panel-header>
-                  <mat-panel-title> 
+                  <mat-panel-title id="tituloAvanceArea"> 
                     <div id="seccionAvanceArea">
-                      <b><p>Avance por área</p></b>
+                      <b><p class="subtitulo">Avance por área</p></b>
                     </div> 
                   </mat-panel-title>
                   <mat-panel-description>
@@ -113,7 +110,7 @@
                 </mat-expansion-panel-header>
                   <div class="containerBarrasArea">
                     <div class="barraAvance">
-                      <div style="font-style: italic;">Diseño funcional:</div>
+                      <p class="letrasSegundoNivel">Diseño funcional</p>
                       <div class="espacio"></div>
                       <div class="barraAreaRoja">{{retornarPorcentajeAvanceFuncionalNoIniciadas(i)}}%</div>
                       <div class="barraAreaAmarilla">{{retornarPorcentajeAvanceFuncionalEnProgreso(i)}}%</div>
@@ -121,7 +118,7 @@
                       <div class="barraAreaVerde">{{retornarPorcentajeAvanceFuncionalCompletadas(i)}}%</div>
                     </div>
                     <div class="barraAvance">
-                      <div style="font-style: italic;">Diseño técnico:</div>
+                      <p class="letrasSegundoNivel">Diseño técnico</p>
                       <div id="espacioTecnico"></div>
                       <div class="barraAreaRoja">{{retornarPorcentajeAvanceTecnicoNoIniciadas(i)}}%</div>
                       <div class="barraAreaAmarilla">{{retornarPorcentajeAvanceTecnicoEnProgreso(i)}}%</div>
@@ -129,7 +126,7 @@
                       <div class="barraAreaVerde">{{retornarPorcentajeAvanceTecnicoCompletadas(i)}}%</div>
                     </div>
                     <div class="barraAvance">
-                      <div style="font-style: italic;">Desarrollo:</div>
+                      <p class="letrasSegundoNivel">Desarrollo</p>
                       <div id="espacioDesarrollo"></div>
                       <div class="barraAreaRoja">{{retornarPorcentajeAvanceDesarrolloNoIniciadas(i)}}%</div>
                       <div class="barraAreaAmarilla">{{retornarPorcentajeAvanceDesarrolloEnProgreso(i)}}%</div>
@@ -138,7 +135,7 @@
                     </div>
 
                     <div class="barraAvance">
-                      <div style="font-style: italic;">Testing:</div>
+                      <p class="letrasSegundoNivel">Testing</p>
                       <div id="espacioTesting"></div>
                       <div class="barraAreaRoja">{{retornarPorcentajeAvanceTestingNoIniciadas(i)}}%</div>
                       <div class="barraAreaAmarilla">{{retornarPorcentajeAvanceTestingEnProgreso(i)}}%</div>
@@ -152,7 +149,7 @@
       </div>
       </td>
       </ng-container>
-      <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand;sticky: true"></tr>
       <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;" class="example-element-row" [class.example-expanded-row]="expandedElement === element" (click)="expandedElement = expandedElement === element ? null : element"></tr>
       <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
       </table>

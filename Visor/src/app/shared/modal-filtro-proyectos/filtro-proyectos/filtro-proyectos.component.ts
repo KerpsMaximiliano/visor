@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { InicioEstadoProyectoComponent } from '../../../componentes/inicio-estado-proyecto/inicio-estado-proyecto.component';
+import { InicioEstadoProyectoComponent } from 'src/app/componentes/inicio/inicio-estado-proyecto/inicio-estado-proyecto.component';
 import { FiltroService } from '../../../services/i2t/filtro.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { FiltroService } from '../../../services/i2t/filtro.service';
 })
 export class FiltroProyectosComponent implements OnInit {
 
-  result = {numero: '', nombre: '', asignadoA: '', cliente: '', seleccion: '', filtrar: true, limpiar: false, misProyectos: false, proyectosAbiertos: false, ultimosProyectosFiltrados: []}
+  result = {numero: '', nombre: '', asignadoA: '', cliente: '', seleccion: '', filtrar: true, limpiar: false, misProyectos: false, proyectosAbiertos: false}
   activarBoton: boolean;
   save_search_id = '';
 
@@ -28,7 +28,6 @@ export class FiltroProyectosComponent implements OnInit {
     this.save_search_id = this.data.search_id;
     this.result.misProyectos = this.data.misProyectos;
     this.result.proyectosAbiertos = this.data.proyectosAbiertos;
-    this.result.ultimosProyectosFiltrados = this.data.proyectosFiltrados;
   }
 
   limpiarFiltro() {
@@ -48,8 +47,8 @@ export class FiltroProyectosComponent implements OnInit {
   cancelarBusqueda(): void {
     if (this.result.limpiar == false) {
       this.result.nombre = this.data.nombre;
-      this.result.numero = this.data.apellido;
-      this.result.asignadoA = this.data.funcion;
+      this.result.numero = this.data.numero;
+      this.result.asignadoA = this.data.asignadoA;
       this.result.cliente = this.data.cliente;
       this.result.filtrar = false;
       this.dialogRef.close(this.result);
@@ -74,8 +73,7 @@ export class FiltroProyectosComponent implements OnInit {
       asignadoA: this.result.asignadoA,
       funcion : this.result.seleccion,
       misProyectos: this.result.misProyectos,
-      proyectosAbiertos: this.result.proyectosAbiertos,
-      ultimosProyectosFiltrados: this.result.ultimosProyectosFiltrados
+      proyectosAbiertos: this.result.proyectosAbiertos
     });
     const encodedData = btoa(contenido);
     if (this.save_search_id == '') {
@@ -91,6 +89,14 @@ export class FiltroProyectosComponent implements OnInit {
       this._filtroService.updateFiltro(this.save_search_id, encodedData).subscribe((rsp: any) => {
         console.log('Filtro actualizado: ', rsp);
       });
+    }
+  }
+
+  
+  validarTecla(e: KeyboardEvent){
+    if(e.key == "Enter"){
+      this.guardarFiltro();
+      this.dialogRef.close(this.result);
     }
   }
 }
