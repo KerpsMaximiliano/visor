@@ -8,15 +8,11 @@ import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angu
 import { ModalActividadComponent } from '../modal-actividad/modal-actividad.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Token } from '@angular/compiler';
 import { LoginService } from 'src/app/services/i2t/login.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { RestService } from 'src/app/services/i2t/rest.service';
 import { Usuario } from 'src/app/interfaces/usuario';
 import { ActividadSuite } from 'src/app/interfaces/actividadesSuite';
-import { Data } from '@angular/router';
-import { DataSource } from '@angular/cdk/collections';
-import { finalize } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 
 
@@ -37,7 +33,8 @@ export class ActividadComponent implements OnInit {
 
   listActividades: Actividad[]=[];
   
- 
+  //timestamp:any = firebase.database.ServerValue.TIMESTAMP;
+
   //displayedColumns: string[] = ['fecha','horas','descripcion','asunto','acciones'];
   displayedColumns:string[] = ['fecha','horas_ejecutadas'];
   displayedColumns2:string[] =  ['asunto_actividad','acciones'];
@@ -79,7 +76,6 @@ export class ActividadComponent implements OnInit {
     //this.cargarActividades();
 
     this.cargarActividadesSuite();
-    
     
     this._actividadService.enviarIndexObservable.subscribe(response => {
       this.index = response;
@@ -156,18 +152,29 @@ export class ActividadComponent implements OnInit {
           if(y.descripcion == null || y.descripcion.length < 1 || y.descripcion === ""){
             y.descripcion = 'Esta actividad no tiene descripción';
           }   
-        //console.log("DATA SET PRUEBA FABIO",y)
+          this.ordenarPorFecha(response.dataset);
       });
-        //console.log("RESPONSE DATASET",response.dataset)
+      
         
         this.dataSource = new MatTableDataSource(response.dataset)
+        
         this.cd.detectChanges();
         //console.log("DATA SOURCE",this.dataSource)
         
       });
-    
-    
    
+  }
+  ordenarPorFecha(lista: Array<Actividad>){
+    
+    lista.sort(function(a, b) {
+      if (a.fecha < b.fecha) {
+        return 1;
+      }
+      if (a.fecha > b.fecha) {
+        return -1;
+      }
+      return 0;
+    });
   }
 
 
@@ -328,11 +335,9 @@ export class ActividadComponent implements OnInit {
           tareaAsociada: this.dataSource.data[0].nombre_tarea
         })
       }
-      console.log("DATA SOURCE",this.dataSource);
-      console.log("DATA",this.dataSource.data);
-      console.log("ID1",this.idTarea);
+      
       const dialogRef = this.dialog.open(ModalActividadComponent,{data:{idTarea: this.idTarea}});
-      console.log("ID2",this.idTarea);
+      
   // this.dialog.open(ModalActividadComponent);
     dialogRef.afterClosed().subscribe(res =>{
       if(res){

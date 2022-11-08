@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { InicioEstadoModule } from 'src/app/componentes/inicio-estado-proyecto/inicio-estado.module';
 import { RestService } from './rest.service';
 
 @Injectable({

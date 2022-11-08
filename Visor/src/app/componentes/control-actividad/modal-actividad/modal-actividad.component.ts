@@ -9,6 +9,7 @@ import { ActividadService } from 'src/app/services/i2t/actividad.service';
 import { ActividadSuite } from 'src/app/interfaces/actividadesSuite';
 import { finalize } from 'rxjs/operators';
 import { DataSource } from '@angular/cdk/collections';
+import { TareaService } from 'src/app/services/i2t/tarea.service';
 
 
 @Component({
@@ -35,6 +36,7 @@ export class ModalActividadComponent implements OnInit {
               private dialog: MatDialog,
               public dialogRef: MatDialogRef<ModalActividadComponent>,
               private dateAdapter: DateAdapter<Date>,
+              private _tareaServde: TareaService,
               @Inject(MAT_DIALOG_DATA) public data: any,
               ) {
                 this.dateAdapter.setLocale('en-GB'); //dd/MM/yyyy
@@ -61,7 +63,6 @@ export class ModalActividadComponent implements OnInit {
     this._actividadService.enviarIdActividadObservable.subscribe(response => {
       this.id = response;
     })
-    
   }
 
   closeDialog(){
@@ -160,7 +161,8 @@ agregarActividadSuite(){
   this._actividadService.form.reset()
   
    
-      this._actividadService.agregarActividad(actividadS, this.data.idTarea).subscribe((response:any)=>{
+      this._actividadService.agregarActividad(actividadS, this.data.idTarea).subscribe((response:any)=>{    
+        console.log(actividadS);
         console.log("INSERT EXITOSO", response);
     });
   
