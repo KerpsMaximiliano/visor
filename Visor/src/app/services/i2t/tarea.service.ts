@@ -1,7 +1,6 @@
 import { UnaryOperator } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { InicioEstadoModule } from 'src/app/componentes/inicio-estado-proyecto/inicio-estado.module';
 import { RestService } from './rest.service';
 
 @Injectable({
