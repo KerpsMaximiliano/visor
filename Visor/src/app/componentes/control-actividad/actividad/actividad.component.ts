@@ -84,7 +84,6 @@ export class ActividadComponent implements OnInit {
     //this.cargarActividades();
 
     this.cargarActividadesSuite();
-    console.log(this._tareaService.listaTareas);
     
     if(this._tareaService.listaTareas != null){
       localStorage.setItem('lTareas',JSON.stringify(this._tareaService.listaTareas));
@@ -103,8 +102,7 @@ export class ActividadComponent implements OnInit {
 
 
     this._actividadService.idT = this.idTarea;
-    console.log(this.idT)
-    console.log(this.idTarea)
+    
     this._actividadService.enviarIdTActividadObservable.subscribe(response => {
       this.idT = response;
       console.log(this.idT)
@@ -123,11 +121,10 @@ export class ActividadComponent implements OnInit {
         
         }
     });
-    this.cargarActividadesSuite();
+    //this.cargarActividadesSuite();
 
     this._tareaService.enviarCambio();
 
-    console.log(this._tareaService.unProyecto.id_projecto);
 
     this._tareaService.getTareasDeProyecto(this._tareaService.unProyecto.id_projecto).pipe(
       finalize(()=>{
@@ -138,8 +135,8 @@ export class ActividadComponent implements OnInit {
     .subscribe(result => {
 
       this.tareas = result.dataset;
-      console.log(this.tareas);
-      this.cargarActividadesSuite();
+      
+      //this.cargarActividadesSuite();
     })
     
 
@@ -149,22 +146,11 @@ export class ActividadComponent implements OnInit {
   } 
   
 
-  /*toggleOn(horas: Number){
-    console.log("asunto",horas);
-    for(let row of this.listActividades){
-      if (row.horas == horas){
-        row.toggle = 1;
-      }
-    }
-  }*/
-
-  cargarActividades(){
+  /*cargarActividades(){
     
     this.listActividades = this._actividadService.getActividad();
     this.dataSource = new MatTableDataSource(this.listActividades);
-  }
-
-  
+  }*/
 
   //Expand Panel
   expandedRows: { [key: number]: boolean } = {};
@@ -174,7 +160,7 @@ export class ActividadComponent implements OnInit {
 
 
 //ELIMINAR HARDCODE
-  onEliminarActividad(index: number){
+  /*onEliminarActividad(index: number){
     //console.log('posicion inicial',index);
       
     this.dialogService.openConfirmDialog('¿Usted está seguro de que desea eliminar esa actividad?' )
@@ -190,7 +176,7 @@ export class ActividadComponent implements OnInit {
       }
     });
   
-  }
+  }*/
 
   cargarActividadesSuite(){
   
@@ -283,7 +269,7 @@ export class ActividadComponent implements OnInit {
   this._actividadService.enviarIndex(index);
  }
  
-  onEditarActividad(index: number){
+  /*onEditarActividad(index: number){
 
    //console.log("posicion incial",index);
     let aux = index;
@@ -320,7 +306,7 @@ export class ActividadComponent implements OnInit {
   
   this._actividadService.index = undefined;
   
-  }
+  }*/
 
   onEditarActividadSuite(index: number){
 
@@ -335,7 +321,7 @@ export class ActividadComponent implements OnInit {
     let month:number= parseInt(fAux.split("-")[1]);
     let year: number = parseInt(fAux.split("-")[0]);
 
-    const fechaA:string = year+'-'+month+'-'+day;
+    const fechaA:string = year+'-'+month+'-'+(day+1);
     const fecha =new Date(fechaA);
     //console.log("prueba fecha",fecha) ;   
     
@@ -367,7 +353,9 @@ export class ActividadComponent implements OnInit {
      this._actividadService.index = undefined;
    });
    
-   this._actividadService.index = undefined;
+    this._actividadService.index = undefined;
+    this.cd.detectChanges();
+    this.cargarActividadesSuite();
    
    }
 
@@ -379,7 +367,7 @@ export class ActividadComponent implements OnInit {
 
 
   onAgregarActividad(){
-    console.log(this._tareaService.getTareasDeProyecto(this._tareaService.unProyecto.id_projecto));
+    
       // Agregamos una nueva Actividad
       this._actividadService.form.reset();
       this.lTareas.forEach( t =>{

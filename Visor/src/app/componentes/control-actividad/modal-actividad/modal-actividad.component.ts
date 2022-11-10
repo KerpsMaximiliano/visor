@@ -61,6 +61,7 @@ export class ModalActividadComponent implements OnInit {
  
 
   ngOnInit(){
+
     this._actividadService.enviarIndexObservable.subscribe(response => {
       this.index = response;
     })
@@ -73,8 +74,7 @@ export class ModalActividadComponent implements OnInit {
     this._actividadService.enviarIdTActividadObservable.subscribe(response => {
       this.idT = response;
     })
-    console.log(this._actividadService.idT);
-    console.log(this._tareaService.listaTareas);
+    
     if(this._tareaService.listaTareas != null){
       localStorage.setItem('lTareas',JSON.stringify(this._tareaService.listaTareas));
     }
@@ -82,7 +82,6 @@ export class ModalActividadComponent implements OnInit {
       this.lTareas = JSON.parse(localStorage.getItem('lTareas')!)
       
     }
-    console.log(this.lTareas)
     
     
   }
@@ -158,10 +157,6 @@ export class ModalActividadComponent implements OnInit {
 //AGREGAR ACTIVIDAD INTEGRACION
 agregarActividadSuite(){
 
-  console.log(this.lTareas)
-  console.log(this._actividadService.idTarea);
-  console.log(this.actividadS);
-
   this.lTareas.forEach(t=>{
     if(t.id_tarea == this._actividadService.idTarea){
       console.log(t);
@@ -184,18 +179,18 @@ agregarActividadSuite(){
     id_actividad: '',
     estado: 'Completed',
     tipo_actividad: this.tareaS.tipo_tarea,
-    asignado_a: this.tareaS.usuario_asignado,
+    asignado_a: "",
     id_tarea: this.tareaS.id_tarea
   }
 
-console.log(actividadS);
-actividadS.fecha.setHours(13,0,0);
+//console.log(actividadS);
+actividadS.fecha.setHours(10,0,0);
 //console.log('ACTIVIDAD SSSS FECHAAA',actividadS.fecha)
   this._actividadService.form.reset()
   
    
       this._actividadService.agregarActividad(actividadS, this.data.idTarea).subscribe((response:any)=>{    
-        console.log(actividadS);
+        //console.log(actividadS);
         console.log("INSERT EXITOSO", response);
     });
   
@@ -220,7 +215,7 @@ actividadS.fecha.setHours(13,0,0);
     this.id = this._actividadService.id;
     //console.log("RECIBE ID",this.id);
   }
-  editarActividad(){
+  /*editarActividad(){
     
     
     if(this.index != undefined){
@@ -252,7 +247,7 @@ actividadS.fecha.setHours(13,0,0);
     
     this._actividadService.index = undefined;
     //this._actividadService.form.reset();
-  }
+  }*/
 
 editarActividadSuite(){
   if(this.index != undefined){
@@ -294,6 +289,7 @@ editarActividadSuite(){
   this._actividadService.form.reset();
   
   this._actividadService.editarActividad(actividadS, this.data.idTarea).subscribe((response:any)=>{
+    
     console.log("UPDATE EXITOSO", response);
 });
   }

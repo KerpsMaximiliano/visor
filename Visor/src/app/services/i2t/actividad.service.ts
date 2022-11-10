@@ -91,23 +91,23 @@ idT!: string;
    enviarIdActividad(id: string){
     this.id = id;
     this.enviarIdActividadSubject.next(id);
-    console.log("enviaR ACTIVIDAD SERVICE",id);
+    //console.log("enviaR ACTIVIDAD SERVICE",id);
    }
    enviarIdTActividad(idT: string){
     this.idT = idT;
     this.enviarIdTActividadSubject.next(idT);
-    console.log("enviaR ACTIVIDAD SERVICE",idT);
+    //console.log("enviaR ACTIVIDAD SERVICE",idT);
    }
 
   getActividad(){
-    console.log('slice',this.listActividades.slice());
+    //console.log('slice',this.listActividades.slice());
     return this.listActividades.slice();
   }
   
   eliminarActividad(index: number){
     this.listActividades.splice(index, 1);
     
-    console.log('eliminado',this.listActividades);
+    //console.log('eliminado',this.listActividades);
   }
   get refresh$(){
     return this._refresh$;
@@ -130,7 +130,7 @@ idT!: string;
 
   agregarActividad2(actividad: Actividad){
     this.listActividades.push(actividad);
-    console.log('arreglo final',this.listActividades);
+    //console.log('arreglo final',this.listActividades);
   }
  
   par_modoG(idTarea: string){
@@ -229,8 +229,7 @@ idT!: string;
   }
 
   agregarActividad(actividadS: ActividadSuite, idTarea: string){
-    console.log(actividadS)
-    console.log(idTarea)
+    
     this.idTarea = idTarea;
 
     let seconds:number=actividadS.fecha.getSeconds();
@@ -239,9 +238,9 @@ idT!: string;
     let day:number=actividadS.fecha.getDate();
     let month:number=actividadS.fecha.getMonth()+1;
     let year:number=actividadS.fecha.getFullYear();let fechaA:string = year+'-'+month+'-'+day;
-    console.log('fecha ingresar',fechaA);
+    //console.log('fecha ingresar',fechaA);
     
-    console.log("activdad SUITEEEEE",actividadS.fecha);
+    //console.log("activdad SUITEEEEE",actividadS.fecha);
     let jsbody: string = JSON.stringify({
       par_modo : 'I',
       descripcion : actividadS.descripcion,
@@ -250,7 +249,7 @@ idT!: string;
     horas_ejecutadas: actividadS.horas_ejecutadas,
     tipo_actividad : actividadS.tipo_actividad,
     fecha: fechaA,
-    asignado_a : actividadS.asignado_a,
+    asignado_a : localStorage.getItem('userId'),
     id_tarea: idTarea
     });
     console.log("bodyyyy",jsbody);
@@ -264,19 +263,20 @@ idT!: string;
     let month:number=actividadS.fecha.getMonth()+1;
     let year:number=actividadS.fecha.getFullYear();
     const fechaA:string = year+'-'+month+'-'+day;
-    console.log("activdad SUITEEEEE",actividadS)
+    //console.log("activdad SUITEEEEE",actividadS)
     let jsbody: string = JSON.stringify({
       par_modo : 'U',
       descripcion : actividadS.descripcion,
       id_actividad: actividadS.id_actividad,
     titulo: actividadS.titulo,
-    estado: "",
+    estado: "Completed",
     horas_ejecutadas: actividadS.horas_ejecutadas,
     tipo_actividad : actividadS.tipo_actividad,
     fecha: fechaA,
-    asignado_a : actividadS.asignado_a,
+    asignado_a : localStorage.getItem('userId'),
     id_tarea: idTarea
     });
+    console.log("bodyyyy",jsbody);
     return this.rest.callProcedimientoVisor(jsbody, 'AbmActividades');
   }
 
