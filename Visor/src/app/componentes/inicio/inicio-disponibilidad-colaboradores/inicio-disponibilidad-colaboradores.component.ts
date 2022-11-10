@@ -287,8 +287,13 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
 
     console.log("colaboradores 1",this.colaboradores);
     console.log("colaboradores 2",this.colaboradores2);
+    console.log(this.colaboradores[0].nombre.concat(' ').concat(this.colaboradores[0].apellido))
     this.colaboradores.forEach(colab => {
-      colaboradoresFiltro.push({ nombre: colab.nombre, apellido: colab.apellido });
+      let nombreC = colab.nombre.concat(" ").concat(colab.apellido);
+      let nombreI = colab.apellido.concat(" ").concat(colab.nombre)
+      console.log(nombreC);
+      //colaboradoresFiltro.push({ nombre: colab.nombre, apellido: colab.apellido });
+      colaboradoresFiltro.push({ nombreC , nombreI });
     });
 
     this.dataSource = new MatTableDataSource(colaboradoresFiltro);
@@ -299,9 +304,18 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     let arrayAux: Colaborador[] = [];
      
 
-      this.colaboradores.forEach(colab => {
+      /*this.colaboradores.forEach(colab => {
           colaboradoresFiltro.forEach(user => {
+            console.log(user);
             if (colab.nombre == user.nombre && colab.apellido == user.apellido) {
+              this.colaboradores2.push(colab);
+              arrayAux.push(colab);
+            }
+          });
+        });*/
+        this.colaboradores.forEach(colab => {
+          colaboradoresFiltro.forEach(user => {
+            if (colab.nombre == user.nombreC.split(" ",1)  && (colab.apellido == user.nombreC.split(" ",user.nombreC.length - 1)[1] || colab.apellido == user.nombreC.split(" ",user.nombreC.length - 1)[1].concat(" ").concat(user.nombreC.split(" ",user.nombreC.length - 1)[2]) ) ) {
               this.colaboradores2.push(colab);
               arrayAux.push(colab);
             }
