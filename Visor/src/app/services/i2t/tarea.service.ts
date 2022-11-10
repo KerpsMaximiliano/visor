@@ -1,6 +1,7 @@
 import { UnaryOperator } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { Tarea } from 'src/app/interfaces/tarea';
 import { RestService } from './rest.service';
 
 @Injectable({
@@ -12,6 +13,8 @@ export class TareaService {
     
     constructor(private rest: RestService) { }
     unProyecto: any;
+    listaTareas: Tarea[] = [];
+    idTarea: any;
 
   private enviarProjectSubject = new Subject<any>();
   enviarProjectObservable = this.enviarProjectSubject.asObservable();
@@ -25,6 +28,9 @@ export class TareaService {
    getProyectoActual(){
     return this.unProyecto;
    }   
+   enviarIdTareaAct(idTarea:any){
+    this.idTarea = idTarea;
+   }
 
    enviarCambio(){
     this.unProyecto = this.getProyectoActual();

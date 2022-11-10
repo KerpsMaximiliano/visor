@@ -77,6 +77,7 @@ export class VistaAnalistaFuncionalComponent implements OnInit {
     if (this.tareasSP.length > 0) {
       this.noHayProyecto = false;
       console.log("Entra change")
+      this._tareaService.listaTareas = this.tareasSP//Enviar tareas Filtradas para Componentes Actividades
       this.organizarTareas();
       console.log(this.tareasOrg);
       this.cargarTareas();

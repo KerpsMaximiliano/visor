@@ -36,6 +36,7 @@ private _refresh$ = new Subject<void>();
   
 index!: number | undefined;
 id!: string;
+idT!: string;
  /*form: FormGroup = new FormGroup({
     fecha: new FormControl(null),
     horas: new FormControl('55555', Validators.required),
@@ -49,6 +50,10 @@ id!: string;
 
   private enviarIdActividadSubject = new Subject<string>();
   enviarIdActividadObservable = this.enviarIdActividadSubject.asObservable();
+
+  private enviarIdTActividadSubject = new Subject<string>();
+  enviarIdTActividadObservable = this.enviarIdTActividadSubject.asObservable();
+  idTarea!: string;
 
   /*initializeFormGroup() {
     this.form.setValue({
@@ -72,10 +77,12 @@ id!: string;
       horasEjecutadas: ['',Validators.required],
       descripcion: [''],
       asunto: ['',Validators.required],
-      
+      id_tarea: [],
       tareaAsociada: ['',Validators.required]
     })
    }
+
+
 
    enviarIndex(index: number){
     this.index = index;
@@ -85,6 +92,11 @@ id!: string;
     this.id = id;
     this.enviarIdActividadSubject.next(id);
     console.log("enviaR ACTIVIDAD SERVICE",id);
+   }
+   enviarIdTActividad(idT: string){
+    this.idT = idT;
+    this.enviarIdTActividadSubject.next(idT);
+    console.log("enviaR ACTIVIDAD SERVICE",idT);
    }
 
   getActividad(){
@@ -133,6 +145,7 @@ id!: string;
     asignado_a : "",
     id_tarea: idTarea
     });
+    this.idTarea = idTarea;
     return this.rest.callProcedimientoVisor(jsbody,"AbmActividades");
   }
 
@@ -216,24 +229,32 @@ id!: string;
   }
 
   agregarActividad(actividadS: ActividadSuite, idTarea: string){
+    console.log(actividadS)
+    console.log(idTarea)
+    this.idTarea = idTarea;
+
+    let seconds:number=actividadS.fecha.getSeconds();
+    let minute:number=actividadS.fecha.getMinutes();
+    let hour:number=actividadS.fecha.getHours();
     let day:number=actividadS.fecha.getDate();
     let month:number=actividadS.fecha.getMonth()+1;
-    let year:number=actividadS.fecha.getFullYear();
-    const fechaA:string = year+'-'+month+'-'+day;
+    let year:number=actividadS.fecha.getFullYear();let fechaA:string = year+'-'+month+'-'+day;
     console.log('fecha ingresar',fechaA);
+    
     console.log("activdad SUITEEEEE",actividadS.fecha);
     let jsbody: string = JSON.stringify({
       par_modo : 'I',
       descripcion : actividadS.descripcion,
     titulo: actividadS.titulo,
-    estado: "",
+    estado: "Completed",
     horas_ejecutadas: actividadS.horas_ejecutadas,
-    tipo_actividad : "",
+    tipo_actividad : actividadS.tipo_actividad,
     fecha: fechaA,
-    asignado_a : "",
+    asignado_a : actividadS.asignado_a,
     id_tarea: idTarea
     });
     console.log("bodyyyy",jsbody);
+
     return this.rest.callProcedimientoVisor(jsbody, 'AbmActividades');
 
   }
@@ -251,9 +272,9 @@ id!: string;
     titulo: actividadS.titulo,
     estado: "",
     horas_ejecutadas: actividadS.horas_ejecutadas,
-    tipo_actividad : "",
+    tipo_actividad : actividadS.tipo_actividad,
     fecha: fechaA,
-    asignado_a : "",
+    asignado_a : actividadS.asignado_a,
     id_tarea: idTarea
     });
     return this.rest.callProcedimientoVisor(jsbody, 'AbmActividades');

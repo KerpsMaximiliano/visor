@@ -54,6 +54,7 @@ export class VistaDisenioTecnicoComponent implements OnInit{
     if (this.tareasSP.length > 0) {
       this.noHayProyecto = false;
       console.log("Entra change")
+      this._tareaService.listaTareas = this.tareasSP//Enviar tareas Filtradas para Componentes Actividades
       this.organizarTareas();
       this.cargarTareas();
       this.poseeTareas();
@@ -108,6 +109,7 @@ export class VistaDisenioTecnicoComponent implements OnInit{
     this.tareasNoIniciadas = this.getTareasNoIniciadas();
     this.tareasEnProgreso = this.getTareasEnProgreso();
     this.tareasCompletadas = this.getTareasCompletadas();
+
   }
 
   getTareasNoIniciadas() {

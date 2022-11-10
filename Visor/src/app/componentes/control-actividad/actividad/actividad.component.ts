@@ -13,7 +13,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { RestService } from 'src/app/services/i2t/rest.service';
 import { Usuario } from 'src/app/interfaces/usuario';
 import { ActividadSuite } from 'src/app/interfaces/actividadesSuite';
-import { Subscription } from 'rxjs';
+import { finalize, Subscription } from 'rxjs';
+import { TareaService } from 'src/app/services/i2t/tarea.service';
+import { Tarea } from 'src/app/interfaces/tarea';
 
 
 @Component({
@@ -50,13 +52,18 @@ export class ActividadComponent implements OnInit {
   token!: String|null;
   actividades!: ActividadSuite[]|null;
   id!:string;
+  idT!:string;
   subscription!:Subscription;
 
   panelOpenState = false;
+  tareas!: Tarea[];
+
+  lTareas! : any[] ;
+  tareaS! : any;
 
   @Input() idTarea: string= '';
   @Input() tareasSP: any = [];
-
+ 
   //inyecto el servicio 
   constructor(private _actividadService: ActividadService,
               private _loginService: LoginService,
@@ -68,6 +75,7 @@ export class ActividadComponent implements OnInit {
               public dialogRef: MatDialogRef<ActividadComponent>,
               public dialogRefModal: MatDialogRef<ModalActividadComponent>,
               private cd: ChangeDetectorRef,
+              private _tareaService: TareaService,
               @Inject(MAT_DIALOG_DATA) public data:Actividad,
                ) { }
 
@@ -76,14 +84,33 @@ export class ActividadComponent implements OnInit {
     //this.cargarActividades();
 
     this.cargarActividadesSuite();
+    console.log(this._tareaService.listaTareas);
     
+    if(this._tareaService.listaTareas != null){
+      localStorage.setItem('lTareas',JSON.stringify(this._tareaService.listaTareas));
+    }
+    if(localStorage.getItem('lTareas') !== null){
+      this.lTareas = JSON.parse(localStorage.getItem('lTareas')!)
+      
+    }
+
     this._actividadService.enviarIndexObservable.subscribe(response => {
       this.index = response;
     })
     this._actividadService.enviarIdActividadObservable.subscribe(response => {
       this.id = response;
     })
+
+
+    this._actividadService.idT = this.idTarea;
+    console.log(this.idT)
+    console.log(this.idTarea)
+    this._actividadService.enviarIdTActividadObservable.subscribe(response => {
+      this.idT = response;
+      console.log(this.idT)
+    })
    
+
     let usuario: Usuario ={
       usuario: 'admin',
       password: '1q2w'
@@ -97,6 +124,28 @@ export class ActividadComponent implements OnInit {
         }
     });
     this.cargarActividadesSuite();
+
+    this._tareaService.enviarCambio();
+
+    console.log(this._tareaService.unProyecto.id_projecto);
+
+    this._tareaService.getTareasDeProyecto(this._tareaService.unProyecto.id_projecto).pipe(
+      finalize(()=>{
+        //this.listaTareasService = this.listaTareasService.data;
+        this.tareas = [];
+      })
+    )
+    .subscribe(result => {
+
+      this.tareas = result.dataset;
+      console.log(this.tareas);
+      this.cargarActividadesSuite();
+    })
+    
+
+    /*if(this.idTarea != '' && this.idTarea != null){
+      this._actividadService.enviarIdTarea(this.idTarea);
+    }*/
   } 
   
 
@@ -144,26 +193,29 @@ export class ActividadComponent implements OnInit {
   }
 
   cargarActividadesSuite(){
+  
     this.cd.detectChanges();
+        this._actividadService.par_modoG(this.idTarea).subscribe((response: any) =>{
       
-      this._actividadService.par_modoG(this.idTarea).subscribe((response: any) =>{
-      
-        response.dataset.forEach((y: any) =>{
-          if(y.descripcion == null || y.descripcion.length < 1 || y.descripcion === ""){
-            y.descripcion = 'Esta actividad no tiene descripción';
-          }   
+          response.dataset.forEach((y: any) =>{
+            if(y.descripcion == null || y.descripcion.length < 1 || y.descripcion === ""){
+              y.descripcion = 'Esta actividad no tiene descripción';
+              //y.fecha = y.fecha-1;
+            }  
+            //this._actividadService.idTarea = this.idTarea;
+            
+          }); 
           this.ordenarPorFecha(response.dataset);
-      });
-      
-        
-        this.dataSource = new MatTableDataSource(response.dataset)
-        
-        this.cd.detectChanges();
-        //console.log("DATA SOURCE",this.dataSource)
-        
-      });
-   
+          
+          this.dataSource = new MatTableDataSource(response.dataset)
+          this.cd.detectChanges();
+          //console.log("DATA SOURCE",this.dataSource)
+          //this.idT = this.idTarea;
+        });      
   }
+
+   
+  
   ordenarPorFecha(lista: Array<Actividad>){
     
     lista.sort(function(a, b) {
@@ -327,15 +379,23 @@ export class ActividadComponent implements OnInit {
 
 
   onAgregarActividad(){
+    console.log(this._tareaService.getTareasDeProyecto(this._tareaService.unProyecto.id_projecto));
       // Agregamos una nueva Actividad
       this._actividadService.form.reset();
+      this.lTareas.forEach( t =>{
+        if(t.id_tarea == this._actividadService.idTarea){
+          console.log(t);
+          this.tareaS = t;
+        }
+      })
       //console.log("Fabio DATA SOURCE", this.dataSource.data[0] == undefined)
       if (this.dataSource.data[0] != undefined ){
         this._actividadService.form.patchValue({
           tareaAsociada: this.dataSource.data[0].nombre_tarea
+          //tareaAsociada: this.tareaS.nombre_tarea
         })
       }
-      
+    
       const dialogRef = this.dialog.open(ModalActividadComponent,{data:{idTarea: this.idTarea}});
       
   // this.dialog.open(ModalActividadComponent);

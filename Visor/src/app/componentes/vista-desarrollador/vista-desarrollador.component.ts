@@ -72,6 +72,7 @@ export class VistaDesarrolladorComponent implements OnInit {
     this.tareasOrg = [];
     if (this.tareasSP.length > 0) {
       this.noHayProyecto = false;
+      this._tareaService.listaTareas = this.tareasSP//Enviar tareas Filtradas para Componentes Actividades
       console.log("Tareas SP: ", this.tareasSP)
       this.organizarTareas();
       console.log(this.tareasOrg);
