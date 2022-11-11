@@ -194,7 +194,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
                       contadorHPNoIniciadasFuncional = contadorHPNoIniciadasFuncional + resp.dataset[r].Horas;
                       break;
                     }
-                    case "In Testing": {
+                    case "EnPrueba": {
                       contadorHPTotalAreaFuncional = contadorHPTotalAreaFuncional + resp.dataset[r].Horas;
                       contadorHPEnPruebaFuncional = contadorHPEnPruebaFuncional + resp.dataset[r].Horas;
                     }
@@ -222,7 +222,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
                       contadorHPNoIniciadasTecnico = contadorHPNoIniciadasTecnico + resp.dataset[r].Horas;
                       break;
                     }
-                    case "In Testing": {
+                    case "EnPrueba": {
                       contadorHPTotalAreaTecnica = contadorHPTotalAreaTecnica + resp.dataset[r].Horas;
                       contadorHPEnPruebaTecnico = contadorHPEnPruebaTecnico + resp.dataset[r].Horas;
                     }
@@ -250,7 +250,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
                       contadorHPNoIniciadasDesarrollo = contadorHPNoIniciadasDesarrollo + resp.dataset[r].Horas;
                       break;
                     }
-                    case "In Testing": {
+                    case "EnPrueba": {
                       contadorHPTotalAreaDesarrollo = contadorHPTotalAreaDesarrollo + resp.dataset[r].Horas;
                       contadorHPEnPruebaDesarrollo = contadorHPEnPruebaDesarrollo + resp.dataset[r].Horas;
                     }
@@ -278,7 +278,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
                       contadorHPNoIniciadasTesting = contadorHPNoIniciadasTesting + resp.dataset[r].Horas;
                       break;
                     }
-                    case "In Testing": {
+                    case "EnPrueba": {
                       contadorHPTotalAreaTesting = contadorHPTotalAreaTesting + resp.dataset[r].Horas;
                       contadorHPEnPruebaTesting = contadorHPEnPruebaTesting + resp.dataset[r].Horas;
                     }
@@ -297,22 +297,25 @@ export class InicioEstadoProyectoComponent implements OnInit {
         for(let i = 0; i < this.proyectosTotalesArray.length; i++){
           this._dataProyecto.getPorcentajeHP(this.proyectosTotalesArray[i].id, "FALSE").subscribe((resp: any) => {
             for(let r = 0; r < resp.dataset.length; r++){
-              chtp = chtp + resp.dataset[r].Horas;
               switch (resp.dataset[r].Estado){
                 case "Completed": {
                   contadorHTCompletadas = contadorHTCompletadas + resp.dataset[r].Horas;
+                  chtp = chtp + resp.dataset[r].Horas;
                   break;
                 }
                 case "In Progress": {
                   contadorHTEnProgreso = contadorHTEnProgreso + resp.dataset[r].Horas
+                  chtp = chtp + resp.dataset[r].Horas;
                   break;
                 }
                 case "Not Started": {
                   contadorHTNoIniciadas = contadorHTNoIniciadas + resp.dataset[r].Horas;
+                  chtp = chtp + resp.dataset[r].Horas;
                   break;
                 }
-                case "In Testing": {
+                case "EnPrueba": {
                   contadorHTEnPrueba = contadorHTEnPrueba + resp.dataset[r].Horas;
+                  chtp = chtp + resp.dataset[r].Horas;
                 }
               }
             }
@@ -422,7 +425,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
                       contadorHPNoIniciadasFuncional = contadorHPNoIniciadasFuncional + resp.dataset[r].Horas;
                       break;
                     }
-                    case "In Testing": {
+                    case "EnPrueba": {
                       contadorHPTotalAreaFuncional = contadorHPTotalAreaFuncional + resp.dataset[r].Horas;
                       contadorHPEnPruebaFuncional = contadorHPEnPruebaFuncional + resp.dataset[r].Horas;
                     }
@@ -450,7 +453,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
                       contadorHPNoIniciadasTecnico = contadorHPNoIniciadasTecnico + resp.dataset[r].Horas;
                       break;
                     }
-                    case "In Testing": {
+                    case "EnPrueba": {
                       contadorHPTotalAreaTecnica = contadorHPTotalAreaTecnica + resp.dataset[r].Horas;
                       contadorHPEnPruebaTecnico = contadorHPEnPruebaTecnico + resp.dataset[r].Horas;
                     }
@@ -478,7 +481,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
                       contadorHPNoIniciadasDesarrollo = contadorHPNoIniciadasDesarrollo + resp.dataset[r].Horas;
                       break;
                     }
-                    case "In Testing": {
+                    case "EnPrueba": {
                       contadorHPTotalAreaDesarrollo = contadorHPTotalAreaDesarrollo + resp.dataset[r].Horas;
                       contadorHPEnPruebaDesarrollo = contadorHPEnPruebaDesarrollo + resp.dataset[r].Horas;
                     }
@@ -506,7 +509,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
                       contadorHPNoIniciadasTesting = contadorHPNoIniciadasTesting + resp.dataset[r].Horas;
                       break;
                     }
-                    case "In Testing": {
+                    case "EnPrueba": {
                       contadorHPTotalAreaTesting = contadorHPTotalAreaTesting + resp.dataset[r].Horas;
                       contadorHPEnPruebaTesting = contadorHPEnPruebaTesting + resp.dataset[r].Horas;
                     }
@@ -525,22 +528,25 @@ export class InicioEstadoProyectoComponent implements OnInit {
         for(let i = 0; i < this.proyectosAbiertosArray.length; i++){
           this._dataProyecto.getPorcentajeHP(this.proyectosAbiertosArray[i].id, "TRUE").subscribe((resp: any) => {
             for(let r = 0; r < resp.dataset.length; r++){
-              chtp = chtp + resp.dataset[r].Horas;
               switch (resp.dataset[r].Estado){
                 case "Completed": {
                   contadorHTCompletadas = contadorHTCompletadas + resp.dataset[r].Horas;
+                  chtp = chtp + resp.dataset[r].Horas;
                   break;
                 }
                 case "In Progress": {
                   contadorHTEnProgreso = contadorHTEnProgreso + resp.dataset[r].Horas
+                  chtp = chtp + resp.dataset[r].Horas;
                   break;
                 }
                 case "Not Started": {
                   contadorHTNoIniciadas = contadorHTNoIniciadas + resp.dataset[r].Horas;
+                  chtp = chtp + resp.dataset[r].Horas;
                   break;
                 }
-                case "In Testing": {
+                case "EnPrueba": {
                   contadorHTEnPrueba = contadorHTEnPrueba + resp.dataset[r].Horas;
+                  chtp = chtp + resp.dataset[r].Horas;
                 }
               }
             }
@@ -587,11 +593,11 @@ export class InicioEstadoProyectoComponent implements OnInit {
     return this.proyectos[index].porcentajeHPCompletadas;
   }
 
-  retornarPorcentajeNoIniciadas(index: number){
+  retornarPorcentajeNoIniciadas(index: number): number{
     return this.proyectos[index].porcentajeHPNoIniciadas;
   }
 
-  retornarPorcentajeEnProgreso(index: number){
+  retornarPorcentajeEnProgreso(index: number): number{
     return this.proyectos[index].porcentajeHPEnProgreso;
   }
 

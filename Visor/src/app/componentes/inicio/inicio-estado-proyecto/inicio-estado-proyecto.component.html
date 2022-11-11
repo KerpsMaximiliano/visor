@@ -81,19 +81,14 @@
           <div id="seccionAvance">
             <b><p class="subtitulo">Avance del proyecto</p></b>
           </div>
-          <div class="barra">
-            <div id="barraRoja">
-              <p>{{retornarPorcentajeNoIniciadas(i)}}%</p>
-            </div>
-            <div id="barraAmarilla">
-              <p>{{retornarPorcentajeEnProgreso(i)}}%</p>
-            </div>
-            <div id="barraEnPrueba">
-              <p>{{retornarPorcentajeEnPrueba(i)}}%</p>
-            </div>
-            <div id="barraVerde">
-              <p>{{retornarPorcentajeCompletadas(i)}}%</p>
-            </div>
+
+          <div id="barraGeneral">
+            <div class="progress" style="max-width: 80%;" >
+              <div class="progress-bar bg-danger" [style.width.%]="retornarPorcentajeNoIniciadas(i)">{{retornarPorcentajeNoIniciadas(i)}}%</div>
+              <div class="progress-bar bg-warning progress-bar-stripped" [style.width.%]="retornarPorcentajeEnProgreso(i)">{{retornarPorcentajeEnProgreso(i)}}%</div>
+              <div class="progress-bar light-green" [style.width.%]="retornarPorcentajeEnPrueba(i)">{{retornarPorcentajeEnPrueba(i)}}%</div>
+              <div class="progress-bar bg-success" [style.width.%]="retornarPorcentajeCompletadas(i)">{{retornarPorcentajeCompletadas(i)}}%</div>
+            </div>  
           </div>
           <div id="vacio">
           </div>
@@ -108,39 +103,46 @@
                   <mat-panel-description>
                   </mat-panel-description>
                 </mat-expansion-panel-header>
+
                   <div class="containerBarrasArea">
                     <div class="barraAvance">
-                      <p class="letrasSegundoNivel">Diseño funcional</p>
-                      <div class="espacio"></div>
-                      <div class="barraAreaRoja">{{retornarPorcentajeAvanceFuncionalNoIniciadas(i)}}%</div>
-                      <div class="barraAreaAmarilla">{{retornarPorcentajeAvanceFuncionalEnProgreso(i)}}%</div>
-                      <div class="barraAreaEnPrueba">{{retornarPorcentajeAvanceFuncionalEnPrueba(i)}}%</div>
-                      <div class="barraAreaVerde">{{retornarPorcentajeAvanceFuncionalCompletadas(i)}}%</div>
-                    </div>
-                    <div class="barraAvance">
-                      <p class="letrasSegundoNivel">Diseño técnico</p>
-                      <div id="espacioTecnico"></div>
-                      <div class="barraAreaRoja">{{retornarPorcentajeAvanceTecnicoNoIniciadas(i)}}%</div>
-                      <div class="barraAreaAmarilla">{{retornarPorcentajeAvanceTecnicoEnProgreso(i)}}%</div>
-                      <div class="barraAreaEnPrueba">{{retornarPorcentajeAvanceTecnicoEnPrueba(i)}}%</div>
-                      <div class="barraAreaVerde">{{retornarPorcentajeAvanceTecnicoCompletadas(i)}}%</div>
-                    </div>
-                    <div class="barraAvance">
-                      <p class="letrasSegundoNivel">Desarrollo</p>
-                      <div id="espacioDesarrollo"></div>
-                      <div class="barraAreaRoja">{{retornarPorcentajeAvanceDesarrolloNoIniciadas(i)}}%</div>
-                      <div class="barraAreaAmarilla">{{retornarPorcentajeAvanceDesarrolloEnProgreso(i)}}%</div>
-                      <div class="barraAreaEnPrueba">{{retornarPorcentajeAvanceDesarrolloEnPrueba(i)}}%</div>
-                      <div class="barraAreaVerde">{{retornarPorcentajeAvanceDesarrolloCompletadas(i)}}%</div>
+                      <strong><p class="letrasSegundoNivel">Diseño funcional</p></strong>
+                      <div id="container-barras" class="progress" style="max-width: 80%;" >
+                        <div class="progress-bar bg-danger" [style.width.%]="retornarPorcentajeAvanceFuncionalNoIniciadas(i)">{{retornarPorcentajeAvanceFuncionalNoIniciadas(i)}}%</div>
+                        <div class="progress-bar bg-warning progress-bar-stripped" [style.width.%]="retornarPorcentajeAvanceFuncionalEnProgreso(i)">{{retornarPorcentajeAvanceFuncionalEnProgreso(i)}}%</div>
+                        <div class="progress-bar light-green" [style.width.%]="retornarPorcentajeAvanceFuncionalEnPrueba(i)">{{retornarPorcentajeAvanceFuncionalEnPrueba(i)}}%</div>
+                        <div class="progress-bar bg-success" [style.width.%]="retornarPorcentajeAvanceFuncionalCompletadas(i)">{{retornarPorcentajeAvanceFuncionalCompletadas(i)}}%</div>
+                      </div>
                     </div>
 
                     <div class="barraAvance">
-                      <p class="letrasSegundoNivel">Testing</p>
-                      <div id="espacioTesting"></div>
-                      <div class="barraAreaRoja">{{retornarPorcentajeAvanceTestingNoIniciadas(i)}}%</div>
-                      <div class="barraAreaAmarilla">{{retornarPorcentajeAvanceTestingEnProgreso(i)}}%</div>
-                      <div class="barraAreaEnPrueba">{{retornarPorcentajeAvanceTestingEnPrueba(i)}}%</div>
-                      <div class="barraAreaVerde">{{retornarPorcentajeAvanceTestingCompletadas(i)}}%</div>
+                      <strong><p class="letrasSegundoNivel">Diseño técnico</p></strong>
+                      <div id="container-barras" class="progress" style="max-width: 80%;" >
+                        <div class="progress-bar bg-danger" [style.width.%]="retornarPorcentajeAvanceTecnicoNoIniciadas(i)">{{retornarPorcentajeAvanceTecnicoNoIniciadas(i)}}%</div>
+                        <div class="progress-bar bg-warning progress-bar-stripped" [style.width.%]="retornarPorcentajeAvanceTecnicoEnProgreso(i)">{{retornarPorcentajeAvanceTecnicoEnProgreso(i)}}%</div>
+                        <div class="progress-bar light-green" [style.width.%]="retornarPorcentajeAvanceTecnicoEnPrueba(i)">{{retornarPorcentajeAvanceTecnicoEnPrueba(i)}}%</div>
+                        <div class="progress-bar bg-success" [style.width.%]="retornarPorcentajeAvanceTecnicoCompletadas(i)">{{retornarPorcentajeAvanceTecnicoCompletadas(i)}}%</div>
+                      </div>
+                    </div>
+                    
+                    <div class="barraAvance">
+                      <strong><p class="letrasSegundoNivel">Desarrollo</p></strong>
+                      <div id="container-barras" class="progress" style="max-width: 80%;" >
+                        <div class="progress-bar bg-danger" [style.width.%]="retornarPorcentajeAvanceDesarrolloNoIniciadas(i)">{{retornarPorcentajeAvanceDesarrolloNoIniciadas(i)}}%</div>
+                        <div class="progress-bar bg-warning progress-bar-stripped" [style.width.%]="retornarPorcentajeAvanceDesarrolloEnProgreso(i)">{{retornarPorcentajeAvanceDesarrolloEnProgreso(i)}}%</div>
+                        <div class="progress-bar light-green" [style.width.%]="retornarPorcentajeAvanceDesarrolloEnPrueba(i)">{{retornarPorcentajeAvanceDesarrolloEnPrueba(i)}}%</div>
+                        <div class="progress-bar bg-success" [style.width.%]="retornarPorcentajeAvanceDesarrolloCompletadas(i)">{{retornarPorcentajeAvanceDesarrolloCompletadas(i)}}%</div>
+                      </div>
+                    </div>
+
+                    <div class="barraAvance">
+                      <strong><p class="letrasSegundoNivel">Testing</p></strong>
+                      <div id="container-barras" class="progress" style="max-width: 80%;">
+                        <div class="progress-bar bg-danger" [style.width.%]="retornarPorcentajeAvanceTestingNoIniciadas(i)">{{retornarPorcentajeAvanceTestingNoIniciadas(i)}}%</div>
+                        <div class="progress-bar bg-warning progress-bar-stripped" [style.width.%]="retornarPorcentajeAvanceTestingEnProgreso(i)">{{retornarPorcentajeAvanceTestingEnProgreso(i)}}%</div>
+                        <div class="progress-bar light-green" [style.width.%]="retornarPorcentajeAvanceTestingEnPrueba(i)">{{retornarPorcentajeAvanceTestingEnPrueba(i)}}%</div>
+                        <div class="progress-bar bg-success" [style.width.%]="retornarPorcentajeAvanceTestingCompletadas(i)">{{retornarPorcentajeAvanceTestingCompletadas(i)}}%</div>
+                      </div>
                     </div>
                   </div>
               </mat-expansion-panel>
