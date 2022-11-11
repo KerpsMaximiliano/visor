@@ -21,10 +21,13 @@
 .lista_proyectos {
     overflow-y: scroll;
     border: 1px solid black;
-    height: 15vw;
+    height: 22vw;
 }
 .mis_proyectos {
     margin: 12px 0;
+}
+.tabla_lista_proyectos{
+    width: 100%;
 }
 
 #text_checkbox{

@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { InicioEstadoProyectoComponent } from '../../../componentes/inicio-estado-proyecto/inicio-estado-proyecto.component';
+import { InicioEstadoProyectoComponent } from 'src/app/componentes/inicio/inicio-estado-proyecto/inicio-estado-proyecto.component';
 import { FiltroService } from '../../../services/i2t/filtro.service';
 
 @Component({
@@ -47,8 +47,8 @@ export class FiltroProyectosComponent implements OnInit {
   cancelarBusqueda(): void {
     if (this.result.limpiar == false) {
       this.result.nombre = this.data.nombre;
-      this.result.numero = this.data.apellido;
-      this.result.asignadoA = this.data.funcion;
+      this.result.numero = this.data.numero;
+      this.result.asignadoA = this.data.asignadoA;
       this.result.cliente = this.data.cliente;
       this.result.filtrar = false;
       this.dialogRef.close(this.result);
@@ -59,9 +59,9 @@ export class FiltroProyectosComponent implements OnInit {
       this.result.asignadoA = '';
       this.result.limpiar = true;
       this.result.filtrar = true;
-      this.result.misProyectos = false
-      this.result.proyectosAbiertos = false
-      this.dialogRef.close(this.result);
+      this.result.misProyectos = true;
+      this.result.proyectosAbiertos = true;
+      this.dialogRef.close(this.result);  
     }
   }
 
@@ -89,6 +89,14 @@ export class FiltroProyectosComponent implements OnInit {
       this._filtroService.updateFiltro(this.save_search_id, encodedData).subscribe((rsp: any) => {
         console.log('Filtro actualizado: ', rsp);
       });
+    }
+  }
+
+  
+  validarTecla(e: KeyboardEvent){
+    if(e.key == "Enter"){
+      this.guardarFiltro();
+      this.dialogRef.close(this.result);
     }
   }
 }

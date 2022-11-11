@@ -1,6 +1,12 @@
-h1, h3{
+h1{
+    text-align: center;
+    padding-top: 1rem;
+}
+
+h3{
     text-align: center;
 }
+
 .mat_divider{
     margin-bottom: 2px;
     height: 1px;
@@ -16,9 +22,13 @@ h1, h3{
 	margin-left: 0.5em;
 	margin-right: 0.5em;
     float: right;
-    
 }
 
 span{
     padding-right: 0.5em;
+}
+
+#topbar{
+    background-color: #D35400;
+    color: white;
 }

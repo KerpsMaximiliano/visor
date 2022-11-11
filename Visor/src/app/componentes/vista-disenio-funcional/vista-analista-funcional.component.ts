@@ -1,13 +1,13 @@
-import { Component, Input, OnInit, SimpleChange } from '@angular/core';
-import { Tarea } from 'src/app/interfaces/tarea';
+import { Component, OnInit, Input, SimpleChange } from '@angular/core';
 import { TareaService } from 'src/app/services/i2t/tarea.service';
+import { Tarea } from 'src/app/interfaces/tarea';
 
 @Component({
-  selector: 'app-vista-disenio-tecnico',
-  templateUrl: './vista-disenio-tecnico.component.html',
-  styleUrls: ['./vista-disenio-tecnico.component.css']
+  selector: 'app-vista-analista-funcional',
+  templateUrl: './vista-analista-funcional.component.html',
+  styleUrls: ['./vista-analista-funcional.component.css']
 })
-export class VistaDisenioTecnicoComponent implements OnInit{
+export class VistaAnalistaFuncionalComponent implements OnInit {
 
   proyectoId: any;
   proyectoNombre?: string;
@@ -31,29 +31,9 @@ export class VistaDisenioTecnicoComponent implements OnInit{
   @Input() tareasSP: any = [];
 
   ngOnInit(): void {
-      if(this.tareasSP.length > 0){
-        this.noHayProyecto= false;
-        this.organizarTareas();
-        this.cargarTareas();
-        this.poseeTareas();
-        if (!this.noHayProyecto) {
-          this.setearBarraProgreso();
-          this.ordenarListas();
-        }
-      }
-      else{
-        console.log(this.tareasSP)
-        this.noHayProyecto = true;
-      }
-      
-  } 
-
-  ngOnChanges(changes: SimpleChange){
-    
-    this.tareasOrg = [];
-    if (this.tareasSP.length > 0) {
-      this.noHayProyecto = false;
-      console.log("Entra change")
+    if(this.tareasSP.length > 0){
+      console.log(this.tareasSP)
+      this.noHayProyecto= false;
       this.organizarTareas();
       this.cargarTareas();
       this.poseeTareas();
@@ -62,9 +42,10 @@ export class VistaDisenioTecnicoComponent implements OnInit{
         this.ordenarListas();
       }
     }
-    this.tareasOrg=[];
-
-    this._tareaService.enviarCambio();
+    else{
+      console.log(this.tareasSP)
+      this.noHayProyecto = true;
+    }
   }
 
   organizarTareas() {
@@ -90,6 +71,24 @@ export class VistaDisenioTecnicoComponent implements OnInit{
       })
     });
   };
+
+  ngOnChanges(changes: SimpleChange) {
+    this.tareasOrg = [];
+    if (this.tareasSP.length > 0) {
+      this.noHayProyecto = false;
+      console.log("Entra change")
+      this.organizarTareas();
+      console.log(this.tareasOrg);
+      this.cargarTareas();
+      this.poseeTareas();
+      if (!this.noHayProyecto) {
+        this.setearBarraProgreso();
+        this.ordenarListas();
+      }
+    }
+    this.tareasOrg=[];
+    this._tareaService.enviarCambio();
+  }
 
   calcularFecha(fecha: string) {
     if (fecha != null) {

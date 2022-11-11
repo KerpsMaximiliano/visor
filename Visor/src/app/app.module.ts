@@ -15,19 +15,19 @@ import { MyMaterialModule } from './material';
 // Componentes
 import { LoginModule } from './componentes/login/login.module';
 import { RecuperarcontraseniaModule } from './componentes/recuperar-contrasenia/recuperar-contrasenia.module';
-import { InicioEstadoModule } from './componentes/inicio-estado-proyecto/inicio-estado.module';
+import { InicioEstadoModule } from './componentes/inicio/inicio-estado-proyecto/inicio-estado.module';
 import { HttpClientModule } from '@angular/common/http';
 import { RestService } from './services/i2t/rest.service';
 import { Config } from './services/i2t/config.service';
 import { SnackbarService } from './services/util/snackbar.service';
 import { ModalcontraseniaComponent } from './shared/modal-contrasenia/modalcontrasenia.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
 import { PermisosRolesModule } from './components/configuraciones/permisos-roles/permisos-roles.module';
 import { RolesUsuariosModule } from './components/configuraciones/roles-usuarios/roles-usuarios.module';
 import { ConfiguracionesComponent } from './components/configuraciones/configuraciones-main/configuraciones-main.component';
 import { MatConfirmDialogComponent } from './shared/mat-confirm-dialog/mat-confirm-dialog.component';
 import { VistaDisenioTecnicoModule } from './componentes/vista-disenio-tecnico/vista-disenio-tecnico.module';
+import { VistaDisenioFuncionalModule } from './componentes/vista-disenio-funcional/vista-disenio-funcional.module';
 import { ModalFiltroComponent } from './componentes/inicio/modal-filtro/modal-filtro.component';
 import { InicioMainComponent } from './componentes/inicio/inicio-main/inicio-main.component';
 import { InicioDisponibilidadColaboradoresModule } from './componentes/inicio/inicio-disponibilidad-colaboradores/inicio-disponibilidad-colaboradores.module';
@@ -45,6 +45,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ControlActividadModule } from 'src/app/componentes/control-actividad/control-actividad.module';
 import { SharedModule } from './shared/shared.module';
 import { LoginService } from './services/i2t/login.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @NgModule({
@@ -68,6 +69,7 @@ import { LoginService } from './services/i2t/login.service';
     InicioEstadoModule,
     HttpClientModule,
     VistaDisenioTecnicoModule,
+    VistaDisenioFuncionalModule,
     InicioDisponibilidadColaboradoresModule,
     FormsModule,
     VistaDesarrolladorModule,

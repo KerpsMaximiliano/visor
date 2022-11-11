@@ -56,12 +56,12 @@ export class ModalActividadComponent implements OnInit {
     this._actividadService.enviarIndexObservable.subscribe(response => {
       this.index = response;
     })
-    console.log('index modal fgfg',this.index);
+    //console.log('index modal fgfg',this.index);
     
     this._actividadService.enviarIdActividadObservable.subscribe(response => {
       this.id = response;
     })
-    console.log('id AAAAA',this.id);
+    
   }
 
   closeDialog(){
@@ -156,7 +156,7 @@ agregarActividadSuite(){
 
 
 
-console.log('ACTIVIDAD SSSS FECHAAA',actividadS.fecha)
+//console.log('ACTIVIDAD SSSS FECHAAA',actividadS.fecha)
   this._actividadService.form.reset()
   
    
@@ -178,21 +178,19 @@ console.log('ACTIVIDAD SSSS FECHAAA',actividadS.fecha)
 
   recibirIndex(){
     this.index = this._actividadService.index;
-    console.log("RECIBE INDEX",this.index);
+    //console.log("RECIBE INDEX",this.index);
   }
 
   recibirIdActividad(){
     this.id = this._actividadService.id;
-    console.log("RECIBE ID",this.id);
+    //console.log("RECIBE ID",this.id);
   }
   editarActividad(){
     
-    console.log('cantidad',this._actividadService.listActividades.length);
-    console.log('indexxxx',this.index);
+    
     if(this.index != undefined){
       let aux: number = this.index;
-      console.log('la actividad',this._actividadService.listActividades[aux])
-      console.log('el form',this.form)
+      
 
       const actividad: Actividad = {
         //position: this._actividadService.listActividades.length + 1 ,
@@ -204,8 +202,8 @@ console.log('ACTIVIDAD SSSS FECHAAA',actividadS.fecha)
         tareas: this.form.value.tareaAsociada,
         toggle: this.form.value.toggle
     } 
-    console.log('descripcion',actividad)
-    console.log('la Actividad Seteada',actividad);
+    //console.log('descripcion',actividad)
+    //console.log('la Actividad Seteada',actividad);
 
     if (actividad.descripcion == null || actividad.descripcion.length < 1){
       actividad.descripcion = ['Esta actividad no tiene descripción'];
@@ -231,8 +229,8 @@ editarActividadSuite(){
     //const fechaAObject = new Date(fechaA);
     //console.log("fechaObject: ",fechaAObject);
 
-    console.log('la actividad',this._actividadService.listActividades[aux])
-    console.log('el form',this.form)
+    //console.log('la actividad',this._actividadService.listActividades[aux])
+    //console.log('el form',this.form)
     this.recibirIdActividad();
     const actividadS: ActividadSuite = {
       //position: this._actividadService.listActividades.length + 1 ,
@@ -241,6 +239,7 @@ editarActividadSuite(){
     //children: this._actividadService.form.value.children,  
     asunto_actividad: this._actividadService.form.value.asunto,
     nombre_tarea: this._actividadService.form.value.tareaAsociada,
+    
     descripcion: this._actividadService.form.value.descripcion,
     par_modo: 'U',
     titulo: this._actividadService.form.value.asunto,
@@ -250,7 +249,7 @@ editarActividadSuite(){
     asignado_a: '',
     id_tarea: 'a0287b5d-14c5-11ed-965a-00505601020a'
   } 
-  console.log("fecha modal",actividadS.fecha);
+  //console.log("fecha modal",actividadS.fecha);
 
   if (actividadS.descripcion == null || actividadS.descripcion.length < 1){
     actividadS.descripcion = 'Esta actividad no tiene descripción';

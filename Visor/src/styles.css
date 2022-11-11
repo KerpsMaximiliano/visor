@@ -2,14 +2,14 @@
 
 @import '~bootstrap/dist/css/bootstrap.min.css';
 
-html, body { height: 100%; }
+html, body { height: 100%;}
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .container {
-    margin-left: 100px;
-    margin-right: 100px;
-    margin-top: 5px;
+    margin-top: 5px; 
+    margin-left: 3%;   
 }
+
 body {
     background-color: #f5f5f5;
 }
