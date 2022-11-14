@@ -321,7 +321,7 @@ export class ActividadComponent implements OnInit {
     let month:number= parseInt(fAux.split("-")[1]);
     let year: number = parseInt(fAux.split("-")[0]);
 
-    const fechaA:string = year+'-'+month+'-'+(day+1);
+    const fechaA:string = year+'-'+month+'-'+(day);
     const fecha =new Date(fechaA);
     //console.log("prueba fecha",fecha) ;   
     
