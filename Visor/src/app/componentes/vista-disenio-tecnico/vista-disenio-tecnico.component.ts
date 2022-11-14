@@ -37,6 +37,9 @@ export class VistaDisenioTecnicoComponent implements OnInit{
         this.cargarTareas();
         this.poseeTareas();
         if (!this.noHayProyecto) {
+          this.horasNoIniciadas = 0;
+          this.horasEnProgreso = 0;
+          this.horasCompleatadas = 0;
           this.setearBarraProgreso();
           this.ordenarListas();
         }
@@ -59,6 +62,9 @@ export class VistaDisenioTecnicoComponent implements OnInit{
       this.cargarTareas();
       this.poseeTareas();
       if (!this.noHayProyecto) {
+        this.horasNoIniciadas = 0;
+        this.horasEnProgreso = 0;
+        this.horasCompleatadas = 0;
         this.setearBarraProgreso();
         this.ordenarListas();
       }

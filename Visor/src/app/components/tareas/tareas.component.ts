@@ -157,7 +157,7 @@ export class TareasComponent implements OnInit {
     this._tareaService.getTareasDeProyecto(this.idProyectoSeleccionado).pipe(
       finalize(() => {
         this.listaTareasService = this.listaTareasService.dataset;
-        if(this.nombreVistaSeleccionada == 'Analsita Técnico'){ //Pregunto si hay una vista seleccionada
+        if(this.nombreVistaSeleccionada == 'Analista Técnico'){ //Pregunto si hay una vista seleccionada
           this.tareasFiltradasPorVista=[];
           //this.setSubtituloProyecto("X",this.idVistaSeleccionada);
           this.listaTareasService.forEach( (tarea:any) => {

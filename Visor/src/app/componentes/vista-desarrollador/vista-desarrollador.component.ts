@@ -59,6 +59,10 @@ export class VistaDesarrolladorComponent implements OnInit {
       this.cargarTareas();
       this.poseeTareas();
       if (!this.noHayProyecto) {
+        this.horasNoIniciadas = 0;
+        this.horasEnProgreso = 0;
+        this.horasEnPrueba = 0;
+        this.horasCompleatadas = 0;
         this.setearBarraProgreso();
         this.ordenarListas();
       }
@@ -79,6 +83,10 @@ export class VistaDesarrolladorComponent implements OnInit {
       this.cargarTareas();
       this.poseeTareas();
       if (!this.noHayProyecto) {
+        this.horasNoIniciadas = 0;
+        this.horasEnProgreso = 0;
+        this.horasEnPrueba = 0;
+        this.horasCompleatadas = 0;
         this.setearBarraProgreso();
         this.ordenarListas();
       }
