@@ -63,6 +63,9 @@ export class InicioEstadoProyectoComponent implements OnInit {
   orden = ['Alfabetico', 'Tareas atrasadas', 'Tareas a tiempo'];
   ordenSeleccion = 'Alfabetico';
 
+  //Variables barras.
+  visibilidadMensajeFuncional: boolean = true;
+
 
   constructor(private _dataProyecto: ProyectoDataService, private _dialog: MatDialog, private _filtroService: FiltroService) {
   }

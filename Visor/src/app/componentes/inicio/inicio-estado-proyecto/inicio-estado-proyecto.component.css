@@ -300,113 +300,7 @@ max-height: 30%;
 
 #nombre{
   font-size: 15px;
-}
-
-#barraVerde{
-  background-color: #008000;
-  width: 25%;
-  text-align: center;
-  color: white;
-  border: solid 0.5px black;
-  font-size: 15px;
-  border-radius: 3px;
-  padding-top: 10px;
-  height: 10%;
-}
-
-#barraRoja{
-  background-color: #FF0000;
-  width: 25%;
-  text-align: center;
-  color: white;
-  border: solid 0.5px black;
-  font-size: 15px;
-  border-radius: 3px;
-  padding-top: 10px;
-  height: 10%;
-}
-
-#barraAmarilla{
-  background-color: #FFFF00;
-  width: 25%;
-  text-align: center;
-  border: solid 0.5px black;
-  font-size: 15px;
-  border-radius: 3px;
-  padding-top: 10px;
-  height: 10%;
-}
-
-#barraEnPrueba{
-  background-color: #00FF00;
-  width: 25%;
-  text-align: center;
-  color: black;
-  border: solid 0.5px black;
-  font-size: 15px;
-  border-radius: 3px;
-  padding-top: 10px;
-  height: 10%;
 } 
-
-#espacio{
-  padding-right: 12px;
-}
-
-#espacioTecnico{
-  padding-right: 20px;
-}
-
-#espacioDesarrollo{
-  padding-right: 44px;
-}
-
-#espacioTesting{
-  padding-right: 59px;
-}
-
-.barraAreaVerde{
-  background-color: #008000;
-  width: 20%;
-  text-align: center;
-  color: white;
-  border: solid 0.5px black;
-  font-size: 15px;
-  border-radius: 3px;
-  height: 10%;
-}
-
-.barraAreaRoja{
-  background-color: #FF0000;
-  width: 20%;
-  text-align: center;
-  color: white;
-  border: solid 0.5px black;
-  font-size: 15px;
-  border-radius: 3px;
-  height: 10%;
-}
-
-.barraAreaAmarilla{
-  background-color: #FFFF00;
-  width: 20%;
-  text-align: center;
-  border: solid 0.5px black;
-  font-size: 15px;
-  border-radius: 3px;
-  height: 10%;
-}
-
-.barraAreaEnPrueba{
-  background-color: #00FF00;
-  width: 20%;
-  text-align: center;
-  color: black;
-  border: solid 0.5px black;
-  font-size: 15px;
-  border-radius: 3px;
-  height: 10%;
-}
 
 #container-indicadores{
   height: 10%;
@@ -414,16 +308,11 @@ max-height: 30%;
 }
 
 .progress{
-  font-size: 10px;
+  font-size: 14px;
+  font-style: monospace;
+  height: 26px;
 }
 
-#barraGeneral{
-  margin-left: 17%;
-}
-
-#container-barras{
-  margin-left: 9%;
-}
 
 
 

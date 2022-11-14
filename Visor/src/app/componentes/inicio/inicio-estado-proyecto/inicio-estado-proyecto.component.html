@@ -69,7 +69,7 @@
       <ng-container matColumnDef="expand" class="columna">
       <th mat-header-cell *matHeaderCellDef class="tituloColumna"></th>
       <td mat-cell *matCellDef="let element">
-        <a mat-button href="javascript:void()" (click)="element.isExpanded = !element.isExpanded">Expandir</a>
+        <a mat-button href="javascript:void()" (click)="element.isExpanded = !element.isExpanded"><mat-icon>keyboard_arrow_down</mat-icon></a>
       </td>
     </ng-container>
 
@@ -83,10 +83,10 @@
           </div>
 
           <div id="barraGeneral">
-            <div class="progress" style="max-width: 80%;" >
+            <div class="progress" style="max-width: 100%;" >
               <div class="progress-bar bg-danger" [style.width.%]="retornarPorcentajeNoIniciadas(i)">{{retornarPorcentajeNoIniciadas(i)}}%</div>
               <div class="progress-bar bg-warning progress-bar-stripped" [style.width.%]="retornarPorcentajeEnProgreso(i)">{{retornarPorcentajeEnProgreso(i)}}%</div>
-              <div class="progress-bar light-green" [style.width.%]="retornarPorcentajeEnPrueba(i)">{{retornarPorcentajeEnPrueba(i)}}%</div>
+              <div class="progress-bar light-green" style="background-color: #00FF00;" [style.width.%]="retornarPorcentajeEnPrueba(i)">{{retornarPorcentajeEnPrueba(i)}}%</div>
               <div class="progress-bar bg-success" [style.width.%]="retornarPorcentajeCompletadas(i)">{{retornarPorcentajeCompletadas(i)}}%</div>
             </div>  
           </div>
@@ -107,40 +107,40 @@
                   <div class="containerBarrasArea">
                     <div class="barraAvance">
                       <strong><p class="letrasSegundoNivel">Diseño funcional</p></strong>
-                      <div id="container-barras" class="progress" style="max-width: 80%;" >
+                      <div id="container-barras" class="progress" style="max-width: 100%;">
                         <div class="progress-bar bg-danger" [style.width.%]="retornarPorcentajeAvanceFuncionalNoIniciadas(i)">{{retornarPorcentajeAvanceFuncionalNoIniciadas(i)}}%</div>
                         <div class="progress-bar bg-warning progress-bar-stripped" [style.width.%]="retornarPorcentajeAvanceFuncionalEnProgreso(i)">{{retornarPorcentajeAvanceFuncionalEnProgreso(i)}}%</div>
-                        <div class="progress-bar light-green" [style.width.%]="retornarPorcentajeAvanceFuncionalEnPrueba(i)">{{retornarPorcentajeAvanceFuncionalEnPrueba(i)}}%</div>
+                        <div class="progress-bar light-green" style="background-color: #00FF00;" [style.width.%]="retornarPorcentajeAvanceFuncionalEnPrueba(i)">{{retornarPorcentajeAvanceFuncionalEnPrueba(i)}}%</div>
                         <div class="progress-bar bg-success" [style.width.%]="retornarPorcentajeAvanceFuncionalCompletadas(i)">{{retornarPorcentajeAvanceFuncionalCompletadas(i)}}%</div>
                       </div>
                     </div>
 
                     <div class="barraAvance">
                       <strong><p class="letrasSegundoNivel">Diseño técnico</p></strong>
-                      <div id="container-barras" class="progress" style="max-width: 80%;" >
+                      <div id="container-barras" class="progress" style="max-width: 100%;" >
                         <div class="progress-bar bg-danger" [style.width.%]="retornarPorcentajeAvanceTecnicoNoIniciadas(i)">{{retornarPorcentajeAvanceTecnicoNoIniciadas(i)}}%</div>
                         <div class="progress-bar bg-warning progress-bar-stripped" [style.width.%]="retornarPorcentajeAvanceTecnicoEnProgreso(i)">{{retornarPorcentajeAvanceTecnicoEnProgreso(i)}}%</div>
-                        <div class="progress-bar light-green" [style.width.%]="retornarPorcentajeAvanceTecnicoEnPrueba(i)">{{retornarPorcentajeAvanceTecnicoEnPrueba(i)}}%</div>
+                        <div class="progress-bar light-green" style="background-color: #00FF00;" [style.width.%]="retornarPorcentajeAvanceTecnicoEnPrueba(i)">{{retornarPorcentajeAvanceTecnicoEnPrueba(i)}}%</div>
                         <div class="progress-bar bg-success" [style.width.%]="retornarPorcentajeAvanceTecnicoCompletadas(i)">{{retornarPorcentajeAvanceTecnicoCompletadas(i)}}%</div>
                       </div>
                     </div>
                     
                     <div class="barraAvance">
                       <strong><p class="letrasSegundoNivel">Desarrollo</p></strong>
-                      <div id="container-barras" class="progress" style="max-width: 80%;" >
+                      <div id="container-barras" class="progress" style="max-width: 100%;" >
                         <div class="progress-bar bg-danger" [style.width.%]="retornarPorcentajeAvanceDesarrolloNoIniciadas(i)">{{retornarPorcentajeAvanceDesarrolloNoIniciadas(i)}}%</div>
                         <div class="progress-bar bg-warning progress-bar-stripped" [style.width.%]="retornarPorcentajeAvanceDesarrolloEnProgreso(i)">{{retornarPorcentajeAvanceDesarrolloEnProgreso(i)}}%</div>
-                        <div class="progress-bar light-green" [style.width.%]="retornarPorcentajeAvanceDesarrolloEnPrueba(i)">{{retornarPorcentajeAvanceDesarrolloEnPrueba(i)}}%</div>
+                        <div class="progress-bar light-green" style="background-color: #00FF00;" [style.width.%]="retornarPorcentajeAvanceDesarrolloEnPrueba(i)">{{retornarPorcentajeAvanceDesarrolloEnPrueba(i)}}%</div>
                         <div class="progress-bar bg-success" [style.width.%]="retornarPorcentajeAvanceDesarrolloCompletadas(i)">{{retornarPorcentajeAvanceDesarrolloCompletadas(i)}}%</div>
                       </div>
                     </div>
 
                     <div class="barraAvance">
                       <strong><p class="letrasSegundoNivel">Testing</p></strong>
-                      <div id="container-barras" class="progress" style="max-width: 80%;">
+                      <div id="container-barras" class="progress" style="max-width: 100%;">
                         <div class="progress-bar bg-danger" [style.width.%]="retornarPorcentajeAvanceTestingNoIniciadas(i)">{{retornarPorcentajeAvanceTestingNoIniciadas(i)}}%</div>
                         <div class="progress-bar bg-warning progress-bar-stripped" [style.width.%]="retornarPorcentajeAvanceTestingEnProgreso(i)">{{retornarPorcentajeAvanceTestingEnProgreso(i)}}%</div>
-                        <div class="progress-bar light-green" [style.width.%]="retornarPorcentajeAvanceTestingEnPrueba(i)">{{retornarPorcentajeAvanceTestingEnPrueba(i)}}%</div>
+                        <div class="progress-bar light-green" style="background-color: #00FF00;" [style.width.%]="retornarPorcentajeAvanceTestingEnPrueba(i)">{{retornarPorcentajeAvanceTestingEnPrueba(i)}}%</div>
                         <div class="progress-bar bg-success" [style.width.%]="retornarPorcentajeAvanceTestingCompletadas(i)">{{retornarPorcentajeAvanceTestingCompletadas(i)}}%</div>
                       </div>
                     </div>
