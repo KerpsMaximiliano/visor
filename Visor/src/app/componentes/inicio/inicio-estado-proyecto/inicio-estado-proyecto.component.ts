@@ -102,6 +102,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
         this.verificarCheckBoxs();
         //Filtra proyectos.
         this.prepararFiltro();
+        this.verificarCerosFuncional();
         }
       });
   });
@@ -144,7 +145,8 @@ export class InicioEstadoProyectoComponent implements OnInit {
             porcentajeHPEnPruebaTesting: 0,
             porcentajeHPNoIniciadasTesting: 0,
             porcentajeHPCompletadasTesting: 0,
-            porcentajeHPEnProgresoTesting: 0
+            porcentajeHPEnProgresoTesting: 0,
+            cerosEstadoFuncional: false
           }
           this.proyectosTotalesArray.push(objetoTemporal);
           
@@ -374,7 +376,8 @@ export class InicioEstadoProyectoComponent implements OnInit {
             porcentajeHPEnPruebaTesting: 0,
             porcentajeHPNoIniciadasTesting: 0,
             porcentajeHPCompletadasTesting: 0,
-            porcentajeHPEnProgresoTesting: 0
+            porcentajeHPEnProgresoTesting: 0,
+            cerosEstadoFuncional: false
           }
 
           this.proyectosAbiertosArray.push(objetoTemporal);
@@ -958,5 +961,20 @@ export class InicioEstadoProyectoComponent implements OnInit {
         });
       }
       this.data = new MatTableDataSource(this.proyectos);
+    }
+
+    /**
+     * Método que verifica si las variables contienen ceros para saber si mostrar las barras en la vista.
+     */
+    verificarCerosFuncional(){
+      for(let i = 0;i<this.proyectos.length;i++){
+        if(this.proyectos[i].porcentajeHPCompletadasDisenioFuncional == 0 && this.proyectos[i].porcentajeHPEnProgresoDisenioFuncional == 0 && this.proyectos[i].porcentajeHPEnPruebaDisenioFuncional == 0 && this.proyectos[i].porcentajeHPNoIniciadasDisenioFuncional == 0){
+          this.proyectos[i].cerosEstadoFuncional = true;
+        }
+        else{
+          this.proyectos[i].cerosEstadoFuncional = false;
+        }
+        console.log(this.proyectos[i].cerosEstadoFuncional)
+      }
     }
 }

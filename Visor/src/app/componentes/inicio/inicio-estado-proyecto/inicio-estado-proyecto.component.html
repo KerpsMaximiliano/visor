@@ -84,10 +84,10 @@
 
           <div id="barraGeneral">
             <div class="progress" style="max-width: 100%;" >
-              <div class="progress-bar bg-danger" [style.width.%]="retornarPorcentajeNoIniciadas(i)">{{retornarPorcentajeNoIniciadas(i)}}%</div>
-              <div class="progress-bar bg-warning progress-bar-stripped" [style.width.%]="retornarPorcentajeEnProgreso(i)">{{retornarPorcentajeEnProgreso(i)}}%</div>
-              <div class="progress-bar light-green" style="background-color: #00FF00;" [style.width.%]="retornarPorcentajeEnPrueba(i)">{{retornarPorcentajeEnPrueba(i)}}%</div>
-              <div class="progress-bar bg-success" [style.width.%]="retornarPorcentajeCompletadas(i)">{{retornarPorcentajeCompletadas(i)}}%</div>
+              <div [ngClass]="{'noVisible': this.proyectos[i].porcentajeHPNoIniciadas == 0, 'progress-bar bg-danger': this.proyectos[i].porcentajeHPNoIniciadas}" [style.width.%]="retornarPorcentajeNoIniciadas(i)+4">{{retornarPorcentajeNoIniciadas(i)}}%</div>
+              <div [ngClass]="{'noVisible': this.proyectos[i].porcentajeHPEnProgreso == 0, 'progress-bar bg-warning progress-bar-stripped': this.proyectos[i].porcentajeHPEnProgreso}" [style.width.%]="retornarPorcentajeEnProgreso(i)+4">{{retornarPorcentajeEnProgreso(i)}}%</div>
+              <div [ngClass]="{'noVisible': this.proyectos[i].porcentajeHPEnPrueba == 0, 'progress-bar light-green': this.proyectos[i].porcentajeHPEnPrueba}" style="background-color: #00FF00;" [style.width.%]="retornarPorcentajeEnPrueba(i)+4">{{retornarPorcentajeEnPrueba(i)}}%</div>
+              <div [ngClass]="{'noVisible': this.proyectos[i].porcentajeHPCompletadas == 0, 'progress-bar bg-success': this.proyectos[i].porcentajeHPCompletadas}" [style.width.%]="retornarPorcentajeCompletadas(i)+4">{{retornarPorcentajeCompletadas(i)}}%</div>
             </div>  
           </div>
           <div id="vacio">
@@ -107,41 +107,42 @@
                   <div class="containerBarrasArea">
                     <div class="barraAvance">
                       <strong><p class="letrasSegundoNivel">Diseño funcional</p></strong>
-                      <div id="container-barras" class="progress" style="max-width: 100%;">
-                        <div class="progress-bar bg-danger" [style.width.%]="retornarPorcentajeAvanceFuncionalNoIniciadas(i)">{{retornarPorcentajeAvanceFuncionalNoIniciadas(i)}}%</div>
-                        <div class="progress-bar bg-warning progress-bar-stripped" [style.width.%]="retornarPorcentajeAvanceFuncionalEnProgreso(i)">{{retornarPorcentajeAvanceFuncionalEnProgreso(i)}}%</div>
-                        <div class="progress-bar light-green" style="background-color: #00FF00;" [style.width.%]="retornarPorcentajeAvanceFuncionalEnPrueba(i)">{{retornarPorcentajeAvanceFuncionalEnPrueba(i)}}%</div>
-                        <div class="progress-bar bg-success" [style.width.%]="retornarPorcentajeAvanceFuncionalCompletadas(i)">{{retornarPorcentajeAvanceFuncionalCompletadas(i)}}%</div>
+                      <div [ngClass]="{'noVisible': this.proyectos[i].cerosEstadoFuncional}" id="container-barras" class="progress" style="max-width: 100%;">
+                        <div [ngClass]="{'noVisible': this.proyectos[i].porcentajeHPNoIniciadasDisenioFuncional == 0, 'progress-bar bg-danger': this.proyectos[i].porcentajeHPNoIniciadasDisenioFuncional}" [style.width.%]="retornarPorcentajeAvanceFuncionalNoIniciadas(i)+4">{{retornarPorcentajeAvanceFuncionalNoIniciadas(i)}}%</div>
+                        <div [ngClass]="{'noVisible': this.proyectos[i].porcentajeHPEnProgresoDisenioFuncional == 0, 'progress-bar bg-warning progress-bar-stripped': this.proyectos[i].porcentajeHPEnProgresoDisenioFuncional}" [style.width.%]="retornarPorcentajeAvanceFuncionalEnProgreso(i)+4">{{retornarPorcentajeAvanceFuncionalEnProgreso(i)}}%</div>
+                        <div [ngClass]="{'noVisible': this.proyectos[i].porcentajeHPEnPruebaDisenioFuncional == 0, 'progress-bar light-green': this.proyectos[i].porcentajeHPEnPruebaDisenioFuncional}" style="background-color: #00FF00;" [style.width.%]="retornarPorcentajeAvanceFuncionalEnPrueba(i)+4">{{retornarPorcentajeAvanceFuncionalEnPrueba(i)}}%</div>
+                        <div [ngClass]="{'noVisible': this.proyectos[i].porcentajeHPCompletadasDisenioFuncional == 0, 'progress-bar bg-success': this.proyectos[i].porcentajeHPCompletadasDisenioFuncional}" [style.width.%]="retornarPorcentajeAvanceFuncionalCompletadas(i)+4">{{retornarPorcentajeAvanceFuncionalCompletadas(i)}}%</div>
                       </div>
+                      <div [ngClass]="{'noVisible': !this.proyectos[i].cerosEstadoFuncional, 'mensajeError': this.proyectos[i].cerosEstadoFuncional}"><p>No se han detectado tareas de este área</p></div>
                     </div>
 
                     <div class="barraAvance">
                       <strong><p class="letrasSegundoNivel">Diseño técnico</p></strong>
                       <div id="container-barras" class="progress" style="max-width: 100%;" >
-                        <div class="progress-bar bg-danger" [style.width.%]="retornarPorcentajeAvanceTecnicoNoIniciadas(i)">{{retornarPorcentajeAvanceTecnicoNoIniciadas(i)}}%</div>
-                        <div class="progress-bar bg-warning progress-bar-stripped" [style.width.%]="retornarPorcentajeAvanceTecnicoEnProgreso(i)">{{retornarPorcentajeAvanceTecnicoEnProgreso(i)}}%</div>
-                        <div class="progress-bar light-green" style="background-color: #00FF00;" [style.width.%]="retornarPorcentajeAvanceTecnicoEnPrueba(i)">{{retornarPorcentajeAvanceTecnicoEnPrueba(i)}}%</div>
-                        <div class="progress-bar bg-success" [style.width.%]="retornarPorcentajeAvanceTecnicoCompletadas(i)">{{retornarPorcentajeAvanceTecnicoCompletadas(i)}}%</div>
+                        <div [ngClass]="{'noVisible': this.proyectos[i].porcentajeHPNoIniciadasDisenioTecnico == 0, 'progress-bar bg-danger': this.proyectos[i].porcentajeHPNoIniciadasDisenioTecnico}" [style.width.%]="retornarPorcentajeAvanceTecnicoNoIniciadas(i)+4">{{retornarPorcentajeAvanceTecnicoNoIniciadas(i)}}%</div>
+                        <div [ngClass]="{'noVisible': this.proyectos[i].porcentajeHPEnProgresoDisenioTecnico == 0, 'progress-bar bg-warning progress-bar-stripped': this.proyectos[i].porcentajeHPEnProgresoDisenioTecnico}" [style.width.%]="retornarPorcentajeAvanceTecnicoEnProgreso(i)+4">{{retornarPorcentajeAvanceTecnicoEnProgreso(i)}}%</div>
+                        <div [ngClass]="{'noVisible': this.proyectos[i].porcentajeHPEnPruebaDisenioTecnico == 0, 'progress-bar light-green': this.proyectos[i].porcentajeHPEnPruebaDisenioTecnico}" style="background-color: #00FF00;" [style.width.%]="retornarPorcentajeAvanceTecnicoEnPrueba(i)+4">{{retornarPorcentajeAvanceTecnicoEnPrueba(i)}}%</div>
+                        <div [ngClass]="{'noVisible': this.proyectos[i].porcentajeHPCompletadasDisenioTecnico == 0, 'progress-bar bg-success': this.proyectos[i].porcentajeHPCompletadasDisenioTecnico}" [style.width.%]="retornarPorcentajeAvanceTecnicoCompletadas(i)+4">{{retornarPorcentajeAvanceTecnicoCompletadas(i)}}%</div>
                       </div>
                     </div>
                     
                     <div class="barraAvance">
                       <strong><p class="letrasSegundoNivel">Desarrollo</p></strong>
                       <div id="container-barras" class="progress" style="max-width: 100%;" >
-                        <div class="progress-bar bg-danger" [style.width.%]="retornarPorcentajeAvanceDesarrolloNoIniciadas(i)">{{retornarPorcentajeAvanceDesarrolloNoIniciadas(i)}}%</div>
-                        <div class="progress-bar bg-warning progress-bar-stripped" [style.width.%]="retornarPorcentajeAvanceDesarrolloEnProgreso(i)">{{retornarPorcentajeAvanceDesarrolloEnProgreso(i)}}%</div>
-                        <div class="progress-bar light-green" style="background-color: #00FF00;" [style.width.%]="retornarPorcentajeAvanceDesarrolloEnPrueba(i)">{{retornarPorcentajeAvanceDesarrolloEnPrueba(i)}}%</div>
-                        <div class="progress-bar bg-success" [style.width.%]="retornarPorcentajeAvanceDesarrolloCompletadas(i)">{{retornarPorcentajeAvanceDesarrolloCompletadas(i)}}%</div>
+                        <div [ngClass]="{'noVisible': this.proyectos[i].porcentajeHPNoIniciadasDesarrollo == 0, 'progress-bar bg-danger': this.proyectos[i].porcentajeHPNoIniciadasDesarrollo}" [style.width.%]="retornarPorcentajeAvanceDesarrolloNoIniciadas(i)+4">{{retornarPorcentajeAvanceDesarrolloNoIniciadas(i)}}%</div>
+                        <div [ngClass]="{'noVisible': this.proyectos[i].porcentajeHPEnProgresoDesarrollo == 0, 'progress-bar bg-warning progress-bar-stripped': this.proyectos[i].porcentajeHPEnProgresoDesarrollo}" [style.width.%]="retornarPorcentajeAvanceDesarrolloEnProgreso(i)+4">{{retornarPorcentajeAvanceDesarrolloEnProgreso(i)}}%</div>
+                        <div [ngClass]="{'noVisible': this.proyectos[i].porcentajeHPEnPruebaDesarrollo == 0, 'progress-bar light-green': this.proyectos[i].porcentajeHPEnPruebaDesarrollo}"class="progress-bar light-green" style="background-color: #00FF00;" [style.width.%]="retornarPorcentajeAvanceDesarrolloEnPrueba(i)+4">{{retornarPorcentajeAvanceDesarrolloEnPrueba(i)}}%</div>
+                        <div [ngClass]="{'noVisible': this.proyectos[i].porcentajeHPCompletadasDesarrollo == 0, 'progress-bar bg-success': this.proyectos[i].porcentajeHPCompletadasDesarrollo}" [style.width.%]="retornarPorcentajeAvanceDesarrolloCompletadas(i)+4">{{retornarPorcentajeAvanceDesarrolloCompletadas(i)}}%</div>
                       </div>
                     </div>
 
                     <div class="barraAvance">
                       <strong><p class="letrasSegundoNivel">Testing</p></strong>
                       <div id="container-barras" class="progress" style="max-width: 100%;">
-                        <div class="progress-bar bg-danger" [style.width.%]="retornarPorcentajeAvanceTestingNoIniciadas(i)">{{retornarPorcentajeAvanceTestingNoIniciadas(i)}}%</div>
-                        <div class="progress-bar bg-warning progress-bar-stripped" [style.width.%]="retornarPorcentajeAvanceTestingEnProgreso(i)">{{retornarPorcentajeAvanceTestingEnProgreso(i)}}%</div>
-                        <div class="progress-bar light-green" style="background-color: #00FF00;" [style.width.%]="retornarPorcentajeAvanceTestingEnPrueba(i)">{{retornarPorcentajeAvanceTestingEnPrueba(i)}}%</div>
-                        <div class="progress-bar bg-success" [style.width.%]="retornarPorcentajeAvanceTestingCompletadas(i)">{{retornarPorcentajeAvanceTestingCompletadas(i)}}%</div>
+                        <div [ngClass]="{'noVisible': this.proyectos[i].porcentajeHPNoIniciadasTesting == 0, 'progress-bar bg-danger': this.proyectos[i].porcentajeHPNoIniciadasTesting}" [style.width.%]="retornarPorcentajeAvanceTestingNoIniciadas(i)+4">{{retornarPorcentajeAvanceTestingNoIniciadas(i)}}%</div>
+                        <div [ngClass]="{'noVisible': this.proyectos[i].porcentajeHPEnProgresoTesting == 0, 'progress-bar bg-warning progress-bar-stripped': this.proyectos[i].porcentajeHPEnProgresoTesting}" [style.width.%]="retornarPorcentajeAvanceTestingEnProgreso(i)+4">{{retornarPorcentajeAvanceTestingEnProgreso(i)}}%</div>
+                        <div [ngClass]="{'noVisible': this.proyectos[i].porcentajeHPEnPruebaTesting == 0, 'progress-bar light-green': this.proyectos[i].porcentajeHPEnPruebaTesting}" style="background-color: #00FF00;" [style.width.%]="retornarPorcentajeAvanceTestingEnPrueba(i)+4">{{retornarPorcentajeAvanceTestingEnPrueba(i)}}%</div>
+                        <div [ngClass]="{'noVisible': this.proyectos[i].porcentajeHPCompletadasTesting == 0, 'progress-bar bg-success': this.proyectos[i].porcentajeHPCompletadasTesting}" [style.width.%]="retornarPorcentajeAvanceTestingCompletadas(i)+4">{{retornarPorcentajeAvanceTestingCompletadas(i)}}%</div>
                       </div>
                     </div>
                   </div>

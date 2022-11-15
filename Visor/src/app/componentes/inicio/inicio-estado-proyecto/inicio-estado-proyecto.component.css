@@ -177,7 +177,7 @@
 
 .letrasSegundoNivel{
   margin-top: 5px;
-  font-size: 12px;
+  font-size: 18px;
   text-align: center;
 }
 
@@ -264,7 +264,7 @@ font-size: 15px;
 
 .subtitulo{
 text-align: center;
-font-size: 15px;
+font-size: 18px;
 margin-top: 10px;
 }
 
@@ -279,11 +279,12 @@ max-height: 30%;
 
 #seccionAvanceArea p{
   padding-top: 8px;
-  font-size: 15px;
+  font-size: 18px;
+  text-align: center;
 }
 
 #tituloAvanceArea{
-  margin-left: 38%;
+  text-align: center;
 }
 
 .contenido{
@@ -292,6 +293,15 @@ max-height: 30%;
 
 #vacio{
   margin-bottom: 5px;
+}
+
+.mensajeError{
+  text-align: center;
+  color: #FF0000;
+}
+
+.mensajeError p{
+  font-size: 15px;
 }
 
 /*
