@@ -16,35 +16,17 @@ import { VistaDesarrolladorComponent } from './componentes/vista-desarrollador/v
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AuthGuard } from './guards/auth.guard';
 import { TareasComponent } from './components/tareas/tareas.component';
+import { SeccionDocumentosComponent } from './componentes/seccion-documentos/seccion-documentos.component';
 
 const routes: Routes = [
   {
     path: "",
     pathMatch: "full",
-    redirectTo: "login"
+    redirectTo: "documentos"
   },
   {
-    path: "login",
-    component: LoginComponent
-  },
-  {
-    path: "recuperar-contraseña",
-    component: RecuperarcontraseniaComponent
-  },
-  {
-    path: "dashboard",
-    canActivate: [AuthGuard],
-    component: DashboardComponent,
-    children:[
-      { path: 'inicio', component: InicioMainComponent },
-      { path: 'tareas', component: TareasComponent },
-      { path: 'configuraciones', component: ConfiguracionesComponent,
-        children: [
-        { path: 'roles-usuarios', component: RolesUsuariosComponent },
-        { path: 'permisos-roles', component: PermisosRolesComponent }
-    ] },
-    {path: 'tareas', component: TareasComponent}
-    ]
+    path: "documentos", 
+    component: SeccionDocumentosComponent
   }
 ];
 

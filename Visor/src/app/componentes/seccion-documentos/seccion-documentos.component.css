@@ -1,0 +1,38 @@
+/* All */
+
+#container-all{
+    margin: 1%;
+}
+
+/* Header */
+
+#container-header-top{
+    display: flex;
+}
+
+#container-header-bot{
+    display: flex;
+}
+
+#container-icon{
+    margin-left: 1%;
+}
+
+#iconCircle{
+    font-size: 41px;
+}
+
+#assignedButton{
+    margin-top: 0.25%;
+    margin-left: 2%;
+}
+
+#iconFilter{
+    font-size: 41px;
+    margin-left: 0.65%;
+}
+
+.menu-orden {
+    display: flex;
+    width: 170px;
+  }

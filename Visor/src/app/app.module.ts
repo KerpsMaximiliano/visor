@@ -46,6 +46,8 @@ import { ControlActividadModule } from 'src/app/componentes/control-actividad/co
 import { SharedModule } from './shared/shared.module';
 import { LoginService } from './services/i2t/login.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SeccionDocumentosComponent } from './componentes/seccion-documentos/seccion-documentos.component';
+import { SeccionDocumentosModule } from './componentes/seccion-documentos/seccion-documentos.module';
 
 
 @NgModule({
@@ -77,7 +79,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     DialogModule,
     ControlActividadModule,
     SharedModule,
-    RecuperarcontraseniaModule
+    RecuperarcontraseniaModule,
+    SeccionDocumentosModule
   ],
 
   //Proveedores agregados
