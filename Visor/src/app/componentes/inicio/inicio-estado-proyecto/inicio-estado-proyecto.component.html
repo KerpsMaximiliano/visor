@@ -98,6 +98,7 @@
                   <mat-panel-title id="tituloAvanceArea"> 
                     <div id="seccionAvanceArea">
                       <b><p class="subtitulo">Avance por área</p></b>
+                      <mat-icon id="iconoArea">keyboard_arrow_down</mat-icon>
                     </div> 
                   </mat-panel-title>
                   <mat-panel-description>
@@ -113,37 +114,40 @@
                         <div [ngClass]="{'noVisible': this.proyectos[i].porcentajeHPEnPruebaDisenioFuncional == 0, 'progress-bar light-green': this.proyectos[i].porcentajeHPEnPruebaDisenioFuncional}" style="background-color: #00FF00;" [style.width.%]="retornarPorcentajeAvanceFuncionalEnPrueba(i)+4">{{retornarPorcentajeAvanceFuncionalEnPrueba(i)}}%</div>
                         <div [ngClass]="{'noVisible': this.proyectos[i].porcentajeHPCompletadasDisenioFuncional == 0, 'progress-bar bg-success': this.proyectos[i].porcentajeHPCompletadasDisenioFuncional}" [style.width.%]="retornarPorcentajeAvanceFuncionalCompletadas(i)+4">{{retornarPorcentajeAvanceFuncionalCompletadas(i)}}%</div>
                       </div>
-                      <div [ngClass]="{'noVisible': !this.proyectos[i].cerosEstadoFuncional, 'mensajeError': this.proyectos[i].cerosEstadoFuncional}"><p>No se han detectado tareas de este área</p></div>
+                      <div [ngClass]="{'noVisible': !this.proyectos[i].cerosEstadoFuncional, 'mensajeNoTareas': this.proyectos[i].cerosEstadoFuncional}"><p>Este área no tiene tareas asignadas</p></div>
                     </div>
 
                     <div class="barraAvance">
                       <strong><p class="letrasSegundoNivel">Diseño técnico</p></strong>
-                      <div id="container-barras" class="progress" style="max-width: 100%;" >
+                      <div [ngClass]="{'noVisible': this.proyectos[i].cerosEstadoTecnico}" id="container-barras" class="progress" style="max-width: 100%;" >
                         <div [ngClass]="{'noVisible': this.proyectos[i].porcentajeHPNoIniciadasDisenioTecnico == 0, 'progress-bar bg-danger': this.proyectos[i].porcentajeHPNoIniciadasDisenioTecnico}" [style.width.%]="retornarPorcentajeAvanceTecnicoNoIniciadas(i)+4">{{retornarPorcentajeAvanceTecnicoNoIniciadas(i)}}%</div>
                         <div [ngClass]="{'noVisible': this.proyectos[i].porcentajeHPEnProgresoDisenioTecnico == 0, 'progress-bar bg-warning progress-bar-stripped': this.proyectos[i].porcentajeHPEnProgresoDisenioTecnico}" [style.width.%]="retornarPorcentajeAvanceTecnicoEnProgreso(i)+4">{{retornarPorcentajeAvanceTecnicoEnProgreso(i)}}%</div>
                         <div [ngClass]="{'noVisible': this.proyectos[i].porcentajeHPEnPruebaDisenioTecnico == 0, 'progress-bar light-green': this.proyectos[i].porcentajeHPEnPruebaDisenioTecnico}" style="background-color: #00FF00;" [style.width.%]="retornarPorcentajeAvanceTecnicoEnPrueba(i)+4">{{retornarPorcentajeAvanceTecnicoEnPrueba(i)}}%</div>
                         <div [ngClass]="{'noVisible': this.proyectos[i].porcentajeHPCompletadasDisenioTecnico == 0, 'progress-bar bg-success': this.proyectos[i].porcentajeHPCompletadasDisenioTecnico}" [style.width.%]="retornarPorcentajeAvanceTecnicoCompletadas(i)+4">{{retornarPorcentajeAvanceTecnicoCompletadas(i)}}%</div>
                       </div>
+                      <div [ngClass]="{'noVisible': !this.proyectos[i].cerosEstadoTecnico, 'mensajeNoTareas': this.proyectos[i].cerosEstadoTecnico}"><p>Este área no tiene tareas asignadas</p></div>
                     </div>
                     
                     <div class="barraAvance">
                       <strong><p class="letrasSegundoNivel">Desarrollo</p></strong>
-                      <div id="container-barras" class="progress" style="max-width: 100%;" >
+                      <div [ngClass]="{'noVisible': this.proyectos[i].cerosEstadoDesarrollo}" id="container-barras" class="progress" style="max-width: 100%;" >
                         <div [ngClass]="{'noVisible': this.proyectos[i].porcentajeHPNoIniciadasDesarrollo == 0, 'progress-bar bg-danger': this.proyectos[i].porcentajeHPNoIniciadasDesarrollo}" [style.width.%]="retornarPorcentajeAvanceDesarrolloNoIniciadas(i)+4">{{retornarPorcentajeAvanceDesarrolloNoIniciadas(i)}}%</div>
                         <div [ngClass]="{'noVisible': this.proyectos[i].porcentajeHPEnProgresoDesarrollo == 0, 'progress-bar bg-warning progress-bar-stripped': this.proyectos[i].porcentajeHPEnProgresoDesarrollo}" [style.width.%]="retornarPorcentajeAvanceDesarrolloEnProgreso(i)+4">{{retornarPorcentajeAvanceDesarrolloEnProgreso(i)}}%</div>
                         <div [ngClass]="{'noVisible': this.proyectos[i].porcentajeHPEnPruebaDesarrollo == 0, 'progress-bar light-green': this.proyectos[i].porcentajeHPEnPruebaDesarrollo}"class="progress-bar light-green" style="background-color: #00FF00;" [style.width.%]="retornarPorcentajeAvanceDesarrolloEnPrueba(i)+4">{{retornarPorcentajeAvanceDesarrolloEnPrueba(i)}}%</div>
                         <div [ngClass]="{'noVisible': this.proyectos[i].porcentajeHPCompletadasDesarrollo == 0, 'progress-bar bg-success': this.proyectos[i].porcentajeHPCompletadasDesarrollo}" [style.width.%]="retornarPorcentajeAvanceDesarrolloCompletadas(i)+4">{{retornarPorcentajeAvanceDesarrolloCompletadas(i)}}%</div>
                       </div>
+                      <div [ngClass]="{'noVisible': !this.proyectos[i].cerosEstadoDesarrollo, 'mensajeNoTareas': this.proyectos[i].cerosEstadoDesarrollo}"><p>Este área no tiene tareas asignadas</p></div>
                     </div>
 
                     <div class="barraAvance">
                       <strong><p class="letrasSegundoNivel">Testing</p></strong>
-                      <div id="container-barras" class="progress" style="max-width: 100%;">
+                      <div [ngClass]="{'noVisible': this.proyectos[i].cerosEstadoTesting}" id="container-barras" class="progress" style="max-width: 100%;">
                         <div [ngClass]="{'noVisible': this.proyectos[i].porcentajeHPNoIniciadasTesting == 0, 'progress-bar bg-danger': this.proyectos[i].porcentajeHPNoIniciadasTesting}" [style.width.%]="retornarPorcentajeAvanceTestingNoIniciadas(i)+4">{{retornarPorcentajeAvanceTestingNoIniciadas(i)}}%</div>
                         <div [ngClass]="{'noVisible': this.proyectos[i].porcentajeHPEnProgresoTesting == 0, 'progress-bar bg-warning progress-bar-stripped': this.proyectos[i].porcentajeHPEnProgresoTesting}" [style.width.%]="retornarPorcentajeAvanceTestingEnProgreso(i)+4">{{retornarPorcentajeAvanceTestingEnProgreso(i)}}%</div>
                         <div [ngClass]="{'noVisible': this.proyectos[i].porcentajeHPEnPruebaTesting == 0, 'progress-bar light-green': this.proyectos[i].porcentajeHPEnPruebaTesting}" style="background-color: #00FF00;" [style.width.%]="retornarPorcentajeAvanceTestingEnPrueba(i)+4">{{retornarPorcentajeAvanceTestingEnPrueba(i)}}%</div>
                         <div [ngClass]="{'noVisible': this.proyectos[i].porcentajeHPCompletadasTesting == 0, 'progress-bar bg-success': this.proyectos[i].porcentajeHPCompletadasTesting}" [style.width.%]="retornarPorcentajeAvanceTestingCompletadas(i)+4">{{retornarPorcentajeAvanceTestingCompletadas(i)}}%</div>
                       </div>
+                      <div [ngClass]="{'noVisible': !this.proyectos[i].cerosEstadoTesting, 'mensajeNoTareas': this.proyectos[i].cerosEstadoTesting}"><p>Este área no tiene tareas asignadas</p></div>
                     </div>
                   </div>
               </mat-expansion-panel>

@@ -71,9 +71,9 @@ export class InicioEstadoProyectoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //Obtenemos los proyectos.
     this.obtenerProyectos();
     this.obtenerProyectosAbiertos();
+    //Obtenemos los proyectos.
     this._filtroService.getUserId(localStorage.getItem('usuario')!).subscribe((response: any) => {
       localStorage.setItem('userId', response.dataset[0].id);
       this._filtroService.selectFiltro(response.dataset[0].id, 'inicio-estado-proyecto').subscribe((resp: any) => {
@@ -102,7 +102,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
         this.verificarCheckBoxs();
         //Filtra proyectos.
         this.prepararFiltro();
-        this.verificarCerosFuncional();
+        this.verificarCeros();
         }
       });
   });
@@ -146,7 +146,10 @@ export class InicioEstadoProyectoComponent implements OnInit {
             porcentajeHPNoIniciadasTesting: 0,
             porcentajeHPCompletadasTesting: 0,
             porcentajeHPEnProgresoTesting: 0,
-            cerosEstadoFuncional: false
+            cerosEstadoFuncional: false,
+            cerosEstadoTecnico: false,
+            cerosEstadoDesarrollo: false,
+            cerosEstadoTesting: false
           }
           this.proyectosTotalesArray.push(objetoTemporal);
           
@@ -377,7 +380,10 @@ export class InicioEstadoProyectoComponent implements OnInit {
             porcentajeHPNoIniciadasTesting: 0,
             porcentajeHPCompletadasTesting: 0,
             porcentajeHPEnProgresoTesting: 0,
-            cerosEstadoFuncional: false
+            cerosEstadoFuncional: false,
+            cerosEstadoTecnico: false,
+            cerosEstadoDesarrollo: false,
+            cerosEstadoTesting: false
           }
 
           this.proyectosAbiertosArray.push(objetoTemporal);
@@ -793,10 +799,12 @@ export class InicioEstadoProyectoComponent implements OnInit {
       this.noHayProyectos = false;
       this.actualizarDisponibilidadProyecto();
       this.cambiarOrden();
+      this.verificarCeros();
     } else {
       this.noHayProyectos = false;
       this.actualizarDisponibilidadProyecto();
       this.cambiarOrden();
+      this.verificarCeros();
     }
   }
 
@@ -964,9 +972,10 @@ export class InicioEstadoProyectoComponent implements OnInit {
     }
 
     /**
-     * Método que verifica si las variables contienen ceros para saber si mostrar las barras en la vista.
+     * Método que verifica si las variables contienen ceros para saber
+     * si mostrar las barras en la vista de las diferentes áreas.
      */
-    verificarCerosFuncional(){
+    verificarCeros(){
       for(let i = 0;i<this.proyectos.length;i++){
         if(this.proyectos[i].porcentajeHPCompletadasDisenioFuncional == 0 && this.proyectos[i].porcentajeHPEnProgresoDisenioFuncional == 0 && this.proyectos[i].porcentajeHPEnPruebaDisenioFuncional == 0 && this.proyectos[i].porcentajeHPNoIniciadasDisenioFuncional == 0){
           this.proyectos[i].cerosEstadoFuncional = true;
@@ -974,7 +983,24 @@ export class InicioEstadoProyectoComponent implements OnInit {
         else{
           this.proyectos[i].cerosEstadoFuncional = false;
         }
-        console.log(this.proyectos[i].cerosEstadoFuncional)
+        if(this.proyectos[i].porcentajeHPCompletadasDisenioTecnico == 0 && this.proyectos[i].porcentajeHPEnProgresoDisenioTecnico == 0 && this.proyectos[i].porcentajeHPEnPruebaDisenioFuncional == 0 && this.proyectos[i].porcentajeHPNoIniciadasDisenioFuncional == 0){
+          this.proyectos[i].cerosEstadoTecnico = true;
+        }
+        else{
+          this.proyectos[i].cerosEstadoFuncional = false;
+        }
+        if(this.proyectos[i].porcentajeHPCompletadasDesarrollo == 0 && this.proyectos[i].porcentajeHPNoIniciadasDesarrollo == 0 && this.proyectos[i].porcentajeHPEnProgresoDesarrollo == 0 && this.proyectos[i].porcentajeHPEnPruebaDesarrollo == 0){
+          this.proyectos[i].cerosEstadoDesarrollo = true;
+        }
+        else{
+          this.proyectos[i].cerosEstadoDesarrollo = false;
+        }
+        if(this.proyectos[i].porcentajeHPNoIniciadasTesting == 0 && this.proyectos[i].porcentajeHPCompletadasTesting == 0 && this.proyectos[i].porcentajeHPEnProgresoTesting == 0 && this.proyectos[i].porcentajeHPEnPruebaTesting == 0){
+          this.proyectos[i].cerosEstadoTesting = true;
+        }
+        else{
+          this.proyectos[i].cerosEstadoTesting = false;
+        }
       }
     }
 }

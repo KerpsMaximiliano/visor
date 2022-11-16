@@ -7,7 +7,7 @@
     display: flex;
     margin-top: 3%;
     width: 100%;
-    margin: 1%;
+    margin: 1.5%;
 }
 
 .fecha-hoy {
@@ -35,6 +35,7 @@
 #componenteDisponibilidad{
     width: 49%;
     margin: 0;
+    margin-right: 2.5%;
 }
 
 #componenteEstado{

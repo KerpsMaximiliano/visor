@@ -259,7 +259,7 @@ text-align: center;
 
 .tituloColumna{
 text-align: center;
-font-size: 15px;
+font-size: 11px;
 }
 
 .subtitulo{
@@ -273,8 +273,13 @@ display: flexbox;
 max-height: 30%;
 }
 
+#iconoArea{
+  margin-top: 18px;
+}
+
 #seccionAvanceArea{
   border-radius: 3px;
+  display: flex;
 }
 
 #seccionAvanceArea p{
@@ -295,9 +300,9 @@ max-height: 30%;
   margin-bottom: 5px;
 }
 
-.mensajeError{
+.mensajeNoTareas{
   text-align: center;
-  color: #FF0000;
+  color: grey;
 }
 
 .mensajeError p{

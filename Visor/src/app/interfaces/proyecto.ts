@@ -30,5 +30,8 @@ export interface Proyecto {
     porcentajeHPNoIniciadasTesting: number,
     porcentajeHPCompletadasTesting: number,
     porcentajeHPEnProgresoTesting: number,
-    cerosEstadoFuncional: boolean
+    cerosEstadoFuncional: boolean,
+    cerosEstadoTecnico: boolean,
+    cerosEstadoDesarrollo: boolean,
+    cerosEstadoTesting: boolean
 }
