@@ -7,7 +7,6 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
-
 //Material
 import { MyMaterialModule } from './material';
 
@@ -28,7 +27,6 @@ import { ConfiguracionesComponent } from './components/configuraciones/configura
 import { MatConfirmDialogComponent } from './shared/mat-confirm-dialog/mat-confirm-dialog.component';
 import { VistaDisenioTecnicoModule } from './componentes/vista-disenio-tecnico/vista-disenio-tecnico.module';
 import { VistaDisenioFuncionalModule } from './componentes/vista-disenio-funcional/vista-disenio-funcional.module';
-import { ModalFiltroComponent } from './componentes/inicio/modal-filtro/modal-filtro.component';
 import { InicioMainComponent } from './componentes/inicio/inicio-main/inicio-main.component';
 import { InicioDisponibilidadColaboradoresModule } from './componentes/inicio/inicio-disponibilidad-colaboradores/inicio-disponibilidad-colaboradores.module';
 import { VistaDesarrolladorModule } from './componentes/vista-desarrollador/vista-desarrollador.module';
@@ -46,9 +44,9 @@ import { ControlActividadModule } from 'src/app/componentes/control-actividad/co
 import { SharedModule } from './shared/shared.module';
 import { LoginService } from './services/i2t/login.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { SeccionDocumentosComponent } from './componentes/seccion-documentos/seccion-documentos.component';
+import { ModalFiltroComponent } from './componentes/inicio/modal-filtro/modal-filtro.component';
+import { ModalFiltroDocumentosModule } from './shared/modal-filtro-documentos/modal-filtro-documentos.module';
 import { SeccionDocumentosModule } from './componentes/seccion-documentos/seccion-documentos.module';
-
 
 @NgModule({
   declarations: [
@@ -57,8 +55,8 @@ import { SeccionDocumentosModule } from './componentes/seccion-documentos/seccio
     MatConfirmDialogComponent,
     ModalcontraseniaComponent,
     InicioMainComponent,
-    ModalFiltroComponent,
     TopbarComponent,
+    ModalFiltroComponent,
     DashboardComponent
   ],
   imports: [
@@ -80,6 +78,7 @@ import { SeccionDocumentosModule } from './componentes/seccion-documentos/seccio
     ControlActividadModule,
     SharedModule,
     RecuperarcontraseniaModule,
+    ModalFiltroDocumentosModule,
     SeccionDocumentosModule
   ],
 

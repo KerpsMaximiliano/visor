@@ -6,18 +6,19 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 //Angular Material
 import { MyMaterialModule } from '../material';
-import { MatConfirmDialogComponent } from './mat-confirm-dialog/mat-confirm-dialog.component';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { ModalFiltroDocumentosModule } from './modal-filtro-documentos/modal-filtro-documentos.module';
 
 
 
 @NgModule({
-  declarations: [
-  ],
+  declarations: [],
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    MyMaterialModule
+    MyMaterialModule,
+    MatFormFieldModule,
+    ModalFiltroDocumentosModule
   ],
   exports: [
   ]

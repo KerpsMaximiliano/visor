@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FiltroService } from '../../services/i2t/filtro.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ModalFiltroDocumentosComponent } from '../../shared/modal-filtro-documentos/modal-filtro-documentos.component';
 
 @Component({
   selector: 'app-seccion-documentos',
@@ -14,7 +16,7 @@ export class SeccionDocumentosComponent implements OnInit {
   orden_saved_search_id = '';
   modal_saved_search_id = '';
 
-  constructor(private _filtroService: FiltroService) { }
+  constructor(private _filtroService: FiltroService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
   }
@@ -23,7 +25,7 @@ export class SeccionDocumentosComponent implements OnInit {
    * Método que abre el dialog del filtro.
    */
   openFilter(){
-    window.alert("Si lees esto sos trolo")
+    const dialogRef = this.dialog.open(ModalFiltroDocumentosComponent, {width: '40%', height: '90%'});
   }
 
   shotOrder(e: Event){

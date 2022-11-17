@@ -1,0 +1,50 @@
+/* Header */
+
+#container-header{
+    text-align: center;
+}
+
+/* Body */
+
+#container-body{
+    text-align: center;
+}
+
+#title{
+    font-size: 15px;   
+}
+
+.input{
+    width: 100%;
+    display: block; 
+}
+
+.select{
+    width: 100%;
+    display: block;
+}
+
+#container-buttons{
+    text-align: center;
+}
+
+#container-buttons button{
+    margin: 2%;
+}
+
+.picker{
+    width: 100%;
+}
+
+.blue {
+    background-color: lightskyblue;
+}
+
+.red {
+    background-color: lightcoral;
+}
+
+.green {
+    background-color: lightgreen;
+}
+

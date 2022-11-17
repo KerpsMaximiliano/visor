@@ -1,0 +1,53 @@
+<div id="container-header">
+    <h1 id="title">Filtrar documentos</h1>
+    <hr>
+</div>
+<div id="container-body">
+    <!-- Document number form-field -->
+    <mat-form-field class="input" appearance="outline" autocomplete="false">
+        <mat-label>Número del proyecto</mat-label>
+        <input matInput placeholder="Buscar...">
+    </mat-form-field>
+
+       <!-- Docuement name form-field -->
+    <mat-form-field class="input" appearance="outline" autocomplete="false">
+        <mat-label>Nombre del proyecto</mat-label>
+        <input matInput placeholder="Buscar...">
+    </mat-form-field>
+
+    <!-- Document category select -->
+    <mat-form-field class="select" appearance="outline">
+        <mat-label>Categoría</mat-label>
+        <mat-select>
+          <mat-option *ngFor="let c of categorys" [value]="c.valueOf">
+            {{c}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Document type select -->
+      <mat-form-field class="select" appearance="outline">
+        <mat-label>Tipos</mat-label>
+        <mat-select>
+          <mat-option *ngFor="let t of types" [value]="t.valueOf">
+            {{t}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    <!-- Document assigned form-field -->
+    <mat-form-field class="input" appearance="outline" autocomplete="false">
+        <mat-label>Asignado a</mat-label>
+        <input matInput placeholder="Buscar...">
+    </mat-form-field>
+
+     <!-- Document condition select -->
+     <mat-form-field class="select" appearance="outline">
+        <mat-label>Estados</mat-label>
+        <mat-select>
+          <mat-option *ngFor="let c of conditions" [value]="c.valueOf">
+            {{c}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+</div>

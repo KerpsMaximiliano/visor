@@ -78,5 +78,4 @@ export class ModalFiltroComponent implements OnInit {
       this.guardarFiltro();
     }
   }
-
 }
