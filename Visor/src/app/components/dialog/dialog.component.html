@@ -128,7 +128,7 @@
             <mat-form-field appearance="fill">
                 <mat-select [(value)]="asignadoAtarea" id="asignadoAtarea" (selectionChange)="selectAsignadoAtarea($event)">
                     <mat-option></mat-option>
-                    <mat-option (click)="getAsignadoAtarea(programador)" [value]="programador"  *ngFor="let programador of usuariosAsignadosTareas">{{ programador }}</mat-option>
+                    <mat-option  [value]="programador"  *ngFor="let programador of usuariosAsignadosTareas">{{ programador }}</mat-option>
                 </mat-select>
             </mat-form-field>
             <!-- <p>You selected: {{selectedFood}}</p> -->
@@ -153,14 +153,14 @@
             <mat-label class="label">Por fecha de inicio</mat-label>
             <mat-form-field appearance="fill">
                 <mat-label>dd/mm/aaaa</mat-label>
-                <input matInput [matDatepicker]="fechaInicioDesde" id="fechaInicio"  (dateInput)="getFechaInicio($event)" >
+                <input matInput [(ngModel)]="fechaInicio" [matDatepicker]="fechaInicioDesde" id="fechaInicio"  (dateInput)="getFechaInicio($event)" >
                 <mat-hint>{{getDateFormatString()}}</mat-hint>
                 <mat-datepicker-toggle matSuffix [for]="fechaInicioDesde"></mat-datepicker-toggle>
                 <mat-datepicker #fechaInicioDesde ></mat-datepicker>
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>dd/mm/aaaa</mat-label>
-                <input matInput [matDatepicker]="fechaInicioHasta" (dateInput)="getFechaFin($event)">
+                <input matInput [(ngModel)]="fechaFin" [matDatepicker]="fechaInicioHasta" (dateInput)="getFechaFin($event)">
                 <mat-hint>{{getDateFormatString()}}</mat-hint>
                 <mat-datepicker-toggle matSuffix [for]="fechaInicioHasta"></mat-datepicker-toggle>
                 <mat-datepicker #fechaInicioHasta></mat-datepicker>
@@ -170,14 +170,14 @@
             <mat-label class="label">Planificada</mat-label>
             <mat-form-field appearance="fill">
                 <mat-label>dd/mm/aaaa</mat-label>
-                <input matInput [matDatepicker]="planificadaDesde">
+                <input matInput [(ngModel)]="fechaPlanificadaDesde" [matDatepicker]="planificadaDesde" (dateInput)="getPlanificadaDesde($event)">
                 <mat-hint>{{getDateFormatString()}}</mat-hint>
                 <mat-datepicker-toggle matSuffix [for]="planificadaDesde"></mat-datepicker-toggle>
                 <mat-datepicker #planificadaDesde></mat-datepicker>
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>dd/mm/aaaa</mat-label>
-                <input matInput [matDatepicker]="planificadaHasta">
+                <input matInput [(ngModel)]="fechaPlanificadaHasta" [matDatepicker]="planificadaHasta" (dateInput)="getPlanificadaHasta($event)">
                 <mat-hint>{{getDateFormatString()}}</mat-hint>
                 <mat-datepicker-toggle matSuffix [for]="planificadaHasta"></mat-datepicker-toggle>
                 <mat-datepicker #planificadaHasta></mat-datepicker>
@@ -187,14 +187,14 @@
             <mat-label class="label">Fin</mat-label>
             <mat-form-field appearance="fill">
                 <mat-label>dd/mm/aaaa</mat-label>
-                <input matInput [matDatepicker]="finDesde">
+                <input matInput [(ngModel)]="fechaFinDesde" [matDatepicker]="finDesde" (dateInput)="getFinDesde($event)">
                 <mat-hint>{{getDateFormatString()}}</mat-hint>
                 <mat-datepicker-toggle matSuffix [for]="finDesde"></mat-datepicker-toggle>
                 <mat-datepicker #finDesde></mat-datepicker>
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>dd/mm/aaaa</mat-label>
-                <input matInput [matDatepicker]="finHasta">
+                <input matInput [(ngModel)]="fechaFinHasta" [matDatepicker]="finHasta" (dateInput)="getFinHasta($event)">
                 <mat-hint>{{getDateFormatString()}}</mat-hint>
                 <mat-datepicker-toggle matSuffix [for]="finHasta"></mat-datepicker-toggle>
                 <mat-datepicker #finHasta></mat-datepicker>

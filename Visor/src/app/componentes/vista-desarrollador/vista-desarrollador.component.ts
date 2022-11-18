@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, SimpleChange } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Tarea } from 'src/app/interfaces/tarea';
 import { TareaService } from 'src/app/services/i2t/tarea.service';
 
@@ -7,8 +7,12 @@ import { TareaService } from 'src/app/services/i2t/tarea.service';
   templateUrl: './vista-desarrollador.component.html',
   styleUrls: ['./vista-desarrollador.component.css']
 })
-export class VistaDesarrolladorComponent implements OnInit {
+export class VistaDesarrolladorComponent implements OnInit, OnChanges {
 
+  anchoRojo: string = '0';
+  anchoAmarilla: string = '0';
+  anchoVerdeClaro: string = '0';
+  anchoVerdeOscuro: string = '0';
   proyectoId: any;
   proyectoNombre?: string;
   //tareasSP: any;
@@ -50,37 +54,78 @@ export class VistaDesarrolladorComponent implements OnInit {
       }
     });*/
 
-    if(this.tareasSP.length > 0){
-      this.noHayProyecto= false;
-      this.organizarTareas();
-      console.log(this.tareasOrg);
-      this.cargarTareas();
-      this.poseeTareas();
-      if (!this.noHayProyecto) {
-        this.setearBarraProgreso();
-        this.ordenarListas();
-      }
-    }
-    else{
-      this.noHayProyecto = true;
-    }
   }
 
-  ngOnChanges(changes: SimpleChange) {
-
+  ngOnChanges(changes: SimpleChanges) {
+    
     if (this.tareasSP.length > 0) {
-      this.noHayProyecto = false;
-      console.log("Tareas SP: ", this.tareasSP)
-      this.organizarTareas();
-      console.log(this.tareasOrg);
-      this.cargarTareas();
-      this.poseeTareas();
-      if (!this.noHayProyecto) {
-        this.setearBarraProgreso();
-        this.ordenarListas();
+      if(changes['tareasSP'].previousValue == undefined || changes['tareasSP'].previousValue.length == 0){ //Selecciona primero proyecto después vista
+        console.log(this.anchoRojo, this.anchoAmarilla, this.anchoVerdeClaro)
+
+        this.organizarTareas();
+        this.cargarTareas();
+        this.poseeTareas();
+        if (!this.noHayProyecto) {
+          this.setearBarraProgreso();
+          this.ordenarListas();
+        }
       }
+
+      else if( (changes['tareasSP'].previousValue[0].nombre_proyecto != changes['tareasSP'].currentValue[0].nombre_proyecto) ){
+        console.log(changes['tareasSP'].previousValue )
+        console.log(changes['tareasSP'].currentValue)
+        this.anchoRojo = '0'
+        this.anchoAmarilla = '0'
+        this.anchoVerdeClaro = '0'
+        this.anchoVerdeOscuro = '0'
+        this.horasNoIniciadas = 0;
+        this.horasEnProgreso = 0;
+        this.horasCompleatadas = 0;
+        this.tareasOrg = [];
+        this.tareasNoIniciadas = [];
+        this.tareasEnProgreso = [];
+        this.tareasCompletadas = [];
+        this.noHayProyecto = false;
+        this.organizarTareas();
+        this.cargarTareas();
+        this.poseeTareas();
+        if (!this.noHayProyecto) {
+          this.setearBarraProgreso();
+          this.ordenarListas();
+        }
+      }
+      else{
+        this.anchoRojo = '0'
+        this.anchoAmarilla = '0'
+        this.anchoVerdeClaro = '0'
+        this.anchoVerdeOscuro = '0'
+        this.horasNoIniciadas = 0;
+        this.horasEnProgreso = 0;
+        this.horasEnPrueba = 0;
+        this.horasCompleatadas = 0;
+        this.horasTotales = 0;
+        this.tareasOrg = [];
+        this.tareasNoIniciadas = [];
+        this.tareasEnProgreso = [];
+        this.tareasCompletadas = [];
+        console.log(this.anchoRojo, this.anchoAmarilla, this.anchoVerdeClaro)
+        this.organizarTareas();
+        this.cargarTareas();
+        this.poseeTareas();
+        if (!this.noHayProyecto) {
+          this.setearBarraProgreso();
+          this.ordenarListas();
+        }
+      }
+      
     }
-    this.tareasOrg=[];
+    else{
+      this.tareasOrg = [];
+      this.tareasNoIniciadas = [];
+      this.tareasEnProgreso = [];
+      this.tareasCompletadas = [];
+      this.noHayProyecto = true;
+    }
   }
 
   organizarTareas() {
@@ -105,24 +150,24 @@ export class VistaDesarrolladorComponent implements OnInit {
         sprint: this.calcularSprint(tarea.fecha_planificada)
       })
     });
-    this.tareasOrg.push({
-      titulo: 'Tarea en Prueba XXX',
-      proyecto: 'Visor',
-      prioridad: 'Alta',
-      asignado: 'ffriggeri',
-      facilitador: 'ffriggeri',            // esta tarea es de esta pusheada para chequear el
-      fechaInicio: '01-09-2022',           // comportamiento de la barra de tareas en prueba
-      fechaFin: null,
-      fechaPlanificacion: '31-09-2022',
-      horasPlanificadas: 24,
-      horasEjecutadas: 20,
-      documento: null,
-      tareasPrecondicion: null,
-      notas: null,
-      tipoTarea: 'Produccion',
-      estado: 'In Testing',
-      sprint: this.calcularSprint('31-09-2022')
-    });
+    // this.tareasOrg.push({
+    //   titulo: 'Tarea en Prueba XXX',
+    //   proyecto: 'Visor',
+    //   prioridad: 'Alta',
+    //   asignado: 'ffriggeri',
+    //   facilitador: 'ffriggeri',            // esta tarea es de esta pusheada para chequear el
+    //   fechaInicio: '01-09-2022',           // comportamiento de la barra de tareas en prueba
+    //   fechaFin: null,
+    //   fechaPlanificacion: '31-09-2022',
+    //   horasPlanificadas: 24,
+    //   horasEjecutadas: 20,
+    //   documento: null,
+    //   tareasPrecondicion: null,
+    //   notas: null,
+    //   tipoTarea: 'Produccion',
+    //   estado: 'In Testing',
+    //   sprint: this.calcularSprint('31-09-2022')
+    // });
   };
 
   calcularFecha(fecha: string) {
@@ -220,22 +265,30 @@ export class VistaDesarrolladorComponent implements OnInit {
     let anchoVariable = (this.horasNoIniciadas / this.horasTotales * 100);
     const divRojo = document.getElementById('barraRoja');
     if (divRojo != null) {
-      divRojo.style.setProperty('width', (anchoVariable.toString()).concat(porc));
+      // divRojo.style.setProperty('width', (anchoVariable.toString()).concat(porc));
+      //this.anchoRojo = (anchoVariable.toString()).concat(porc);
+      this.anchoRojo = (this.cargarBarraRoja()).toString().concat(porc);
     }
     anchoVariable = (this.horasEnProgreso / this.horasTotales * 100);
     const divAmarillo = document.getElementById('barraAmarilla');
     if (divAmarillo != null) {
-      divAmarillo.style.setProperty('width', (anchoVariable.toString()).concat(porc));
+      // divAmarillo.style.setProperty('width', (anchoVariable.toString()).concat(porc));
+      //this.anchoAmarilla = (anchoVariable.toString()).concat(porc);
+      this.anchoAmarilla = (this.cargarBarraAmarilla()).toString().concat(porc);
     }
     anchoVariable = (this.horasEnPrueba / this.horasTotales * 100);
     const divVerdeClaro = document.getElementById('barraVerdeClaro');
     if (divVerdeClaro != null) {
-      divVerdeClaro.style.setProperty('width', (anchoVariable.toString()).concat(porc));
+      // divVerdeClaro.style.setProperty('width', (anchoVariable.toString()).concat(porc));
+      //this.anchoVerdeClaro = (anchoVariable.toString()).concat(porc);
+      this.anchoVerdeClaro = (this.cargarBarraVerdeClaro()).toString().concat(porc);
     }
     anchoVariable = (this.horasCompleatadas / this.horasTotales * 100);
     const divVerdeOscuro = document.getElementById('barraVerdeOscuro');
     if (divVerdeOscuro != null) {
-      divVerdeOscuro.style.setProperty('width', (anchoVariable.toString()).concat(porc));
+      //divVerdeOscuro.style.setProperty('width', (anchoVariable.toString()).concat(porc));
+      //this.anchoVerdeOscuro = (anchoVariable.toString()).concat(porc);
+      this.anchoVerdeOscuro = (this.cargarBarraVerdeOscuro()).toString().concat(porc);
     }
   }
 

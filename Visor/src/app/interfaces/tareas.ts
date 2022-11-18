@@ -1,9 +1,15 @@
 export interface Tareas {
     buscaTareas: boolean,
-    nombreTarea: '',
-    prioridadTarea: '',
-    facilitadorTarea: '',
-    asignadoAtarea: '',
-    tecnologiaTarea: '',
-    idProyectoSeleccionado: '' 
+    nombreTarea: string,
+    prioridadTarea: string,
+    facilitadorTarea: string,
+    asignadoAtarea: string,
+    tecnologiaTarea: string,
+    idProyectoSeleccionado: string,
+    inicioDesde: string,
+    inicioHasta: string,
+    planificadaDesde: string,
+    planificadaHasta: string,
+    finDesde: string,
+    finHasta: string
 }
