@@ -187,47 +187,7 @@ export class TareasComponent implements OnInit {
       this.listaTareasService = result;
     })
 
-    this._tareaService.enviarProyectoActual(unProyecto);
   }
-
-  recibirCambio(){
-    this._tareaService.getTareasDeProyecto(this.idProyectoSeleccionado).pipe(
-      finalize(() => {
-        this.listaTareasService = this.listaTareasService.dataset;
-        if(this.nombreVistaSeleccionada == 'Analista Técnico'){ //Pregunto si hay una vista seleccionada
-          this.tareasFiltradasPorVista=[];
-          //this.setSubtituloProyecto("X",this.idVistaSeleccionada);
-          this.listaTareasService.forEach( (tarea:any) => {
-            if(tarea.tipo_tarea == "RelevamientoReq"){
-              this.tareasFiltradasPorVista.push(tarea);
-            }
-          });
-        }
-        else if(this.nombreVistaSeleccionada == 'Analista funcional'){
-          this.tareasFiltradasPorVista=[];
-          //this.setSubtituloProyecto("X",this.idVistaSeleccionada);
-          this.listaTareasService.forEach( (tarea:any) => {
-            if(tarea.tipo_tarea == "Design"){
-              this.tareasFiltradasPorVista.push(tarea);
-            }
-          });
-        }
-        else if(this.nombreVistaSeleccionada == 'Desarrollador'){
-          this.tareasFiltradasPorVista=[];
-          //this.setSubtituloProyecto("X",this.idVistaSeleccionada);
-          this.listaTareasService.forEach( (tarea:any) => {
-            if(tarea.tipo_tarea == "Produccion"){
-              this.tareasFiltradasPorVista.push(tarea);
-            }
-          });
-        }
-      })
-    )
-    .subscribe(result => {
-      this.listaTareasService = result;
-    })   
-  }
- 
 
   abrirDialogProyecto(event: Event){
     event.preventDefault();
@@ -341,7 +301,6 @@ export class TareasComponent implements OnInit {
           this.tareasFiltradasPorVista= [];
         }
         else if(this.idProyectoSeleccionado != '' && this.tareasFiltradas == ''){ //Selecciona proyecto y vista. Muestra tareas de ese tipo de vista   
-         console.log("TAQREAS FILTRADAS VACIAS")
           this.listaTareasService.forEach( (tarea:any) => {
             if(tarea.tipo_tarea == "Produccion"){
               this.tareasFiltradasPorVista.push(tarea);
@@ -350,7 +309,6 @@ export class TareasComponent implements OnInit {
         }
         else{ //Filtró tareas
           this.tareasFiltradasPorVista= [];
-          console.log("caew")
           this.tareasFiltradas.forEach( (tarea:any) => {
             if(tarea.tipo_tarea == "Produccion"){
               this.tareasFiltradasPorVista.push(tarea);
@@ -369,7 +327,6 @@ export class TareasComponent implements OnInit {
         this.subtituloProyecto = '';
       break;
     }
-    this.recibirCambio();
   }
 
   getUsuarioTareasAsignadas(){

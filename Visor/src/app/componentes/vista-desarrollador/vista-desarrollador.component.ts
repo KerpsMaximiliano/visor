@@ -62,7 +62,6 @@ export class VistaDesarrolladorComponent implements OnInit, OnChanges {
     console.log(this.tareasSP)
     if (this.tareasSP.length > 0) {
       if(changes['tareasSP'].previousValue == undefined || changes['tareasSP'].previousValue.length == 0){ //Selecciona primero proyecto después vista
-        console.log(this.anchoRojo, this.anchoAmarilla, this.anchoVerdeClaro)
 
         this.organizarTareas();
         this.cargarTareas();
@@ -71,7 +70,6 @@ export class VistaDesarrolladorComponent implements OnInit, OnChanges {
           this.setearBarraProgreso();
           this.ordenarListas();
         }
-        console.log("Entró 1")
       }
 
       else if( (changes['tareasSP'].previousValue[0].nombre_proyecto != changes['tareasSP'].currentValue[0].nombre_proyecto) ){
@@ -111,7 +109,6 @@ export class VistaDesarrolladorComponent implements OnInit, OnChanges {
         this.tareasNoIniciadas = [];
         this.tareasEnProgreso = [];
         this.tareasCompletadas = [];
-        console.log("entró 2" + this.anchoRojo, this.anchoAmarilla, this.anchoVerdeClaro)
         this.organizarTareas();
         this.cargarTareas();
         this.poseeTareas();
