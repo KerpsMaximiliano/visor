@@ -488,7 +488,7 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   }
 
   getPorcentajeRojo(valor: number) {
-    if (valor>=0 && valor<=25) {
+    if (valor<=25) {
       return true;
     } else {
       return false;
