@@ -6,22 +6,16 @@
 
 /* Body */
 
-#container-body{
-    text-align: center;
-}
-
 #title{
     font-size: 15px;   
 }
 
 .input{
     width: 100%;
-    display: block; 
 }
 
 .select{
     width: 100%;
-    display: block;
 }
 
 #container-buttons{
@@ -30,10 +24,6 @@
 
 #container-buttons button{
     margin: 2%;
-}
-
-.picker{
-    width: 100%;
 }
 
 .blue {
@@ -48,3 +38,19 @@
     background-color: lightgreen;
 }
 
+.subtitle{
+    text-align: center;
+}
+
+#container-dates{
+    text-align: center;
+}
+
+#container-dates div{
+    margin: 3%;
+}
+
+#picker{
+    width: 40%;
+    margin: 3%;
+}

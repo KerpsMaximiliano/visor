@@ -1,7 +1,7 @@
 /* All */
 
 #container-all{
-    margin: 1%;
+    margin: 0.5%;
 }
 
 /* Header */
@@ -30,9 +30,77 @@
 #iconFilter{
     font-size: 41px;
     margin-left: 0.65%;
-}
+}   
 
 .menu-orden {
     display: flex;
     width: 170px;
+}
+
+/* Body */
+
+#container-cards-documents{
+    width: 100%;
+    margin-top: 2%;
+    margin-left: 2%;
+}
+
+.document-card{
+    height: 220px;
+    width: 15%;
+    float: left;
+    margin: 0.5%;
+}
+
+.card-content{
+    display: flex;
+}
+
+.letters{
+    font-size: 11px;
+}
+
+#container-icons{
+    margin-top: 1%;
+    display: flex;
+    margin-left: 5%;
+}
+
+#remove-icon{
+    font-size: 18px;
+    margin-left: 10%;
+    color: red;
+    cursor: pointer;
+}
+
+#download-icon{
+    font-size: 18px;
+    margin-left: 10%;
+    cursor: pointer;
+    color: black;
+}
+
+#edit-icon{
+    font-size: 18px;
+    margin-left: 10%;
+    color: cornflowerblue;
+    cursor: pointer;
+}
+
+.document-green-border{
+    border: solid green 2px;
+}
+
+.card-content-end{
+    display: flex;
+}
+
+#list-icon{
+    margin-left: 55%;
+    font-size: 60px;
+}
+
+.letters-date{
+    font-size: 11px;
+    margin-left: 10%;
 }

@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 <div id="container-all">
     <div id="container-header"> <!-- Comienza el header -->
         <div id="container-header-top">
@@ -15,4 +17,34 @@
             <mat-icon (click)="openFilter()" id="iconFilter">filter_alt</mat-icon> <!-- Icono que abriría el filtro -->
         </div>
     </div> <!-- Termina el header -->
+
+    <div id="container-body"> <!-- Comienza el body -->
+        <div id="container-cards-documents">
+            <mat-card class="document-card">
+            <div class="card-content">
+                <p class="letters">Nombre del documento</p>
+                <div id="container-icons">
+                    <i id="download-icon" class="fas fa-download"></i>
+                    <i id="edit-icon" class="fas fa-edit"></i>
+                    <i id="remove-icon" class="fas fa-trash-alt"></i>
+                </div>
+            </div>
+            <div class="card-content">
+                <p class="letters">Nombre del proyecto</p>  
+                <p class="letters-date">DD/MM/XXXX</p>  
+            </div>
+            <div class="card-content">
+                <p class="letters">Tipo del documento</p>
+            </div>
+            <div class="card-content">
+                <p class="letters">"Ignacio Girod"</p>
+            </div>
+            <div class="card-content-end">
+                <p class="letters">"Estado"</p>
+                <i id="list-icon" class="far fa-file-alt"></i>
+            </div>
+            </mat-card>
+           
+        </div>
+    </div>
 </div>

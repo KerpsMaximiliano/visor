@@ -65,5 +65,23 @@ export class SeccionDocumentosComponent implements OnInit {
     } */
   }
 
+  /**
+   * Este método sirve para editar un documento.
+   */
+  editDocument(){
+
+  }
+
+  /**
+   * Este método sirve para eliminar un documento.
+   */
+  removeDocument(){}
+
+  /**
+   * Este método sirve para descargar un documento.
+   */
+  donwloadDocument(){
+    
+  }
 
 }
