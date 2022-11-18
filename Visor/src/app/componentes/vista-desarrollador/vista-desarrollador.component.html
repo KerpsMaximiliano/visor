@@ -6,10 +6,10 @@
     <p id="subtitulo-disenio" *ngIf="!noHayProyecto">Avance de Producción</p>
 
     <div class="progress container-barra" [ngClass]="{'oculto': noHayProyecto }">
-        <div id="barraRoja" class="progress-bar bg-danger" role="progressbar" aria-label="Segment one" aria-valuenow="cargarBarraRoja()" aria-valuemin="0" aria-valuemax="100"><p class="porcentajes">{{cargarBarraRoja()}}%</p></div>
-        <div id="barraAmarilla" class="progress-bar bg-warning" role="progressbar" aria-label="Segment two" aria-valuenow="cargarBarraAmarilla()" aria-valuemin="0" aria-valuemax="100"><p id="porcentajeNegro" class="porcentajes">{{cargarBarraAmarilla()}}%</p></div>
-        <div id="barraVerdeClaro" class="progress-bar " role="progressbar" aria-label="Segment one" aria-valuenow="cargarBarraVerdeClaro()" aria-valuemin="0" aria-valuemax="100"><p class="porcentajes">{{cargarBarraVerdeClaro()}}%</p></div>
-        <div id="barraVerdeOscuro" class="progress-bar bg-success" role="progressbar" aria-label="Segment one" aria-valuenow="cargarBarraVerdeOscuro()" aria-valuemin="0" aria-valuemax="100"><p class="porcentajes">{{cargarBarraVerdeOscuro()}}%</p></div>
+        <div id="barraRoja" [style.width]="anchoRojo" class="progress-bar bg-danger" role="progressbar" aria-label="Segment one" aria-valuenow="cargarBarraRoja()" aria-valuemin="0" aria-valuemax="100"><p class="porcentajes">{{cargarBarraRoja()}}%</p></div>
+        <div id="barraAmarilla" [style.width]="anchoAmarilla" class="progress-bar bg-warning" role="progressbar" aria-label="Segment two" aria-valuenow="cargarBarraAmarilla()" aria-valuemin="0" aria-valuemax="100"><p id="porcentajeNegro" class="porcentajes">{{cargarBarraAmarilla()}}%</p></div>
+        <div id="barraVerdeClaro" [style.width]="anchoVerdeClaro" class="progress-bar " role="progressbar" aria-label="Segment one" aria-valuenow="cargarBarraVerdeClaro()" aria-valuemin="0" aria-valuemax="100"><p class="porcentajes">{{cargarBarraVerdeClaro()}}%</p></div>
+        <div id="barraVerdeOscuro" [style.width]="anchoVerdeOscuro" class="progress-bar bg-success" role="progressbar" aria-label="Segment one" aria-valuenow="cargarBarraVerdeOscuro()" aria-valuemin="0" aria-valuemax="100"><p class="porcentajes">{{cargarBarraVerdeOscuro()}}%</p></div>
     </div>
 </div>
 

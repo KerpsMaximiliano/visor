@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, SimpleChange } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges  } from '@angular/core';
 import { TareaService } from 'src/app/services/i2t/tarea.service';
 import { Tarea } from 'src/app/interfaces/tarea';
 
@@ -7,11 +7,15 @@ import { Tarea } from 'src/app/interfaces/tarea';
   templateUrl: './vista-analista-funcional.component.html',
   styleUrls: ['./vista-analista-funcional.component.css']
 })
-export class VistaAnalistaFuncionalComponent implements OnInit {
+export class VistaAnalistaFuncionalComponent implements OnInit, OnChanges {
 
-  proyectoId: any;
+  anchoRojo: string = '0';
+  anchoAmarillo: string = '0';
+  anchoVerde: string = '0';
+  
+  
   proyectoNombre?: string;
-  //tareasSP: any;
+  
   tareasOrg: any[]=[];
   tareasNoIniciadas: Tarea[]=[];
   tareasEnProgreso: Tarea[]=[];
@@ -31,19 +35,70 @@ export class VistaAnalistaFuncionalComponent implements OnInit {
   @Input() tareasSP: any = [];
 
   ngOnInit(): void {
-    if(this.tareasSP.length > 0){
-      console.log(this.tareasSP)
-      this.noHayProyecto= false;
-      this.organizarTareas();
-      this.cargarTareas();
-      this.poseeTareas();
-      if (!this.noHayProyecto) {
-        this.setearBarraProgreso();
-        this.ordenarListas();
+    //this.proyectoId = "d31cfdaa-049e-e6e3-999d-62b5b2f778b7"; // este dato viene del commponente tareas
+    // this._tareaService.getTareasDeProyecto(this.proyectoId).subscribe((response: any) => {
+    //   this.tareasSP = response.dataset;
+    //   this.proyectoNombre = this.tareasSP[0].nombre_proyecto;
+    //   this.organizarTareas();
+    //   console.log(this.tareasOrg);
+    //   this.cargarTareas();
+    //   this.poseeTareas();
+    //   if (!this.noHayProyecto) {
+    //     this.setearBarraProgreso();
+    //     this.ordenarListas();
+    //   }
+    // });;
+  }
+  ngOnChanges(changes: SimpleChanges) {
+    
+    if (this.tareasSP.length > 0) {
+      if(changes['tareasSP'].previousValue == undefined || changes['tareasSP'].previousValue.length == 0){ //Selecciona primero proyecto después vista
+        this.organizarTareas();
+        this.cargarTareas();
+        this.poseeTareas();
+        
+        if (!this.noHayProyecto) {
+          this.setearBarraProgreso();
+          this.ordenarListas();
+        }
+      }
+
+      else if( (changes['tareasSP'].previousValue[0].nombre_proyecto != changes['tareasSP'].currentValue[0].nombre_proyecto) ){
+        console.log(changes['tareasSP'].previousValue )
+        console.log(changes['tareasSP'].currentValue)
+        this.horasNoIniciadas = 0;
+        this.horasEnProgreso = 0;
+        this.horasCompleatadas = 0;
+        this.tareasOrg = [];
+        this.tareasNoIniciadas = [];
+        this.tareasEnProgreso = [];
+        this.tareasCompletadas = [];
+        this.noHayProyecto = false;
+        this.organizarTareas();
+        this.cargarTareas();
+        this.poseeTareas();
+        if (!this.noHayProyecto) {
+          this.setearBarraProgreso();
+          this.ordenarListas();
+        }
+      }
+      else{
+        this.tareasOrg = [];
+        this.organizarTareas();
+        this.cargarTareas();
+        this.poseeTareas();
+        console.log(this.noHayProyecto)
+        if (!this.noHayProyecto) {
+          this.setearBarraProgreso();
+          this.ordenarListas();
+        }
       }
     }
     else{
-      console.log(this.tareasSP)
+      this.tareasOrg=[];
+      this.tareasNoIniciadas= [];
+      this.tareasEnProgreso= [];
+      this.tareasCompletadas= [];
       this.noHayProyecto = true;
     }
   }
@@ -71,28 +126,6 @@ export class VistaAnalistaFuncionalComponent implements OnInit {
       })
     });
   };
-
-  ngOnChanges(changes: SimpleChange) {
-    this.tareasOrg = [];
-    if (this.tareasSP.length > 0) {
-      this.noHayProyecto = false;
-      console.log("Entra change")
-      this._tareaService.listaTareas = this.tareasSP//Enviar tareas Filtradas para Componentes Actividades
-      this.organizarTareas();
-      console.log(this.tareasOrg);
-      this.cargarTareas();
-      this.poseeTareas();
-      if (!this.noHayProyecto) {
-        this.horasNoIniciadas = 0;
-        this.horasEnProgreso = 0;
-        this.horasCompleatadas = 0;
-        this.setearBarraProgreso();
-        this.ordenarListas();
-      }
-    }
-    this.tareasOrg=[];
-    this._tareaService.enviarCambio();
-  }
 
   calcularFecha(fecha: string) {
     if (fecha != null) {
@@ -183,19 +216,22 @@ export class VistaAnalistaFuncionalComponent implements OnInit {
     let anchoVariable = (this.horasNoIniciadas / this.horasTotales * 100);
     const divRojo = document.getElementById('barraRoja');
     if (divRojo != null) {
-      divRojo.style.setProperty('width', (anchoVariable.toString()).concat(porc));
+      //divRojo.style.setProperty('width', (anchoVariable.toString()).concat(porc));
+      this.anchoRojo = (anchoVariable.toString()).concat(porc);
     }
     anchoVariable = (this.horasEnProgreso / this.horasTotales * 100);
     const divAmarillo = document.getElementById('barraAmarilla');
     if (divAmarillo != null) {
-      divAmarillo.style.setProperty('width', (anchoVariable.toString()).concat(porc));
+      //divAmarillo.style.setProperty('width', (anchoVariable.toString()).concat(porc));
+      this.anchoAmarillo = (anchoVariable.toString()).concat(porc);
     }
     anchoVariable = (this.horasCompleatadas / this.horasTotales * 100);
     const divVerde = document.getElementById('barraVerde');
     if (divVerde != null) {
-      divVerde.style.setProperty('width', (anchoVariable.toString()).concat(porc));
+      //divVerde.style.setProperty('width', (anchoVariable.toString()).concat(porc));
+      this.anchoVerde = (anchoVariable.toString()).concat(porc);
     }
-  }
+  } 
 
   // Visualiza el porcentaje de tareas no iniciadas en la plantilla
   cargarBarraRoja() {
@@ -264,7 +300,7 @@ export class VistaAnalistaFuncionalComponent implements OnInit {
     if (tarea.prioridad == null) {
       arrayOrdenado.push(tarea);
     }});
-    console.log(arrayOrdenado);
+    // console.log(arrayOrdenado);
     return arrayOrdenado;
   }
 

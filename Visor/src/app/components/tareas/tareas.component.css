@@ -28,7 +28,7 @@ h1, h3{
     text-align: center;
 }
 .buscadores{
-    width: 23%;
+    width: 25%;
 }
 
 .buscador{
@@ -51,4 +51,12 @@ h1, h3{
 .botonVistas{
     min-width: 135px;
     width: 135px;
+}
+
+.sombraBotones{
+    box-shadow: 0px 1px 3px 4px #908E8E;
+}
+
+.bordeBotonActivado{
+    border: 1px solid black;
 }

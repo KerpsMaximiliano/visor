@@ -32,14 +32,14 @@
     
     <div class="buscador">
       <mat-icon class="icon">add_circle</mat-icon>
-      
-      <button mat-flat-button color="primary" [matMenuTriggerFor]="sprintMenu">Sprint 9</button>
+      <!-- "Sprint" -->
+      <button mat-flat-button color="primary" [matMenuTriggerFor]="sprintMenu" class="sombraBotones" (click)="mesesYanios()">{{mesAnioSeleccionado}}</button>
       <mat-menu #sprintMenu="matMenu">
-        <button mat-menu-item>10/22</button>
-        <button mat-menu-item>11/12</button>
-        <button mat-menu-item>12/12</button>
+        <mat-option [value]="mesAnio"  *ngFor="let mesAnio of mesesAnios" (click)="setMesAnio(mesAnio)">{{ mesAnio }}</mat-option>
       </mat-menu>
-      <button mat-flat-button color="primary" (click)="getUsuarioTareasAsignadas()">Asignadas a mi</button>
+      
+      <!-- Asignadas a mi -->
+      <button [ngClass]="{'sombraBotones': asignadasAmiDesactivado,  'bordeBotonActivado': asignadasAmiActivado }" mat-flat-button color="primary" (click)="getUsuarioTareasAsignadas()">Asignadas a mi</button>
       <mat-icon class="icon" (click)="buscarTarea()">filter_alt</mat-icon>
     </div>
   </span>
