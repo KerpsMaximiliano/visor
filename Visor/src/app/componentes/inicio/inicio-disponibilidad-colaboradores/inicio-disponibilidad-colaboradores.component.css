@@ -56,6 +56,25 @@ h3 {
     align-items: center;
 }
 
+@media screen and (max-width: 1199px) {
+    .disponibilidad-equipo {
+        margin-left: 42%;
+    }
+}
+
+@media screen and (min-width: 1200px) and (max-width: 1399px) {
+    .disponibilidad-equipo {
+        margin-left: 20%;
+    }
+}
+
+@media screen and (min-width: 1400px) and (max-width: 2000px) {
+    .disponibilidad-equipo {
+        margin-left: 5%;
+    }
+}
+
+
 #porcentaje-disponibilidad-equipo {
     border-radius: 20px;
     padding: 10px;
@@ -83,7 +102,7 @@ h3 {
 
 .equipo {
     display: flex;
-    margin-left: 15%;
+    margin-left: 5%;
 }
 
 .colaborador-unico {
@@ -142,9 +161,23 @@ h3 {
 .caja-proyecto {
     margin-top: 10px;
     margin-bottom: 10px;
+    font-size: 10px;
+    align-items: center;
 }
 
 .mensaje-no-colaboradores {
     text-align: center;
 }
 
+mat-panel-title {
+    font-size: 12px;
+}
+
+.texto-proyecto {
+    text-align: left;
+    width: 100px;
+}
+
+.divisor {
+    margin-left: 55px;
+}

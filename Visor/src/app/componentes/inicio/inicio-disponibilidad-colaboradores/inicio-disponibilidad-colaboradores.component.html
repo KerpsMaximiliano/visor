@@ -56,7 +56,7 @@
                     </mat-panel-title>
                 </mat-expansion-panel-header>
                 <mat-divider></mat-divider>
-                <h3 class="atrasadas" matTooltip="{{colaborador.horasAtrasadas}} Hs" [matTooltipPosition]="position2.value!">Tareas Atrasadas: {{ colaborador.atrasadas }} </h3>
+                <h3 class="atrasadas" matTooltip="{{colaborador.horasAtrasadas}} Hs" [matTooltipPosition]="position.value!">Tareas Atrasadas: {{ colaborador.atrasadas }} </h3>
                 <div *ngFor="let mes of mesesPlanificacion">
                     <mat-expansion-panel hideToggle>
                         <mat-expansion-panel-header>
@@ -77,10 +77,13 @@
                                 </div>
                             </mat-panel-title>
                         </mat-expansion-panel-header>
+
+                        <!-- agregar comportamiento para mostrar mensaje no hay proyectos seleccionados -->
+                        
                         <div class="div-caja" *ngFor="let proy of separarProyectosDelMes(colaborador.id, mes.mes)">
                             <mat-divider></mat-divider>
                             <div class="div-caja caja-proyecto">
-                                <div> {{proy}} </div>
+                                <div class="texto-proyecto"> {{proy}} </div>
                                 <div class="cajaPorcentaje"
                                     matTooltip="{{getTooltipHsPlanProyecto(proy, colaborador.id, mes.mes)}} Hs Plan / 
                                     {{(colaborador.capacidad/(mesesMostrados+1))}} Hs Cap" [matTooltipPosition]="position.value!"> 
@@ -94,6 +97,8 @@
             </mat-expansion-panel>
         </div>
     </div>
+
+    <div class="divisor"></div>
 
     <div class="columna-equipo" [ngClass]="{'esconder': colaboradorUnico}">
         <div *ngFor="let colaborador of columna2">
@@ -135,8 +140,11 @@
                                 </div>
                             </mat-panel-title>
                         </mat-expansion-panel-header>
+
+                        <!-- agregar comportamiento para mostrar mensaje no hay proyectos seleccionados -->
+
                         <div class="div-caja caja-proyecto" *ngFor="let proy of separarProyectosDelMes(colaborador.id, mes.mes)">
-                            <div> {{proy}} </div>
+                            <div class="texto-proyecto"> {{proy}} </div>
                             <div class="cajaPorcentaje"
                                 matTooltip="{{getTooltipHsPlanProyecto(proy, colaborador.id, mes.mes)}} Hs Plan / 
                                 {{(colaborador.capacidad/(mesesMostrados+1))}} Hs Cap" [matTooltipPosition]="position.value!"> 
