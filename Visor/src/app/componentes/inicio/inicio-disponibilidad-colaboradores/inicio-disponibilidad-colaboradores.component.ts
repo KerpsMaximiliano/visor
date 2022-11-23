@@ -80,8 +80,8 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
             }
           });
         } 
-      this.mesesPlanificacion[0].mes = this._colaboradorService.getMesString(this.fechaHoy.getMonth());
-      this.setearFecha(this.fechaHoy);
+      this.mesesPlanificacion[0].mes = this._colaboradorService.getMesString(this.fechaHastaDate.getMonth());
+      this.setearFecha(this.fechaHastaDate);
       this._colaboradorService.disponibilidadUsuario(1, 1, this.mesFechaElegida, this.anioFechaElegida).subscribe((response: any) => {
         this.colaboradoresSP = response.dataset;
         this.organizarColaboradores();
@@ -164,7 +164,7 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
       });
     });
     this.setearFecha(this.fechaHoy);
-    this._colaboradorService.disponibilidadUsuario(4, 1,this.mesFechaElegida, this.anioFechaElegida).subscribe((response: any) => {
+    this._colaboradorService.disponibilidadUsuario(4, 1, this.mesFechaElegida, this.anioFechaElegida).subscribe((response: any) => {
       response.dataset.forEach((obj: any) => {
         this.colaboradores.forEach(colab => {
           if (obj.id_usuario == colab.id) { colab.horasAtrasadas = obj.horas }
@@ -174,8 +174,8 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   }
 
   getPlanificacionColaboradores() {
-    this.setearFecha(this.fechaHoy);
-    this._colaboradorService.disponibilidadUsuario(5, this.mesesMostrados+1, this.mesFechaElegida+1, this.anioFechaElegida).subscribe((resp: any) => {
+    this.setearFecha(this.fechaHastaDate);
+    this._colaboradorService.disponibilidadUsuario(5, this.mesesMostrados, this.mesFechaElegida, this.anioFechaElegida).subscribe((resp: any) => {
       resp.dataset.forEach((colab: any) => {
         this.planificacion.push({ id: colab.id_usuario, proyecto: colab.nombre_proyecto, mes: colab.mes-1, horas_planificadas: colab.horas_planificadas });
       });
@@ -430,8 +430,9 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     this.contraerColaboradores();
     this.fechaHastaDate = event.value;
     this.mesesMostrados = this.getDiferenciaMeses(this.fechaHoy, this.fechaHastaDate);
+    console.log(this.mesesMostrados);
     this.actualizarMesesPlanificacion();
-    this.setearFecha(this.fechaHoy);
+    this.setearFecha(this.fechaHastaDate);
     this._colaboradorService.disponibilidadUsuario(1, this.mesesMostrados+1, this.mesFechaElegida, this.anioFechaElegida).subscribe((response: any) => {
       this.colaboradoresSP = response.dataset;
       this.organizarColaboradores();

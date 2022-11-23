@@ -72,16 +72,16 @@
                                         matTooltip="{{(colaborador.capacidad/(mesesMostrados+1))-getTooltipHsPlanMensual(colaborador.id, mes.mes)}}
                                         Hs Disp / {{(colaborador.capacidad/(mesesMostrados+1))}} Hs Cap"
                                         [matTooltipPosition]="position.value!">
-                                        {{getPorcentajeDisponibleMensual(colaborador.id, mes.mes, (colaborador.capacidad/(mesesMostrados+1)))}}%  <!-- ver capacidad, dividir por mesesmostrados+1 -->
+                                        {{getPorcentajeDisponibleMensual(colaborador.id, mes.mes, (colaborador.capacidad/(mesesMostrados+1)))}}%
                                     </div>
                                 </div>
                             </mat-panel-title>
                         </mat-expansion-panel-header>
 
-                        <!-- agregar comportamiento para mostrar mensaje no hay proyectos seleccionados -->
-                        
+                        <!-- agregar comportamiento para mostrar mensaje: No tiene tareas asignadas este mes -->
+
+                        <mat-divider></mat-divider>
                         <div class="div-caja" *ngFor="let proy of separarProyectosDelMes(colaborador.id, mes.mes)">
-                            <mat-divider></mat-divider>
                             <div class="div-caja caja-proyecto">
                                 <div class="texto-proyecto"> {{proy}} </div>
                                 <div class="cajaPorcentaje"
@@ -119,7 +119,7 @@
                     </mat-panel-title>
                 </mat-expansion-panel-header>
                 <mat-divider></mat-divider>
-                <h3 class="atrasadas" matTooltip="{{colaborador.horasAtrasadas}} HS" [matTooltipPosition]="position2.value!">Tareas Atrasadas: {{ colaborador.atrasadas }} </h3>
+                <h3 class="atrasadas" matTooltip="{{colaborador.horasAtrasadas}} Hs" [matTooltipPosition]="position2.value!">Tareas Atrasadas: {{ colaborador.atrasadas }} </h3>
                 <div *ngFor="let mes of mesesPlanificacion">
                     <mat-expansion-panel hideToggle>
                         <mat-expansion-panel-header>
@@ -132,17 +132,18 @@
                                         'porcentaje-amarillo-colaborador': getPorcentajeAmarillo(getPorcentajeDisponibleMensual(colaborador.id, mes.mes, (colaborador.capacidad/(mesesMostrados+1)))),
                                         'porcentaje-verde-claro-colaborador': getPorcentajeVerdeClaro(getPorcentajeDisponibleMensual(colaborador.id, mes.mes, (colaborador.capacidad/(mesesMostrados+1)))),
                                         'porcentaje-verde-oscuro-colaborador': getPorcentajeVerdeOscuro(getPorcentajeDisponibleMensual(colaborador.id, mes.mes, (colaborador.capacidad/(mesesMostrados+1)))) }"
-                                        matTooltip="{{colaborador.capacidad-getTooltipHsPlanMensual(colaborador.id, mes.mes)}} 
-                                        Hs Disp / {{(colaborador.capacidad/(mesesMostrados+1))}} Hs Cap" 
+                                        matTooltip="{{(colaborador.capacidad/(mesesMostrados+1))-getTooltipHsPlanMensual(colaborador.id, mes.mes)}}
+                                        Hs Disp / {{(colaborador.capacidad/(mesesMostrados+1))}} Hs Cap"
                                         [matTooltipPosition]="position.value!">
-                                        {{getPorcentajeDisponibleMensual(colaborador.id, mes.mes, (colaborador.capacidad/(mesesMostrados+1)))}}%  <!-- ver capacidad, dividir por mesesmostrados+1 -->
+                                        {{getPorcentajeDisponibleMensual(colaborador.id, mes.mes, (colaborador.capacidad/(mesesMostrados+1)))}}%
                                     </div>
                                 </div>
                             </mat-panel-title>
                         </mat-expansion-panel-header>
 
-                        <!-- agregar comportamiento para mostrar mensaje no hay proyectos seleccionados -->
+                        <!-- agregar comportamiento para mostrar mensaje: No tiene tareas asignadas este mes -->
 
+                        <mat-divider></mat-divider>
                         <div class="div-caja caja-proyecto" *ngFor="let proy of separarProyectosDelMes(colaborador.id, mes.mes)">
                             <div class="texto-proyecto"> {{proy}} </div>
                             <div class="cajaPorcentaje"
