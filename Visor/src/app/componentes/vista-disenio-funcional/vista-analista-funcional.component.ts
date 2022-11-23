@@ -53,6 +53,7 @@ export class VistaAnalistaFuncionalComponent implements OnInit, OnChanges {
     
     if (this.tareasSP.length > 0) {
       if(changes['tareasSP'].previousValue == undefined || changes['tareasSP'].previousValue.length == 0){ //Selecciona primero proyecto después vista
+        this._tareaService.listaTareas = this.tareasSP//Enviar tareas Filtradas para Componentes Actividades
         this.organizarTareas();
         this.cargarTareas();
         this.poseeTareas();
@@ -74,6 +75,7 @@ export class VistaAnalistaFuncionalComponent implements OnInit, OnChanges {
         this.tareasEnProgreso = [];
         this.tareasCompletadas = [];
         this.noHayProyecto = false;
+        this._tareaService.listaTareas = this.tareasSP//Enviar tareas Filtradas para Componentes Actividades
         this.organizarTareas();
         this.cargarTareas();
         this.poseeTareas();
@@ -84,6 +86,7 @@ export class VistaAnalistaFuncionalComponent implements OnInit, OnChanges {
       }
       else{
         this.tareasOrg = [];
+        this._tareaService.listaTareas = this.tareasSP//Enviar tareas Filtradas para Componentes Actividades
         this.organizarTareas();
         this.cargarTareas();
         this.poseeTareas();
