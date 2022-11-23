@@ -1,0 +1,214 @@
+<mat-dialog-content *ngIf="buscarProyecto" class="mat-typography">
+    <mat-dialog-content class="header">
+        <h2 mat-dialog-title>Buscar proyecto</h2>
+        <!-- <button id="close" mat-button [mat-dialog-close]="false"><mat-icon >close</mat-icon></button> -->
+        <mat-icon (click)="cerrarDialog()">close</mat-icon>
+    </mat-dialog-content>
+    <mat-divider></mat-divider>
+    <div class="filtros">
+        <mat-dialog-content>
+            <mat-label class="label">Numero</mat-label>
+        
+            <mat-form-field class="example-form-field" appearance="fill">
+                <!-- <input matInput type="number" placeholder="1234" [(ngModel)]="numeroProyecto"  [ngModelOptions]="{standalone: true}"  id="nroProyecto" (keyup)="applyFilter($event)"> -->
+                <input matInput type="number" placeholder="1234" [(ngModel)]="numeroProyecto"  [ngModelOptions]="{standalone: true}"  id="nroProyecto" (keyup)="getDatosFiltrosProyecto($event)">
+            </mat-form-field>
+        </mat-dialog-content>
+
+        <mat-dialog-content>
+            <mat-label class="label">Nombre</mat-label>
+            
+            <mat-form-field class="example-form-field" appearance="fill">
+                <!-- <input matInput type="text" placeholder="Asunto" [(ngModel)]="nombreProyecto" [ngModelOptions]="{standalone: true}" (keyup)="applyFilter($event)" id="nombreProyecto"> -->
+                <input matInput type="text" placeholder="Asunto" [(ngModel)]="nombreProyecto" [ngModelOptions]="{standalone: true}" (keyup)="getDatosFiltrosProyecto($event)" id="nombreProyecto">
+            </mat-form-field>
+        </mat-dialog-content>
+
+        <mat-dialog-content>
+            <mat-label class="label">Cliente</mat-label>
+            <mat-form-field appearance="fill">
+                <mat-select placeholder="Proyecto" [(value)]="clienteProyecto" id="clienteProyecto" (selectionChange)="selectProyecto($event)"  >
+                    <mat-option></mat-option>
+                    <mat-option [value]="cliente"  *ngFor="let cliente of clientesDeProyectos">{{ cliente }} </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <!-- <p>You selected: {{selectedFood}}</p> -->
+        </mat-dialog-content>
+
+        <mat-dialog-content>
+            <mat-label class="label">Asignado a</mat-label>
+            <mat-form-field appearance="fill">
+                <mat-label>Asignado a</mat-label>
+                <mat-select [(value)]="asignadoAproyecto" id="asignadoAproyecto"  (selectionChange)="selectProyecto($event)">
+                    <mat-option></mat-option>
+                    <mat-option [value]="usuario"  *ngFor="let usuario of usuariosDeProyectos">{{ usuario }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <!-- <p>You selected: {{selectedFood}}</p> -->
+        </mat-dialog-content>
+
+        <!-- Checkbox 'Mis Proyectos'  -->
+        <section class="mis_proyectos" >
+            <mat-checkbox  (click)="misProyectosAsignados()" >
+                <p id="text_checkbox">Mis Proyectos</p>
+            </mat-checkbox>
+        </section>
+          
+        <!-- <mat-selection-list  [multiple]="false" class="lista_proyectos"  >
+            <mat-list-option  *ngFor="let unProyecto of listaProyectosPrueba" [value]="unProyecto" > -->
+              <!-- <mat-option (click)="getNombreProyecto(unProyecto)">{{unProyecto}}</mat-option> -->
+              <!-- <mat-option (click)="getNombreProyecto(unProyecto)">{{unProyecto}}>{{unProyecto.nombre_projecto | json }}</mat-option>
+            </mat-list-option>
+        </mat-selection-list> -->
+
+        <div class="resultados lista_proyectos">
+            <div>
+                <table mat-table [dataSource]="dataSourcePrueba" class="mat-elevation-z8 tabla_lista_proyectos">
+                    <ng-container matColumnDef="nombre" >
+                        <th mat-header-cell *matHeaderCellDef >Proyectos</th>
+                        <td mat-cell *matCellDef="let unProyecto" (click)="getProyecto(unProyecto)"> {{ unProyecto.nombre_projecto }} </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+                    <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
+                </table>
+            </div>
+        </div>
+    
+        
+        <mat-dialog-actions align="end" class="accionesBotones">
+            <button mat-raised-button color="primary" type="submit" (click)="limpiarValoresDeFiltros()"> Limpiar </button>
+            <button mat-raised-button color="primary" type="submit" (click)="cerrarDialog()"> Cancelar </button>
+            
+        </mat-dialog-actions>
+    
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-content *ngIf="buscarTareas" class="mat-typography">
+    <mat-dialog-content class="header">
+        <h2 mat-dialog-title>Buscar Tarea</h2>
+        <mat-icon (click)="cerrarDialog()">close</mat-icon>
+    </mat-dialog-content>
+    <mat-divider></mat-divider>
+    <div class="filtros">
+        <mat-dialog-content>
+            <mat-label class="label">Nombre</mat-label>
+
+            <mat-form-field class="example-form-field" appearance="fill">
+                <input matInput type="text" placeholder="nombreTarea" [(ngModel)]="nombreTarea" id="nombreTarea" (keyup)="getNombreTarea($event)">
+            </mat-form-field>
+        </mat-dialog-content>
+
+        <mat-dialog-content>
+            <mat-label class="label">Prioridad</mat-label>
+            <mat-form-field appearance="fill">
+                <mat-label>Prioridad</mat-label>
+                <mat-select [(value)]="prioridadTarea" id="prioridadTarea" (selectionChange)="selectPrioridadTarea($event)">
+                    <mat-option></mat-option>
+                    <mat-option [value]="prioridad" *ngFor="let prioridad of prioridadDeTareas">{{ prioridad }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <!-- <p>You selected: {{selectedFood}}</p> -->
+        </mat-dialog-content>
+
+        <mat-dialog-content>
+            <mat-label class="label">Facilitador</mat-label>
+            <mat-form-field appearance="fill">
+                <mat-label>Facilitador</mat-label>
+                <mat-select [(value)]="facilitadorTarea" id="facilitadorTarea" (selectionChange)="selectFacilitadorTarea($event)">
+                    <mat-option></mat-option>
+                    <mat-option [value]="facilitador" *ngFor="let facilitador of facilitadoresTareas">{{ facilitador }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <!-- <p>You selected: {{selectedFood}}</p> -->
+        </mat-dialog-content>
+
+        <mat-dialog-content>
+            <mat-label class="label">Asignado a</mat-label>
+            <mat-form-field appearance="fill">
+                <mat-select [(value)]="asignadoAtarea" id="asignadoAtarea" (selectionChange)="selectAsignadoAtarea($event)">
+                    <mat-option></mat-option>
+                    <mat-option  [value]="programador"  *ngFor="let programador of usuariosAsignadosTareas">{{ programador }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <!-- <p>You selected: {{selectedFood}}</p> -->
+        </mat-dialog-content>
+
+        <!-- <mat-dialog-content>
+            <mat-label class="label">Tecnologia</mat-label>
+            <mat-form-field appearance="fill">
+                <mat-select [(value)]="tecnologiatarea" id="tecnologiaTarea" (selectionChange)="selectTecnologiaTarea($event)">
+                    <mat-option></mat-option>
+                    <mat-option (click)="tecnologiaElegidaTarea(tecnologia)" [value]="tecnologia"  *ngFor="let tecnologia of tecnologiasTareas">{{ tecnologia }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </mat-dialog-content> -->
+
+        <mat-dialog-content class="titulo_fechas">
+
+            <mat-label class="label">Desde</mat-label>
+            <mat-label class="label">Hasta</mat-label>
+        </mat-dialog-content>
+        <mat-dialog-content class="fechas">
+            <mat-label class="label">Por fecha de inicio</mat-label>
+            <mat-form-field appearance="fill">
+                <mat-label>dd/mm/aaaa</mat-label>
+                <input matInput [(ngModel)]="fechaInicio" [matDatepicker]="fechaInicioDesde" id="fechaInicio"  (dateInput)="getFechaInicio($event)" >
+                <mat-hint>{{getDateFormatString()}}</mat-hint>
+                <mat-datepicker-toggle matSuffix [for]="fechaInicioDesde"></mat-datepicker-toggle>
+                <mat-datepicker #fechaInicioDesde ></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>dd/mm/aaaa</mat-label>
+                <input matInput [(ngModel)]="fechaFin" [matDatepicker]="fechaInicioHasta" (dateInput)="getFechaFin($event)">
+                <mat-hint>{{getDateFormatString()}}</mat-hint>
+                <mat-datepicker-toggle matSuffix [for]="fechaInicioHasta"></mat-datepicker-toggle>
+                <mat-datepicker #fechaInicioHasta></mat-datepicker>
+            </mat-form-field>
+        </mat-dialog-content>
+        <mat-dialog-content class="fechas">
+            <mat-label class="label">Planificada</mat-label>
+            <mat-form-field appearance="fill">
+                <mat-label>dd/mm/aaaa</mat-label>
+                <input matInput [(ngModel)]="fechaPlanificadaDesde" [matDatepicker]="planificadaDesde" (dateInput)="getPlanificadaDesde($event)">
+                <mat-hint>{{getDateFormatString()}}</mat-hint>
+                <mat-datepicker-toggle matSuffix [for]="planificadaDesde"></mat-datepicker-toggle>
+                <mat-datepicker #planificadaDesde></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>dd/mm/aaaa</mat-label>
+                <input matInput [(ngModel)]="fechaPlanificadaHasta" [matDatepicker]="planificadaHasta" (dateInput)="getPlanificadaHasta($event)">
+                <mat-hint>{{getDateFormatString()}}</mat-hint>
+                <mat-datepicker-toggle matSuffix [for]="planificadaHasta"></mat-datepicker-toggle>
+                <mat-datepicker #planificadaHasta></mat-datepicker>
+            </mat-form-field>
+        </mat-dialog-content>
+        <mat-dialog-content class="fechas">
+            <mat-label class="label">Fin</mat-label>
+            <mat-form-field appearance="fill">
+                <mat-label>dd/mm/aaaa</mat-label>
+                <input matInput [(ngModel)]="fechaFinDesde" [matDatepicker]="finDesde" (dateInput)="getFinDesde($event)">
+                <mat-hint>{{getDateFormatString()}}</mat-hint>
+                <mat-datepicker-toggle matSuffix [for]="finDesde"></mat-datepicker-toggle>
+                <mat-datepicker #finDesde></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>dd/mm/aaaa</mat-label>
+                <input matInput [(ngModel)]="fechaFinHasta" [matDatepicker]="finHasta" (dateInput)="getFinHasta($event)">
+                <mat-hint>{{getDateFormatString()}}</mat-hint>
+                <mat-datepicker-toggle matSuffix [for]="finHasta"></mat-datepicker-toggle>
+                <mat-datepicker #finHasta></mat-datepicker>
+            </mat-form-field>
+        </mat-dialog-content>
+        <!-- <button mat-button (click)="french()">Dynamically switch to French</button> -->
+        
+        
+        
+        <mat-dialog-actions align="end" class="accionesBotones">
+            <button mat-raised-button color="primary" type="submit" (click)="limpiarValoresDeFiltros()"> Limpiar </button>
+            <button mat-raised-button color="primary" type="submit" (click)="cerrarDialog()"> Cancelar </button>
+            <button mat-raised-button color="primary" type="submit" cdkFocusInitial (click)="prepararFiltro()"> Filtrar </button>
+        </mat-dialog-actions>
+    
+    </div>
+</mat-dialog-content>

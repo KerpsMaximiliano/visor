@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('auth_token', resp.dataset[0].jwt);
         localStorage.setItem('usuario', this.user.value);
         this.visibilidadMensaje = false;
-        this._router.navigate(['inicio-main']);
+        this._router.navigate(['dashboard']);
       }
       if(resp.returnset[0].RCode == -6001){
         this.visibilidadMensaje = true;

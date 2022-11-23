@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { RestService } from './rest.service';
 import { Usuario } from 'src/app/interfaces/usuario';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
 
-  constructor(private _restService: RestService){
+  constructor(private _restService: RestService, private router: Router){
   }
 
   /**
@@ -24,6 +25,12 @@ export class LoginService {
       "pass": usuarioRecibido.password
     });
     return this._restService.callLogin(jsbody);
+  }
+
+  logOut(){
+
+    localStorage.clear();
+    this.router.navigate(['login']);
   }
 
   enviarCorreo(usuarioRecibido: Usuario){

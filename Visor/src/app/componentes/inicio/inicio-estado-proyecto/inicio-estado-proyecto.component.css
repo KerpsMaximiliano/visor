@@ -1,0 +1,440 @@
+
+/*
+  Header
+*/
+
+#titulo {
+  text-align: center;
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+
+.header {
+  display: flex;
+  height: 60px;
+  margin-bottom: 50px;
+}
+
+.input-header {
+  width: 150px;
+}
+
+.boton-icono {
+  margin-top: 10px;
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
+.boton-informacion{
+  margin-top: 10px;
+  margin-right: 0px;
+  margin-left: 5px;
+}
+
+#seccion-informacion{
+  background-color: white;
+  border: 1px solid black;
+  height: 126px;
+  width: 85px;
+  border-radius: 5px;
+  padding: 3px;
+}
+
+.letrasSeccionInformacion{
+  font-size: 9px;
+  margin-left: 2px;
+}
+
+#seccion-informacion div{
+  margin: 1px;
+}
+
+#seccion-no-iniciadas{
+  display: flex;
+}
+
+#seccion-en-progreso{
+  display: flex;
+}
+
+#seccion-en-prueba{
+  display: flex;
+}
+
+#seccion-completadas{
+  display: flex;
+}
+
+.cc-no-iniciadas{
+  height: 15px;
+  width: 15px;
+  background-color: #FF0000;
+  border-radius: 5px;
+  border: solid 1px black;
+}
+
+.cc-en-progreso{
+  height: 15px;
+  width: 15px;
+  border-radius: 5px;
+  background-color: #FFFF00;
+  border: solid 1px black;
+}
+
+.cc-en-prueba{
+  height: 15px;
+  width: 15px;
+  border-radius: 5px;
+  background-color: #00FF00;
+  border: solid 1px black;
+}
+
+.cc-completadas{
+  height: 15px;
+  width: 15px;
+  border-radius: 5px;
+  background-color: #008000;
+  border: solid 1px black;
+}
+
+.container-informacion{
+  float: right;
+  display: flex;  
+}
+
+.icon {
+  font-size: 24px;
+}
+
+.porcentaje-rojo {
+  border: 2px solid #FF0000;
+}
+
+.porcentaje-amarillo {
+  border: 2px solid #FFFF00;
+}
+
+.porcentaje-verde-claro {
+  border: 2px solid #00FF00;
+}
+
+.porcentaje-verde-oscuro {
+  border: 2px solid #008000;
+}
+
+.disponibilidad-proyectos {
+  margin-top: 15px;
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.acomodar{
+  padding-left: 130px;
+}
+
+#porcentaje-disponibilidad-proyectos {
+  border-radius: 20px;
+  padding: 10px;
+}
+
+.noVisible{
+  display: none;
+}
+
+#ordenarPor{
+  margin-left: 15px;
+}
+
+.menu-orden {
+  display: flex;
+  width: 170px;
+}
+
+/*
+  Body
+*/
+
+.container-datos{
+  margin: 5px;
+}
+
+.titulos{
+  font-size: 12px;
+}
+.datos{
+  font-size: 10px;
+}
+
+.mensaje-no-proyectos {
+  text-align: center;
+}
+
+/*
+  Tabla
+*/
+
+.letrasSegundoNivel{
+  font-size: 12px;
+}
+
+table {
+  width: 100%;
+}
+
+tr.example-detail-row {
+  height: 0;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+  background: #efefef;
+}
+
+.example-element-row td {
+  border-bottom-width: 0;
+}
+
+.example-element-detail {
+  overflow: hidden;
+  display: flex;
+}
+
+.example-element-diagram {
+  min-width: 80px;
+  border: 2px solid black;
+  padding: 8px;
+  font-weight: lighter;
+  margin: 8px 0;
+  height: 104px;
+}
+
+.example-element-symbol {
+  font-weight: bold;
+  font-size: 40px;
+  line-height: normal;
+}
+
+.example-element-description {
+  padding: 16px;
+}
+
+.example-element-description-attribution {
+  opacity: 0.5;
+}
+
+#tareasATiempo{
+  background-color: #008000;
+  text-align: center;
+  margin-right: 29%;
+  margin-left: 29%;
+  border-radius: 5px;
+  border: solid 1.50px black;
+  color: #efefef;
+}
+
+#tareasAtrasadas{
+background-color: #FF0000;
+text-align: center;
+margin-right: 29%;
+margin-left: 29%;
+border-radius: 5px;
+border: solid 1.50px black;
+color: #efefef;
+}
+
+#nombre{
+text-align: center;
+}
+
+.columna{
+  padding: 10px;
+}
+
+.tituloColumna{
+text-align: center;
+font-size: 15px;
+}
+
+.subtitulo{
+text-align: center;
+font-size: 15px;
+margin-top: 10px;
+}
+
+#seccionAvance{
+display: flexbox;
+max-height: 30%;
+}
+
+#seccionAvanceArea{
+  border-radius: 3px;
+}
+
+#seccionAvanceArea p{
+  padding-top: 8px;
+  font-size: 15px;
+}
+
+#tituloAvanceArea{
+  padding-left: 39%;
+}
+
+.contenido{
+  width: 100%;
+}
+
+#vacio{
+  margin-bottom: 5px;
+}
+
+/*
+  Barra
+*/
+.barra{
+  display: flex;
+  width: 100%;
+}
+
+.barra div{
+  margin: 0.1%;
+}
+
+#nombre{
+  font-size: 15px;
+}
+
+#barraVerde{
+  background-color: #008000;
+  width: 25%;
+  text-align: center;
+  color: white;
+  border: solid 0.5px black;
+  font-size: 15px;
+  border-radius: 3px;
+  padding-top: 10px;
+  height: 10%;
+}
+
+#barraRoja{
+  background-color: #FF0000;
+  width: 25%;
+  text-align: center;
+  color: white;
+  border: solid 0.5px black;
+  font-size: 15px;
+  border-radius: 3px;
+  padding-top: 10px;
+  height: 10%;
+}
+
+#barraAmarilla{
+  background-color: #FFFF00;
+  width: 25%;
+  text-align: center;
+  border: solid 0.5px black;
+  font-size: 15px;
+  border-radius: 3px;
+  padding-top: 10px;
+  height: 10%;
+}
+
+#barraEnPrueba{
+  background-color: #00FF00;
+  width: 25%;
+  text-align: center;
+  color: white;
+  border: solid 0.5px black;
+  font-size: 15px;
+  border-radius: 3px;
+  padding-top: 10px;
+  height: 10%;
+} 
+
+.barraAvance{
+  display: flex;
+}
+
+.barraAvance div{
+  margin: 1px;
+}
+
+#espacio{
+  padding-right: 12px;
+}
+
+#espacioTecnico{
+  padding-right: 11px;
+}
+
+#espacioDesarrollo{
+  padding-right: 35px;
+}
+
+#espacioTesting{
+  padding-right: 50px;
+}
+
+.barraAreaVerde{
+  background-color: #008000;
+  width: 20%;
+  text-align: center;
+  color: white;
+  border: solid 0.5px black;
+  font-size: 15px;
+  border-radius: 3px;
+  height: 10%;
+}
+
+.barraAreaRoja{
+  background-color: #FF0000;
+  width: 20%;
+  text-align: center;
+  color: white;
+  border: solid 0.5px black;
+  font-size: 15px;
+  border-radius: 3px;
+  height: 10%;
+}
+
+.barraAreaAmarilla{
+  background-color: #FFFF00;
+  width: 20%;
+  text-align: center;
+  border: solid 0.5px black;
+  font-size: 15px;
+  border-radius: 3px;
+  height: 10%;
+}
+
+.barraAreaEnPrueba{
+  background-color: #00FF00;
+  width: 20%;
+  text-align: center;
+  color: white;
+  border: solid 0.5px black;
+  font-size: 15px;
+  border-radius: 3px;
+  height: 10%;
+}
+
+#container-indicadores{
+  height: 10%;
+  width: 10%;
+}
+
+
+
+
+
+
+
+
+
+
+
+

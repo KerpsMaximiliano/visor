@@ -8,6 +8,9 @@ import { TooltipPosition } from '@angular/material/tooltip';
 import { Colaborador } from 'src/app/interfaces/colaborador';
 import { ColaboradorService } from 'src/app/services/i2t/colaborador.service';
 import { FiltroService } from 'src/app/services/i2t/filtro.service';
+import { end } from '@popperjs/core';
+import { filter } from 'rxjs';
+import { Pipe, PipeTransform } from "@angular/core";
 
 @Component({
   selector: 'app-inicio-disponibilidad-colaboradores',
@@ -21,6 +24,7 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   colaboradoresSP: any[] = [];
   planificacion: any[] = [];
   colaboradores: Colaborador[] = [];
+  colaboradores2: Colaborador[] = [];
   columna1!: Colaborador[];
   columna2!: Colaborador[];
   dataSource!: any;
@@ -42,8 +46,16 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   positionOptions: TooltipPosition[] = ['after', 'before', 'above', 'below', 'left', 'right'];
   position = new FormControl(this.positionOptions[0]);
   position2 = new FormControl(this.positionOptions[3]);
+  mesFechaElegida: number;
+  anioFechaElegida: number;
+  diaFechaElegida: number;
+  completo= '';
 
-  constructor(private _colaboradorService: ColaboradorService, private dialog: MatDialog, private _filtroService: FiltroService) { }
+  constructor(private _colaboradorService: ColaboradorService, private dialog: MatDialog, private _filtroService: FiltroService) {
+    this.mesFechaElegida = 0;
+    this.anioFechaElegida = 0;
+    this.diaFechaElegida = 0;
+  }
 
   ngOnInit(): void {
     this._filtroService.getUserId(localStorage.getItem('usuario')!).subscribe((response: any) => {
@@ -63,12 +75,14 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
               const contenido = JSON.parse(atob(filtro.contenido));
               this.nombre = contenido.nombre;
               this.apellido = contenido.apellido;
+              this.completo = contenido.nombre + ' ' + contenido.apellido;
               this.funcion = contenido.funcion;
             }
           });
-        }
+        } 
       this.mesesPlanificacion[0].mes = this._colaboradorService.getMesString(this.fechaHoy.getMonth());
-      this._colaboradorService.disponibilidadUsuario(1, 1, this.formatearFecha(this.fechaHoy)).subscribe((response: any) => {
+      this.setearFecha(this.fechaHoy);
+      this._colaboradorService.disponibilidadUsuario(1, 1, this.mesFechaElegida, this.anioFechaElegida).subscribe((response: any) => {
         this.colaboradoresSP = response.dataset;
         this.organizarColaboradores();
         this.getTareasAtrasadas();
@@ -79,7 +93,12 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     });
   }
 
+/* 
+  //No se utiza debido a una refactorización en el componente.
+
   formatearFecha(fecha: Date) {
+    this.anioFechaElegida = fecha.getFullYear();
+    this.mesFechaElegida = fecha.getMonth();
     const anio = fecha.getFullYear().toString();
     let mes: string = '';
     let mesN = fecha.getMonth()+1;
@@ -88,7 +107,13 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     let diaN = fecha.getDate();
     if (diaN<10) { dia = '0'+diaN } else { dia = ''+diaN }
     return anio+'-'+mes+'-'+dia;
-  }
+  }  */
+
+  //Nuevo método para el formato de la fecha.
+  setearFecha(fecha: Date) {
+    this.anioFechaElegida = fecha.getFullYear();
+    this.mesFechaElegida = fecha.getMonth();
+  } 
 
   organizarColaboradores() {
     this.colaboradores = [];
@@ -109,6 +134,7 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
       contId++;
     });
     this.dataSource = new MatTableDataSource(this.colaboradores);
+    this.completo = this.dataSource.nombre + ' ' + this.dataSource.apellido;
   }
 
   nullCheck(check: any) {
@@ -129,14 +155,16 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   }
 
   getTareasAtrasadas() {
-    this._colaboradorService.disponibilidadUsuario(2, 1, this.formatearFecha(this.fechaHoy)).subscribe((response: any) => {
+    this.setearFecha(this.fechaHoy);
+    this._colaboradorService.disponibilidadUsuario(2, 1, this.mesFechaElegida, this.anioFechaElegida).subscribe((response: any) => {
       response.dataset.forEach((obj: any) => {
         this.colaboradores.forEach(colab => {
           if (obj.id_usuario == colab.id) { colab.atrasadas = obj.tareas_atrasadas }
         });
       });
     });
-    this._colaboradorService.disponibilidadUsuario(4, 1, this.formatearFecha(this.fechaHoy)).subscribe((response: any) => {
+    this.setearFecha(this.fechaHoy);
+    this._colaboradorService.disponibilidadUsuario(4, 1,this.mesFechaElegida, this.anioFechaElegida).subscribe((response: any) => {
       response.dataset.forEach((obj: any) => {
         this.colaboradores.forEach(colab => {
           if (obj.id_usuario == colab.id) { colab.horasAtrasadas = obj.horas }
@@ -146,11 +174,13 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   }
 
   getPlanificacionColaboradores() {
-    this._colaboradorService.disponibilidadUsuario(5, this.mesesMostrados+1, this.formatearFecha(this.fechaHastaDate)).subscribe((resp: any) => {
+    this.setearFecha(this.fechaHoy);
+    this._colaboradorService.disponibilidadUsuario(5, this.mesesMostrados+1, this.mesFechaElegida+1, this.anioFechaElegida).subscribe((resp: any) => {
       resp.dataset.forEach((colab: any) => {
         this.planificacion.push({ id: colab.id_usuario, proyecto: colab.nombre_proyecto, mes: colab.mes-1, horas_planificadas: colab.horas_planificadas });
       });
     });
+    this.planificacion = [];
   }
 
   calcularPorcentajeTiempoDisponible(id: any) {
@@ -245,24 +275,56 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
+  
+    localStorage.setItem('fv',filterValue);
+    let ls = localStorage.getItem('fv');
     this.contraerColaboradores();
     this.organizarColaboradores();
     this.getTareasAtrasadas();
     let colaboradoresFiltro: any[] = [];
+
+    //let FV = filterValue.split(" ",3);
+
+    console.log("colaboradores 1",this.colaboradores);
+    console.log("colaboradores 2",this.colaboradores2);
+    console.log(this.colaboradores[0].nombre.concat(' ').concat(this.colaboradores[0].apellido))
     this.colaboradores.forEach(colab => {
-      colaboradoresFiltro.push({ nombre: colab.nombre, apellido: colab.apellido });
+      let nombreC = colab.nombre.concat(" ").concat(colab.apellido);
+      let nombreI = colab.apellido.concat(" ").concat(colab.nombre)
+      console.log(nombreC);
+      //colaboradoresFiltro.push({ nombre: colab.nombre, apellido: colab.apellido });
+      colaboradoresFiltro.push({ nombreC , nombreI });
     });
+
     this.dataSource = new MatTableDataSource(colaboradoresFiltro);
     this.dataSource.filter = filterValue.trim().toLowerCase();
     colaboradoresFiltro = this.dataSource.filteredData;
+    console.log("filterValue",filterValue);
+
     let arrayAux: Colaborador[] = [];
-    this.colaboradores.forEach(colab => {
-      colaboradoresFiltro.forEach(user => {
-        if (colab.nombre == user.nombre && colab.apellido == user.apellido) {
-          arrayAux.push(colab);
-        }
-      });
-    });
+     
+
+      /*this.colaboradores.forEach(colab => {
+          colaboradoresFiltro.forEach(user => {
+            console.log(user);
+            if (colab.nombre == user.nombre && colab.apellido == user.apellido) {
+              this.colaboradores2.push(colab);
+              arrayAux.push(colab);
+            }
+          });
+        });*/
+        this.colaboradores.forEach(colab => {
+          colaboradoresFiltro.forEach(user => {
+            if (colab.nombre == user.nombreC.split(" ",1)  && (colab.apellido == user.nombreC.split(" ",user.nombreC.length - 1)[1] || colab.apellido == user.nombreC.split(" ",user.nombreC.length - 1)[1].concat(" ").concat(user.nombreC.split(" ",user.nombreC.length - 1)[2]) ) ) {
+              this.colaboradores2.push(colab);
+              arrayAux.push(colab);
+            }
+          });
+        });
+
+        
+      
+      
     this.colaboradores = arrayAux;
     this.aplicarFiltros();
   }
@@ -292,8 +354,9 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     const dialogRef = this.dialog.open(ModalFiltroComponent, {
       width: '400px',
       disableClose: true,
-      data: { nombre: this.nombre, apellido: this.apellido, funcion: this.funcion, search_id: this.modal_saved_search_id }
+      data: { nombre: this.nombre, apellido: this.apellido,funcion: this.funcion, search_id: this.modal_saved_search_id }
     });
+    
     dialogRef.afterClosed().subscribe(result => {
       this.inputIzq = '';
       this.nombre = result.nombre;
@@ -382,7 +445,8 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     this.fechaHastaDate = event.value;
     this.mesesMostrados = this.getDiferenciaMeses(this.fechaHoy, this.fechaHastaDate);
     this.actualizarMesesPlanificacion();
-    this._colaboradorService.disponibilidadUsuario(1, this.mesesMostrados+1, this.formatearFecha(this.fechaHastaDate)).subscribe((response: any) => {
+    this.setearFecha(this.fechaHoy);
+    this._colaboradorService.disponibilidadUsuario(1, this.mesesMostrados+1, this.mesFechaElegida, this.anioFechaElegida).subscribe((response: any) => {
       this.colaboradoresSP = response.dataset;
       this.organizarColaboradores();
       this.getTareasAtrasadas();
@@ -516,6 +580,7 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
         }
       }
     });
+    //console.log(this.planificacion)
     return proyectos;
   }
 

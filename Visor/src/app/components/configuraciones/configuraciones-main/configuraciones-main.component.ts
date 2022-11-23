@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { BuiltinTypeName } from '@angular/compiler';
+import { Component, InjectionToken, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PermisoService } from 'src/app/services/i2t/permiso.service';
 import { UsuarioService } from 'src/app/services/i2t/usuario-rol.service';
+
 
 @Component({
   selector: 'app-configuraciones-main',
@@ -10,7 +12,10 @@ import { UsuarioService } from 'src/app/services/i2t/usuario-rol.service';
 })
 export class ConfiguracionesComponent implements OnInit {
 
-  constructor(private router: Router, private _usuarioService: UsuarioService, private _permisoService: PermisoService) { }
+  constructor(private router: Router, 
+    private _usuarioService: UsuarioService, 
+    private _permisoService: PermisoService,
+    private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this._usuarioService.iniciarUsuarios();
@@ -18,11 +23,11 @@ export class ConfiguracionesComponent implements OnInit {
   }
 
   rolesUsuarios() {
-    this.router.navigate(['configuraciones-main/roles-usuarios']);
+    this.router.navigate(['roles-usuarios'], {relativeTo: this.route});
   }
 
   permisosRoles() {
-    this.router.navigate(['configuraciones-main/permisos-roles']);
+    this.router.navigate(['permisos-roles'], {relativeTo: this.route});
   }
-
+  
 }

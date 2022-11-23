@@ -1,3 +1,4 @@
+import { ListRange } from '@angular/cdk/collections';
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
@@ -20,6 +21,7 @@ export class PermisosRolesComponent implements OnInit {
   dataSource!: MatTableDataSource<any>;
   displayedColumns: string[] = ['permiso', 'operativo', 'supervisor', 'administrador'];
   privilegio: boolean = false;
+  permisosOrdenados: any[] = [];
 
   constructor(private _permisoService: PermisoService,
               private _usuarioService: UsuarioService,
@@ -31,7 +33,8 @@ export class PermisosRolesComponent implements OnInit {
     this.funciones = this._permisoService.getFunciones();
     this.permisosSP = this._permisoService.getPermisosSP();
     this.actualizarPermisos();
-    this.ordenAlfabetico(this.permisos);
+    //this.ordenAlfabetico(this.permisos);
+    this.ordenEspecifico(this.permisos);
     this.dataSource = new MatTableDataSource(this.permisos);
     this._usuarioService.verificarUsuario('F001', localStorage.getItem('usuario')!).subscribe((response: any) => {
       if (response.returnset[0].RCode == 200) {
@@ -77,6 +80,38 @@ export class PermisosRolesComponent implements OnInit {
       }
       return 0;
     });
+  }
+  ordenEspecifico(lista: Array<Permiso>){
+    
+    lista.forEach(t=>{
+      if(t.nombre == 'Cambiar los Permisos' )this.permisosOrdenados[0] = t;
+      if(t.nombre == 'Cambiar Roles' )this.permisosOrdenados[1] = t;
+      if(t.nombre == 'Agregar Tarea' )this.permisosOrdenados[2] = t;
+      if(t.nombre == 'Modificar Tarea' ){this.permisosOrdenados[3] = t;}
+      if(t.nombre == 'Eliminar Tarea' ){this.permisosOrdenados[4] = t;}
+      if(t.nombre == 'Agregar Actividades' ){this.permisosOrdenados[5] = t;}
+      if(t.nombre == 'Modificar Actividades' ){this.permisosOrdenados[6] = t;}
+      if(t.nombre == 'Eliminar Actividades' ){this.permisosOrdenados[7] = t;}
+      if(t.nombre == 'Agregar Proyecto' ){this.permisosOrdenados[8] = t;}
+      if(t.nombre == 'Modificar Proyecto' ){this.permisosOrdenados[9] = t;}
+      if(t.nombre == 'Eliminar Proyecto' ){this.permisosOrdenados[10] = t;}
+      if(t.nombre == 'Agregar Sprint' ){this.permisosOrdenados[11] = t;}
+      if(t.nombre == 'Modificar Sprint' ){this.permisosOrdenados[12] = t;}
+      if(t.nombre == 'Eliminar Sprint' ){this.permisosOrdenados[13] = t;}
+      if(t.nombre == 'Agregar Des. Wiki' ){this.permisosOrdenados[14] = t;}
+      if(t.nombre == 'Modificar Des. Wiki' ){this.permisosOrdenados[15] = t;}
+      if(t.nombre == 'Eliminar Des. Wiki' ){this.permisosOrdenados[16] = t;}
+      if(t.nombre == 'Agregar Documento' ){this.permisosOrdenados[17] = t;}
+      if(t.nombre == 'Modificar Documento' ){this.permisosOrdenados[18] = t;}
+      if(t.nombre == 'Eliminar Documento' ){this.permisosOrdenados[19] = t;}
+      if(t.nombre == 'Vista Analista Funcional' ){this.permisosOrdenados[20] = t;}
+      if(t.nombre == 'Vista Analista Técnico' ){this.permisosOrdenados[21] = t;}
+      if(t.nombre == 'Vista Desarrollador' ){this.permisosOrdenados[22] = t;}
+      if(t.nombre == 'Vista de QA' ){this.permisosOrdenados[23] = t;}
+      if(t.nombre == 'Vista de Testing' ){this.permisosOrdenados[24] = t;}
+      if(t.nombre == 'Vista de Project Manager' ){this.permisosOrdenados[25] = t;}
+    })
+    this.permisos = this.permisosOrdenados;
   }
 
   applyFilter(event: Event) {
@@ -131,7 +166,7 @@ export class PermisosRolesComponent implements OnInit {
                     this.mensajeCambio('El permiso para el rol ' + rol + ' fue modificado correctamente');
                   } else {
                     permiso.operativo = !event.checked;
-                    this.mensajeCambio('Su usuario no tiene los privilegios para cambiar permisos');
+                    this.mensajeCambio('Su usuario no tiene los permisos requeridos para realizar el cambio');
                   }
               } else {
                 console.log("delete", id_funcion_rol);
@@ -143,7 +178,7 @@ export class PermisosRolesComponent implements OnInit {
                     this.mensajeCambio('El permiso para el rol ' + rol + ' fue modificado correctamente');
                   } else {
                     permiso.operativo = !event.checked;
-                    this.mensajeCambio('Su usuario no tiene los privilegios para cambiar permisos');
+                    this.mensajeCambio('Su usuario no tiene los permisos requeridos para realizar el cambio');
                   }
               }
             } else {
@@ -171,7 +206,7 @@ export class PermisosRolesComponent implements OnInit {
                   this.mensajeCambio('El permiso para el rol ' + rol + ' fue modificado correctamente');
                 } else {
                   permiso.supervisor = !event.checked;
-                  this.mensajeCambio('Su usuario no tiene los privilegios para cambiar permisos');
+                  this.mensajeCambio('Su usuario no tiene los permisos requeridos para realizar el cambio');
                 }
               } else {
                 if (this.privilegio == true) {
@@ -181,7 +216,7 @@ export class PermisosRolesComponent implements OnInit {
                   this.mensajeCambio('El permiso para el rol ' + rol + ' fue modificado correctamente');
                 } else {
                   permiso.supervisor = !event.checked;
-                  this.mensajeCambio('Su usuario no tiene los privilegios para cambiar permisos');
+                  this.mensajeCambio('Su usuario no tiene los permisos requeridos para realizar el cambio');
                 }
               }
             } else {
