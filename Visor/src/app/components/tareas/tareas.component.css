@@ -60,3 +60,7 @@ h1, h3{
 .bordeBotonActivado{
     border: 1px solid black;
 }
+
+#searchInput{
+    margin: 10px;
+}
