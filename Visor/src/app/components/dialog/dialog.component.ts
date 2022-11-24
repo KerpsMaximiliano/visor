@@ -211,9 +211,7 @@ export class DialogComponent implements OnInit {
 
           })
         });
-
       });
-      
     }
     
     //Pregunto si el pop up se abrió para buscar TAREAS
@@ -352,17 +350,16 @@ export class DialogComponent implements OnInit {
   
 
   misProyectosAsignados(){
+    this.asignadasAmi = !this.asignadasAmi
     if(this.asignadasAmi){
-      let usuarioRegistrado: any;
-      usuarioRegistrado = localStorage.getItem("usuario");
-      
+      let userId: any;
+      userId = localStorage.getItem("userId");
       console.log(this.dataSourcePruebaCopia)
       this.dataSourcePrueba.filterPredicate = (data: any, filter: string): boolean => {
-        return ( data.usuario_asignado == usuarioRegistrado );
+        return ( data.id_usuario == userId );
       }
-      this.dataSourcePruebaCopia.filter = usuarioRegistrado.trim().toLowerCase();
-      this.dataSourcePrueba = this.dataSourcePruebaCopia
-
+      this.dataSourcePruebaCopia.filter = userId.trim().toLowerCase();
+      this.dataSourcePrueba = this.dataSourcePruebaCopia;
     }
     else{
       this.dataSourcePrueba = new MatTableDataSource(this.listaProyectosPrueba);

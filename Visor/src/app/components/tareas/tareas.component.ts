@@ -155,7 +155,7 @@ export class TareasComponent implements OnInit {
   ngOnInit(): void {
    }
 
-  buscarProyectos(event: Event) {                                        
+  buscarProyectos(event: Event) {                              
     const filterValue = (event.target as HTMLInputElement).value;
     this.valorInputProyecto = (event.target as HTMLInputElement).value;
     
