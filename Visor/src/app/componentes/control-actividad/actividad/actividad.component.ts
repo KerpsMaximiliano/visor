@@ -111,7 +111,8 @@ export class ActividadComponent implements OnInit {
 
     let usuario: Usuario ={
       usuario: 'admin',
-      password: '1q2w'
+      password: '1q2w',
+      email: ''
     }
     this._loginService.obtenerToken(usuario).subscribe(res =>{
         if(res){
