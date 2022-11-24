@@ -176,7 +176,9 @@
 */
 
 .letrasSegundoNivel{
-  font-size: 12px;
+  margin-top: 5px;
+  font-size: 18px;
+  text-align: center;
 }
 
 table {
@@ -230,8 +232,8 @@ tr.example-element-row:not(.example-expanded-row):active {
 #tareasATiempo{
   background-color: #008000;
   text-align: center;
-  margin-right: 29%;
-  margin-left: 29%;
+  margin-right: 25%;
+  margin-left: 25%;
   border-radius: 5px;
   border: solid 1.50px black;
   color: #efefef;
@@ -240,8 +242,8 @@ tr.example-element-row:not(.example-expanded-row):active {
 #tareasAtrasadas{
 background-color: #FF0000;
 text-align: center;
-margin-right: 29%;
-margin-left: 29%;
+margin-right: 25%;
+margin-left: 25%;
 border-radius: 5px;
 border: solid 1.50px black;
 color: #efefef;
@@ -257,12 +259,12 @@ text-align: center;
 
 .tituloColumna{
 text-align: center;
-font-size: 15px;
+font-size: 11px;
 }
 
 .subtitulo{
 text-align: center;
-font-size: 15px;
+font-size: 18px;
 margin-top: 10px;
 }
 
@@ -271,17 +273,23 @@ display: flexbox;
 max-height: 30%;
 }
 
+#iconoArea{
+  margin-top: 18px;
+}
+
 #seccionAvanceArea{
   border-radius: 3px;
+  display: flex;
 }
 
 #seccionAvanceArea p{
   padding-top: 8px;
-  font-size: 15px;
+  font-size: 18px;
+  text-align: center;
 }
 
 #tituloAvanceArea{
-  padding-left: 39%;
+  text-align: center;
 }
 
 .contenido{
@@ -292,139 +300,32 @@ max-height: 30%;
   margin-bottom: 5px;
 }
 
+.mensajeNoTareas{
+  text-align: center;
+  color: grey;
+}
+
+.mensajeError p{
+  font-size: 15px;
+}
+
 /*
   Barra
 */
-.barra{
-  display: flex;
-  width: 100%;
-}
-
-.barra div{
-  margin: 0.1%;
-}
 
 #nombre{
   font-size: 15px;
-}
-
-#barraVerde{
-  background-color: #008000;
-  width: 25%;
-  text-align: center;
-  color: white;
-  border: solid 0.5px black;
-  font-size: 15px;
-  border-radius: 3px;
-  padding-top: 10px;
-  height: 10%;
-}
-
-#barraRoja{
-  background-color: #FF0000;
-  width: 25%;
-  text-align: center;
-  color: white;
-  border: solid 0.5px black;
-  font-size: 15px;
-  border-radius: 3px;
-  padding-top: 10px;
-  height: 10%;
-}
-
-#barraAmarilla{
-  background-color: #FFFF00;
-  width: 25%;
-  text-align: center;
-  border: solid 0.5px black;
-  font-size: 15px;
-  border-radius: 3px;
-  padding-top: 10px;
-  height: 10%;
-}
-
-#barraEnPrueba{
-  background-color: #00FF00;
-  width: 25%;
-  text-align: center;
-  color: white;
-  border: solid 0.5px black;
-  font-size: 15px;
-  border-radius: 3px;
-  padding-top: 10px;
-  height: 10%;
 } 
-
-.barraAvance{
-  display: flex;
-}
-
-.barraAvance div{
-  margin: 1px;
-}
-
-#espacio{
-  padding-right: 12px;
-}
-
-#espacioTecnico{
-  padding-right: 11px;
-}
-
-#espacioDesarrollo{
-  padding-right: 35px;
-}
-
-#espacioTesting{
-  padding-right: 50px;
-}
-
-.barraAreaVerde{
-  background-color: #008000;
-  width: 20%;
-  text-align: center;
-  color: white;
-  border: solid 0.5px black;
-  font-size: 15px;
-  border-radius: 3px;
-  height: 10%;
-}
-
-.barraAreaRoja{
-  background-color: #FF0000;
-  width: 20%;
-  text-align: center;
-  color: white;
-  border: solid 0.5px black;
-  font-size: 15px;
-  border-radius: 3px;
-  height: 10%;
-}
-
-.barraAreaAmarilla{
-  background-color: #FFFF00;
-  width: 20%;
-  text-align: center;
-  border: solid 0.5px black;
-  font-size: 15px;
-  border-radius: 3px;
-  height: 10%;
-}
-
-.barraAreaEnPrueba{
-  background-color: #00FF00;
-  width: 20%;
-  text-align: center;
-  color: white;
-  border: solid 0.5px black;
-  font-size: 15px;
-  border-radius: 3px;
-  height: 10%;
-}
 
 #container-indicadores{
   height: 10%;
   width: 10%;
+}
+
+.progress{
+  font-size: 14px;
+  font-style: monospace;
+  height: 26px;
 }
 
 
