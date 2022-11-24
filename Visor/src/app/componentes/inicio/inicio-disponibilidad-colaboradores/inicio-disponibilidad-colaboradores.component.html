@@ -81,15 +81,19 @@
                         <!-- agregar comportamiento para mostrar mensaje: No tiene tareas asignadas este mes -->
 
                         <mat-divider></mat-divider>
-                        <div class="div-caja" *ngFor="let proy of separarProyectosDelMes(colaborador.id, mes.mes)">
-                            <div class="div-caja caja-proyecto">
-                                <div class="texto-proyecto"> {{proy}} </div>
-                                <div class="cajaPorcentaje"
-                                    matTooltip="{{getTooltipHsPlanProyecto(proy, colaborador.id, mes.mes)}} Hs Plan / 
-                                    {{(colaborador.capacidad/(mesesMostrados+1))}} Hs Cap" [matTooltipPosition]="position.value!"> 
-                                    {{getPorcentajeOcupadoMensualProyecto(proy, colaborador.id, mes.mes, (colaborador.capacidad/(mesesMostrados+1)))}}%  <!-- ver capacidad, dividir por mesesmostrados+1 -->
-                                </div>
+                        <!-- ngif preguntando si no hay proyectos -->
+                        <div class="texto-no-hay-proyecto" *ngIf="noHayProyectosEsteMes(colaborador.id, mes.mes)">No tiene tareas asignadas este mes</div>
+                        <!-- *ngIf="separarProyectosDelMes(colaborador.id, mes.mes)===[]" -->
+                        <!-- ngIf preguntando si hay proyectos -->
+                        <div *ngIf="separarProyectosDelMes(colaborador.id, mes.mes)!==[]">
+                        <div class="div-caja caja-proyecto" *ngFor="let proy of separarProyectosDelMes(colaborador.id, mes.mes)">
+                            <div class="texto-proyecto"> {{proy}} </div>
+                            <div class="cajaPorcentaje"
+                                matTooltip="{{getTooltipHsPlanProyecto(proy, colaborador.id, mes.mes)}} Hs Plan / 
+                                {{(colaborador.capacidad/(mesesMostrados+1))}} Hs Cap" [matTooltipPosition]="position.value!"> 
+                                {{getPorcentajeOcupadoMensualProyecto(proy, colaborador.id, mes.mes, (colaborador.capacidad/(mesesMostrados+1)))}}%  <!-- ver capacidad, dividir por mesesmostrados+1 -->
                             </div>
+                        </div>
                         </div>
                         <mat-divider></mat-divider>
                     </mat-expansion-panel>
@@ -144,6 +148,11 @@
                         <!-- agregar comportamiento para mostrar mensaje: No tiene tareas asignadas este mes -->
 
                         <mat-divider></mat-divider>
+                        <!-- ngif preguntando si no hay proyectos -->
+                        <div class="texto-no-hay-proyecto" *ngIf="noHayProyectosEsteMes(colaborador.id, mes.mes)">No tiene tareas asignadas este mes</div>
+                        <!-- *ngIf="separarProyectosDelMes(colaborador.id, mes.mes)===[]" -->
+                        <!-- ngIf preguntando si hay proyectos -->
+                        <div *ngIf="separarProyectosDelMes(colaborador.id, mes.mes)!==[]">
                         <div class="div-caja caja-proyecto" *ngFor="let proy of separarProyectosDelMes(colaborador.id, mes.mes)">
                             <div class="texto-proyecto"> {{proy}} </div>
                             <div class="cajaPorcentaje"
@@ -151,6 +160,7 @@
                                 {{(colaborador.capacidad/(mesesMostrados+1))}} Hs Cap" [matTooltipPosition]="position.value!"> 
                                 {{getPorcentajeOcupadoMensualProyecto(proy, colaborador.id, mes.mes, (colaborador.capacidad/(mesesMostrados+1)))}}%  <!-- ver capacidad, dividir por mesesmostrados+1 -->
                             </div>
+                        </div>
                         </div>
                         <mat-divider></mat-divider>
                     </mat-expansion-panel>

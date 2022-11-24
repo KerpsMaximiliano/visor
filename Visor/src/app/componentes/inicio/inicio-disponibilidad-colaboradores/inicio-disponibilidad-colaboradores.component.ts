@@ -121,7 +121,7 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     this.colaboradoresSP.forEach(colab => {
       this.colaboradores.push({
         id: colab.id_usuario,
-        nombre: colab.nombre,
+        nombre: this.cortarSegundoNombre(colab.nombre),  // llamar funcion para cortar el segundo nombre
         apellido: colab.apellido,
         funcion: this.funcionCheck(colab.funcion_usuario),
         capacidad: this.nullCheck(colab.capacidad_total),
@@ -135,6 +135,15 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     });
     this.dataSource = new MatTableDataSource(this.colaboradores);
     this.completo = this.dataSource.nombre + ' ' + this.dataSource.apellido;
+  }
+
+  cortarSegundoNombre(nombre: string) {
+    const indice = nombre.indexOf(' ');
+    if (indice !== -1) {
+      return nombre.substring(0, indice)
+    } else {
+      return nombre;
+    }
   }
 
   nullCheck(check: any) {
@@ -275,42 +284,29 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-  
     localStorage.setItem('fv',filterValue);
     let ls = localStorage.getItem('fv');
     this.contraerColaboradores();
     this.organizarColaboradores();
     this.getTareasAtrasadas();
     let colaboradoresFiltro: any[] = [];
-
-    //let FV = filterValue.split(" ",3);
-
-    console.log("colaboradores 1",this.colaboradores);
-    console.log("colaboradores 2",this.colaboradores2);
     this.colaboradores.forEach(colab => {
-      colaboradoresFiltro.push({ nombre: colab.nombre, apellido: colab.apellido });
+      let nombreC = colab.nombre.concat(" ").concat(colab.apellido);
+      let nombreI = colab.apellido.concat(" ").concat(colab.nombre)
+      colaboradoresFiltro.push({ nombreC , nombreI });
     });
-
     this.dataSource = new MatTableDataSource(colaboradoresFiltro);
     this.dataSource.filter = filterValue.trim().toLowerCase();
     colaboradoresFiltro = this.dataSource.filteredData;
-    console.log("filterValue",filterValue);
-
     let arrayAux: Colaborador[] = [];
-     
-
-      this.colaboradores.forEach(colab => {
-          colaboradoresFiltro.forEach(user => {
-            if (colab.nombre == user.nombre && colab.apellido == user.apellido) {
-              this.colaboradores2.push(colab);
-              arrayAux.push(colab);
-            }
-          });
-        });
-
-        
-      
-      
+    this.colaboradores.forEach(colab => {
+      colaboradoresFiltro.forEach(user => {
+        if (colab.nombre == user.nombreC.split(" ",1)  && (colab.apellido == user.nombreC.split(" ",user.nombreC.length - 1)[1] || colab.apellido == user.nombreC.split(" ",user.nombreC.length - 1)[1].concat(" ").concat(user.nombreC.split(" ",user.nombreC.length - 1)[2]) ) ) {
+          this.colaboradores2.push(colab);
+          arrayAux.push(colab);
+        }
+      });
+    });
     this.colaboradores = arrayAux;
     this.aplicarFiltros();
   }
@@ -567,8 +563,16 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
         }
       }
     });
-    //console.log(this.planificacion)
     return proyectos;
+  }
+
+  noHayProyectosEsteMes(id: string, mes: string) {
+    const proyectos = this.separarProyectosDelMes(id, mes);
+    if (proyectos.length === 0) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   getPorcentajeOcupadoMensualProyecto(proyecto: string, id: string, mes: string, capacidad: number) {

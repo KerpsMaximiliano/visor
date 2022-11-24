@@ -74,8 +74,9 @@ export class ModalFiltroComponent implements OnInit {
   }
 
   validarTecla(e: KeyboardEvent){
-    if(e.key == "Enter"){
+    if(e.key === "Enter"){
       this.guardarFiltro();
+      this.dialogRef.close(this.result);
     }
   }
 
