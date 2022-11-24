@@ -47,6 +47,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ModalFiltroComponent } from './componentes/inicio/modal-filtro/modal-filtro.component';
 import { ModalFiltroDocumentosModule } from './shared/modal-filtro-documentos/modal-filtro-documentos.module';
 import { SeccionDocumentosModule } from './componentes/seccion-documentos/seccion-documentos.module';
+import { NgxPaginationModule } from 'ngx-pagination';
+
 
 @NgModule({
   declarations: [
@@ -79,7 +81,8 @@ import { SeccionDocumentosModule } from './componentes/seccion-documentos/seccio
     SharedModule,
     RecuperarcontraseniaModule,
     ModalFiltroDocumentosModule,
-    SeccionDocumentosModule
+    SeccionDocumentosModule,
+    NgxPaginationModule
   ],
 
   //Proveedores agregados

@@ -2,16 +2,19 @@
 
 #container-all{
     margin: 0.5%;
+    display: inline;
 }
 
 /* Header */
 
 #container-header-top{
     display: flex;
+    margin-left: 2.5%;
 }
 
 #container-header-bot{
     display: flex;
+    margin-left: 2.5%;
 }
 
 #container-icon{
@@ -39,15 +42,20 @@
 
 /* Body */
 
+#container-body{
+    height: 100%;
+    text-align: center;
+}
+
 #container-cards-documents{
     width: 100%;
     margin-top: 2%;
-    margin-left: 2%;
+    height: 100%;
 }
 
-.document-card{
-    height: 220px;
-    width: 15%;
+#document-card{
+    height: 258px;
+    width: 19%;
     float: left;
     margin: 0.5%;
 }
@@ -57,32 +65,33 @@
 }
 
 .letters{
-    font-size: 11px;
+    font-size: 13px;
 }
 
-#container-icons{
+.container-icons{
     margin-top: 1%;
-    display: flex;
-    margin-left: 5%;
+    text-align: right;
+}
+
+.container-icons i{
+    margin: 1.5%;
+    margin-bottom: 3%;
 }
 
 #remove-icon{
-    font-size: 18px;
-    margin-left: 10%;
+    font-size: 23px;
     color: red;
     cursor: pointer;
 }
 
 #download-icon{
-    font-size: 18px;
-    margin-left: 10%;
+    font-size: 23px;
     cursor: pointer;
     color: black;
 }
 
 #edit-icon{
-    font-size: 18px;
-    margin-left: 10%;
+    font-size: 23px;
     color: cornflowerblue;
     cursor: pointer;
 }
@@ -95,12 +104,40 @@
     display: flex;
 }
 
+.card-content-icon{
+    text-align: right;
+}
+
 #list-icon{
-    margin-left: 55%;
-    font-size: 60px;
+    font-size: 35px;
 }
 
 .letters-date{
-    font-size: 11px;
-    margin-left: 10%;
+    font-size: 13px;
+    padding-left: 10%;
+}
+
+/* Pagination */
+
+#container-pagination{
+    text-align: center;
+    margin-top: 20%;
+}
+
+/* Border of documents */
+
+.necesidades-document-border{
+    border: solid 2px green;
+}
+
+.plan-document-border{
+    border: solid 2px yellow;
+}
+
+.sprint-backlog-document-border{
+    border: solid 2px orange;
+}
+
+.propuesta-funcional-document-border{
+    border: solid 2px red;
 }

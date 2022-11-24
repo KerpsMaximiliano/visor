@@ -22,11 +22,31 @@ const routes: Routes = [
   {
     path: "",
     pathMatch: "full",
-    redirectTo: "documentos"
+    redirectTo: "login"
   },
   {
-    path: "documentos", 
-    component: SeccionDocumentosComponent
+    path: "login",
+    component: LoginComponent
+  },
+  {
+    path: "recuperar-contraseña",
+    component: RecuperarcontraseniaComponent
+  },
+  { path: 'documentos', component: SeccionDocumentosComponent },
+  {
+    path: "dashboard",
+    canActivate: [AuthGuard],
+    component: DashboardComponent,
+    children:[
+      { path: 'inicio', component: InicioMainComponent },
+      { path: 'tareas', component: TareasComponent },
+      { path: 'configuraciones', component: ConfiguracionesComponent,
+        children: [
+        { path: 'roles-usuarios', component: RolesUsuariosComponent },
+        { path: 'permisos-roles', component: PermisosRolesComponent }
+    ] },
+    {path: 'tareas', component: TareasComponent}
+    ]
   }
 ];
 

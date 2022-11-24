@@ -20,31 +20,45 @@
 
     <div id="container-body"> <!-- Comienza el body -->
         <div id="container-cards-documents">
-            <mat-card class="document-card">
-            <div class="card-content">
-                <p class="letters">Nombre del documento</p>
-                <div id="container-icons">
-                    <i id="download-icon" class="fas fa-download"></i>
-                    <i id="edit-icon" class="fas fa-edit"></i>
-                    <i id="remove-icon" class="fas fa-trash-alt"></i>
-                </div>
+            <mat-card 
+            id="document-card" *ngFor="let d of listOfDocuments | paginate: {itemsPerPage: 30, currentPage: page } let i = index " 
+            class="pdf-document-border" 
+            [ngClass]="{ 
+                'plan-document-border': isPlan(d),
+                'sprint-backlog-document-border': isSprintBacklog(d),
+                'necesidades-document-border': isIdentificacionDeNecesidades(d),
+                'propuesta-funcional-document-border': isPropuestaFuncional(d)
+            }"
+            >
+            <div class="container-icons">
+                <i id="download-icon" class="fas fa-download"></i>
+                <i id="edit-icon" class="fas fa-edit"></i>
+                <i id="remove-icon" class="fas fa-trash-alt"></i>
             </div>
             <div class="card-content">
-                <p class="letters">Nombre del proyecto</p>  
-                <p class="letters-date">DD/MM/XXXX</p>  
+                <p class="letters"><b>{{d.name}}</b></p>
             </div>
             <div class="card-content">
-                <p class="letters">Tipo del documento</p>
+                <p class="letters">Nose</p>  
+                <p class="letters-date">{{d.date}}</p>  
             </div>
             <div class="card-content">
-                <p class="letters">"Ignacio Girod"</p>
+                <p class="letters"><b>{{d.type}}</b></p>
+            </div>
+            <div class="card-content">
+                <p class="letters"><b>{{d.assigned}}</b></p>
             </div>
             <div class="card-content-end">
-                <p class="letters">"Estado"</p>
+                <p class="letters"><b>{{d.documentStatus}}</b></p>
+            </div>
+            <div class="card-content-icon">
                 <i id="list-icon" class="far fa-file-alt"></i>
             </div>
-            </mat-card>
-           
+            </mat-card>    
         </div>
     </div>
 </div>
+<div id="container-pagination">
+    <pagination-controls (pageChange)="page = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+</div>
+

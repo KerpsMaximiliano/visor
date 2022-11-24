@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FiltroService } from '../../services/i2t/filtro.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalFiltroDocumentosComponent } from '../../shared/modal-filtro-documentos/modal-filtro-documentos.component';
+import { Documento } from '../../interfaces/documento';
 
 @Component({
   selector: 'app-seccion-documentos',
@@ -16,7 +17,305 @@ export class SeccionDocumentosComponent implements OnInit {
   orden_saved_search_id = '';
   modal_saved_search_id = '';
 
-  constructor(private _filtroService: FiltroService, public dialog: MatDialog) { }
+  //Variables de información.
+  listOfDocuments: Documento[];
+  page!: number; 
+
+  constructor(private _filtroService: FiltroService, public dialog: MatDialog) {
+    this.listOfDocuments = [
+      {
+        name: "actaspj.txt",
+        type: "Identificación de necesidades",
+        assigned: "Patricio Macagno",
+        documentStatus: "Publicado",
+        date: "11/01/20222323",
+        finishedDate: "12/02/2023",
+        category: "Implementación" //Determina el aspecto de la tarjeta. 
+      },
+      {
+        name: "CAS - BOLD - SPRINTBACKLOG.txt",
+        type: "Sprint Backlog",
+        assigned: "Patricio Macagno",
+        documentStatus: "Publicado",
+        date: "11/01/2022",
+        finishedDate: "12/02/2023",
+        category: "Implementación" //Determina el aspecto de la tarjeta. 
+      },
+      {
+        name: "CHANOIER.txt",
+        type: "Propuesta funcional",
+        assigned: "Patricio Macagno",
+        documentStatus: "Publicado",
+        date: "11/01/2022",
+        finishedDate: "12/02/2023",
+        category: "Implementación" //Determina el aspecto de la tarjeta. 
+      },
+      {
+        name: "actaspj.txt",
+        type: "Plan de Proyecto",
+        assigned: "Patricio Macagno",
+        documentStatus: "Publicado",
+        date: "11/01/2022",
+        finishedDate: "12/02/2023",
+        category: "Implementación" //Determina el aspecto de la tarjeta. 
+      },
+      {
+        name: "actaspj.txt",
+        type: "Plan de Proyecto",
+        assigned: "Patricio Macagno",
+        documentStatus: "Publicado",
+        date: "11/01/2022",
+        finishedDate: "12/02/2023",
+        category: "Implementación" //Determina el aspecto de la tarjeta. 
+      },
+      {
+        name: "actaspj.txt",
+        type: "Plan de Proyecto",
+        assigned: "Patricio Macagno",
+        documentStatus: "Publicado",
+        date: "11/01/2022",
+        finishedDate: "12/02/2023",
+        category: "Implementación" //Determina el aspecto de la tarjeta. 
+      },
+      {
+        name: "actaspj.txt",
+        type: "Plan de Proyecto",
+        assigned: "Patricio Macagno",
+        documentStatus: "Publicado",
+        date: "11/01/2022",
+        finishedDate: "12/02/2023",
+        category: "Implementación" //Determina el aspecto de la tarjeta. 
+      },
+      {
+        name: "actaspj.txt",
+        type: "Plan de Proyecto",
+        assigned: "Patricio Macagno",
+        documentStatus: "Publicado",
+        date: "11/01/2022",
+        finishedDate: "12/02/2023",
+        category: "Implementación" //Determina el aspecto de la tarjeta. 
+      },
+      {
+        name: "actaspj.txt",
+        type: "Plan de Proyecto",
+        assigned: "Patricio Macagno",
+        documentStatus: "Publicado",
+        date: "11/01/2022",
+        finishedDate: "12/02/2023",
+        category: "Implementación" //Determina el aspecto de la tarjeta. 
+      },
+      {
+        name: "actaspj.txt",
+        type: "Plan de Proyecto",
+        assigned: "Patricio Macagno",
+        documentStatus: "Publicado",
+        date: "11/01/2022",
+        finishedDate: "12/02/2023",
+        category: "Implementación" //Determina el aspecto de la tarjeta. 
+      },
+      {
+        name: "actaspj.txt",
+        type: "Plan de Proyecto",
+        assigned: "Patricio Macagno",
+        documentStatus: "Publicado",
+        date: "11/01/2022",
+        finishedDate: "12/02/2023",
+        category: "Implementación" //Determina el aspecto de la tarjeta. 
+      },
+      {
+        name: "actaspj.txt",
+        type: "Plan de Proyecto",
+        assigned: "Patricio Macagno",
+        documentStatus: "Publicado",
+        date: "11/01/2022",
+        finishedDate: "12/02/2023",
+        category: "Implementación" //Determina el aspecto de la tarjeta. 
+      },
+      {
+        name: "actaspj.txt",
+        type: "Plan de Proyecto",
+        assigned: "Patricio Macagno",
+        documentStatus: "Publicado",
+        date: "11/01/2022",
+        finishedDate: "12/02/2023",
+        category: "Implementación" //Determina el aspecto de la tarjeta. 
+      },
+      {
+        name: "actaspj.txt",
+        type: "Plan de Proyecto",
+        assigned: "Patricio Macagno",
+        documentStatus: "Publicado",
+        date: "11/01/2022",
+        finishedDate: "12/02/2023",
+        category: "Implementación" //Determina el aspecto de la tarjeta. 
+      },
+      {
+        name: "actaspj.txt",
+        type: "Plan de Proyecto",
+        assigned: "Patricio Macagno",
+        documentStatus: "Publicado",
+        date: "11/01/2022",
+        finishedDate: "12/02/2023",
+        category: "Implementación" //Determina el aspecto de la tarjeta. 
+      },
+      {
+        name: "actaspj.txt",
+        type: "Plan de Proyecto",
+        assigned: "Patricio Macagno",
+        documentStatus: "Publicado",
+        date: "11/01/2022",
+        finishedDate: "12/02/2023",
+        category: "Implementación" //Determina el aspecto de la tarjeta. 
+      },
+      {
+        name: "actaspj.txt",
+        type: "Plan de Proyecto",
+        assigned: "Patricio Macagno",
+        documentStatus: "Publicado",
+        date: "11/01/2022",
+        finishedDate: "12/02/2023",
+        category: "Implementación" //Determina el aspecto de la tarjeta. 
+      },
+      {
+        name: "actaspj.txt",
+        type: "Plan de Proyecto",
+        assigned: "Patricio Macagno",
+        documentStatus: "Publicado",
+        date: "11/01/2022",
+        finishedDate: "12/02/2023",
+        category: "Implementación" //Determina el aspecto de la tarjeta. 
+      }
+      ,
+      {
+        name: "actaspj.txt",
+        type: "Plan de Proyecto",
+        assigned: "Patricio Macagno",
+        documentStatus: "Publicado",
+        date: "11/01/2022",
+        finishedDate: "12/02/2023",
+        category: "Implementación" //Determina el aspecto de la tarjeta. 
+      }
+      ,
+      {
+        name: "actaspj.txt",
+        type: "Plan de Proyecto",
+        assigned: "Patricio Macagno",
+        documentStatus: "Publicado",
+        date: "11/01/2022",
+        finishedDate: "12/02/2023",
+        category: "Implementación" //Determina el aspecto de la tarjeta. 
+      }
+      ,
+      {
+        name: "actaspj.txt",
+        type: "Plan de Proyecto",
+        assigned: "Patricio Macagno",
+        documentStatus: "Publicado",
+        date: "11/01/2022",
+        finishedDate: "12/02/2023",
+        category: "Implementación" //Determina el aspecto de la tarjeta. 
+      },
+      {
+        name: "actaspj.txt",
+        type: "Plan de Proyecto",
+        assigned: "Patricio Macagno",
+        documentStatus: "Publicado",
+        date: "11/01/2022",
+        finishedDate: "12/02/2023",
+        category: "Implementación" //Determina el aspecto de la tarjeta. 
+      },
+      {
+        name: "actaspj.txt",
+        type: "Plan de Proyecto",
+        assigned: "Patricio Macagno",
+        documentStatus: "Publicado",
+        date: "11/01/2022",
+        finishedDate: "12/02/2023",
+        category: "Implementación" //Determina el aspecto de la tarjeta. 
+      },
+      {
+        name: "CAS - BOLD - SPRINTBACKLOG.txt",
+        type: "Sprint Backlog",
+        assigned: "Patricio Macagno",
+        documentStatus: "Publicado",
+        date: "11/01/2022",
+        finishedDate: "12/02/2023",
+        category: "Implementación" //Determina el aspecto de la tarjeta. 
+      },
+      {
+        name: "actaspj.txt",
+        type: "Plan de Proyecto",
+        assigned: "Patricio Macagno",
+        documentStatus: "Publicado",
+        date: "11/01/2022",
+        finishedDate: "12/02/2023",
+        category: "Implementación" //Determina el aspecto de la tarjeta. 
+      },
+      {
+        name: "CAS - BOLD - SPRINTBACKLOG.txt",
+        type: "Sprint Backlog",
+        assigned: "Patricio Macagno",
+        documentStatus: "Publicado",
+        date: "11/01/2022",
+        finishedDate: "12/02/2023",
+        category: "Implementación" //Determina el aspecto de la tarjeta. 
+      },
+      {
+        name: "actaspj.txt",
+        type: "Plan de Proyecto",
+        assigned: "Patricio Macagno",
+        documentStatus: "Publicado",
+        date: "11/01/2022",
+        finishedDate: "12/02/2023",
+        category: "Implementación" //Determina el aspecto de la tarjeta. 
+      },
+      {
+        name: "actaspj.txt",
+        type: "Plan de Proyecto",
+        assigned: "Patricio Macagno",
+        documentStatus: "Publicado",
+        date: "11/01/2022",
+        finishedDate: "12/02/2023",
+        category: "Implementación" //Determina el aspecto de la tarjeta. 
+      },
+      {
+        name: "actaspj.txt",
+        type: "Identificación de necesidades",
+        assigned: "Patricio Macagno",
+        documentStatus: "Publicado",
+        date: "11/01/20222323",
+        finishedDate: "12/02/2023",
+        category: "Implementación" //Determina el aspecto de la tarjeta. 
+      },
+      {
+        name: "actaspj.txt",
+        type: "Identificación de necesidades",
+        assigned: "Patricio Macagno",
+        documentStatus: "Publicado",
+        date: "11/01/20222323",
+        finishedDate: "12/02/2023",
+        category: "Implementación" //Determina el aspecto de la tarjeta. 
+      },
+      {
+        name: "actaspj.txt",
+        type: "Identificación de necesidades",
+        assigned: "Patricio Macagno",
+        documentStatus: "Publicado",
+        date: "11/01/20222323",
+        finishedDate: "12/02/2023",
+        category: "Implementación" //Determina el aspecto de la tarjeta. 
+      },
+      {
+        name: "actaspj.txt",
+        type: "Identificación de necesidades",
+        assigned: "Patricio Macagno",
+        documentStatus: "Publicado",
+        date: "11/01/20222323",
+        finishedDate: "12/02/2023",
+        category: "Implementación" //Determina el aspecto de la tarjeta. 
+      }
+    ];
+  }
 
   ngOnInit(): void {
   }
@@ -51,7 +350,7 @@ export class SeccionDocumentosComponent implements OnInit {
   }
 
   changeOrder(){
-   /*  if(this.ordenSeleccion == 'Alfabetico') {
+  /*  if(this.ordenSeleccion == 'Alfabetico') {
       this.proyectos.sort(function(a, b) {
         console.log("Ordeno por alfabeto");
         if(a.nombre > b.nombre){
@@ -83,5 +382,51 @@ export class SeccionDocumentosComponent implements OnInit {
   donwloadDocument(){
     
   }
+
+  isPlan(d: Documento): boolean{
+    if(d.type == "Plan de Proyecto"){
+      console.log("True")
+      return true;
+    }
+    else{
+      console.log("Falso")
+      return false;
+    }
+  }
+
+  isSprintBacklog(d: Documento): boolean{
+    if(d.type == "Sprint Backlog"){
+      console.log("True")
+      return true;
+    }
+    else{
+      console.log("Falso")
+      return false;
+    }
+  }
+
+  isIdentificacionDeNecesidades(d: Documento): boolean{
+    if(d.type == "Identificación de necesidades"){
+      console.log("True")
+      return true;
+    }
+    else{
+      console.log("Falso")
+      return false;
+    }
+  }
+
+  isPropuestaFuncional(d: Documento): boolean{
+    if(d.type == "Propuesta funcional"){
+      console.log("True")
+      return true;
+    }
+    else{
+      console.log("Falso")
+      return false;
+    }
+  }
+
+
 
 }

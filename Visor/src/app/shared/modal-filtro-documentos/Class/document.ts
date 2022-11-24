@@ -1,5 +1,5 @@
 /**
- * Esta clase cumplirá el rol de contenedor de información relacionada a los documentos.
+ * Esta clase cumplirá el rol de contenedor de información relacionada a los atributos de documentos.
  */
 export class Document {
     categorys: string[] = [

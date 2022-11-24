@@ -46,11 +46,8 @@
     text-align: center;
 }
 
-#container-dates div{
-    margin: 3%;
-}
-
-#picker{
+.picker{
     width: 40%;
-    margin: 3%;
+    margin-right: 1.5%;
+    margin-left: 1.5%;
 }
