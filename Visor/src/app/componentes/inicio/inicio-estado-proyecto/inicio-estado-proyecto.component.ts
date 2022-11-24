@@ -562,22 +562,27 @@ export class InicioEstadoProyectoComponent implements OnInit {
   applyFilter(event: Event) {
     this.verificarCheckBoxs();  
     this.filterValue = (event.target as HTMLInputElement).value;
-    
     //console.log(this.filterValue.split(" ").join("").toLowerCase())
     //this.data.filter = this.filterValue.split(" ").join("").toLowerCase();
     //console.log(this.data.filter)
     let proyectosFiltro: any[] = [];
+    
     this.proyectos.forEach(project => {
       proyectosFiltro.push({ numero: project.numero ,nombre: project.nombre.toLowerCase()});
     });
     this.data = new MatTableDataSource(proyectosFiltro);
     this.data.filterPredicate = (data: any, filter: string): boolean => {
-      let filterAux: string;
-      filterAux = this.filterValue.split(' ').join('').toLowerCase();
-      return ( ( String (data.nombre).split(' ').join('').toLowerCase()).indexOf(filterAux) != -1) 
+      if(isNaN(this.filterValue)){
+        let filterAux: string;
+        filterAux = this.filterValue.split(' ').join('').toLowerCase();
+        return ( ( String (data.nombre).split(' ').join('').toLowerCase()).indexOf(filterAux) != -1) 
+      }else{
+        let filterAux: string;
+        filterAux = this.filterValue.split(' ').join('').toLowerCase();
+        return ((String(data.numero).split(' ').join('').toLowerCase()).indexOf(filterAux) != -1)
+      }
     }
     this.data.filter = this.filterValue.trim().toLowerCase();
-    console.log(this.data.filter)
     proyectosFiltro = this.data.filteredData;
     let arrayAux: Proyecto[] = []; 
     this.proyectos.forEach( project => {
@@ -586,11 +591,12 @@ export class InicioEstadoProyectoComponent implements OnInit {
           arrayAux.push(project);
         }
       });
-    }) 
+    })
     this.proyectos = arrayAux;
     this.nombre = this.filterValue;
     this.aplicarFiltros();
   }
+
 
   retornarPorcentajeCompletadas(index: number): number{
     return this.proyectos[index].porcentajeHPCompletadas;
