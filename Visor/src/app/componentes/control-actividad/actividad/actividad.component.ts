@@ -125,7 +125,6 @@ export class ActividadComponent implements OnInit {
 
     this._tareaService.enviarCambio();
 
-    console.log(this._tareaService.unProyecto);
     if(this._tareaService.unProyecto != undefined){
       this._tareaService.getTareasDeProyecto(this._tareaService.unProyecto.id_projecto).pipe(
         finalize(()=>{
@@ -325,7 +324,7 @@ export class ActividadComponent implements OnInit {
     let year: number = parseInt(fAux.split("-")[0]);
 
     let fechaA:string = year+'-'+month+'-'+(day);
-    console.log(fechaA)
+    //console.log(fechaA)
     let fecha =new Date(fechaA);
     fecha.setMinutes(fecha.getMinutes() + fecha.getTimezoneOffset())
       
@@ -337,7 +336,6 @@ export class ActividadComponent implements OnInit {
        asunto: this.dataSource.data[index].asunto_actividad,
        tareaAsociada: this.dataSource.data[index].nombre_tarea
       })
-      console.log("FORM 555",this.form)
     //console.log('actividad final',this.dataSource.data[index])
     
     //this._actividadService.openModalActividad(8);
@@ -375,7 +373,6 @@ export class ActividadComponent implements OnInit {
       this._actividadService.form.reset();
       this.lTareas.forEach( t =>{
         if(t.id_tarea == this._actividadService.idTarea){
-          console.log(t);
           this.tareaS = t;
         }
       })
