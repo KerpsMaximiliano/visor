@@ -126,19 +126,21 @@ export class ActividadComponent implements OnInit {
 
     this._tareaService.enviarCambio();
 
-
-    this._tareaService.getTareasDeProyecto(this._tareaService.unProyecto.id_projecto).pipe(
-      finalize(()=>{
-        //this.listaTareasService = this.listaTareasService.data;
-        this.tareas = [];
+    if(this._tareaService.unProyecto != undefined){
+      this._tareaService.getTareasDeProyecto(this._tareaService.unProyecto.id_projecto).pipe(
+        finalize(()=>{
+          //this.listaTareasService = this.listaTareasService.data;
+          this.tareas = [];
+        })
+      )
+      .subscribe(result => {
+  
+        this.tareas = result.dataset;
+        
+        //this.cargarActividadesSuite();
       })
-    )
-    .subscribe(result => {
-
-      this.tareas = result.dataset;
-      
-      //this.cargarActividadesSuite();
-    })
+    }
+    
     
 
     /*if(this.idTarea != '' && this.idTarea != null){
@@ -322,11 +324,11 @@ export class ActividadComponent implements OnInit {
     let month:number= parseInt(fAux.split("-")[1]);
     let year: number = parseInt(fAux.split("-")[0]);
 
-    const fechaA:string = year+'-'+month+'-'+(day);
-    const fecha =new Date(fechaA);
-    //console.log("prueba fecha",fecha) ;   
-    
-    
+    let fechaA:string = year+'-'+month+'-'+(day);
+    //console.log(fechaA)
+    let fecha =new Date(fechaA);
+    fecha.setMinutes(fecha.getMinutes() + fecha.getTimezoneOffset())
+      
     
      this._actividadService.form.patchValue({
        fecha: fecha,
@@ -335,7 +337,6 @@ export class ActividadComponent implements OnInit {
        asunto: this.dataSource.data[index].asunto_actividad,
        tareaAsociada: this.dataSource.data[index].nombre_tarea
       })
-      //console.log("FORM 555",this.form)
     //console.log('actividad final',this.dataSource.data[index])
     
     //this._actividadService.openModalActividad(8);
@@ -373,7 +374,6 @@ export class ActividadComponent implements OnInit {
       this._actividadService.form.reset();
       this.lTareas.forEach( t =>{
         if(t.id_tarea == this._actividadService.idTarea){
-          console.log(t);
           this.tareaS = t;
         }
       })

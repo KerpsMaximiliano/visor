@@ -57,6 +57,7 @@ export class VistaDisenioTecnicoComponent implements OnInit, OnChanges{
     if (this.tareasSP.length > 0) {
       console.log(changes['tareasSP'].previousValue)
       if(changes['tareasSP'].previousValue == undefined || changes['tareasSP'].previousValue.length == 0){ //Selecciona primero proyecto después vista
+        this._tareaService.listaTareas = this.tareasSP//Enviar tareas Filtradas para Componentes Actividades
         this.organizarTareas();
         this.cargarTareas();
         this.poseeTareas();
@@ -82,6 +83,7 @@ export class VistaDisenioTecnicoComponent implements OnInit, OnChanges{
         console.log(this.anchoRojo)
         console.log(this.anchoAmarillo)
         console.log(this.anchoVerde)
+        this._tareaService.listaTareas = this.tareasSP//Enviar tareas Filtradas para Componentes Actividades
         this.organizarTareas();
         this.cargarTareas();
         this.poseeTareas();
@@ -96,6 +98,7 @@ export class VistaDisenioTecnicoComponent implements OnInit, OnChanges{
       }
       else{
         this.tareasOrg = [];
+        this._tareaService.listaTareas = this.tareasSP//Enviar tareas Filtradas para Componentes Actividades
         this.organizarTareas();
         this.cargarTareas();
         this.poseeTareas();
