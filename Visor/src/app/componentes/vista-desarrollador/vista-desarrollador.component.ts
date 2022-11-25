@@ -1,7 +1,10 @@
 import { Component, Input, OnInit, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { finalize } from 'rxjs/operators';
 import { TareasComponent } from 'src/app/components/tareas/tareas.component';
 import { Tarea } from 'src/app/interfaces/tarea';
 import { TareaService } from 'src/app/services/i2t/tarea.service';
+import { ModalUsuarioComponent } from 'src/app/shared/modal-usuario/modal-usuario.component';
 
 @Component({
   selector: 'app-vista-desarrollador',
@@ -37,7 +40,7 @@ export class VistaDesarrolladorComponent implements OnInit, OnChanges {
   filtroAyuda: boolean = false;
   panelActividadesAbierto: boolean= false;
   
-  constructor(private _tareaService: TareaService, private _tareaComponent: TareasComponent) { }
+  constructor(private _tareaService: TareaService, private _tareaComponent: TareasComponent, public dialog: MatDialog) { }
 
   @Input() tareasSP: any = [];
   //@Output() vistaS = new EventEmitter<string>();
@@ -458,5 +461,23 @@ export class VistaDesarrolladorComponent implements OnInit, OnChanges {
   abrirActividades(){
     this.panelActividadesAbierto= this.panelActividadesAbierto ? false : true;
   }
+
+  // When the user clicks the button, open the modal 
+ abrirModal(event: Event, usuario: string){
+  event.preventDefault();
+  console.log("abrio MOdal")
+  console.log()
+  let uId = localStorage.getItem('userId');
+
+  const dialogRef = this.dialog.open(ModalUsuarioComponent,{width:'400px', data:{usuario}});
+  dialogRef.afterClosed().pipe(
+    finalize(() => {
+      
+    })
+  )
+  .subscribe(result => {
+     console.log(result);
+  })
+ }
 
 }

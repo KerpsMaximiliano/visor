@@ -6,14 +6,16 @@
     border: 2px solid #000; /* Borde color negro y de 1 píxel de grosor */
   }
   .close {
-    
     color: black;
-    float: right;
-    left: 170px;
-  
+    grid-column-end: right;
+    /*float: right;*/
+    margin-top: 0%;
   }
   .container {
-    width: 200px;
+    display: grid;
+    /*grid-template-columns: repeat(2, 1fr);*/
+    grid-gap: 10px;
+    grid-template-rows: auto;
   }
   
   .head {
@@ -21,24 +23,30 @@
     width: 100%;
     grid-template-columns: 2fr 5fr;
     gap: 50px;
-    align-items: center;
+    justify-content: space-evenly;
+    /*align-items: center;*/
     font-size: medium;
   }
 
   .contenido {
     
-    flex-direction: column; 
-    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr 5fr;
     /*margin:1rem auto;*/
     gap: 10px; 
     max-width: 600px; 
     padding: 1rem
+    
   }
 
-  .downline {
-    
+  .mat-dialog-actions {
+    grid-column-end: right;
     float: right;
-    
   }
+
+  .roles{
+    grid-template-columns: 2fr 5fr 5fr;
+  }
+
 
  

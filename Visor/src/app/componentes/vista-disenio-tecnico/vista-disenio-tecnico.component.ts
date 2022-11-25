@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, SimpleChange } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChange, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { finalize } from 'rxjs/operators';
 import { DialogComponent } from 'src/app/components/dialog/dialog.component';
@@ -362,7 +362,7 @@ export class VistaDisenioTecnicoComponent implements OnInit, OnChanges{
     })
   )
   .subscribe(result => {
-     
+     console.log(result);
   })
  }
 }
