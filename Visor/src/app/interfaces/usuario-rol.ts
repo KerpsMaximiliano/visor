@@ -3,5 +3,5 @@ export interface UsuarioRol {
     id_usuario: string,
     usuario: string,
     nombre: string,
-    rol: string
+    rol: string,
 }

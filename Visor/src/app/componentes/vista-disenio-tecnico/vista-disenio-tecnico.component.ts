@@ -1,6 +1,10 @@
 import { Component, Input, OnInit, SimpleChange } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { finalize } from 'rxjs/operators';
+import { DialogComponent } from 'src/app/components/dialog/dialog.component';
 import { Tarea } from 'src/app/interfaces/tarea';
 import { TareaService } from 'src/app/services/i2t/tarea.service';
+import { ModalUsuarioComponent } from 'src/app/shared/modal-usuario/modal-usuario.component';
 
 @Component({
   selector: 'app-vista-disenio-tecnico',
@@ -26,7 +30,10 @@ export class VistaDisenioTecnicoComponent implements OnInit{
   horasTotales: number = 0;
   panelActividadesAbierto: boolean= false;
 
-  constructor(private _tareaService: TareaService) {  }
+  btn = document.getElementById("myBtn");
+
+  constructor(private _tareaService: TareaService,
+              public dialog: MatDialog) {  }
 
   @Input() tareasSP: any = [];
 
@@ -268,5 +275,39 @@ export class VistaDisenioTecnicoComponent implements OnInit{
   abrirActividades(){
     this.panelActividadesAbierto= this.panelActividadesAbierto ? false : true;
   }
+  /*abrirDialogo() {
+    const dialogo1 = this.dialog.open(DialogoarticuloComponent, {
+      data: new Articulo(0, '', 0)
+    });
 
+    dialogo1.afterClosed().subscribe(art => {
+      if (art != undefined)
+        this.agregar(art);
+    });
+  }*/
+  /*agregar(art: Articulo) {
+    this.datos.push(new Articulo(art.codigo, art.descripcion, art.precio));
+    this.tabla1.renderRows();
+  }*/
+
+   
+
+
+// When the user clicks the button, open the modal 
+ abrirModal(event: Event, usuario: string){
+  event.preventDefault();
+  console.log("abrio MOdal")
+  console.log()
+  let uId = localStorage.getItem('userId');
+
+  const dialogRef = this.dialog.open(ModalUsuarioComponent,{width:'400px', data:{usuario}});
+  dialogRef.afterClosed().pipe(
+    finalize(() => {
+      
+    })
+  )
+  .subscribe(result => {
+     
+  })
+ }
 }

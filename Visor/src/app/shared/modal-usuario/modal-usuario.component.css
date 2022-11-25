@@ -1,0 +1,44 @@
+.cuadrado {
+  
+    width: 100px;           /* Ancho de 150 píxeles */
+    height: 100px;          /* Alto de 150 píxeles */
+    background: gray;        /* Fondo de color rojo */
+    border: 2px solid #000; /* Borde color negro y de 1 píxel de grosor */
+  }
+  .close {
+    
+    color: black;
+    float: right;
+    left: 170px;
+  
+  }
+  .container {
+    width: 200px;
+  }
+  
+  .head {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 2fr 5fr;
+    gap: 50px;
+    align-items: center;
+    font-size: medium;
+  }
+
+  .contenido {
+    
+    flex-direction: column; 
+    grid-template-columns: 1fr;
+    /*margin:1rem auto;*/
+    gap: 10px; 
+    max-width: 600px; 
+    padding: 1rem
+  }
+
+  .downline {
+    
+    float: right;
+    
+  }
+
+ 

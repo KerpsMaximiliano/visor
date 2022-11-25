@@ -1,0 +1,37 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<div class="container">
+   
+        <div class="close">
+            <button mat-icon-button (click)="closeDialog()"  tabIndex="-1">
+            <mat-icon >close</mat-icon></button>
+        </div>
+    
+    <div class="head">
+        <div class="cuadrado"></div>
+            <h1 mat-dialog-title>{{nombreU}}</h1>
+    </div>
+    <div mat-dialog-content>
+            <div class="contenido">
+    
+                <mat-label>Roles: {{rol}}</mat-label>
+                <mat-label>Conocimientos:</mat-label>
+                <mat-label>Preferencias:</mat-label>
+                <mat-label>Proyectos actuales:</mat-label>
+                <mat-label>Tareas completadas en tecnología:</mat-label>
+                <mat-label>Proyectos anteriores:</mat-label>
+                <mat-label>Empresas:</mat-label>
+                <mat-label>Instituciones de formación:</mat-label>
+                <mat-label>Carreras:</mat-label>
+    
+            </div>
+    </div>
+        <div class="downline">
+            <div mat-dialog-actions>
+                <mat-label> </mat-label>
+                <button><span class="material-symbols-outlined">download</span></button>
+            </div>
+        </div>
+</div>
+
+    
+
