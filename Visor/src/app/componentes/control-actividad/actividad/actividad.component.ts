@@ -77,7 +77,7 @@ export class ActividadComponent implements OnInit {
               private cd: ChangeDetectorRef,
               private _tareaService: TareaService,
               @Inject(MAT_DIALOG_DATA) public data:Actividad,
-               ) { }
+              ) { }
 
   ngOnInit(): void {
     

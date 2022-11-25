@@ -24,6 +24,7 @@ const routes: Routes = [
     pathMatch: "full",
     redirectTo: "login"
   },
+  { path: 'documentos', component: SeccionDocumentosComponent },
   {
     path: "login",
     component: LoginComponent
@@ -32,7 +33,6 @@ const routes: Routes = [
     path: "recuperar-contraseña",
     component: RecuperarcontraseniaComponent
   },
-  { path: 'documentos', component: SeccionDocumentosComponent },
   {
     path: "dashboard",
     canActivate: [AuthGuard],

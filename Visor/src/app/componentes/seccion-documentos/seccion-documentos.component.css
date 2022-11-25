@@ -7,6 +7,10 @@
 
 /* Header */
 
+#container-header{
+    margin-bottom: 130px;
+}
+
 #container-header-top{
     display: flex;
     margin-left: 2.5%;
@@ -38,6 +42,52 @@
 .menu-orden {
     display: flex;
     width: 170px;
+}
+
+.noVisible{
+    display: none;
+}
+
+.container-informacion{
+    float: right;
+    display: flex; 
+}
+
+.informacion-letters{
+    font-size: 9px;
+    margin-left: 2px;
+}
+
+#seccion-no-iniciadas{
+    display: flex;
+}
+
+#seccion-en-progreso{
+    display: flex;
+}
+
+#seccion-en-prueba{
+    display: flex;
+}
+
+#seccion-completadas{
+    display: flex;
+}
+
+
+.boton-informacion{
+    margin-top: 10px;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+#informacion-section {
+    background-color: white;
+    border: 1px solid black;
+    height: 126px;
+    width: 85px;
+    border-radius: 5px;
+    padding: 3px;
 }
 
 /* Body */
@@ -117,6 +167,52 @@
     padding-left: 10%;
 }
 
+#container-select{
+    margin-left: 5px;
+    margin-top: 12px;
+}
+
+/* Información section */
+
+.container-icon{
+    height: 15px;
+    width: 15px;
+}
+
+.cc-en-progreso{
+    height: 15px;
+    width: 15px;
+    border-radius: 5px;
+    background-color: #FFFF00;
+    border: solid 1px black;
+}
+
+.cc-en-prueba{
+    height: 15px;
+    width: 15px;
+    border-radius: 5px;
+    background-color: #00FF00;
+    border: solid 1px black;
+}
+
+.cc-completadas{
+    height: 15px;
+    width: 15px;
+    border-radius: 5px;
+    background-color: #008000;
+    border: solid 1px black;
+}
+
+.container-informacion{
+    float: right;
+    display: flex;
+}
+
+.informacion-icon{
+    font-size: 10px;
+}
+
+
 /* Pagination */
 
 #container-pagination{
@@ -130,14 +226,44 @@
     border: solid 2px green;
 }
 
-.plan-document-border{
+.general-document-border{
     border: solid 2px yellow;
 }
 
-.sprint-backlog-document-border{
+.ventas-document-border{
     border: solid 2px orange;
 }
 
-.propuesta-funcional-document-border{
+.disenio-document-border{
     border: solid 2px red;
+}
+
+.implementacion-document-border{
+    border: solid 2px purple;
+}
+
+.testing-document-border{
+    border: solid 2px black;
+}
+
+.mantenimiento-document-border{
+    border: solid 2px palevioletred;
+}
+
+.desarrollo-document-border{
+    border: solid 2px blue;
+}
+
+/* Colors of status */
+
+.eliminado-document-status{
+    color: red;
+}
+
+.publicado-document-status{
+    color: green;
+}
+
+.borrador-document-status{
+    color: gray;
 }
