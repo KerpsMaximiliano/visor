@@ -280,7 +280,7 @@ editarActividadSuite(){
     id_tarea:''
     //id_tarea: 'a0287b5d-14c5-11ed-965a-00505601020a'
   } 
-  //console.log("fecha modal",actividadS.fecha);
+  console.log("fecha modal",actividadS.fecha);
 
   if (actividadS.descripcion == null || actividadS.descripcion.length < 1){
     actividadS.descripcion = 'Esta actividad no tiene descripción';

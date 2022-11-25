@@ -252,7 +252,7 @@ idT!: string;
     asignado_a : localStorage.getItem('userId'),
     id_tarea: idTarea
     });
-    console.log("bodyyyy",jsbody);
+    //console.log("bodyyyy",jsbody);
 
     return this.rest.callProcedimientoVisor(jsbody, 'AbmActividades');
 
@@ -276,7 +276,7 @@ idT!: string;
     asignado_a : localStorage.getItem('userId'),
     id_tarea: idTarea
     });
-    console.log("bodyyyy",jsbody);
+    //console.log("bodyyyy",jsbody);
     return this.rest.callProcedimientoVisor(jsbody, 'AbmActividades');
   }
 
