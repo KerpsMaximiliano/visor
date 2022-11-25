@@ -1,9 +1,9 @@
-<div class="container">
-    <div class="componenteEstado"><app-inicio-estado-proyecto></app-inicio-estado-proyecto></div>
-    <div class="barraDivisoria">
+<div class="container-main">
+    <app-inicio-estado-proyecto id="componenteEstado"></app-inicio-estado-proyecto>
+    <div>
         <div class="fecha-hoy">Fecha Actual</div>
         <div class="cuadro-fecha"> {{ fechaHoy }} </div>
         <div class="division"></div>
     </div>
-    <div class="componenteDisponibilidad"><app-inicio-disponibilidad-colaboradores></app-inicio-disponibilidad-colaboradores></div>
+    <app-inicio-disponibilidad-colaboradores id="componenteDisponibilidad"></app-inicio-disponibilidad-colaboradores>
 </div>

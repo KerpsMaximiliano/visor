@@ -5,8 +5,8 @@
             <br />
 
             <!-- Usuario form-field -->
-            <mat-form-field class="conteinerInput" appearance="fill">
-                <input class="input" type="text" matInput [formControl]="user" autocomplete="off" placeholder="Usuario...">
+            <mat-form-field class="conteinerInput" appearance="outline">
+                <input (keydown)="validarTecla($event)" id="userInput" class="input" type="text" matInput [formControl]="user" autocomplete="off" placeholder="Usuario...">
                 <mat-error class="mensajeError" *ngIf="user?.hasError('required')">
                     <p>Porfavor introduce un usuario</p>
                 </mat-error>
@@ -14,8 +14,8 @@
             <div id="separadorInputs"></div>
 
             <!-- Password form-field -->
-            <mat-form-field class="conteinerInput" appearance="fill">
-            <input class="input" type="password" matInput [formControl]="password" autocomplete="off" placeholder="Contraseña...">
+            <mat-form-field class="conteinerInput" appearance="outline">
+            <input (keydown)="validarTecla($event)" class="input" type="password" matInput [formControl]="password" autocomplete="off" placeholder="Contraseña...">
             <mat-error class="mensajeError" *ngIf="password?.hasError('required')">
                 <p>Porfavor ingresa una contraseña</p>
             </mat-error>
@@ -27,4 +27,5 @@
     <p id="mensajeError" [ngClass]="{'noVisible': !visibilidadMensaje}">{{mensajeError}}</p>
     <p id="olvidePass" (click)="openModal()">Olvidé mi contraseña</p>
 </div> 
+
 

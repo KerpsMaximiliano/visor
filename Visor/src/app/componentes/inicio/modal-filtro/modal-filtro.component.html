@@ -2,15 +2,15 @@
 <div class="form">
     <mat-form-field appearance="outline">
         <mat-label>Nombre</mat-label>
-        <input matInput name="nombre" [(ngModel)]="result.nombre">
+        <input matInput name="nombre" [(ngModel)]="result.nombre" (keydown)="validarTecla($event)">
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Apellido</mat-label>
-        <input matInput name="apellido" [(ngModel)]="result.apellido">
+        <input matInput name="apellido" [(ngModel)]="result.apellido" (keydown)="validarTecla($event)">
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Función</mat-label>
-        <mat-select [(value)]="result.seleccion">
+        <mat-select [(value)]="result.seleccion" (keydown)="validarTecla($event)">
             <mat-option value="{{funciones[0]}}">{{funciones[0]}}</mat-option>
             <mat-option value="{{funciones[1]}}">{{funciones[1]}}</mat-option>
             <mat-option value="{{funciones[2]}}">{{funciones[2]}}</mat-option>
@@ -20,7 +20,7 @@
     </mat-form-field>
 </div>
 <div class="botonera">
-    <button mat-button class="blue" (click)="limpiarFiltro()">Limpiar</button>
+    <button mat-button class="blue" (click)="limpiarFiltro()" (keydown)="validarTecla($event)">Limpiar</button>
     <button mat-button class="red" (click)="cancelarBusqueda()">Cancelar</button>
     <button mat-button class="green" [mat-dialog-close]="result" (click)="guardarFiltro()">Filtrar</button>
 </div>

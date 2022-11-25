@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { Form, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -9,6 +9,8 @@ import { ActividadService } from 'src/app/services/i2t/actividad.service';
 import { ActividadSuite } from 'src/app/interfaces/actividadesSuite';
 import { finalize } from 'rxjs/operators';
 import { DataSource } from '@angular/cdk/collections';
+import { TareaService } from 'src/app/services/i2t/tarea.service';
+import { tareasA } from 'src/app/interfaces/tareasA';
 
 
 @Component({
@@ -27,7 +29,12 @@ export class ModalActividadComponent implements OnInit {
   Show: boolean = true;
   position!: number;
   id! : string;
+  idT! : string;
+
+  lTareas! : any[] ;
+  tareaS! : any;
  
+  @Input() idTarea: string= '';
   constructor(
               private fb: FormBuilder,
               private _actividadService: ActividadService,
@@ -35,10 +42,11 @@ export class ModalActividadComponent implements OnInit {
               private dialog: MatDialog,
               public dialogRef: MatDialogRef<ModalActividadComponent>,
               private dateAdapter: DateAdapter<Date>,
+              private _tareaService: TareaService,
               @Inject(MAT_DIALOG_DATA) public data: any,
               ) {
-                this.dateAdapter.setLocale('en-GB'); //dd/MM/yyyy
-                /*this.form = this.fb.group({
+                /*this.dateAdapter.setLocale('en-GB'); //dd/MM/yyyy
+                this.form = this.fb.group({
                   fecha: ['',Validators.required],
                   horasEjecutadas: ['',Validators.required],
                   asunto: ['',Validators.required],
@@ -53,6 +61,7 @@ export class ModalActividadComponent implements OnInit {
  
 
   ngOnInit(){
+
     this._actividadService.enviarIndexObservable.subscribe(response => {
       this.index = response;
     })
@@ -61,6 +70,19 @@ export class ModalActividadComponent implements OnInit {
     this._actividadService.enviarIdActividadObservable.subscribe(response => {
       this.id = response;
     })
+
+    this._actividadService.enviarIdTActividadObservable.subscribe(response => {
+      this.idT = response;
+    })
+    
+    if(this._tareaService.listaTareas != null){
+      localStorage.setItem('lTareas',JSON.stringify(this._tareaService.listaTareas));
+    }
+    if(localStorage.getItem('lTareas') !== null){
+      this.lTareas = JSON.parse(localStorage.getItem('lTareas')!)
+      
+    }
+    
     
   }
 
@@ -134,7 +156,14 @@ export class ModalActividadComponent implements OnInit {
 
 //AGREGAR ACTIVIDAD INTEGRACION
 agregarActividadSuite(){
- 
+
+  this.lTareas.forEach(t=>{
+    if(t.id_tarea == this._actividadService.idTarea){
+      console.log(t);
+      this.tareaS = t;
+    }
+  })
+
   if(this.index == undefined){
   
   const actividadS: ActividadSuite = {
@@ -148,19 +177,20 @@ agregarActividadSuite(){
     par_modo: 'I',
     titulo: this._actividadService.form.value.asunto,
     id_actividad: '',
-    estado: '',
-    tipo_actividad: '',
-    asignado_a: '',
-    id_tarea: ''
+    estado: 'Completed',
+    tipo_actividad: this.tareaS.tipo_tarea,
+    asignado_a: "",
+    id_tarea: this.tareaS.id_tarea
   }
 
-
-
+//console.log(actividadS);
+actividadS.fecha.setHours(10,0,0);
 //console.log('ACTIVIDAD SSSS FECHAAA',actividadS.fecha)
   this._actividadService.form.reset()
   
    
-      this._actividadService.agregarActividad(actividadS, this.data.idTarea).subscribe((response:any)=>{
+      this._actividadService.agregarActividad(actividadS, this.data.idTarea).subscribe((response:any)=>{    
+        //console.log(actividadS);
         console.log("INSERT EXITOSO", response);
     });
   
@@ -185,7 +215,7 @@ agregarActividadSuite(){
     this.id = this._actividadService.id;
     //console.log("RECIBE ID",this.id);
   }
-  editarActividad(){
+  /*editarActividad(){
     
     
     if(this.index != undefined){
@@ -217,7 +247,7 @@ agregarActividadSuite(){
     
     this._actividadService.index = undefined;
     //this._actividadService.form.reset();
-  }
+  }*/
 
 editarActividadSuite(){
   if(this.index != undefined){
@@ -247,9 +277,10 @@ editarActividadSuite(){
     estado: '',
     tipo_actividad: '',
     asignado_a: '',
-    id_tarea: 'a0287b5d-14c5-11ed-965a-00505601020a'
+    id_tarea:''
+    //id_tarea: 'a0287b5d-14c5-11ed-965a-00505601020a'
   } 
-  //console.log("fecha modal",actividadS.fecha);
+  console.log("fecha modal",actividadS.fecha);
 
   if (actividadS.descripcion == null || actividadS.descripcion.length < 1){
     actividadS.descripcion = 'Esta actividad no tiene descripción';
@@ -258,6 +289,7 @@ editarActividadSuite(){
   this._actividadService.form.reset();
   
   this._actividadService.editarActividad(actividadS, this.data.idTarea).subscribe((response:any)=>{
+    
     console.log("UPDATE EXITOSO", response);
 });
   }

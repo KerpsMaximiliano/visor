@@ -8,16 +8,14 @@ import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angu
 import { ModalActividadComponent } from '../modal-actividad/modal-actividad.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Token } from '@angular/compiler';
 import { LoginService } from 'src/app/services/i2t/login.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { RestService } from 'src/app/services/i2t/rest.service';
 import { Usuario } from 'src/app/interfaces/usuario';
 import { ActividadSuite } from 'src/app/interfaces/actividadesSuite';
-import { Data } from '@angular/router';
-import { DataSource } from '@angular/cdk/collections';
-import { finalize } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
+import { finalize, Subscription } from 'rxjs';
+import { TareaService } from 'src/app/services/i2t/tarea.service';
+import { Tarea } from 'src/app/interfaces/tarea';
 
 
 @Component({
@@ -37,7 +35,8 @@ export class ActividadComponent implements OnInit {
 
   listActividades: Actividad[]=[];
   
- 
+  //timestamp:any = firebase.database.ServerValue.TIMESTAMP;
+
   //displayedColumns: string[] = ['fecha','horas','descripcion','asunto','acciones'];
   displayedColumns:string[] = ['fecha','horas_ejecutadas'];
   displayedColumns2:string[] =  ['asunto_actividad','acciones'];
@@ -53,13 +52,18 @@ export class ActividadComponent implements OnInit {
   token!: String|null;
   actividades!: ActividadSuite[]|null;
   id!:string;
+  idT!:string;
   subscription!:Subscription;
 
   panelOpenState = false;
+  tareas!: Tarea[];
+
+  lTareas! : any[] ;
+  tareaS! : any;
 
   @Input() idTarea: string= '';
   @Input() tareasSP: any = [];
-
+ 
   //inyecto el servicio 
   constructor(private _actividadService: ActividadService,
               private _loginService: LoginService,
@@ -71,6 +75,7 @@ export class ActividadComponent implements OnInit {
               public dialogRef: MatDialogRef<ActividadComponent>,
               public dialogRefModal: MatDialogRef<ModalActividadComponent>,
               private cd: ChangeDetectorRef,
+              private _tareaService: TareaService,
               @Inject(MAT_DIALOG_DATA) public data:Actividad,
                ) { }
 
@@ -80,17 +85,34 @@ export class ActividadComponent implements OnInit {
 
     this.cargarActividadesSuite();
     
-    
+    if(this._tareaService.listaTareas != null){
+      localStorage.setItem('lTareas',JSON.stringify(this._tareaService.listaTareas));
+    }
+    if(localStorage.getItem('lTareas') !== null){
+      this.lTareas = JSON.parse(localStorage.getItem('lTareas')!)
+      
+    }
+
     this._actividadService.enviarIndexObservable.subscribe(response => {
       this.index = response;
     })
     this._actividadService.enviarIdActividadObservable.subscribe(response => {
       this.id = response;
     })
+
+
+    this._actividadService.idT = this.idTarea;
+    
+    this._actividadService.enviarIdTActividadObservable.subscribe(response => {
+      this.idT = response;
+      console.log(this.idT)
+    })
    
+
     let usuario: Usuario ={
       usuario: 'admin',
-      password: '1q2w'
+      password: '1q2w',
+      email: ''
     }
     this._loginService.obtenerToken(usuario).subscribe(res =>{
         if(res){
@@ -100,26 +122,38 @@ export class ActividadComponent implements OnInit {
         
         }
     });
-    this.cargarActividadesSuite();
+    //this.cargarActividadesSuite();
+
+    this._tareaService.enviarCambio();
+
+    if(this._tareaService.unProyecto != undefined){
+      this._tareaService.getTareasDeProyecto(this._tareaService.unProyecto.id_projecto).pipe(
+        finalize(()=>{
+          //this.listaTareasService = this.listaTareasService.data;
+          this.tareas = [];
+        })
+      )
+      .subscribe(result => {
+  
+        this.tareas = result.dataset;
+        
+        //this.cargarActividadesSuite();
+      })
+    }
+    
+    
+
+    /*if(this.idTarea != '' && this.idTarea != null){
+      this._actividadService.enviarIdTarea(this.idTarea);
+    }*/
   } 
   
 
-  /*toggleOn(horas: Number){
-    console.log("asunto",horas);
-    for(let row of this.listActividades){
-      if (row.horas == horas){
-        row.toggle = 1;
-      }
-    }
-  }*/
-
-  cargarActividades(){
+  /*cargarActividades(){
     
     this.listActividades = this._actividadService.getActividad();
     this.dataSource = new MatTableDataSource(this.listActividades);
-  }
-
-  
+  }*/
 
   //Expand Panel
   expandedRows: { [key: number]: boolean } = {};
@@ -129,7 +163,7 @@ export class ActividadComponent implements OnInit {
 
 
 //ELIMINAR HARDCODE
-  onEliminarActividad(index: number){
+  /*onEliminarActividad(index: number){
     //console.log('posicion inicial',index);
       
     this.dialogService.openConfirmDialog('¿Usted está seguro de que desea eliminar esa actividad?' )
@@ -145,29 +179,43 @@ export class ActividadComponent implements OnInit {
       }
     });
   
-  }
+  }*/
 
   cargarActividadesSuite(){
+  
     this.cd.detectChanges();
+        this._actividadService.par_modoG(this.idTarea).subscribe((response: any) =>{
       
-      this._actividadService.par_modoG(this.idTarea).subscribe((response: any) =>{
-      
-        response.dataset.forEach((y: any) =>{
-          if(y.descripcion == null || y.descripcion.length < 1 || y.descripcion === ""){
-            y.descripcion = 'Esta actividad no tiene descripción';
-          }   
-        //console.log("DATA SET PRUEBA FABIO",y)
-      });
-        //console.log("RESPONSE DATASET",response.dataset)
-        
-        this.dataSource = new MatTableDataSource(response.dataset)
-        this.cd.detectChanges();
-        //console.log("DATA SOURCE",this.dataSource)
-        
-      });
-    
-    
+          response.dataset.forEach((y: any) =>{
+            if(y.descripcion == null || y.descripcion.length < 1 || y.descripcion === ""){
+              y.descripcion = 'Esta actividad no tiene descripción';
+              //y.fecha = y.fecha-1;
+            }  
+            //this._actividadService.idTarea = this.idTarea;
+            
+          }); 
+          this.ordenarPorFecha(response.dataset);
+          
+          this.dataSource = new MatTableDataSource(response.dataset)
+          this.cd.detectChanges();
+          //console.log("DATA SOURCE",this.dataSource)
+          //this.idT = this.idTarea;
+        });      
+  }
+
    
+  
+  ordenarPorFecha(lista: Array<Actividad>){
+    
+    lista.sort(function(a, b) {
+      if (a.fecha < b.fecha) {
+        return 1;
+      }
+      if (a.fecha > b.fecha) {
+        return -1;
+      }
+      return 0;
+    });
   }
 
 
@@ -224,7 +272,7 @@ export class ActividadComponent implements OnInit {
   this._actividadService.enviarIndex(index);
  }
  
-  onEditarActividad(index: number){
+  /*onEditarActividad(index: number){
 
    //console.log("posicion incial",index);
     let aux = index;
@@ -261,7 +309,7 @@ export class ActividadComponent implements OnInit {
   
   this._actividadService.index = undefined;
   
-  }
+  }*/
 
   onEditarActividadSuite(index: number){
 
@@ -276,11 +324,11 @@ export class ActividadComponent implements OnInit {
     let month:number= parseInt(fAux.split("-")[1]);
     let year: number = parseInt(fAux.split("-")[0]);
 
-    const fechaA:string = year+'-'+month+'-'+day;
-    const fecha =new Date(fechaA);
-    //console.log("prueba fecha",fecha) ;   
-    
-    
+    let fechaA:string = year+'-'+month+'-'+(day);
+    //console.log(fechaA)
+    let fecha =new Date(fechaA);
+    fecha.setMinutes(fecha.getMinutes() + fecha.getTimezoneOffset())
+      
     
      this._actividadService.form.patchValue({
        fecha: fecha,
@@ -289,7 +337,6 @@ export class ActividadComponent implements OnInit {
        asunto: this.dataSource.data[index].asunto_actividad,
        tareaAsociada: this.dataSource.data[index].nombre_tarea
       })
-      //console.log("FORM 555",this.form)
     //console.log('actividad final',this.dataSource.data[index])
     
     //this._actividadService.openModalActividad(8);
@@ -308,7 +355,9 @@ export class ActividadComponent implements OnInit {
      this._actividadService.index = undefined;
    });
    
-   this._actividadService.index = undefined;
+    this._actividadService.index = undefined;
+    this.cd.detectChanges();
+    this.cargarActividadesSuite();
    
    }
 
@@ -320,19 +369,24 @@ export class ActividadComponent implements OnInit {
 
 
   onAgregarActividad(){
+    
       // Agregamos una nueva Actividad
       this._actividadService.form.reset();
+      this.lTareas.forEach( t =>{
+        if(t.id_tarea == this._actividadService.idTarea){
+          this.tareaS = t;
+        }
+      })
       //console.log("Fabio DATA SOURCE", this.dataSource.data[0] == undefined)
       if (this.dataSource.data[0] != undefined ){
         this._actividadService.form.patchValue({
           tareaAsociada: this.dataSource.data[0].nombre_tarea
+          //tareaAsociada: this.tareaS.nombre_tarea
         })
       }
-      console.log("DATA SOURCE",this.dataSource);
-      console.log("DATA",this.dataSource.data);
-      console.log("ID1",this.idTarea);
+    
       const dialogRef = this.dialog.open(ModalActividadComponent,{data:{idTarea: this.idTarea}});
-      console.log("ID2",this.idTarea);
+      
   // this.dialog.open(ModalActividadComponent);
     dialogRef.afterClosed().subscribe(res =>{
       if(res){
