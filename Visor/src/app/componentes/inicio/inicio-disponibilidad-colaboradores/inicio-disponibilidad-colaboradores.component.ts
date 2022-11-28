@@ -44,8 +44,8 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   disponibilidadEquipo = 0;
   mesesPlanificacion = [{mes: ''}];
   positionOptions: TooltipPosition[] = ['after', 'before', 'above', 'below', 'left', 'right'];
-  position = new FormControl(this.positionOptions[4]);
-  position2 = new FormControl(this.positionOptions[5]);
+  position = new FormControl(this.positionOptions[5]);
+  position2 = new FormControl(this.positionOptions[3]);
   mesFechaElegida: number;
   anioFechaElegida: number;
   diaFechaElegida: number;
