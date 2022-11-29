@@ -5,18 +5,22 @@ import { AppRoutingModule } from './app-routing.module';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+
 
 
 
 //Material
 import { MyMaterialModule } from './material';
 
+//Interceptors
+import { LoggerInterceptor } from './interceptors/logger.interceptor';
+
 
 // Componentes
 import { LoginModule } from './componentes/login/login.module';
 import { RecuperarcontraseniaModule } from './componentes/recuperar-contrasenia/recuperar-contrasenia.module';
 import { InicioEstadoModule } from './componentes/inicio/inicio-estado-proyecto/inicio-estado.module';
-import { HttpClientModule } from '@angular/common/http';
 import { RestService } from './services/i2t/rest.service';
 import { Config } from './services/i2t/config.service';
 import { SnackbarService } from './services/util/snackbar.service';
@@ -81,7 +85,19 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   ],
 
   //Proveedores agregados
-  providers: [RestService, LoginService, Config, MatSnackBar, SnackbarService, { provide: MAT_DATE_LOCALE, useValue: 'en-GB' }],
+  providers: [
+    RestService,
+    LoginService,
+    Config,
+    MatSnackBar,
+    SnackbarService,
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoggerInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
