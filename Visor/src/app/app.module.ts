@@ -34,6 +34,8 @@ import { InicioDisponibilidadColaboradoresModule } from './componentes/inicio/in
 import { VistaDesarrolladorModule } from './componentes/vista-desarrollador/vista-desarrollador.module';
 import { TareasModule } from './components/tareas/tareas.module';
 import { DialogModule } from './components/dialog/dialog.module';
+import { AltaTareaDialogModule } from './components/alta-tarea-dialog/alta-tarea-dialog.module';
+import { FiltroProyectoInputModule } from './components/filtro-proyecto-input/filtro-proyecto-input.module';
 
 export function initConfig(config: Config) {
   return () => config.load();
@@ -57,7 +59,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     InicioMainComponent,
     ModalFiltroComponent,
     TopbarComponent,
-    DashboardComponent
+    DashboardComponent,
   ],
   imports: [
     BrowserModule,
@@ -75,6 +77,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     VistaDesarrolladorModule,
     TareasModule,
     DialogModule,
+    AltaTareaDialogModule,
+    FiltroProyectoInputModule,
     ControlActividadModule,
     SharedModule,
     RecuperarcontraseniaModule

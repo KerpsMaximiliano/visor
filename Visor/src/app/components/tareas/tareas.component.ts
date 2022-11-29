@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
+import { AltaTareaDialogComponent } from '../alta-tarea-dialog/alta-tarea-dialog.component'
 import { finalize } from 'rxjs/operators';
 import {
   MatSnackBar,
@@ -114,7 +115,7 @@ export class TareasComponent implements OnInit {
 
   valorInputProyecto:string = ''
 
-  constructor(public dialog: MatDialog, private _snackBar: MatSnackBar, private _tareaService: TareaService, private _filtroService: FiltroService) {
+  constructor(public dialog: MatDialog, public dialogABMtareas: MatDialog, private _snackBar: MatSnackBar, private _tareaService: TareaService, private _filtroService: FiltroService) {
     
     //this.filtrosBusquedaTareas = JSON.parse(JSON.stringify(this.filtrosBusquedaTareas));
 
@@ -363,6 +364,28 @@ export class TareasComponent implements OnInit {
       }
     }
 
+  }
+
+  abrirAltaTareaDialog(){
+    const dialogRef = this.dialogABMtareas.open(AltaTareaDialogComponent,{width:'70%', height:'600px', data:{}});
+    dialogRef.afterClosed().pipe(
+      finalize(() => {
+        if(this.tareasFiltradas != ''){
+          console.log(this.tareasFiltradas)
+        }
+        if(this.nombreVistaSeleccionada != 'Vista'){ //Pregunto si hay una vista seleccionada
+          this.setSubtituloProyecto(this.idVistaSeleccionada);
+        }
+      })
+    )
+    .subscribe(result => {
+      if(result != undefined){
+        this.tareasFiltradas= result;
+      }
+      else{
+        this.tareasFiltradas = '';
+      } 
+    })
   }
 
   mesesYanios(){

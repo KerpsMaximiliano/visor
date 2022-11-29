@@ -1,0 +1,98 @@
+<body>
+    <mat-icon (click)="cerrarDialog()">close</mat-icon>
+    <h2 mat-dialog-title>Buscar proyecto</h2>
+    <mat-dialog-content class="mat-typography">
+        <div class="par">
+            <mat-dialog-content >
+                <!-- <mat-label class="label">Proyecto</mat-label>
+                <mat-select placeholder="Proyecto" [(value)]="estadoTareaSeleccionado" id="tipoTarea" (selectionChange)="selectEstadoTarea($event)">
+                    <mat-option></mat-option>
+                    <mat-option value="Actividad en Cliente">Visor - Panel de control</mat-option>
+                    <mat-option value="Atención clientes">Extractos digitales</mat-option>
+                </mat-select> -->
+                <app-filtro-proyecto-input [desdeABMtareas]="fromAltaTarea"></app-filtro-proyecto-input>
+            </mat-dialog-content>
+        
+            <mat-divider></mat-divider>
+        
+            <mat-dialog-content>
+                <mat-label class="label">Tipo de tarea</mat-label>
+                <mat-select placeholder="Tipo de tarea" [(value)]="tipoTareaSeleccionada" id="tipoTarea"
+                    (selectionChange)="selectTipoTarea($event)">
+                    <mat-option></mat-option>
+                    <mat-option value="Actividad en Cliente">Actividad en Clientelvo</mat-option>
+                    <mat-option value="Atención clientes">Atención clientes</mat-option>
+                    <mat-option value="Capacitación">Capacitación</mat-option>
+                    <mat-option value="Diseño">Diseño</mat-option>
+                    <mat-option value="Guardia Activa">Guardia Activa</mat-option>
+                    <mat-option value="Guardia Pasiva">Guardia Pasiva</mat-option>
+                    <mat-option value="Mantenimiento">Mantenimiento</mat-option>
+                    <mat-option value="Producción">Producción</mat-option>
+                    <mat-option value="Relevamiento requerimientos">Relevamiento requerimientos</mat-option>
+                    <mat-option value="Taller/Demo">Taller/Demo</mat-option>
+                    <mat-option value="Testing">Testing</mat-option>
+                </mat-select>
+            </mat-dialog-content>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div class="par">
+            <mat-dialog-content>
+                <mat-label class="label">Estado</mat-label>
+                    <mat-select placeholder="Tipo de tarea" [(value)]="estadoTareaSeleccionado" id="tipoTarea" (selectionChange)="selectEstadoTarea($event)"  >
+                        <mat-option></mat-option>
+                        <mat-option value="No iniciada">No iniciada</mat-option>
+                        <mat-option value="En progreso">En progreso</mat-option>
+                        <mat-option value="En prueba">En prueba</mat-option>
+                        <mat-option value="Completada">Completada</mat-option>
+                    </mat-select>
+            </mat-dialog-content>
+
+            <mat-divider></mat-divider>
+
+            <mat-dialog-content>
+                <mat-label class="label">Prioridad</mat-label>
+                    <mat-select placeholder="Tipo de tarea" [(value)]="prioridadSeleccionada" id="prioridad" (selectionChange)="selectPrioridad($event)"  >
+                        <mat-option></mat-option>
+                        <mat-option value="No iniciada">Alta</mat-option>
+                        <mat-option value="En progreso">Media</mat-option>
+                        <mat-option value="En prueba">Baja</mat-option>
+                    </mat-select>
+            </mat-dialog-content>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div class="par">
+            <mat-dialog-content>
+                <mat-label class="label">Asignado a</mat-label>
+            </mat-dialog-content>
+
+            <mat-divider></mat-divider>
+
+            <mat-dialog-content>
+                <mat-label class="label">Facilitador</mat-label>
+            </mat-dialog-content>
+        </div>
+        
+        <mat-divider></mat-divider>
+
+        <mat-dialog-content>
+            <mat-label class="label">Fecha planificada</mat-label>
+        </mat-dialog-content>
+
+        <mat-divider></mat-divider>
+
+        <mat-dialog-content>
+            <mat-label class="label">Horas planificadas</mat-label>
+        </mat-dialog-content>
+
+        <mat-divider></mat-divider>
+
+        <mat-dialog-content>
+            <mat-label class="label">Tareas precondición</mat-label>
+        </mat-dialog-content>
+
+    </mat-dialog-content>
+</body>

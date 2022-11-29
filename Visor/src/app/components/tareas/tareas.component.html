@@ -1,7 +1,7 @@
 <div class="contenedor">
   <span class="buscadores">
     <div class="buscador" appearance="standard">
-      <mat-form-field class="example-form-field" appearance="fill">
+      <!-- <mat-form-field class="example-form-field" appearance="fill">
         <input matInput type="text" placeholder="Buscar proyecto..." autocomplete="off" [(ngModel)]="valorInputProyecto"  (keyup)="buscarProyectos($event)">
         <div class="lista_proyectos" [ngClass]= estiloListaProyectos >
           <div>
@@ -15,9 +15,10 @@
             </table>
           </div>
         </div>
-      </mat-form-field>
+      </mat-form-field> -->
       <!-- Lupa para buscar proyectos-->
-      <mat-icon class="icon" (click)="abrirDialogProyecto($event)">search</mat-icon>
+      <!-- <mat-icon class="icon" (click)="abrirDialogProyecto($event)">search</mat-icon> -->
+      <app-filtro-proyecto-input></app-filtro-proyecto-input>
       
       <button class="botonVistas" mat-button [matMenuTriggerFor]="menu" [value] = "nombreVistaSeleccionada">{{nombreVistaSeleccionada}}</button>
       <mat-menu #menu="matMenu">
@@ -31,7 +32,7 @@
     </div>
     
     <div class="buscador">
-      <mat-icon class="icon">add_circle</mat-icon>
+      <mat-icon class="icon" (click)="abrirAltaTareaDialog()">add_circle</mat-icon>
       <!-- "Sprint" -->
       <button mat-flat-button color="primary" [matMenuTriggerFor]="sprintMenu" class="sombraBotones" (click)="mesesYanios()">{{mesAnioSeleccionado}}</button>
       <mat-menu #sprintMenu="matMenu">
