@@ -199,7 +199,7 @@ agregarActividadSuite(){
 
   this.lTareas.forEach(t=>{
     if(t.id_tarea == this._actividadService.idTarea){
-      console.log(t);
+      console.log(t.id_tarea,t.id_actividad);
       this.tareaS = t;
     }
   })

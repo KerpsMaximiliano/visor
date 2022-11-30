@@ -371,18 +371,20 @@ export class ActividadComponent implements OnInit {
       // Agregamos una nueva Actividad
       this._actividadService.form.reset();
       this.lTareas.forEach( t =>{
-        if(t.id_tarea == this._actividadService.idTarea){
+        if(t.id_tarea == this.idTarea){
           this.tareaS = t;
         }
       })
       //console.log("Fabio DATA SOURCE", this.dataSource.data[0] == undefined)
-      if (this.dataSource.data[0] != undefined ){
+      //if (this.dataSource.data[0] != undefined ){
+       if(this.idTarea != undefined){ 
+        console.log("tareas lista:",this.tareaS)
         this._actividadService.form.patchValue({
-          tareaAsociada: this.dataSource.data[0].nombre_tarea
-          //tareaAsociada: this.tareaS.nombre_tarea
+          //tareaAsociada: this.dataSource.data[0].nombre_tarea
+          tareaAsociada: this.tareaS.nombre_tarea
         })
       }
-    
+    console.log("idTarea del Input",this.idTarea)
       const dialogRef = this.dialog.open(ModalActividadComponent,{data:{idTarea: this.idTarea}});
       
   // this.dialog.open(ModalActividadComponent);
