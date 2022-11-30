@@ -84,6 +84,7 @@ export class ActividadComponent implements OnInit {
     //this.cargarActividades();
 
     this.cargarActividadesSuite();
+    //this.form.controls['fecha'].setValue(new Date());
     
     if(this._tareaService.listaTareas != null){
       localStorage.setItem('lTareas',JSON.stringify(this._tareaService.listaTareas));
@@ -122,7 +123,6 @@ export class ActividadComponent implements OnInit {
         
         }
     });
-    //this.cargarActividadesSuite();
 
     this._tareaService.enviarCambio();
 
@@ -136,8 +136,6 @@ export class ActividadComponent implements OnInit {
       .subscribe(result => {
   
         this.tareas = result.dataset;
-        
-        //this.cargarActividadesSuite();
       })
     }
     
