@@ -55,13 +55,13 @@
   align-items: center;
   font-size: medium;
 }
-/*.is-required:after{
+.is-required:after{
   content: '*';
   margin-left: 3px;
   color: red;
   font-weight: bold;
   top: 100%;
-}*/
+}
 .is-complete:after{
   content: 'Debe completar todos los campos obligatorios';
   right: 100%;

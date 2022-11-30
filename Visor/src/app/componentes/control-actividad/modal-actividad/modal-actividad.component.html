@@ -35,10 +35,12 @@
   </tr></table>-->
   <div class="table"> 
     <!--<mat-label>Fecha</mat-label>-->
-   <mat-label *ngIf="form.value.fecha">Fecha</mat-label>
-    <mat-label  class="col-sm-3 col-form-label is-required" *ngIf="!form.value.fecha">Fecha</mat-label> 
+   <!--<mat-label *ngIf="form.value.fecha">Fecha</mat-label>
+    <mat-label  class="col-sm-3 col-form-label is-required" *ngIf="!form.value.fecha">Fecha</mat-label> -->
+    <mat-label  class="col-sm-3 col-form-label is-required">Fecha</mat-label>
     <mat-form-field appearance="outline" class="fechaInput">
-      <mat-label *ngIf="!form.value.fecha"></mat-label>
+      
+      <!--<mat-label *ngIf="!form.value.fecha"></mat-label>-->
        <mat-label>dd/mm/aaaa</mat-label>
         <input matInput [matDatepicker]="picker" formControlName="fecha" 
         format="dd/mm/YYYY" maxlength="10" required placeholder="dd/mm/aaaa" (blur)="MyFunction($event)"
@@ -57,9 +59,10 @@
       </mat-form-field>
     </div>-->
     
-      <mat-label  *ngIf="form.value.horasEjecutadas" >Horas ejecutadas</mat-label>
-      <mat-label  class="col-sm-3 col-form-label is-required" *ngIf="!form.value.horasEjecutadas">Horas ejecutadas</mat-label>
-   
+      <!--<mat-label  *ngIf="form.value.horasEjecutadas" >Horas ejecutadas</mat-label>
+      <mat-label  class="col-sm-3 col-form-label is-required" *ngIf="!form.value.horasEjecutadas">Horas ejecutadas</mat-label>-->
+      <mat-label class="col-sm-3 col-form-label is-required">Horas ejecutadas</mat-label>
+      
     <mat-form-field class="horasFormField" appearance="fill">
       <!--<mat-label></mat-label>-->
       <!-- pattern="[0-9]*+([.][0-9]*)"  (keypress)="keyPress($event)" -->
@@ -84,8 +87,9 @@
     
     <div class="asunto">
       <!--<div style="display:flex; flex-direction: row; justify-content: center; align-items: center">-->
-        <mat-label *ngIf="form.value.asunto">Asunto</mat-label>
-    <mat-label  class="col-sm-3 col-form-label is-required" *ngIf="!form.value.asunto">Asunto</mat-label>
+        <!--<mat-label *ngIf="form.value.asunto">Asunto</mat-label>
+    <mat-label  class="col-sm-3 col-form-label is-required" *ngIf="!form.value.asunto">Asunto</mat-label>-->
+    <mat-label class="col-sm-3 col-form-label is-required">Asunto</mat-label>
     <mat-form-field class="example-full-width" appearance="fill">
       <mat-label *ngIf="!form.value.asunto"></mat-label>
       <!--<mat-label>XXXX</mat-label>-->
@@ -96,8 +100,9 @@
     
     <div class="tarea"> 
       <!--<div style="display:flex; flex-direction: row; justify-content: center; align-items: center">-->
-        <mat-label *ngIf="form.value.tareaAsociada">Tarea asociada</mat-label>
-        <mat-label  class="col-sm-3 col-form-label is-required" *ngIf="!form.value.tareaAsociada">Tarea asociada</mat-label>
+        <!--<mat-label *ngIf="form.value.tareaAsociada">Tarea asociada</mat-label>
+        <mat-label  class="col-sm-3 col-form-label is-required" *ngIf="!form.value.tareaAsociada">Tarea asociada</mat-label>-->
+        <mat-label class="col-sm-3 col-form-label is-required">Tarea asociada</mat-label>
   <mat-form-field class="example-full-width" appearance="fill">
     <mat-label *ngIf="!form.value.tareaAsociada"></mat-label>
     <!--<mat-label>tarea</mat-label>-->
