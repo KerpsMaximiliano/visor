@@ -1,4 +1,5 @@
 export interface Documento {
+    id: string,
     name: string,
     type: string,
     assigned: string,

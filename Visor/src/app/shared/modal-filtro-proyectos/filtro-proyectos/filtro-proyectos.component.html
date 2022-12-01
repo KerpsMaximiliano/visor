@@ -2,19 +2,19 @@
 <div class="form">
     <mat-form-field appearance="outline">
         <mat-label>Número</mat-label>
-        <input (keydown)="validarTecla($event)" matInput name="numero" [(ngModel)]="result.numero">
+        <input (keydown)="validarTecla($event)" matInput name="numero" [(ngModel)]="result.numero" autocomplete="false">
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Nombre</mat-label>
-        <input (keydown)="validarTecla($event)" matInput name="nombre" [(ngModel)]="result.nombre">
+        <input (keydown)="validarTecla($event)" matInput name="nombre" [(ngModel)]="result.nombre" autocomplete="false">
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Cliente</mat-label>
-        <input (keydown)="validarTecla($event)" matInput name="nombre" [(ngModel)]="result.cliente">
+        <input (keydown)="validarTecla($event)" matInput name="nombre" [(ngModel)]="result.cliente" autocomplete="false">
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Asignado a</mat-label>
-        <input (keydown)="validarTecla($event)" matInput name="nombre" [(ngModel)]="result.asignadoA">
+        <input (keydown)="validarTecla($event)" matInput name="nombre" [(ngModel)]="result.asignadoA" autocomplete="false">
     </mat-form-field>
     <section class="example-section">
         <mat-checkbox [(ngModel)]="result.misProyectos" [checked]="result.misProyectos" class="example-margin">Mis proyectos</mat-checkbox>

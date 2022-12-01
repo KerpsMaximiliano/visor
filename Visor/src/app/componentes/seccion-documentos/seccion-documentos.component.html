@@ -14,35 +14,35 @@
         </div>
         <div id="container-header-bot">
             <mat-icon id="iconCircle">add_circle</mat-icon> <!-- Icono que abre el dialog para agregar documentos -->
-            <button id="assignedButton" mat-stroked-button>Asignados a mi</button>
+            <button id="assignedButton" mat-stroked-button (click)="filterByUser()" [ngClass]="{'buttonOn': buttonOn}">Asignados a mi</button>
             <mat-icon (click)="openFilter()" id="iconFilter">filter_alt</mat-icon> <!-- Icono que abriría el filtro -->
         </div>
         <div class="container-informacion">
             <div id="informacion-section" [ngClass]="{ 'visible': estado == true, 'noVisible': estado == false }">
-                <div id="seccion-completadas">
-                    <div class="container-icon">
-                        <i id="informacion-icon" class="fas fa-file"></i>
-                    </div>
+                <div id="container-icon">
+                    <i id="informacion-icon" class="fas fa-file"></i>
                     <p class="informacion-letters">Generales</p>
                 </div>
-                <div id="seccion-en-progreso">
-                    <div class="container-icon">
-                        <i id="informacion-icon" class="fas fa-file"></i>
+                <div id="container-icon">
+                    <div class="informacion-icon">
+                        <i id="informacion-icon" class="far fa-file"></i>
                     </div>
                     <p class="informacion-letters">Ventas</p>
                 </div>
-                <div id="seccion-en-prueba">
-                    <div class="cc-en-prueba">
-                        
+                <div id="container-icon">
+                    <div class="informacion-icon">
+                        <i id="informacion-icon" class="fa-solid fa-file-lines"></i>
                     </div>
-                    <p class="informacion-letters">En prueba</p>
+                    <p class="informacion-letters">Diseño</p>
                 </div>
-                <div id="seccion-completadas">
-                    <div class="cc-completadas"></div>
+                <div id="container-icon">
+                    <div class="informacion-icon">
+
+                    </div>
                     <p class="informacion-letters">Completadas</p>
                 </div>
             </div>
-            <button class="boton-informacion" (click)="showInformacion()" matTooltip="Información" mat-mini-fab color="primary"><mat-icon class="icony">info</mat-icon></button>
+            <button class="informacion-button" (click)="showInformacion()" matTooltip="Información" mat-mini-fab color="primary"><mat-icon class="icony">info</mat-icon></button>
         </div>
     </div> <!-- Termina el header -->
 

@@ -3,6 +3,7 @@ import { FiltroService } from '../../services/i2t/filtro.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalFiltroDocumentosComponent } from '../../shared/modal-filtro-documentos/modal-filtro-documentos.component';
 import { Documento } from '../../interfaces/documento';
+import { DocumentoService } from '../../services/i2t/documento.service';
 
 @Component({
   selector: 'app-seccion-documentos',
@@ -20,10 +21,21 @@ export class SeccionDocumentosComponent implements OnInit {
   ordenSeleccion = 'Alfabetico';
   orden_saved_search_id = '';
   modal_saved_search_id = '';
+  numero: string = "";
+  nombre: string = "";
+  asignadoA: string = "";
+  categoria: string = "";
+  tipo: string = "";
+  estadoDocumento: string = "";
+  fechaDePublicacion: string = "";
+  fechaDeCaducidad: string = "";
+  inputIzq: string = "";
 
   listOfDocuments: Documento[];
   page!: number; 
   estado: boolean = false;
+  arrayDocuments: any;
+  buttonOn: boolean = false;
 
   //Array de iconos.
   icons: string[] = [
@@ -37,84 +49,270 @@ export class SeccionDocumentosComponent implements OnInit {
 
   iconGeneral: string = "fa-solid fa-file";
 
-  constructor(private _filtroService: FiltroService, public dialog: MatDialog) {
-  
-    this.listOfDocuments = [
-      {
-        name: "aa",
-        type: "Identificación de necesidades",
-        assigned: "Patricio Macagno",
-        documentStatus: "Publicado",
-        date: "11/01/2022",
-        finishedDate: "12/02/2023",
-        category: "Implementación" //Determina el aspecto de la tarjeta. 
-      },
-      {
-        name: "BB",
-        type: "Sprint Backlog",
-        assigned: "Patricio Macagno",
-        documentStatus: "Eliminado",
-        date: "11/02/2022",
-        finishedDate: "12/02/2023",
-        category: "General" //Determina el aspecto de la tarjeta. 
-      },
-      {
-        name: "CC",
-        type: "Propuesta funcional",
-        assigned: "Patricio Macagno",
-        documentStatus: "Borrador",
-        date: "11/03/2022",
-        finishedDate: "12/02/2023",
-        category: "Diseño" //Determina el aspecto de la tarjeta. 
-      },
-      {
-        name: "actaspj.txt",
-        type: "Plan de Proyecto",
-        assigned: "Patricio Macagno",
-        documentStatus: "Publicado",
-        date: "11/04/2022",
-        finishedDate: "12/02/2023",
-        category: "Desarrollo" //Determina el aspecto de la tarjeta. 
-      },
-      {
-        name: "actaspj.txt",
-        type: "Plan de Proyecto",
-        assigned: "Patricio Macagno",
-        documentStatus: "Publicado",
-        date: "11/01/2022",
-        finishedDate: "12/02/2023",
-        category: "Mantenimiento" //Determina el aspecto de la tarjeta. 
-      },
-      {
-        name: "actaspj.txt",
-        type: "Plan de Proyecto",
-        assigned: "Patricio Macagno",
-        documentStatus: "Publicado",
-        date: "11/01/2022",
-        finishedDate: "12/02/2023",
-        category: "Testing" //Determina el aspecto de la tarjeta. 
-      },
-      {
-        name: "actaspj.txt",
-        type: "Plan de Proyecto",
-        assigned: "Patricio Macagno",
-        documentStatus: "Publicado",
-        date: "11/01/2022",
-        finishedDate: "12/02/2023",
-        category: "Ventas" //Determina el aspecto de la tarjeta. 
-      }
-    ];
+  constructor(private _filtroService: FiltroService, public dialog: MatDialog, private documentService: DocumentoService) {
+    this.listOfDocuments = [];
   }
 
   ngOnInit(): void {
+    this._filtroService.getUserId(localStorage.getItem('usuario')!).subscribe((response: any) => {
+      localStorage.setItem('userId', response.dataset[0].id);
+      this._filtroService.selectFiltro(response.dataset[0].id, 'documentos').subscribe((resp: any) => {
+        if (resp.dataset.length == 0 ) {
+        } else {
+          console.log('hay datos', resp);
+          resp.dataset.forEach((filtro: any) => {
+            if (filtro.nombre == 'filtro_orden') {
+              this.orden_saved_search_id = filtro.saved_search_id;
+              const contenido = JSON.parse(atob(filtro.contenido));
+              this.ordenSeleccion = contenido.ordenSeleccion; 
+            }
+            if (filtro.nombre == 'filtro_numero_nombre_tipo_asignadoA_estado_categoria_fechaPublicacion_fechaCaducidad') {
+              this.modal_saved_search_id = filtro.saved_search_id;
+              const contenido = JSON.parse(atob(filtro.contenido));
+              this.numero = contenido.nombre;
+              this.nombre = contenido.nombre;
+              this.estado = contenido.estado;
+              this.tipo = contenido.tipo;
+              this.asignadoA = contenido.asignadoA;
+              this.fechaDePublicacion = this.fechaDePublicacion;
+              this.fechaDeCaducidad = this.fechaDeCaducidad;
+            }
+          })
+        };
+        this.getDocuments();
+        this.startFilter();
+      });
+    });
   }
 
   /**
-   * Este método se utiliza para abrir el dialog del filtro.
+   * Método que obtiene los documentos a traves del servicio.
+   * 
+   */
+  getDocuments(): void{
+    this.documentService.getDocumentos().subscribe(result => {
+      this.arrayDocuments = result;
+      for(let i = 0;i<result.dataset.length;i++)
+      {
+        let document: Documento = {
+          id: result.dataset[i].id,
+          name: result.dataset[i].name,
+          assigned: result.dataset[i].user_name,
+          category: result.dataset[i].category,
+          type: result.dataset[i].type,
+          documentStatus: result.dataset[i].status,
+          date: result.dataset[i].actived_date,
+          finishedDate: result.dataset[i].exp_date
+        };
+        this.listOfDocuments.push(document); //Array que almacena los proyectos con sus respectivos datos.
+      }
+      this.arrayDocuments = this.listOfDocuments;
+      });
+  }
+
+
+
+
+  /**
+   * Este método se utiliza para abrir el dialog del filtro y guarda la información ingresada.
    */
   openFilter(){
-    const dialogRef = this.dialog.open(ModalFiltroDocumentosComponent, {width: '40%', height: '90%'});
+    const dialogRef = this.dialog.open(ModalFiltroDocumentosComponent, {
+      width: '40%', 
+      height: '90%',
+      disableClose: true,
+      data: { numero: this.numero, nombre: this.nombre, estado: this.estadoDocumento, asignadoA: this.asignadoA, tipo: this.tipo, categoria: this.categoria, fechaPublicacion: this.fechaDePublicacion, fechaCaducidad: this.fechaDeCaducidad, seleccion: this.ordenSeleccion, search_id: this.modal_saved_search_id}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.numero = result.numero;
+      this.nombre = result.nombre;
+      this.estadoDocumento = result.estado;
+      this.asignadoA = result.asignadoA;
+      this.tipo = result.tipo;
+      this.categoria = result.categoria;
+      this.fechaDePublicacion = result.fechaPublicacion;
+      this.fechaDeCaducidad = result.fechaCaducidad;
+      console.log(this.nombre);
+      let filtrar = result.filtrar;
+      if (result.limpiar) { this.inputIzq = '', filtrar = true }
+      if (filtrar) {
+      /*   this.prepararFiltro(); */
+      }
+    });
   }
+
+  /**
+   * Método que se encarga de obtener la respuesta filtrada para luego aplicarla.
+   */
+  startFilter(): void{
+    const filtroNumero = this.filtroAvanzado(1, this.numero);
+    const filtroNombre= this.filtroAvanzado(2, this.nombre);
+    const filtroCategoria = this.filtroAvanzado(3, this.categoria);
+    const filtroTipo = this.filtroAvanzado(4, this.tipo);
+    const filtroEstado = this.filtroAvanzado(5, this.estadoDocumento);
+    const filtroAsignadoa = this.filtroAvanzado(6, this.asignadoA);
+    const filtroFechaPublicacion = this.filtroAvanzado(7, this.fechaDePublicacion);
+    const filtroFechaCaducidad = this.filtroAvanzado(8, this.fechaDeCaducidad);
+    this.listOfDocuments = this.buscarCoincidencias(filtroNumero, filtroNombre, filtroCategoria, filtroTipo, filtroEstado, filtroAsignadoa, filtroFechaPublicacion, filtroFechaCaducidad);
+    /* this.aplicarFiltros(); */
+  }
+
+  /**
+   * Método que busca coincidencias en base a la información proporcionada en las caracteristicas.
+   * 
+   * @param arrayNumero any
+   * @param arrayNombre any
+   * @param arrayCategoria any
+   * @param arrayTipo any
+   * @param arrayEstado any
+   * @param arrayAsignadoA any
+   * @param arrayFechaPublicacion any
+   * @param arrayFechaCaducidad any
+   * @returns ArrayList
+   */
+  buscarCoincidencias(arrayNumero: any, arrayNombre: any, arrayCategoria: any, arrayTipo: any, arrayEstado: any, arrayAsignadoA: any, arrayFechaPublicacion: any, arrayFechaCaducidad: any) {
+    let encontrados: any = [];
+    this.listOfDocuments.forEach(documento => {
+      let encontradoNumero = false;
+      let encontradoNombre = false;
+      let encontradoCategoria = false;
+      let encontradoTipo = false;
+      let encontradoEstado = false;
+      let encontradoAsignadoA = false;
+      let encontradoFechaPublicacion = false;
+      let encontradoFechaCaducidad = false;
+      arrayNumero.forEach((element: any) => {
+        if (element.id === documento.id) {
+          encontradoNombre = true;
+        }
+      });
+      arrayNombre.forEach((element: any) => {
+        if (element.id === documento.id) {
+          encontradoNumero = true;
+        }
+      });
+      arrayCategoria.forEach((element: any) => {
+        if (element.id === documento.id) {
+          encontradoCategoria = true;
+        }
+      });
+      arrayTipo.forEach((element: any) => {
+        if (element.id === documento.id) {
+          encontradoTipo = true;
+        }
+      });
+      arrayAsignadoA.forEach((element: any) => {
+        if (element.id === documento.id) {
+          encontradoAsignadoA = true;
+        }
+      });
+      arrayEstado.forEach((element: any) => {
+        if (element.id === documento.id) {
+          encontradoEstado = true;
+        }
+      });
+      arrayFechaPublicacion.forEach((element: any) => {
+        if (element.id === documento.id) {
+          encontradoFechaPublicacion = true;
+        }
+      });
+      arrayFechaCaducidad.forEach((element: any) => {
+        if (element.id === documento.id) {
+          encontradoFechaCaducidad = true;
+        }
+      });
+      if (encontradoNumero && encontradoNombre && encontradoTipo && encontradoAsignadoA && encontradoCategoria && encontradoFechaPublicacion && encontradoFechaCaducidad && encontradoEstado) {
+        encontrados.push(documento);
+      }
+    });
+    return encontrados;
+  }
+
+  filtroAvanzado(tipo: number, valor: string) {
+    let arrayTemp: any = [];
+    let arrayTabla: any;
+    switch (tipo) {
+      case 1:
+        this.listOfDocuments.forEach(documento => {
+          let obj = { id: documento.id, numero: documento.id };
+          arrayTemp.push(obj);
+        });
+        arrayTabla.filter = valor.trim().toLowerCase();
+        arrayTemp = arrayTabla.filteredData;
+        return arrayTemp;
+      case 2:
+        this.listOfDocuments.forEach(documento => {
+          let obj = { id: documento.id, nombre: documento.name };
+          arrayTemp.push(obj);
+        });
+        arrayTabla.filter = valor.trim().toLowerCase();
+        arrayTemp = arrayTabla.filteredData;
+        return arrayTemp;
+      case 3:
+        this.listOfDocuments.forEach(documento => {
+          let obj = { id: documento.id, funcion: documento.category };
+          arrayTemp.push(obj);
+        });
+        arrayTabla.filter = valor.trim().toLowerCase();
+        arrayTemp = arrayTabla.filteredData;
+        return arrayTemp;
+      case 4:
+        this.listOfDocuments.forEach(documento => {
+          let obj = { id: documento.id, funcion: documento.type };
+          arrayTemp.push(obj);
+        });
+        arrayTabla.filter = valor.trim().toLowerCase();
+        arrayTemp = arrayTabla.filteredData;
+        return arrayTemp;
+      case 5:
+        this.listOfDocuments.forEach(documento => {
+          let obj = { id: documento.id, funcion: documento.documentStatus };
+          arrayTemp.push(obj);
+        });
+        arrayTabla.filter = valor.trim().toLowerCase();
+        arrayTemp = arrayTabla.filteredData;
+        return arrayTemp;
+      case 6:
+        this.listOfDocuments.forEach(documento => {
+          let obj = { id: documento.id, funcion: documento.assigned };
+          arrayTemp.push(obj);
+        });
+        arrayTabla.filter = valor.trim().toLowerCase();
+        arrayTemp = arrayTabla.filteredData;
+        return arrayTemp;
+      case 7:
+        this.listOfDocuments.forEach(documento => {
+          let obj = { id: documento.id, funcion: documento.date };
+          arrayTemp.push(obj);
+        });
+        arrayTabla.filter = valor.trim().toLowerCase();
+        arrayTemp = arrayTabla.filteredData;
+        return arrayTemp;
+      case 8:
+        this.listOfDocuments.forEach(documento => {
+          let obj = { id: documento.id, funcion: documento.finishedDate };
+          arrayTemp.push(obj);
+        });
+        arrayTabla.filter = valor.trim().toLowerCase();
+        arrayTemp = arrayTabla.filteredData;
+        return arrayTemp;
+    }
+  }
+
+ /*  aplicarFiltros() {
+    if (this.listOfDocuments.length == 0) {
+      this.noHayDocumentos = true;
+    } else if (this.colaboradores.length == 1) {
+      this.noHayDocumentos = false;
+      this.cambiarOrden();
+    } else {
+      this.noHayDocumentos = false;
+      this.cambiarOrden();
+    }
+  } */
+  
+
 
   /**
    * Este método se utiliza para disparar el evento que contiene el orden seleccionado para los documentos.
@@ -123,7 +321,24 @@ export class SeccionDocumentosComponent implements OnInit {
    */
   shotOrder(e: Event){
     this.ordenSeleccion = (e.target as HTMLElement).innerText;
-    this.changeOrder();
+    const contenido: string = JSON.stringify({ ordenSeleccion : this.ordenSeleccion });
+    const encodedData = btoa(contenido);
+    if (this.orden_saved_search_id == '') {
+      this._filtroService.insertFiltro(
+        localStorage.getItem('userId')!,
+        'documentos',
+        'filtro_orden',
+        encodedData,
+        'Filtra los documentos por orden alfabetico o fecha').subscribe((rsp: any) => {
+          console.log('Filtro guardado: ', rsp);
+          this.changeOrder();
+        });
+    } else {
+      this._filtroService.updateFiltro(this.orden_saved_search_id, encodedData).subscribe((rsp: any) => {
+        console.log('Filtro actualizado: ', rsp);
+        this.changeOrder();
+      });
+    }
   }
 
   /**
@@ -356,6 +571,30 @@ export class SeccionDocumentosComponent implements OnInit {
     }
     else{
       this.estado = false
+    }
+  }
+
+  /**
+   * Método que sirve para filtrar los documentos y obtener los que están asignados al usuario logueado.
+   *
+   */
+  filterByUser(){
+    let userLocal: string | null = localStorage.getItem('usuario');
+    let assignedToMe: Documento[] = [];
+    if(this.buttonOn == false){
+      this.buttonOn = true;
+      for(let i=0;i<this.listOfDocuments.length;i++){
+        if(this.listOfDocuments[i].assigned == userLocal){
+          assignedToMe.push(this.listOfDocuments[i]);
+        }
+      }
+      console.log("Activado")
+      this.listOfDocuments = assignedToMe;
+    }
+    else{
+      this.buttonOn = false;
+      this.listOfDocuments = this.arrayDocuments;
+      console.log("Desactivado")
     }
   }
 }
