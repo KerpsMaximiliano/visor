@@ -1,7 +1,7 @@
 <!--<mat-icon id="close-icon" (click)="closeDialog()">close</mat-icon>-->
 <mat-toolbar class="toolbar">
   <span class="example-spacer"></span>
-  <button id="close-icon" mat-icon-button (click)="closeDialog()"  tabIndex="-1">
+  <button id="close-icon" mat-icon-button (click)="closeDialog(false)"  tabIndex="-1">
     <mat-icon>close</mat-icon></button>
 </mat-toolbar>
 
@@ -108,14 +108,14 @@
 </div>-->
 
 <div class="mensajeError">
-<mat-label ngClass="{'invisible':invisible,'visible':!invisible}" ></mat-label>
+  <mat-label [ngClass]="this.invisible ? 'invisible' : 'visible'" >Debe completar todos los campos obligatorios</mat-label>
 </div>
 
 
 
 <div class="actions" >
   <button mat-stroked-button id="cancelar-button" [mat-dialog-close]="false">Cancelar</button>
-  <button mat-stroked-button id="aceptar-button" type="submit" [disabled]="form.invalid"  [mat-dialog-close]="true" (click)="recibirIndex()">Aceptar</button>
+  <button mat-stroked-button id="aceptar-button" type="submit" (click)="recibirIndex()">Aceptar</button>
 </div>
 </form>
 </div>

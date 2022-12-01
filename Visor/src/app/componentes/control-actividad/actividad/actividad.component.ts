@@ -361,7 +361,7 @@ export class ActividadComponent implements OnInit {
         data: {idTarea: this.idTarea}});
     dialogRef.afterClosed().subscribe(res =>{
      if(res){
-       //console.log(res);
+       console.log("respuesta del modal:",res);
 
        this.cargarActividadesSuite();
        this.enviarMensajeEvento();

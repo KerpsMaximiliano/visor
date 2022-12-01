@@ -108,8 +108,8 @@ export class ModalActividadComponent implements OnInit {
     
   }
 
-  closeDialog(){
-    this.dialogRef.close(false);
+  closeDialog(respuesta: boolean){
+    this.dialogRef.close(respuesta);
   }
 
   keyPress(event: KeyboardEvent) {
@@ -201,59 +201,72 @@ MyFunction(select: any){
 //AGREGAR ACTIVIDAD INTEGRACION
 agregarActividadSuite(){
 
-  this.lTareas.forEach(t=>{
-    if(t.id_tarea == this._actividadService.idTarea){
+  this.recibirIndex();
+
+  if(this.form.valid){
+    this.lTareas.forEach(t=>{
+      if(t.id_tarea == this._actividadService.idTarea){
+        console.log(t.id_tarea,t.id_actividad);
+        this.tareaS = t;
+      }
+    })
+  
+    if(this.index == undefined){
       
-      this.tareaS = t;
+    
+      const actividadS: ActividadSuite = {
+      //position: act[this._actividadService.listActividades.length-1].position+1,
+      fecha: this._actividadService.form.value.fecha,
+      horas_ejecutadas: this._actividadService.form.value.horasEjecutadas,
+      //children: this._actividadService.form.value.children,  
+      asunto_actividad: this._actividadService.form.value.asunto,
+      nombre_tarea: this._actividadService.form.value.tareaAsociada,
+      descripcion: this._actividadService.form.value.descripcion,
+      par_modo: 'I',
+      titulo: this._actividadService.form.value.asunto,
+      id_actividad: '',
+      estado: 'Completed',
+      tipo_actividad: this.tareaS.tipo_tarea,
+      asignado_a: "",
+      id_tarea: this.tareaS.id_tarea
+      }
+    
+    //console.log(actividadS);
+    actividadS.fecha.setHours(10,0,0);
+    console.log(actividadS.fecha)
+    //console.log('ACTIVIDAD SSSS FECHAAA',actividadS.fecha)
+    this._actividadService.form.reset()
+    if(this.fechaIngresada != null){
+      console.log(this.fechaIngresada)
+      
     }
-  })
-
-  if(this.index == undefined){
     
-  
-  const actividadS: ActividadSuite = {
-    //position: act[this._actividadService.listActividades.length-1].position+1,
-    fecha: this._actividadService.form.value.fecha,
-    horas_ejecutadas: this._actividadService.form.value.horasEjecutadas,
-    //children: this._actividadService.form.value.children,  
-    asunto_actividad: this._actividadService.form.value.asunto,
-    nombre_tarea: this._actividadService.form.value.tareaAsociada,
-    descripcion: this._actividadService.form.value.descripcion,
-    par_modo: 'I',
-    titulo: this._actividadService.form.value.asunto,
-    id_actividad: '',
-    estado: 'Completed',
-    tipo_actividad: this.tareaS.tipo_tarea,
-    asignado_a: "",
-    id_tarea: this.tareaS.id_tarea
-  }
-  
-//console.log(actividadS);
-actividadS.fecha.setHours(10,0,0);
-//console.log(actividadS.fecha)
-//console.log('ACTIVIDAD SSSS FECHAAA',actividadS.fecha)
-  this._actividadService.form.reset()
-  if(this.fechaIngresada != null){
-    //console.log(this.fechaIngresada)
+        this._actividadService.agregarActividad(actividadS, this.data.idTarea).subscribe((response:any)=>{    
+          //console.log(actividadS);
+          console.log("INSERT EXITOSO", response);
+          this.closeDialog(true)
+      });
     
+    
+    
+  //this._actividadService.agregarActividad2Suite(actividadS);
+  
+    
+    }
+    else{
+    
+    }
+  
   }
-  
-      this._actividadService.agregarActividad(actividadS, this.data.idTarea).subscribe((response:any)=>{    
-        //console.log(actividadS);
-        console.log("INSERT EXITOSO", response);
-    });
-  
-  
-  
-//this._actividadService.agregarActividad2Suite(actividadS);
+
+  else{
+    console.log("NO HAGO NADAA");
+      
+  }
 
   
-}else{
-
 }
 
-
-}
 
   recibirIndex(){
     this.index = this._actividadService.index;
@@ -302,58 +315,71 @@ actividadS.fecha.setHours(10,0,0);
     //this._actividadService.form.reset();
   }*/
 
-editarActividadSuite(){
+  editarActividadSuite(){
 
-  this.lTareas.forEach(t=>{
-    if(t.id_tarea == this._actividadService.idTarea){
-      this.tareaS = t;
-    }
-  })
-  if(this.index != undefined){
-    let aux: number = this.index;
-    /*let dia:number = this._actividadService.form.value.fecha.getDate();
-    let mes:number = this._actividadService.form.value.fecha.getMonth();
-    let anio:number = this._actividadService.form.value.fecha.getFullYear();
-    const fechaA: string = dia+'/'+mes+'/'+anio;*/
-    //const fechaAObject = new Date(fechaA);
-    //console.log("fechaObject: ",fechaAObject);
-
-    //console.log('la actividad',this._actividadService.listActividades[aux])
-    //console.log('el form',this.form)
-    this.recibirIdActividad();
-    const actividadS: ActividadSuite = {
-      //position: this._actividadService.listActividades.length + 1 ,
-    fecha: this._actividadService.form.value.fecha,
-    horas_ejecutadas: this._actividadService.form.value.horasEjecutadas,
-    //children: this._actividadService.form.value.children,  
-    asunto_actividad: this._actividadService.form.value.asunto,
-    nombre_tarea: this._actividadService.form.value.tareaAsociada,
-    
-    descripcion: this._actividadService.form.value.descripcion,
-    par_modo: 'U',
-    titulo: this._actividadService.form.value.asunto,
-    id_actividad: this.id,
-    estado: '',
-    tipo_actividad: this.tareaS.tipo_tarea,
-    asignado_a: '',
-    id_tarea: this.tareaS.id_tarea
-    //id_tarea: 'a0287b5d-14c5-11ed-965a-00505601020a'
-  } 
-  //console.log("fecha modal",actividadS.fecha);
-
-  if (actividadS.descripcion == null || actividadS.descripcion.length < 1){
-    actividadS.descripcion = 'Esta actividad no tiene descripción';
-  }
-
-  this._actividadService.form.reset();
+    this.recibirIndex();
   
-  this._actividadService.editarActividad(actividadS, this.data.idTarea).subscribe((response:any)=>{
+    if(this.form.valid){
+      this.lTareas.forEach(t=>{
+        if(t.id_tarea == this._actividadService.idTarea){
+          console.log(t);
+          this.tareaS = t;
+        }
+      })
+      if(this.index != undefined){
+        let aux: number = this.index;
+        /*let dia:number = this._actividadService.form.value.fecha.getDate();
+        let mes:number = this._actividadService.form.value.fecha.getMonth();
+        let anio:number = this._actividadService.form.value.fecha.getFullYear();
+        const fechaA: string = dia+'/'+mes+'/'+anio;*/
+        //const fechaAObject = new Date(fechaA);
+        //console.log("fechaObject: ",fechaAObject);
     
-    console.log("UPDATE EXITOSO", response);
-});
+        //console.log('la actividad',this._actividadService.listActividades[aux])
+        //console.log('el form',this.form)
+        this.recibirIdActividad();
+        const actividadS: ActividadSuite = {
+          //position: this._actividadService.listActividades.length + 1 ,
+        fecha: this._actividadService.form.value.fecha,
+        horas_ejecutadas: this._actividadService.form.value.horasEjecutadas,
+        //children: this._actividadService.form.value.children,  
+        asunto_actividad: this._actividadService.form.value.asunto,
+        nombre_tarea: this._actividadService.form.value.tareaAsociada,
+        
+        descripcion: this._actividadService.form.value.descripcion,
+        par_modo: 'U',
+        titulo: this._actividadService.form.value.asunto,
+        id_actividad: this.id,
+        estado: '',
+        tipo_actividad: this.tareaS.tipo_tarea,
+        asignado_a: '',
+        id_tarea: this.tareaS.id_tarea
+        //id_tarea: 'a0287b5d-14c5-11ed-965a-00505601020a'
+      } 
+      //console.log("fecha modal",actividadS.fecha);
+    
+      if (actividadS.descripcion == null || actividadS.descripcion.length < 1){
+        actividadS.descripcion = 'Esta actividad no tiene descripción';
+      }
+    
+      this._actividadService.form.reset();
+      
+      this._actividadService.editarActividad(actividadS, this.data.idTarea).subscribe((response:any)=>{
+        
+        console.log("UPDATE EXITOSO", response);
+        this.closeDialog(true);
+      });
+      }
+    }
+  
+    else {
+      console.log("NO HAGA NADA");
+      
+    }
+  
+    
+  
+  
   }
-
-
-}
   
 }
