@@ -40,7 +40,10 @@ export class VistaDesarrolladorComponent implements OnInit, OnChanges {
   constructor(private _tareaService: TareaService, private _tareaComponent: TareasComponent) { }
 
   @Input() tareasSP: any = [];
-  //@Output() vistaS = new EventEmitter<string>();
+  
+  @Output()
+  enviar: EventEmitter<string> = new EventEmitter<string>();
+  mensaje!:string;
 
   ngOnInit(): void {
     this.proyectoId = "d31cfdaa-049e-e6e3-999d-62b5b2f778b7"; // este dato viene del commponente tareas
@@ -178,6 +181,12 @@ export class VistaDesarrolladorComponent implements OnInit, OnChanges {
     } else {
       return null;
     }
+  }
+
+  recibirMensaje(mensaje: string){
+    
+    this.mensaje = mensaje;
+    this.enviar.emit("vista")
   }
 
   calcularSprint(fechaPlan: string) {

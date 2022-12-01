@@ -96,7 +96,7 @@
                                     <i class="icon-general fa-solid fa-angle-down"></i>
                                     <strong>Actividades</strong>
                                 </button>
-                                <app-actividad *ngIf="panelActividadesAbierto == true" [idTarea]="tarea.idTarea"></app-actividad>
+                                <app-actividad (enviar)="recibirMensaje($event)" *ngIf="panelActividadesAbierto == true" [idTarea]="tarea.idTarea"></app-actividad>
                             </div>
                             <mat-expansion-panel-header>
                                 <mat-panel-title>
@@ -186,7 +186,7 @@
                                     <i class="icon-general fa-solid fa-angle-down"></i>
                                     <strong>Actividades</strong>
                                 </button>
-                                <app-actividad *ngIf="panelActividadesAbierto == true" [idTarea]="tarea.idTarea"></app-actividad>
+                                <app-actividad (enviar)="recibirMensaje($event)" *ngIf="panelActividadesAbierto == true" [idTarea]="tarea.idTarea"></app-actividad>
                             </div>
                             <mat-expansion-panel-header>
                                 <mat-panel-title>
@@ -280,7 +280,7 @@
                                 <i class="icon-general fa-solid fa-angle-down"></i>
                                 <strong>Actividades</strong>
                             </button>
-                            <app-actividad *ngIf="panelActividadesAbierto == true" [idTarea]="tarea.idTarea"></app-actividad>
+                            <app-actividad (enviar)="recibirMensaje($event)" *ngIf="panelActividadesAbierto == true" [idTarea]="tarea.idTarea"></app-actividad>
                             <!-- </div> -->
                             <mat-expansion-panel-header>
                                 <mat-panel-title>

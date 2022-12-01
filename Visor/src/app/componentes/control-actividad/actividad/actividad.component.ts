@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Input, OnInit, SimpleChange, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Inject, Input, OnInit, Output, SimpleChange, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { Actividad } from 'src/app/interfaces/actividades';
@@ -16,6 +16,7 @@ import { ActividadSuite } from 'src/app/interfaces/actividadesSuite';
 import { finalize, Subscription } from 'rxjs';
 import { TareaService } from 'src/app/services/i2t/tarea.service';
 import { Tarea } from 'src/app/interfaces/tarea';
+import { ProyectoDataService } from 'src/app/services/i2t/proyecto-data.service';
 
 
 @Component({
@@ -61,8 +62,15 @@ export class ActividadComponent implements OnInit {
   lTareas! : any[] ;
   tareaS! : any;
 
+  proyectoA! : any;
+
+  @Output()
+  enviar: EventEmitter<string> = new EventEmitter<string>();
+  mensaje!:string;
+
   @Input() idTarea: string= '';
   @Input() tareasSP: any = [];
+  
  
   //inyecto el servicio 
   constructor(private _actividadService: ActividadService,
@@ -76,6 +84,7 @@ export class ActividadComponent implements OnInit {
               public dialogRefModal: MatDialogRef<ModalActividadComponent>,
               private cd: ChangeDetectorRef,
               private _tareaService: TareaService,
+              private _proyectoService: ProyectoDataService,
               @Inject(MAT_DIALOG_DATA) public data:Actividad,
                ) { }
 
@@ -85,6 +94,10 @@ export class ActividadComponent implements OnInit {
 
     this.cargarActividadesSuite();
     //this.form.controls['fecha'].setValue(new Date());
+
+    this._tareaService.enviarMensajeObservable.subscribe(response=>{
+      this.mensaje=response;
+    })
     
     if(this._tareaService.listaTareas != null){
       localStorage.setItem('lTareas',JSON.stringify(this._tareaService.listaTareas));
@@ -106,7 +119,7 @@ export class ActividadComponent implements OnInit {
     
     this._actividadService.enviarIdTActividadObservable.subscribe(response => {
       this.idT = response;
-      console.log(this.idT)
+      //console.log(this.idT)
     })
    
 
@@ -127,6 +140,7 @@ export class ActividadComponent implements OnInit {
     this._tareaService.enviarCambio();
 
     if(this._tareaService.unProyecto != undefined){
+      
       this._tareaService.getTareasDeProyecto(this._tareaService.unProyecto.id_projecto).pipe(
         finalize(()=>{
           //this.listaTareasService = this.listaTareasService.data;
@@ -134,16 +148,15 @@ export class ActividadComponent implements OnInit {
         })
       )
       .subscribe(result => {
-  
         this.tareas = result.dataset;
       })
     }
-    
     
 
     /*if(this.idTarea != '' && this.idTarea != null){
       this._actividadService.enviarIdTarea(this.idTarea);
     }*/
+    
   } 
   
 
@@ -309,6 +322,10 @@ export class ActividadComponent implements OnInit {
   
   }*/
 
+  enviarMensajeEvento(){
+    this.enviar.emit("hola");
+  }
+
   onEditarActividadSuite(index: number){
 
   
@@ -338,18 +355,23 @@ export class ActividadComponent implements OnInit {
     //console.log('actividad final',this.dataSource.data[index])
     
     //this._actividadService.openModalActividad(8);
-    const dialogRef = this.dialog.open(ModalActividadComponent,{data: {idTarea: this.idTarea}});
+    const dialogRef = this.dialog.open(ModalActividadComponent,{
+        width: '900px',
+        height: '600px',
+        data: {idTarea: this.idTarea}});
     dialogRef.afterClosed().subscribe(res =>{
      if(res){
        //console.log(res);
+
        this.cargarActividadesSuite();
+       this.enviarMensajeEvento();
+       this._tareaService.enviarProyectoActual(this.proyectoA);
        this._snackBar.open('Actividad actualizada','',{
          duration: 1500,
          horizontalPosition: 'center',
          verticalPosition: 'bottom'
        })
      }
-     
      this._actividadService.index = undefined;
    });
    
@@ -378,20 +400,24 @@ export class ActividadComponent implements OnInit {
       //console.log("Fabio DATA SOURCE", this.dataSource.data[0] == undefined)
       //if (this.dataSource.data[0] != undefined ){
        if(this.idTarea != undefined){ 
-        console.log("tareas lista:",this.tareaS)
+        //console.log("tareas lista:",this.tareaS)
         this._actividadService.form.patchValue({
           //tareaAsociada: this.dataSource.data[0].nombre_tarea
           tareaAsociada: this.tareaS.nombre_tarea
         })
       }
-    console.log("idTarea del Input",this.idTarea)
-      const dialogRef = this.dialog.open(ModalActividadComponent,{data:{idTarea: this.idTarea}});
+    //console.log("idTarea del Input",this.idTarea)
+      const dialogRef = this.dialog.open(ModalActividadComponent,{
+        width: '900px',
+        height: '600px',
+        data:{idTarea: this.idTarea}});
       
   // this.dialog.open(ModalActividadComponent);
     dialogRef.afterClosed().subscribe(res =>{
       if(res){
         //console.log(res);
         this.cargarActividadesSuite();
+        this.enviarMensajeEvento();
         this._snackBar.open('Actividad agregada','',{
           duration: 1500,
           horizontalPosition: 'center',

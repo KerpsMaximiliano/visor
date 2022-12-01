@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, Input, OnInit,EventEmitter, ViewChild, Output } from '@angular/core';
 import { Form, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter , MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter} from '@angular/material/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -11,6 +11,8 @@ import { finalize } from 'rxjs/operators';
 import { DataSource } from '@angular/cdk/collections';
 import { TareaService } from 'src/app/services/i2t/tarea.service';
 import { tareasA } from 'src/app/interfaces/tareasA';
+//import { VistaAnalistaFuncionalComponent } from  'src/app/componentes/vista-disenio-funcional/vista-analista-funcional.component'
+
 
 
 export const MY_FORMATS2 = {
@@ -52,6 +54,7 @@ export class ModalActividadComponent implements OnInit {
   fechaIngresada!: Date
 
   @Input() idTarea: string= '';
+  
   constructor(
               private fb: FormBuilder,
               private _actividadService: ActividadService,
@@ -60,6 +63,7 @@ export class ModalActividadComponent implements OnInit {
               public dialogRef: MatDialogRef<ModalActividadComponent>,
               private dateAdapter: DateAdapter<Date>,
               private _tareaService: TareaService,
+              //private _vistaFuncionalComponent: VistaAnalistaFuncionalComponent,
               @Inject(MAT_DIALOG_DATA) public data: any,
               ) {
                 /*this.dateAdapter.setLocale('en-GB'); //dd/MM/yyyy
@@ -84,7 +88,7 @@ export class ModalActividadComponent implements OnInit {
     this._actividadService.enviarIndexObservable.subscribe(response => {
       this.index = response;
     })
-    console.log(this.form);
+    //console.log(this.form);
     
     this._actividadService.enviarIdActividadObservable.subscribe(response => {
       this.id = response;
@@ -179,7 +183,7 @@ export class ModalActividadComponent implements OnInit {
 }*/
 
 onDateInput(event:any,fecha:any){
- console.log(event.target.value)
+ //console.log(event.target.value)
 this.fechaIngresada= event.target.value;
 }
 
@@ -191,7 +195,7 @@ cambioFechaHasta(event: any){
 }
 
 MyFunction(select: any){
-  console.log((select.currentTarget as HTMLInputElement).value)
+  //console.log((select.currentTarget as HTMLInputElement).value)
 }
 
 //AGREGAR ACTIVIDAD INTEGRACION
@@ -199,7 +203,7 @@ agregarActividadSuite(){
 
   this.lTareas.forEach(t=>{
     if(t.id_tarea == this._actividadService.idTarea){
-      console.log(t.id_tarea,t.id_actividad);
+      
       this.tareaS = t;
     }
   })
@@ -226,11 +230,11 @@ agregarActividadSuite(){
   
 //console.log(actividadS);
 actividadS.fecha.setHours(10,0,0);
-console.log(actividadS.fecha)
+//console.log(actividadS.fecha)
 //console.log('ACTIVIDAD SSSS FECHAAA',actividadS.fecha)
   this._actividadService.form.reset()
   if(this.fechaIngresada != null){
-    console.log(this.fechaIngresada)
+    //console.log(this.fechaIngresada)
     
   }
   
@@ -255,12 +259,15 @@ console.log(actividadS.fecha)
     this.index = this._actividadService.index;
     //console.log("RECIBE INDEX",this.index);
     this.mensajeValidarForm();
+   
   }
 
   recibirIdActividad(){
     this.id = this._actividadService.id;
     //console.log("RECIBE ID",this.id);
   }
+
+  
   /*editarActividad(){
     
     
@@ -299,7 +306,6 @@ editarActividadSuite(){
 
   this.lTareas.forEach(t=>{
     if(t.id_tarea == this._actividadService.idTarea){
-      console.log(t);
       this.tareaS = t;
     }
   })

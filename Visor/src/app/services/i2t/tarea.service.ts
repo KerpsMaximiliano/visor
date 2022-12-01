@@ -11,13 +11,22 @@ export class TareaService {
 
     asignadasAmi: string = '';
     
-    constructor(private rest: RestService) { }
     unProyecto: any;
+    private enviarProjectSubject = new Subject<any>();
+    enviarProjectObservable = this.enviarProjectSubject.asObservable();
+
+    mensaje!:string ;
+    private enviarMensajeSubject = new Subject<string>();
+    enviarMensajeObservable = this.enviarMensajeSubject.asObservable();
+
+
+    private enviarBooleanActividadSubject = new Subject<any>();
+    enviarBooleanActividadObservable = this.enviarBooleanActividadSubject.asObservable();
+    
+    constructor(private rest: RestService) { }
+    
     listaTareas: Tarea[] = [];
     idTarea: any;
-
-  private enviarProjectSubject = new Subject<any>();
-  enviarProjectObservable = this.enviarProjectSubject.asObservable();
   
 
   enviarProyectoActual(unProyecto: any){
@@ -35,6 +44,12 @@ export class TareaService {
    enviarCambio(){
     this.unProyecto = this.getProyectoActual();
     this.enviarProyectoActual(this.unProyecto);
+   }
+
+
+   enviarMensaje(mensaje: string){
+    this.mensaje = mensaje;
+    this.enviarMensajeSubject.next(mensaje);
    }
    
     getTareasDeProyecto(id_caso: string) {
