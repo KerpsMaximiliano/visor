@@ -1,4 +1,5 @@
-import { Component, Input, OnInit, OnChanges ,SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy } from '@angular/compiler';
+import { Component, Input, OnInit, OnChanges ,SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { Tarea } from 'src/app/interfaces/tarea';
 import { TareaService } from 'src/app/services/i2t/tarea.service';
 
@@ -34,6 +35,10 @@ export class VistaDisenioTecnicoComponent implements OnInit, OnChanges{
 
   @Input() tareasSP: any = [];
 
+  @Output()
+  enviar: EventEmitter<string> = new EventEmitter<string>();
+  mensaje!:string;
+
   ngOnInit(): void {
     this.proyectoId = "d31cfdaa-049e-e6e3-999d-62b5b2f778b7"; // este dato viene del commponente tareas
     /*this._tareaService.getTareasDeProyecto(this.proyectoId, 'RelevamientoReq').subscribe((response: any) => {
@@ -48,12 +53,15 @@ export class VistaDisenioTecnicoComponent implements OnInit, OnChanges{
         this.ordenarListas();
       }
     });;*/
+    if(this.mensaje != undefined && this.mensaje!= null){
+      console.log("llego")
+      this.enviar.emit("vista")
       
-
+    }
   }
 
   ngOnChanges(changes: SimpleChanges){
-    
+
     if (this.tareasSP.length > 0) {
       console.log(changes['tareasSP'].previousValue)
       if(changes['tareasSP'].previousValue == undefined || changes['tareasSP'].previousValue.length == 0){ //Selecciona primero proyecto después vista
@@ -141,6 +149,18 @@ export class VistaDisenioTecnicoComponent implements OnInit, OnChanges{
       })
     });
   };
+
+  recibirMensaje(mensaje: string){
+    this.mensaje = mensaje;
+    this.enviar.emit("vista");
+    
+  }
+
+
+  test(i:any){
+    console.log(i)
+    console.log("toco")
+  }
 
   calcularFecha(fecha: string) {
     if (fecha != null) {

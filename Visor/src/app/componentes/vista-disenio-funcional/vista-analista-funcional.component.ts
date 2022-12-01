@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges  } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter  } from '@angular/core';
 import { TareaService } from 'src/app/services/i2t/tarea.service';
 import { Tarea } from 'src/app/interfaces/tarea';
 
@@ -33,6 +33,10 @@ export class VistaAnalistaFuncionalComponent implements OnInit, OnChanges {
   constructor(private _tareaService: TareaService) {  }
 
   @Input() tareasSP: any = [];
+
+  @Output()
+  enviar: EventEmitter<string> = new EventEmitter<string>();
+  mensaje!:string;
 
   ngOnInit(): void {
     //this.proyectoId = "d31cfdaa-049e-e6e3-999d-62b5b2f778b7"; // este dato viene del commponente tareas
@@ -104,6 +108,12 @@ export class VistaAnalistaFuncionalComponent implements OnInit, OnChanges {
       this.tareasCompletadas= [];
       this.noHayProyecto = true;
     }
+  }
+
+  recibirMensaje(mensaje: string){
+    
+    this.mensaje = mensaje;
+    this.enviar.emit("vista")
   }
 
   organizarTareas() {
