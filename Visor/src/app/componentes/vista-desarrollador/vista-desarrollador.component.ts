@@ -40,7 +40,10 @@ export class VistaDesarrolladorComponent implements OnInit, OnChanges {
   constructor(private _tareaService: TareaService, private _tareaComponent: TareasComponent) { }
 
   @Input() tareasSP: any = [];
-  //@Output() vistaS = new EventEmitter<string>();
+  
+  @Output()
+  enviar: EventEmitter<string> = new EventEmitter<string>();
+  mensaje!:string;
 
   ngOnInit(): void {
     this.proyectoId = "d31cfdaa-049e-e6e3-999d-62b5b2f778b7"; // este dato viene del commponente tareas
@@ -62,7 +65,7 @@ export class VistaDesarrolladorComponent implements OnInit, OnChanges {
     console.log(this.tareasSP)
     if (this.tareasSP.length > 0) {
       if(changes['tareasSP'].previousValue == undefined || changes['tareasSP'].previousValue.length == 0){ //Selecciona primero proyecto después vista
-
+        this._tareaService.listaTareas = this.tareasSP//Enviar tareas Filtradas para Componentes Actividades
         this.organizarTareas();
         this.cargarTareas();
         this.poseeTareas();
@@ -87,6 +90,7 @@ export class VistaDesarrolladorComponent implements OnInit, OnChanges {
         this.tareasEnProgreso = [];
         this.tareasCompletadas = [];
         this.noHayProyecto = false;
+        this._tareaService.listaTareas = this.tareasSP//Enviar tareas Filtradas para Componentes Actividades
         this.organizarTareas();
         this.cargarTareas();
         this.poseeTareas();
@@ -109,6 +113,7 @@ export class VistaDesarrolladorComponent implements OnInit, OnChanges {
         this.tareasNoIniciadas = [];
         this.tareasEnProgreso = [];
         this.tareasCompletadas = [];
+        this._tareaService.listaTareas = this.tareasSP//Enviar tareas Filtradas para Componentes Actividades
         this.organizarTareas();
         this.cargarTareas();
         this.poseeTareas();
@@ -176,6 +181,12 @@ export class VistaDesarrolladorComponent implements OnInit, OnChanges {
     } else {
       return null;
     }
+  }
+
+  recibirMensaje(mensaje: string){
+    
+    this.mensaje = mensaje;
+    this.enviar.emit("vista")
   }
 
   calcularSprint(fechaPlan: string) {

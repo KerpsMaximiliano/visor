@@ -4,7 +4,7 @@
             <img src="../../../assets/images/company_logo.png" />
             <br />
             <!-- Cotraseña form-field -->
-            <mat-form-field class="conteinerInput" appearance="fill">
+            <mat-form-field class="conteinerInput" appearance="outline">
                 <input class="input" type="password" matInput [formControl]="password" autocomplete="off" placeholder="Contraseña...">
                 <mat-error class="mensajeError" *ngIf="password?.hasError('required')">
                     <p>Porfavor ingresa una contraseña</p>
@@ -13,7 +13,7 @@
             <div id="separadorInputs"></div>
 
             <!-- Confirmar contraseña form-field -->
-            <mat-form-field class="conteinerInput" appearance="fill">
+            <mat-form-field class="conteinerInput" appearance="outline">
                 <input class="input" type="password" matInput [formControl]="confirmPassword" autocomplete="off" placeholder="Repita la nueva contraseña...">
                 <mat-error class="mensajeError" *ngIf="confirmPassword?.hasError('required')">
                     <p>Porfavor ingresa nuevamente la contraseña</p>

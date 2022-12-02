@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges  } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter  } from '@angular/core';
 import { TareaService } from 'src/app/services/i2t/tarea.service';
 import { Tarea } from 'src/app/interfaces/tarea';
 
@@ -34,6 +34,10 @@ export class VistaAnalistaFuncionalComponent implements OnInit, OnChanges {
 
   @Input() tareasSP: any = [];
 
+  @Output()
+  enviar: EventEmitter<string> = new EventEmitter<string>();
+  mensaje!:string;
+
   ngOnInit(): void {
     //this.proyectoId = "d31cfdaa-049e-e6e3-999d-62b5b2f778b7"; // este dato viene del commponente tareas
     // this._tareaService.getTareasDeProyecto(this.proyectoId).subscribe((response: any) => {
@@ -53,6 +57,7 @@ export class VistaAnalistaFuncionalComponent implements OnInit, OnChanges {
     
     if (this.tareasSP.length > 0) {
       if(changes['tareasSP'].previousValue == undefined || changes['tareasSP'].previousValue.length == 0){ //Selecciona primero proyecto después vista
+        this._tareaService.listaTareas = this.tareasSP//Enviar tareas Filtradas para Componentes Actividades
         this.organizarTareas();
         this.cargarTareas();
         this.poseeTareas();
@@ -74,6 +79,7 @@ export class VistaAnalistaFuncionalComponent implements OnInit, OnChanges {
         this.tareasEnProgreso = [];
         this.tareasCompletadas = [];
         this.noHayProyecto = false;
+        this._tareaService.listaTareas = this.tareasSP//Enviar tareas Filtradas para Componentes Actividades
         this.organizarTareas();
         this.cargarTareas();
         this.poseeTareas();
@@ -84,6 +90,7 @@ export class VistaAnalistaFuncionalComponent implements OnInit, OnChanges {
       }
       else{
         this.tareasOrg = [];
+        this._tareaService.listaTareas = this.tareasSP//Enviar tareas Filtradas para Componentes Actividades
         this.organizarTareas();
         this.cargarTareas();
         this.poseeTareas();
@@ -101,6 +108,12 @@ export class VistaAnalistaFuncionalComponent implements OnInit, OnChanges {
       this.tareasCompletadas= [];
       this.noHayProyecto = true;
     }
+  }
+
+  recibirMensaje(mensaje: string){
+    
+    this.mensaje = mensaje;
+    this.enviar.emit("vista")
   }
 
   organizarTareas() {

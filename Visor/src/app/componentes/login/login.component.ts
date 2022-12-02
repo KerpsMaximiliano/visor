@@ -16,6 +16,8 @@ export class LoginComponent implements OnInit {
   //Variables de instancia.
   user:FormControl = new FormControl("", Validators.required);
   password:FormControl = new FormControl("", Validators.required);
+  passInput = document.getElementById("passInput");
+  userInput = document.getElementById("userInput");
   mensajeError: string;
   visibilidadMensaje: boolean;
 
@@ -35,10 +37,12 @@ export class LoginComponent implements OnInit {
   comprobarCredenciales(){
     let usuario: Usuario = {
       usuario: String(this.user.value),
-      password: String(this.password.value)
+      password: String(this.password.value),
+      email: ''
     }
     console.log("Se ejecutó la llamada al servicio de login")
     this._loginService.obtenerToken(usuario).subscribe((resp: any) => {
+      console.log(resp)
       if(resp.returnset[0].RCode == 1){
         //Se almacena el token en el LocalStorage.
         localStorage.setItem('auth_token', resp.dataset[0].jwt);
@@ -46,10 +50,25 @@ export class LoginComponent implements OnInit {
         this.visibilidadMensaje = false;
         this._router.navigate(['dashboard']);
       }
-      else{
+      if(resp.returnset[0].RCode == -6001){
         this.visibilidadMensaje = true;
       }
-    })
+    });
+  }
+
+  adaptarInputs(){
+    this.userInput?.addEventListener('keyup', function(e: any) {
+      var keycode = e.keyCode || e.which;
+      if (keycode == 13) {
+        alert("Enter!");
+      }
+      });
+    this.passInput?.addEventListener('keyup', function(e: any) {
+      var keycode = e.keyCode || e.which;
+      if (keycode == 13) {
+        alert("Enter!");
+      }
+      });
   }
   
   /**
@@ -57,5 +76,11 @@ export class LoginComponent implements OnInit {
    */
   openModal(){
     this._dialog.open(ModalenviarcorreoComponent);   
+  }
+
+  validarTecla(e: KeyboardEvent){
+    if(e.key == "Enter"){
+      this.comprobarCredenciales();
+    }
   }
 }

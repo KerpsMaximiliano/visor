@@ -56,6 +56,112 @@ h3 {
     align-items: center;
 }
 
+@media screen and (max-width: 1199px) {
+
+    .disponibilidad-equipo {
+        margin-left: 10%;
+    }
+
+    #titulo {
+        margin-left: 75px;
+        width: 100%;
+    }
+
+    .colaborador-unico {
+        margin-left: 110px;
+    }
+
+    .mat-accordion {
+        width: 100%;
+    }
+
+}
+
+@media screen and (min-width: 1200px) and (max-width: 1399px) {
+
+    .disponibilidad-equipo {
+        margin-left: 5%;
+    }
+
+    #titulo {
+        margin-left: 75px;
+        width: 100%;
+    }
+
+    .colaborador-unico {
+        margin-left: 160px;
+    }
+
+}
+
+@media screen and (min-width: 1400px) and (max-width: 2000px) {
+    
+    .disponibilidad-equipo {
+        margin-left: 5%;
+    }
+
+    #titulo {
+        margin-left: 50px;
+        width: 100%;
+    }
+
+    .texto-proyecto {
+        width: 100% !important;
+    }
+
+    .colaborador-unico {
+        margin-left: 75px;
+    }
+
+}
+
+@media screen and (min-width: 1500px) and (max-width: 1699px) {
+    .container-all {
+        width: 700px;
+    }
+
+    .header {
+        margin-left: 75px;
+    }
+
+    #titulo {
+        width: 100%;
+        margin-left: 25px !important;
+    }
+
+    .texto-proyecto {
+        width: 100% !important;
+    }
+
+    .colaborador-unico {
+        margin-left: 100px;
+    }
+
+}
+
+@media screen and (min-width: 1700px) and (max-width: 2000px) {
+    .container-all {
+        width: 900px;
+    }
+
+    .header {
+        margin-left: 150px;
+    }
+
+    #titulo {
+        margin-left: 0px !important;
+    }
+
+    .texto-proyecto {
+        width: 100% !important;
+    }
+
+    .colaborador-unico {
+        margin-left: 100px;
+    }
+
+}
+
 #porcentaje-disponibilidad-equipo {
     border-radius: 20px;
     padding: 10px;
@@ -83,7 +189,7 @@ h3 {
 
 .equipo {
     display: flex;
-    margin-left: 15%;
+    margin-left: 5%;
 }
 
 .colaborador-unico {
@@ -142,9 +248,28 @@ h3 {
 .caja-proyecto {
     margin-top: 10px;
     margin-bottom: 10px;
+    font-size: 10px;
+    align-items: center;
 }
 
 .mensaje-no-colaboradores {
     text-align: center;
 }
 
+mat-panel-title {
+    font-size: 12px;
+}
+
+.texto-proyecto {
+    text-align: left;
+    width: 100px;
+}
+
+.texto-no-hay-proyecto {
+    text-align: center;
+    font-size: 10px;
+}
+
+.divisor {
+    margin-left: 55px;
+}
