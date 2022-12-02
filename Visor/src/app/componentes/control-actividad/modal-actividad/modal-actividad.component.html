@@ -86,8 +86,9 @@
   <mat-label class="label">Descripción</mat-label>
   <mat-form-field class="field" appearance="outline">
   <!--<mat-label>Descripcion completar</mat-label>-->
-  <input matInput value="descripcion" formControlName="descripcion">
-  </mat-form-field>
+<!-- <input matInput value="descripcion" formControlName="descripcion" (keydown)="validarTecla($event)" id="inputDescp"> -->
+<textarea matInput cdkTextareaAutosize value="descripcion" formControlName="descripcion" id="inputDescp" cols="60" rows="3"></textarea>
+</mat-form-field>
   <!--</div>-->
 </div>
   
