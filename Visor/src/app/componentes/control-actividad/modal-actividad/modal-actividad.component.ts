@@ -381,5 +381,14 @@ agregarActividadSuite(){
   
   
   }
+
+  validarTecla(e: KeyboardEvent){
+    if(e.key === "Enter"){
+      e.preventDefault();
+      const input = document.getElementById("inputDescp");
+      console.log(input);
+      // agregar comportamiento
+    }
+  }
   
 }
