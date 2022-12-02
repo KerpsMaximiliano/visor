@@ -173,3 +173,6 @@
     resize: none;
   }
   
+  #inputDescp {
+    max-height: 70px;
+  }
