@@ -5,9 +5,7 @@
 
 .container-form{
   margin: 5px;
-  overflow-y: hidden;
 }
-
 .toolbar{
   background-color: white;
 }
@@ -21,39 +19,38 @@
 }
 .table{
   display: grid;
-  grid-template-columns: 0.5fr 1.5fr 0.5fr 1.5fr;
+  grid-template-columns: 0.2fr 1.3fr 0.5fr 1fr;
   gap: 0.5%;
   align-items: center;
   font-size: medium;
 }
 .fechaInput{
-  width: 220px;
-  font-size: 13px;
+  width: 194px;
+  margin-left: 109px;
 }
 
 .horasFormField{
-  width: 220px;
-  font-size: 13px;
-
+  width: 200px;
+  margin-left: 35px;
 }
 
 .descripcion{
-  display: grid ;
-  grid-template-columns: 0.5fr 3.5fr;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
   gap: 0.5%;
   align-items: center;
   font-size: medium;
 }
 .asunto{
   display: grid;
-  grid-template-columns: 0.5fr 3.5fr;
-  gap: 0.1%;
+  grid-template-columns: 1fr 3fr;
+  gap: 0.5%;
   align-items: center;
   font-size: medium;
 }
 .tarea{
   display: grid;
-  grid-template-columns: 0.5fr 3.5fr;
+  grid-template-columns: 1fr 3fr;
   gap: 0.5%;
   align-items: center;
   font-size: medium;
@@ -142,21 +139,22 @@
     display: flex;
     color: red;
     font-size: 15px;
+    margin-left: 30px;
   }
 
   .label{
-    padding-top: 3px;
+    padding-top: 5px;
     display: flex;
     font-size: 13px;
-    width: 100px;
+    padding-left: 80px;
   }
 
   .labelHorasEjecutadas{
     display: flex;
-    font-size: 13px;
-    padding-top: 3px;
-    margin-right: 3px;
-    width: 120px;
+    font-size: 11px;
+    padding-top: 5px;
+    padding-left: 30px;
+    margin-right: 10px;
   }
 
   .close-icon{
@@ -164,13 +162,7 @@
   }
 
   .field{
-    font-size: 13px;
-    width: 590px;
-  }
-
-  #inputDescp {
-    overflow-y: scroll;
-    resize: none;
+    margin-left: 50px;
   }
   
   #inputDescp {
