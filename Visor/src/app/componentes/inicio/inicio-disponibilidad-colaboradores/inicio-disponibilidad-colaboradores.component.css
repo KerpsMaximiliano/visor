@@ -68,7 +68,7 @@ h3 {
     }
 
     .colaborador-unico {
-        margin-left: 110px;
+        margin-left: 60px;
     }
 
     .mat-accordion {
@@ -89,7 +89,11 @@ h3 {
     }
 
     .colaborador-unico {
-        margin-left: 160px;
+        margin-left: 90px;
+    }
+
+    .texto-proyecto {
+        width: 100% !important;
     }
 
 }
