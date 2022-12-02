@@ -71,7 +71,7 @@ export class ActividadComponent implements OnInit {
   @Input() idTarea: string= '';
   @Input() tareasSP: any = [];
   
- 
+
   //inyecto el servicio 
   constructor(private _actividadService: ActividadService,
               private _loginService: LoginService,
@@ -86,7 +86,7 @@ export class ActividadComponent implements OnInit {
               private _tareaService: TareaService,
               private _proyectoService: ProyectoDataService,
               @Inject(MAT_DIALOG_DATA) public data:Actividad,
-               ) { }
+              ) { }
 
   ngOnInit(): void {
     
@@ -121,7 +121,7 @@ export class ActividadComponent implements OnInit {
       this.idT = response;
       //console.log(this.idT)
     })
-   
+
 
     let usuario: Usuario ={
       usuario: 'admin',
@@ -214,7 +214,7 @@ export class ActividadComponent implements OnInit {
         });      
   }
 
-   
+
   
   ordenarPorFecha(lista: Array<Actividad>){
     
@@ -243,10 +243,10 @@ export class ActividadComponent implements OnInit {
       if(res){
           console.log("id actividad a eliminar index",this.dataSource.data[index])
           console.log("id actividad a eliminar index id",this.dataSource.data[index].id_actividad)
-         this._actividadService.deleteActividad(this.dataSource.data[index].id_actividad).subscribe((response:any)=>{
+        this._actividadService.deleteActividad(this.dataSource.data[index].id_actividad).subscribe((response:any)=>{
             console.log("DELETE EXITOSO", response);
           })
-     
+  
         this._snackBar.open('Actividad eliminada','',{
           duration: 1500,
           horizontalPosition: 'center',
@@ -263,7 +263,7 @@ export class ActividadComponent implements OnInit {
     .afterClosed().subscribe(res =>{
       if(res){ 
         //console.log(res);
-         this._actividadService.deleteActividad(this.dataSource.data[index].id_actividad).subscribe((response:any)=>{
+        this._actividadService.deleteActividad(this.dataSource.data[index].id_actividad).subscribe((response:any)=>{
             console.log("DELETE EXITOSO", response);
             this.cargarActividadesSuite();
           })
@@ -278,10 +278,10 @@ export class ActividadComponent implements OnInit {
     this.cargarActividadesSuite();
   }
 
- cambioIndex(index: number){
+  cambioIndex(index: number){
   //console.log('index del boton editar',index);
   this._actividadService.enviarIndex(index);
- }
+}
  
   /*onEditarActividad(index: number){
 
@@ -345,41 +345,40 @@ export class ActividadComponent implements OnInit {
     fecha.setMinutes(fecha.getMinutes() + fecha.getTimezoneOffset())
       
     
-     this._actividadService.form.patchValue({
-       fecha: fecha,
-       horasEjecutadas: this.dataSource.data[index].horas_ejecutadas,
-       descripcion: this.dataSource.data[index].descripcion,
-       asunto: this.dataSource.data[index].asunto_actividad,
-       tareaAsociada: this.dataSource.data[index].nombre_tarea
-      })
+    this._actividadService.form.patchValue({
+      fecha: fecha,
+      horasEjecutadas: this.dataSource.data[index].horas_ejecutadas,
+      descripcion: this.dataSource.data[index].descripcion,
+      asunto: this.dataSource.data[index].asunto_actividad,
+      tareaAsociada: this.dataSource.data[index].nombre_tarea
+    })
     //console.log('actividad final',this.dataSource.data[index])
     
     //this._actividadService.openModalActividad(8);
     const dialogRef = this.dialog.open(ModalActividadComponent,{
-        width: '900px',
-        height: '600px',
+        width: '650px',
+        height: '450px',
         data: {idTarea: this.idTarea}});
     dialogRef.afterClosed().subscribe(res =>{
-     if(res){
-       console.log("respuesta del modal:",res);
+    if(res){
+      console.log("respuesta del modal:",res);
 
-       this.cargarActividadesSuite();
-       this.enviarMensajeEvento();
-       this._tareaService.enviarProyectoActual(this.proyectoA);
-       this._snackBar.open('Actividad actualizada','',{
-         duration: 1500,
-         horizontalPosition: 'center',
-         verticalPosition: 'bottom'
-       })
-     }
-     this._actividadService.index = undefined;
-   });
-   
+      this.cargarActividadesSuite();
+      this.enviarMensajeEvento();
+      this._tareaService.enviarProyectoActual(this.proyectoA);
+      this._snackBar.open('Actividad actualizada','',{
+        duration: 1500,
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom'
+      })
+    }
+    this._actividadService.index = undefined;
+  });
+
     this._actividadService.index = undefined;
     this.cd.detectChanges();
     this.cargarActividadesSuite();
-   
-   }
+  }
 
   /*onAgregarActividad(){
     this._actividadService.openModalActividad(form: FormGroup);
@@ -399,7 +398,7 @@ export class ActividadComponent implements OnInit {
       })
       //console.log("Fabio DATA SOURCE", this.dataSource.data[0] == undefined)
       //if (this.dataSource.data[0] != undefined ){
-       if(this.idTarea != undefined){ 
+      if(this.idTarea != undefined){ 
         //console.log("tareas lista:",this.tareaS)
         this._actividadService.form.patchValue({
           //tareaAsociada: this.dataSource.data[0].nombre_tarea
@@ -408,8 +407,8 @@ export class ActividadComponent implements OnInit {
       }
     //console.log("idTarea del Input",this.idTarea)
       const dialogRef = this.dialog.open(ModalActividadComponent,{
-        width: '900px',
-        height: '600px',
+        width: '650px',
+        height: '450px',
         data:{idTarea: this.idTarea}});
       
   // this.dialog.open(ModalActividadComponent);
@@ -427,7 +426,6 @@ export class ActividadComponent implements OnInit {
     });
   }
 
-   
 
 }
 

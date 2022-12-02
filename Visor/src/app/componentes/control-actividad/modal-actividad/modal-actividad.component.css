@@ -5,55 +5,32 @@
 
 .container-form{
   margin: 5px;
+  display: flex;
 }
-.toolbar{
-  background-color: white;
+
+.container-fecha-hora{
+  display: flex;
 }
-.example-spacer {
-  flex: auto;
-}
-.form-container{
-  display: grid;
-  /*grid-template-rows: 1fr 1fr 0.8fr;*/
-  gap: 2%;
-}
-.table{
-  display: grid;
-  grid-template-columns: 0.2fr 1.3fr 0.5fr 1fr;
-  gap: 0.5%;
-  align-items: center;
-  font-size: medium;
-}
+
 .fechaInput{
-  width: 194px;
-  margin-left: 109px;
+  width: 160px;
+  font-size: 12px;
+  margin-left: 5%;
 }
 
 .horasFormField{
-  width: 200px;
-  margin-left: 35px;
+  width: 160px;
+  font-size: 12px;
 }
 
 .descripcion{
-  display: grid;
-  grid-template-columns: 1fr 3fr;
-  gap: 0.5%;
-  align-items: center;
-  font-size: medium;
+  display: flex;
 }
 .asunto{
-  display: grid;
-  grid-template-columns: 1fr 3fr;
-  gap: 0.5%;
-  align-items: center;
-  font-size: medium;
+  display: flex;
 }
 .tarea{
-  display: grid;
-  grid-template-columns: 1fr 3fr;
-  gap: 0.5%;
-  align-items: center;
-  font-size: medium;
+  display: flex;
 }
 .is-required:after{
   content: '*';
@@ -81,55 +58,16 @@
   font-weight: bold;
 }
 
-/*.example-form {
-    min-width: 150px;
-    max-width: 1500px;
-    width: 100%;
-  }*/
-  
-  /*.example-full-width {
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr 2fr;
-    width: 100%;
-  }*/
-
-  /*mat-label{
-    display: inline-block;
-    width: 80px;
-  }*/
-
   .pointer{
     cursor: pointer;
 }
-/*.modal-actividad-container #close-icon{
-  margin-left: auto;
-  order: 2;
-  font-weight: bolder;
-}
-.modal-actividad-container #close-icon:hover{
-  cursor: pointer;
-  }*/
 
-  /* for dialog pop-up */
-  /*.btn-dialog-close{
-    width: 45px;
-    min-width: 0px !important;
-    height: 40px;
-    padding: 0px !important;
-  }*/
-
-  .actions{ 
-    text-align: center;
-    display: flex;
-    justify-content:flex-end;
-      gap: 2%;
-    }
-    .actions #cancelar-button{
-      background-color:rgba(0,0,0,.1);
-    }
-    .actions #aceptar-button{
-      background-color:rgba(0,0,0,.1);
-    }
+  .actions{
+    text-align: right;
+    padding-left: 70%;
+    font-size: 12px;
+    display: flex; 
+  }
 
   .col-sm-3 col-form-label{
     display: flex;
@@ -138,30 +76,45 @@
   .prioridad{
     display: flex;
     color: red;
-    font-size: 15px;
-    margin-left: 30px;
+    font-size: 13px;
   }
 
   .label{
-    padding-top: 5px;
+    padding-top: 4px;
     display: flex;
-    font-size: 13px;
-    padding-left: 80px;
+    font-size: 10px;
   }
 
   .labelHorasEjecutadas{
     display: flex;
-    font-size: 11px;
-    padding-top: 5px;
-    padding-left: 30px;
-    margin-right: 10px;
+    font-size: 12px;
+    padding-top: 4px;
+    margin-left: 5%;
   }
 
   .close-icon{
     text-align: right;
   }
 
-  .field{
-    margin-left: 50px;
+  .container-icon{
+    text-align: right;
+  }
+
+  .tareaAsociadaFormField{
+    margin-left: 7%;
+    width: 430px;
+    font-size: 12px;
+  }
+
+  .asuntoFormField{
+    margin-left: 13%;
+    width: 430px;
+    font-size: 12px;
+  }
+
+  .descripcionFormField{
+    margin-left: 10%;
+    width: 430px;
+    font-size: 12px;
   }
   
