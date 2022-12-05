@@ -138,11 +138,15 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   }
 
   cortarSegundoNombre(nombre: string) {
-    const indice = nombre.indexOf(' ');
-    if (indice !== -1) {
-      return nombre.substring(0, indice)
+    if (nombre != null) {
+      const indice = nombre.indexOf(' ');
+      if (indice !== -1) {
+        return nombre.substring(0, indice)
+      } else {
+        return nombre;
+      }
     } else {
-      return nombre;
+      return ' ';
     }
   }
 

@@ -1,126 +1,61 @@
-<!--<mat-icon id="close-icon" (click)="closeDialog()">close</mat-icon>-->
-<mat-toolbar class="toolbar">
-  <span class="example-spacer"></span>
+<div class="container-all">
   <button id="close-icon" mat-icon-button (click)="closeDialog(false)"  tabIndex="-1">
-    <mat-icon>close</mat-icon></button>
-</mat-toolbar>
+    <mat-icon>close</mat-icon>
+  </button>
 
-<div class="container-form">
-<form class="form-container" [formGroup]="form" (ngSubmit)="agregarActividadSuite();editarActividadSuite()">
-
-
-  <!--<table class="example-full-width" cellspacing="0"><tr>
-
-    <td><mat-label>Fecha</mat-label></td>
-    <td>
-        <mat-form-field appearance="fill">-->
-            <!--<mat-label>Choose a date</mat-label>-->
-            <!--<input matInput [matDatepicker]="picker" formControlName="fecha">
-            <mat-hint>MM / DD / YYYY</mat-hint>
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
-    </td>
+  <div class="container-form">
+  <form [formGroup]="form" (ngSubmit)="agregarActividadSuite();editarActividadSuite()">
     
-    <td><mat-label>Horas ejecutadas</mat-label></td>
-    <td>
-        <mat-form-field class="example-full-width" appearance="fill">-->
-            <!--<mat-label></mat-label>-->
-            <!--<input matInput value=4 formControlName="horasEjecutadas">
-          </mat-form-field>
-    </td>
-</tr></table>-->
-<div class="table"> 
-  <!--<mat-label>Fecha</mat-label>-->
- <!--<mat-label *ngIf="form.value.fecha">Fecha</mat-label>
-  <mat-label  class="col-sm-3 col-form-label is-required" *ngIf="!form.value.fecha">Fecha</mat-label> -->
-  <mat-label  class="label">Fecha<p class="prioridad">*</p></mat-label>
-  <mat-form-field appearance="outline" class="fechaInput">
-    <!--<mat-label *ngIf="!form.value.fecha"></mat-label>-->
-    <mat-label id="hola">dd/mm/aaaa</mat-label>
-      <input matInput [matDatepicker]="picker" readonly="readonly" formControlName="fecha" 
-      format="dd/mm/YYYY" maxlength="10" (blur)="MyFunction($event)"
-      (input)="onDateInput($event,form.value.fecha)">
-    <mat-hint></mat-hint>
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
-  
-  <!--<div class="col s6 m3 l3">
-    <mat-form-field appearance="outline" floatLabel="always" class="mat-form-w">
-      <mat-label>Fecha</mat-label>
-      <input matInput [matDatepicker]="pickerFecha" placeholder="" formControlName="fecha">
-      <mat-datepicker-toggle matSuffix [for]="pickerFecha"></mat-datepicker-toggle>
-      <mat-datepicker touchUi #pickerFecha></mat-datepicker>
+    <div id="container-section">
+      <mat-label  class="label">Fecha<p class="prioridad">*</p></mat-label>
+      <mat-form-field appearance="outline" class="fechaInput">
+      <mat-label>dd/mm/aaaa</mat-label>
+        <input matInput [matDatepicker]="picker" readonly="readonly" formControlName="fecha" 
+        format="dd/mm/YYYY" maxlength="10" (blur)="MyFunction($event)"
+        (input)="onDateInput($event,form.value.fecha)">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
-  </div>-->
-  
-    <!--<mat-label  *ngIf="form.value.horasEjecutadas" >Horas ejecutadas</mat-label>
-    <mat-label  class="col-sm-3 col-form-label is-required" *ngIf="!form.value.horasEjecutadas">Horas ejecutadas</mat-label>-->
-  <mat-label class="labelHorasEjecutadas">Horas ejecutadas<p class="prioridad">*</p></mat-label>
-  <mat-form-field class="horasFormField" appearance="outline">
-    <!--<mat-label></mat-label>-->
-    <!-- pattern="[0-9]*+([.][0-9]*)"  (keypress)="keyPress($event)" -->
-    <input matInput  
-    pattern="([1][0]{1}[.]{1}[0]{1,2}|[0-9]{1}[.]{1}[0-9]{1,2}|[0][0-9]{1}[.]{1}[0-9]{1,2}|[1-9]{1}|[1][0]{1})"
-      id="horas" name="horas" value=4 formControlName="horasEjecutadas" class="horasInput" required placeholder="0.00" maxlength="5">
-  </mat-form-field>
+    <mat-label class="labelHorasEjecutadas">Horas ejecutadas<p class="prioridad">*</p></mat-label>
+    <mat-form-field class="horasFormField" appearance="outline">
+      <input matInput  
+      pattern="([1][0]{1}[.]{1}[0]{1,2}|[0-9]{1}[.]{1}[0-9]{1,2}|[0][0-9]{1}[.]{1}[0-9]{1,2}|[1-9]{1}|[1][0]{1})"
+        id="horas" name="horas" value=4 formControlName="horasEjecutadas" class="horasInput" required placeholder="0.00" maxlength="5">
+    </mat-form-field>
+  </div>
+
+  <div id="container-section">
+    <mat-label class="label">Asunto<p class="prioridad">*</p></mat-label>
+      <mat-form-field class="field" appearance="outline">
+      <input matInput value="descripcion" formControlName="asunto" maxlength="33">
+    </mat-form-field>
+  </div>
+
+  <div id="container-section">
+    <mat-label class="label">Descripción</mat-label>
+      <mat-form-field class="field" appearance="outline">
+      <textarea matInput cdkTextareaAutosize value="descripcion" formControlName="descripcion" id="inputDescp" cols="60" rows="3"></textarea>
+    </mat-form-field>
+  </div>
+
+  <div id="container-section">
+    <mat-label class="label">Tarea asociada<p class="prioridad">*</p></mat-label>
+      <mat-form-field class="field" appearance="outline">
+      <input matInput value="Descripcion a completar"  formControlName="tareaAsociada">
+    </mat-form-field>
+  </div>
+
+  <div class="mensajeError">
+      <mat-label [ngClass]="this.invisible ? 'invisible' : 'visible'" >Debe completar todos los campos obligatorios</mat-label>
+  </div>
+
+  <div id="container-botones">
+    <button mat-stroked-button [mat-dialog-close]="false">Cancelar</button>
+    <button mat-stroked-button type="submit" (click)="recibirIndex()">Aceptar</button>
+  </div>
+    </form>
+  </div>
 </div>
 
-<div class="asunto">
-  <!--<div style="display:flex; flex-direction: row; justify-content: center; align-items: center">-->
-    <!--<mat-label *ngIf="form.value.asunto">Asunto</mat-label>
-<mat-label  class="col-sm-3 col-form-label is-required" *ngIf="!form.value.asunto">Asunto</mat-label>-->
-<!--<div style="display:flex; flex-direction: row; justify-content: center; align-items: center">-->
-  <mat-label class="label">Asunto<p class="prioridad">*</p></mat-label>
-  <mat-form-field class="field" appearance="outline">
-  <!--<mat-label>Descripcion completar</mat-label>-->
-  <input matInput value="descripcion" formControlName="asunto" maxlength="33">
-  </mat-form-field>
-  <!--</div>-->
-<!--</div>-->
-</div>
-  
-<div class="descripcion">
-  <!--<div style="display:flex; flex-direction: row; justify-content: center; align-items: center">-->
-  <mat-label class="label">Descripción</mat-label>
-  <mat-form-field class="field" appearance="outline">
-  <!--<mat-label>Descripcion completar</mat-label>-->
-<!-- <input matInput value="descripcion" formControlName="descripcion" (keydown)="validarTecla($event)" id="inputDescp"> -->
-<textarea matInput cdkTextareaAutosize value="descripcion" formControlName="descripcion" id="inputDescp" cols="60" rows="3"></textarea>
-</mat-form-field>
-  <!--</div>-->
-</div>
-  
-<div class="tarea"> 
-<!--<div style="display:flex; flex-direction: row; justify-content: center; align-items: center">-->
-<!--<mat-label *ngIf="form.value.tareaAsociada">Tarea asociada</mat-label>
-<mat-label  class="col-sm-3 col-form-label is-required" *ngIf="!form.value.tareaAsociada">Tarea asociada</mat-label>-->
-  <mat-label class="label">Tarea asociada<p class="prioridad">*</p></mat-label>
-  <mat-form-field class="field" appearance="outline">
-  <!--<mat-label>tarea</mat-label>-->
-  <input matInput value="Descripcion a completar"  formControlName="tareaAsociada">
-</mat-form-field>
-<!--</div>-->
-</div>
-<!--
-<div class="mensajeError">
-<mat-label *ngIf="form.invalid" class="col-sm-3 col-form-label is-complete"></mat-label>
-</div>-->
-
-<div class="mensajeError">
-  <mat-label [ngClass]="this.invisible ? 'invisible' : 'visible'" >Debe completar todos los campos obligatorios</mat-label>
-</div>
-
-
-
-<div class="actions" >
-  <button mat-stroked-button id="cancelar-button" [mat-dialog-close]="false">Cancelar</button>
-  <button mat-stroked-button id="aceptar-button" type="submit" (click)="recibirIndex()">Aceptar</button>
-</div>
-</form>
-</div>
-
- 
 
 
