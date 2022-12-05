@@ -48,6 +48,9 @@
 </div>
 
 
+
+
 <app-vista-disenio-tecnico (enviar)="recibirMensaje($event)" *ngIf="subtituloProyecto ==  ' Avance de Diseño técnico'" [tareasSP]="tareasFiltradasPorVista"></app-vista-disenio-tecnico>
 <app-vista-desarrollador (enviar)="recibirMensaje($event)" *ngIf="subtituloProyecto == ' Avance de Desarrollo'" [tareasSP]="tareasFiltradasPorVista"></app-vista-desarrollador>
 <app-vista-analista-funcional (enviar)="recibirMensaje($event)" *ngIf="subtituloProyecto == ' Avance de Diseño funcional'" [tareasSP]="tareasFiltradasPorVista"></app-vista-analista-funcional>
+<app-vista-tester (enviar)="recibirMensaje($event)" *ngIf="subtituloProyecto == ' Avance de Testing'" [tareasSP]="tareasFiltradasPorVista"></app-vista-tester>

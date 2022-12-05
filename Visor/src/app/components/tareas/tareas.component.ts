@@ -249,10 +249,10 @@ export class TareasComponent implements OnInit {
   }
 
   verTareasDeVista(event: Event){
-    console.log("i vista seleccionada",this.idVistaSeleccionada)
     this.idVistaSeleccionada = (event.target as HTMLInputElement).id;
     this.nombreVistaSeleccionada = (event.target as HTMLInputElement).innerText;
     this.setSubtituloProyecto(this.idVistaSeleccionada);
+    console.log("i vista seleccionada",this.idVistaSeleccionada);
   }
   
 
@@ -332,7 +332,25 @@ export class TareasComponent implements OnInit {
       break;
       case 'Tester':
         this.subtituloProyecto = ' Avance de Testing';
+        if(this.idProyectoSeleccionado == ''){ //Si no hay un proyecto seleccionado muestra col 
+          this.tareasFiltradasPorVista= [];
+        }
+        else if(this.idProyectoSeleccionado != '' && this.tareasFiltradas == ''){ //Selecciona proyecto y vista. Muestra tareas de ese tipo de vista
+          this.listaTareasService.forEach( (tarea:any) => {
+            if(tarea.tipo_tarea == "Testing"){
+              this.tareasFiltradasPorVista.push(tarea);
+            }
+          });
+        }
+        else{ //Filtró tareas
+          this.tareasFiltradas.forEach( (tarea:any) => {
+            if(tarea.tipo_tarea == "Testing"){
+              this.tareasFiltradasPorVista.push(tarea);
+            }
+          });
+        }
       break;
+
       case 'Project manager':
         this.subtituloProyecto = ' Avance del Proyecto';
       break;

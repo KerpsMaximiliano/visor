@@ -50,6 +50,7 @@ import { ControlActividadModule } from 'src/app/componentes/control-actividad/co
 import { SharedModule } from './shared/shared.module';
 import { LoginService } from './services/i2t/login.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { VistaTesterModule } from './componentes/vista-tester/vista-tester.module';
 
 
 @NgModule({
@@ -81,7 +82,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     DialogModule,
     ControlActividadModule,
     SharedModule,
-    RecuperarcontraseniaModule
+    RecuperarcontraseniaModule,
+    VistaTesterModule
   ],
 
   //Proveedores agregados
