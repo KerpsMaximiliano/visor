@@ -160,6 +160,10 @@ export class TareasComponent implements OnInit {
   ngOnInit(): void {
    
   }
+
+  recibirContexto(contexto: boolean){
+    console.log(contexto)
+  }
   recibirMensaje(mensaje: string){
     
     if (mensaje == "vista"){
@@ -184,12 +188,14 @@ export class TareasComponent implements OnInit {
   }
   
   seleccionarProyecto(unProyecto: any){
+    console.log("entra")
     this.unProyectoA = unProyecto;// Variable para actividad
     this.nombreProyecto = unProyecto.nombre_projecto;
     this.idProyectoSeleccionado = unProyecto.id_projecto
     this.filtrosTarea.idProyectoSeleccionado = this.idProyectoSeleccionado; //Para que no aparezca mensaje al abrir modal de filtro de tareas
     this.estiloListaProyectos = 'ocultarTabla'; //nombre clase css
     this.valorInputProyecto = '';
+    console.log(this)
     this._tareaService.getTareasDeProyecto(this.idProyectoSeleccionado).pipe(
       finalize(() => {
         this.listaTareasService = this.listaTareasService.dataset;

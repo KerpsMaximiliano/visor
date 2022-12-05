@@ -1,4 +1,4 @@
-import { Component, OnInit,Input } from '@angular/core';
+import { Component, OnInit,Input, Output, EventEmitter } from '@angular/core';
 import { TareaService } from 'src/app/services/i2t/tarea.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { finalize } from 'rxjs/operators';
@@ -55,6 +55,11 @@ export class FiltroProyectoInputComponent implements OnInit {
 
   @Input() desdeABMtareas: boolean = false;
 
+  @Output()
+  enviar: EventEmitter<boolean> = new EventEmitter<boolean>();
+  contexto:boolean = false;
+
+
   constructor(private _tareaService: TareaService, public dialog: MatDialog) {
     this._tareaService.getABMproyectoService().subscribe((response: any) =>{ //Obtengo los proyectos
       this.listaProyectosService = response.dataset;
@@ -87,7 +92,10 @@ export class FiltroProyectoInputComponent implements OnInit {
     this.idProyectoSeleccionado = unProyecto.id_projecto;
     this.filtrosTarea.idProyectoSeleccionado = this.idProyectoSeleccionado; //Para que no aparezca mensaje al abrir modal de filtro de tareas
     this.estiloListaProyectos = 'ocultarTabla'; //nombre clase css
-    this.valorInputProyecto = '';
+    this.valorInputProyecto = unProyecto.nombre_projecto;
+    console.log("Entra")
+    console.log(this)
+    this.enviar.emit(true);
     this._tareaService.getTareasDeProyecto(this.idProyectoSeleccionado).pipe(
       finalize(() => {
         this.listaTareasService = this.listaTareasService.dataset;
