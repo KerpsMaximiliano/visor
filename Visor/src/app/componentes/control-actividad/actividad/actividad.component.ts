@@ -356,8 +356,8 @@ export class ActividadComponent implements OnInit {
     
     //this._actividadService.openModalActividad(8);
     const dialogRef = this.dialog.open(ModalActividadComponent,{
-        width: '900px',
-        height: '600px',
+        width: '525px',
+        height: '450px',
         data: {idTarea: this.idTarea}});
     dialogRef.afterClosed().subscribe(res =>{
      if(res){
@@ -408,8 +408,8 @@ export class ActividadComponent implements OnInit {
       }
     //console.log("idTarea del Input",this.idTarea)
       const dialogRef = this.dialog.open(ModalActividadComponent,{
-        width: '900px',
-        height: '600px',
+        width: '525px',
+        height: '450px',
         data:{idTarea: this.idTarea}});
       
   // this.dialog.open(ModalActividadComponent);
