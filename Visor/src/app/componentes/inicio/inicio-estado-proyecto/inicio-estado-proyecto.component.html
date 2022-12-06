@@ -29,7 +29,9 @@
             <p class="letrasSeccionInformacion">Completadas</p>
           </div>
         </div>
-        <button class="boton-informacion" (click)="mostrarInformacion()" matTooltip="Información" mat-mini-fab color="primary"><mat-icon class="icony">info</mat-icon></button>
+        <div class="container-boton-informacion">
+          <button class="boton-informacion" (click)="mostrarInformacion()" matTooltip="Información" mat-mini-fab color="primary"><mat-icon class="icony">info</mat-icon></button>
+        </div>
       </div>
       <div class="disponibilidad-proyectos" [ngClass]="{'acomodar': estado == true}">
         <h3>Tareas atrasadas<mat-divider></mat-divider></h3>
