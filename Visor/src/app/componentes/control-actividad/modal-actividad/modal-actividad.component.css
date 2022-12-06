@@ -14,13 +14,14 @@
 
 .fechaInput {
   font-size: 13px;
-  width: 120px;
+  width: 150px;
 }
 
 .horasFormField {
   font-size: 13px;
-  width: auto;
+  width: 50px;
   margin-left: 3%;
+  text-align: center;
 }
 
 .is-required:after {
@@ -68,11 +69,21 @@
   .labelHorasEjecutadas {
     font-size: 13px;
     display: flex;
-    margin-left: 2%;
-    width: 200px;
+    margin-left: 7.5%;
+    width: 140px;
+  }
+  
+  .labelFecha {
+    width: 140px;
+    font-size: 13px;
+    display: flex;
   }
 
-  .close-icon{
+  #close-icon{
+    color: black;
+  }
+
+  #container-boton{
     text-align: right;
   }
 
@@ -82,8 +93,8 @@
   }
 
   #inputDescp {
-    overflow-y: scroll;
-    resize: none;
+    overflow-y: scroll; 
+    max-height: 40px;
   }
   
   #container-botones {
@@ -93,3 +104,11 @@
   #container-botones button {
     margin: 0.5%;
   }
+
+  .green {
+    background-color: lightgreen;
+}
+
+  .red {
+    background-color: lightcoral;
+}

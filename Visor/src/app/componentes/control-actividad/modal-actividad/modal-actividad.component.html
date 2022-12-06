@@ -1,15 +1,17 @@
 <div class="container-all">
-  <button id="close-icon" mat-icon-button (click)="closeDialog(false)"  tabIndex="-1">
-    <mat-icon>close</mat-icon>
-  </button>
+  <div id="container-boton">
+    <button id="close-icon" mat-icon-button (click)="closeDialog(false)">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
 
   <div class="container-form">
   <form [formGroup]="form" (ngSubmit)="agregarActividadSuite();editarActividadSuite()">
     
     <div id="container-section">
-      <mat-label  class="label">Fecha<p class="prioridad">*</p></mat-label>
+      <mat-label  class="labelFecha">Fecha<p class="prioridad">*</p></mat-label>
       <mat-form-field appearance="outline" class="fechaInput">
-      <mat-label>dd/mm/aaaa</mat-label>
         <input matInput [matDatepicker]="picker" readonly="readonly" formControlName="fecha" 
         format="dd/mm/YYYY" maxlength="10" (blur)="MyFunction($event)"
         (input)="onDateInput($event,form.value.fecha)">
@@ -50,8 +52,8 @@
   </div>
 
   <div id="container-botones">
-    <button mat-stroked-button [mat-dialog-close]="false">Cancelar</button>
-    <button mat-stroked-button type="submit" (click)="recibirIndex()">Aceptar</button>
+    <button class="green" mat-stroked-button type="submit" (click)="recibirIndex()">Aceptar</button>  
+    <button class="red" mat-stroked-button [mat-dialog-close]="false">Cancelar</button>
   </div>
     </form>
   </div>

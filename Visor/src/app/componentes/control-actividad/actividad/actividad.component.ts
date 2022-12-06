@@ -356,7 +356,7 @@ export class ActividadComponent implements OnInit {
     
     //this._actividadService.openModalActividad(8);
     const dialogRef = this.dialog.open(ModalActividadComponent,{
-        width: '600px',
+        width: '525px',
         height: '450px',
         data: {idTarea: this.idTarea}});
     dialogRef.afterClosed().subscribe(res =>{
@@ -408,7 +408,7 @@ export class ActividadComponent implements OnInit {
       }
     //console.log("idTarea del Input",this.idTarea)
       const dialogRef = this.dialog.open(ModalActividadComponent,{
-        width: '600px',
+        width: '525px',
         height: '450px',
         data:{idTarea: this.idTarea}});
       
