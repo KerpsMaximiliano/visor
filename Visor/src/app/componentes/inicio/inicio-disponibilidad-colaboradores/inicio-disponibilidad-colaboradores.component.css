@@ -1,37 +1,27 @@
-.container-all{
-    width: 100%;
-}
-
 
 #titulo {
     text-align: center;
-    margin-top: 40px;
-    margin-bottom: 20px;
+    margin-top: 10%;
 }
 
 .header {
     display: flex;
-    height: 60px;
-    margin-bottom: 38px;
 }
 
 .input-header {
-    width: 150px;
+    width: 25.7%;
+}
+
+.boton-icono {
+    margin: 0.9%;
 }
 
 .icon {
     font-size: 24px;
 }
 
-.boton-icono {
-    margin-top: 10px;
-    margin-left: 3px;
-    margin-right: 3px;
-}
-
 #button-orden {
     min-width: 170px;
-    height: 60px;
 }
 
 .menu-orden {
@@ -49,14 +39,12 @@ h3 {
 }
 
 .disponibilidad-equipo {
-    margin-top: 15px;
-    margin-bottom: 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-@media screen and (max-width: 1199px) {
+/* @media screen and (max-width: 1199px) {
 
     .disponibilidad-equipo {
         margin-left: 10%;
@@ -164,7 +152,7 @@ h3 {
         margin-left: 100px;
     }
 
-}
+} */
 
 #porcentaje-disponibilidad-equipo {
     border-radius: 20px;
@@ -214,8 +202,6 @@ h3 {
 .cajaPorcentaje {
     width: 35px;
     height: 20px;
-    margin-left: auto;
-    margin-right: 0;
     border: 1px solid black;
     border-radius: 5px;
 }
@@ -250,8 +236,6 @@ h3 {
 }
 
 .caja-proyecto {
-    margin-top: 10px;
-    margin-bottom: 10px;
     font-size: 10px;
     align-items: center;
 }
@@ -272,8 +256,4 @@ mat-panel-title {
 .texto-no-hay-proyecto {
     text-align: center;
     font-size: 10px;
-}
-
-.divisor {
-    margin-left: 55px;
 }
