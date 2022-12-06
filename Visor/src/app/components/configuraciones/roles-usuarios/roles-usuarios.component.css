@@ -21,13 +21,11 @@ mat-form-field {
     overflow: auto;
     border: 1px solid;
     border-radius: 3px;
-    display: grid;
     grid-template-columns: 33.3% 33.3% 33.3%;
     width: 100%;
 }
 
 table {
-  
     width: 100%;
 }
 
