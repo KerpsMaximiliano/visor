@@ -1,0 +1,213 @@
+* {
+    /* padding: 0; */
+    margin: 0;
+    text-decoration: none;
+    list-style: none;
+}
+
+.titulo-container {
+    height: 25px;
+    text-align: center;
+    border: 1.5px solid black;
+    border-radius: 4px;
+}
+
+#no-iniciadas{
+    background-color: #cc0000;
+}
+
+#en-progreso{
+    background-color: #f1c232;
+}
+#en-prueba{
+    background-color: rgb(147, 196, 125);
+}
+#completadas{
+    background-color: #198754;
+}
+
+h4 {
+    font-weight: 700;
+    color: white;
+}
+
+.h4-negro {
+    color: black;
+}
+
+.conteiner-all{
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
+}  
+
+.container-barra{
+    margin-right: 20%;
+    margin-left: 20%;
+    border: 1px solid black;
+}
+
+.porcentajes{
+    margin-top: 13px;
+    color: white;
+    font-weight: 700;
+}
+
+#porcentajeNegro {
+    color: black;
+}
+
+.cabecera {
+    text-align: center;
+}
+
+#titulo-proyecto {
+    font-size: 25px;
+    margin-top: 20px;
+    font-weight: 700;
+}
+
+#subtitulo-disenio {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.caja-fecha {
+    display: flex;
+    font-size: 11px;
+}
+
+.fecha p {
+    margin-left: 13px;
+    font-size: 12px;
+}
+
+.fecha strong {
+    font-size: 12px;
+}
+
+.fecha-right {
+    margin-left: auto;
+    margin-right: 0;
+    font-size: 12px;
+}
+
+.datos{
+    display: flex;
+    font-size: 12px;
+}
+
+.datos strong{
+    padding-right: 4px;
+}
+
+.descripcion-tarea{
+    padding-top: 10px;
+}
+
+.conteiner-all-tareas{
+    margin-top: 10px;
+}
+
+.separador{
+    background-color: black;
+}
+
+mat-expansion-panel{
+    background-color: white;
+    border: solid 1px black;
+}
+
+.tareas {
+    margin-bottom: 8px;
+}
+
+.titulo-tarea{
+    text-align: left;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.card-columna{
+    width: 25%;
+    margin: 2px;
+}
+
+.card{
+    border: 1.5px solid black;
+    border-radius: 4px;
+    /* padding: 16px !important; */
+}
+
+.container-vacio{
+    border: 1.5px solid black;
+    height: 60px;
+}
+
+.horas{
+    padding-right: 4px;
+    font-size: 12px;
+}
+
+.horas p{
+    display: inline-block;
+    font-size: 10px;
+    padding: 3px;
+}
+
+.desvioNegativo {
+    color: red;
+    font-weight: 700;
+}
+
+.desvioPositivo {
+    color: green;
+    font-weight: 700;
+}
+
+.iconos-superior {
+    margin-top: 10px;
+    text-align: right;
+}
+
+.shakehands{
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    color: blue;
+}
+
+.icon-general {
+    margin-top: 2px;
+    margin-right: 5px;
+    color: black;
+}
+
+.icon-edit {
+    margin-right: 5px;
+    cursor: pointer;
+    color: blue;
+}
+
+.icon-x {
+    cursor: pointer;
+    color: red;
+}
+
+.mano-ayuda {
+    margin-right: 5px;
+    cursor: pointer;
+    color: blue;
+    font-size: 18px;
+}
+
+.oculto {
+    display: none;
+}
+
+.panel-ayuda {
+    display: flex;
+    justify-content: space-between;
+}
