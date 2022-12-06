@@ -5,8 +5,8 @@
 
 .container-main {
     display: flex;
-    margin-top: 3%;
     margin: 5%;
+    margin-top: 2.5%;
 }
 
 .fecha-hoy {
