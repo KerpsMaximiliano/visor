@@ -26,6 +26,7 @@ import { TareasComponent } from './tareas.component';
 import { VistaDesarrolladorModule } from 'src/app/componentes/vista-desarrollador/vista-desarrollador.module';
 import { VistaDisenioTecnicoModule } from 'src/app/componentes/vista-disenio-tecnico/vista-disenio-tecnico.module';
 import { VistaDisenioFuncionalModule } from 'src/app/componentes/vista-disenio-funcional/vista-disenio-funcional.module';
+import { VistaProyectManagerModule } from 'src/app/componentes/vista-proyect-manager/vista-proyect-manager.module';
 
 
 
@@ -59,8 +60,8 @@ import { VistaDisenioFuncionalModule } from 'src/app/componentes/vista-disenio-f
     MatAutocompleteModule,
     VistaDesarrolladorModule,
     VistaDisenioTecnicoModule,
-    VistaDisenioFuncionalModule
-    
+    VistaDisenioFuncionalModule,
+    VistaProyectManagerModule    
   ],
   exports:[TareasComponent]
 })

@@ -335,6 +335,20 @@ export class TareasComponent implements OnInit {
       break;
       case 'Project manager':
         this.subtituloProyecto = ' Avance del Proyecto';
+        if(this.idProyectoSeleccionado == ''){ //Si no hay un proyecto seleccionado muestra col 
+          this.tareasFiltradasPorVista= [];
+        }
+        else if(this.idProyectoSeleccionado != '' && this.tareasFiltradas == ''){ //Selecciona proyecto y vista. Muestra tareas de ese tipo de vista   
+          this.listaTareasService.forEach( (tarea:any) => {
+            this.tareasFiltradasPorVista.push(tarea);
+          });
+        }
+        else{ //Filtró tareas
+          this.tareasFiltradasPorVista= [];
+          this.tareasFiltradas.forEach( (tarea:any) => {
+            this.tareasFiltradasPorVista.push(tarea);
+          });
+        }
       break;
 
       default:
