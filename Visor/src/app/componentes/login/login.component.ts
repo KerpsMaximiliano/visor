@@ -28,7 +28,10 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    localStorage.getItem('auth_token') !== null ? this._router.navigate(['dashboard']) : this._router.navigate(['login'])
+    // localStorage.getItem('auth_token') !== null ? this._router.navigate(['dashboard']) : this._router.navigate(['login'])
+    if(this.comprobarUsuarioLogueado()){
+      this._router.navigate(['dashboard']);
+    }
   }
   
 
@@ -83,6 +86,15 @@ export class LoginComponent implements OnInit {
   validarTecla(e: KeyboardEvent){
     if(e.key == "Enter"){
       this.comprobarCredenciales();
+    }
+  }
+
+  comprobarUsuarioLogueado(): boolean {
+    if(localStorage.getItem('auth_token')){
+      return true;
+    }
+    else {
+      return false;
     }
   }
 }
