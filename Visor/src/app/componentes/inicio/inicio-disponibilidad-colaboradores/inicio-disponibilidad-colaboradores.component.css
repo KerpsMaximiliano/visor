@@ -182,7 +182,10 @@ h3 {
 
 .equipo {
     display: flex;
-    margin-left: 5%;
+}
+
+.spacer{
+    flex: 1 1 auto;
 }
 
 .colaborador-unico {
@@ -198,6 +201,7 @@ h3 {
     width: 70%;
     text-align: center;
     left: 5%;
+    margin-inline: 5%;
 }
 
 .cajaPorcentaje {
