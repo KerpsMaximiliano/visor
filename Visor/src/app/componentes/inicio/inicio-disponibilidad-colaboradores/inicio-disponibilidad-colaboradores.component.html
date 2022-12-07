@@ -50,13 +50,13 @@
                             'porcentaje-verde-oscuro-colaborador': getPorcentajeVerdeOscuro(colaborador.tiempoDisponible) }"
                             matTooltip="{{colaborador.capacidad-colaborador.horasPlanificadas}} Hs Disp /
                             {{colaborador.capacidad}} Hs Cap"
-                            [matTooltipPosition]="position.value!"> 
+                            [matTooltipPosition]="position2.value!"> 
                             {{ colaborador.tiempoDisponible }}%
                         </div>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
                 <mat-divider></mat-divider>
-                <h3 class="atrasadas" matTooltip="{{colaborador.horasAtrasadas}} Hs" [matTooltipPosition]="position.value!">Tareas Atrasadas: {{ colaborador.atrasadas }} </h3>
+                <h3 class="atrasadas" matTooltip="{{colaborador.horasAtrasadas}} Hs Atrasadas" [matTooltipPosition]="position2.value!">Tareas Atrasadas: {{ colaborador.atrasadas }} </h3>
                 <div *ngFor="let mes of mesesPlanificacion">
                     <mat-expansion-panel hideToggle>
                         <mat-expansion-panel-header>
@@ -71,7 +71,7 @@
                                         'porcentaje-verde-oscuro-colaborador': getPorcentajeVerdeOscuro(getPorcentajeDisponibleMensual(colaborador.id, mes.mes, (colaborador.capacidad/(mesesMostrados+1)))) }"
                                         matTooltip="{{(colaborador.capacidad/(mesesMostrados+1))-getTooltipHsPlanMensual(colaborador.id, mes.mes)}}
                                         Hs Disp / {{(colaborador.capacidad/(mesesMostrados+1))}} Hs Cap"
-                                        [matTooltipPosition]="position.value!">
+                                        [matTooltipPosition]="position2.value!">
                                         {{getPorcentajeDisponibleMensual(colaborador.id, mes.mes, (colaborador.capacidad/(mesesMostrados+1)))}}%
                                     </div>
                                 </div>
@@ -90,7 +90,7 @@
                             <div class="texto-proyecto"> {{proy}} </div>
                             <div class="cajaPorcentaje"
                                 matTooltip="{{getTooltipHsPlanProyecto(proy, colaborador.id, mes.mes)}} Hs Plan / 
-                                {{(colaborador.capacidad/(mesesMostrados+1))}} Hs Cap" [matTooltipPosition]="position.value!"> 
+                                {{(colaborador.capacidad/(mesesMostrados+1))}} Hs Cap" [matTooltipPosition]="position2.value!"> 
                                 {{getPorcentajeOcupadoMensualProyecto(proy, colaborador.id, mes.mes, (colaborador.capacidad/(mesesMostrados+1)))}}%  <!-- ver capacidad, dividir por mesesmostrados+1 -->
                             </div>
                         </div>
@@ -117,13 +117,13 @@
                             'porcentaje-verde-oscuro-colaborador': getPorcentajeVerdeOscuro(colaborador.tiempoDisponible) }"
                             matTooltip="{{colaborador.capacidad-colaborador.horasPlanificadas}} Hs Disp /
                             {{colaborador.capacidad}} Hs Cap"
-                            [matTooltipPosition]="position.value!"> 
+                            [matTooltipPosition]="position2.value!"> 
                             {{ colaborador.tiempoDisponible }}%
                         </div>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
                 <mat-divider></mat-divider>
-                <h3 class="atrasadas" matTooltip="{{colaborador.horasAtrasadas}} Hs" [matTooltipPosition]="position2.value!">Tareas Atrasadas: {{ colaborador.atrasadas }} </h3>
+                <h3 class="atrasadas" matTooltip="{{colaborador.horasAtrasadas}} Hs Atrasadas" [matTooltipPosition]="position2.value!">Tareas Atrasadas: {{ colaborador.atrasadas }} </h3>
                 <div *ngFor="let mes of mesesPlanificacion">
                     <mat-expansion-panel hideToggle>
                         <mat-expansion-panel-header>
@@ -138,7 +138,7 @@
                                         'porcentaje-verde-oscuro-colaborador': getPorcentajeVerdeOscuro(getPorcentajeDisponibleMensual(colaborador.id, mes.mes, (colaborador.capacidad/(mesesMostrados+1)))) }"
                                         matTooltip="{{(colaborador.capacidad/(mesesMostrados+1))-getTooltipHsPlanMensual(colaborador.id, mes.mes)}}
                                         Hs Disp / {{(colaborador.capacidad/(mesesMostrados+1))}} Hs Cap"
-                                        [matTooltipPosition]="position.value!">
+                                        [matTooltipPosition]="position2.value!">
                                         {{getPorcentajeDisponibleMensual(colaborador.id, mes.mes, (colaborador.capacidad/(mesesMostrados+1)))}}%
                                     </div>
                                 </div>
@@ -157,7 +157,7 @@
                             <div class="texto-proyecto"> {{proy}} </div>
                             <div class="cajaPorcentaje"
                                 matTooltip="{{getTooltipHsPlanProyecto(proy, colaborador.id, mes.mes)}} Hs Plan / 
-                                {{(colaborador.capacidad/(mesesMostrados+1))}} Hs Cap" [matTooltipPosition]="position.value!"> 
+                                {{(colaborador.capacidad/(mesesMostrados+1))}} Hs Cap" [matTooltipPosition]="position2.value!"> 
                                 {{getPorcentajeOcupadoMensualProyecto(proy, colaborador.id, mes.mes, (colaborador.capacidad/(mesesMostrados+1)))}}%  <!-- ver capacidad, dividir por mesesmostrados+1 -->
                             </div>
                         </div>

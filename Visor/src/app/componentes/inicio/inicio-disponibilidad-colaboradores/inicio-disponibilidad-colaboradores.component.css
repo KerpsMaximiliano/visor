@@ -59,7 +59,7 @@ h3 {
 @media screen and (max-width: 1199px) {
 
     .disponibilidad-equipo {
-        margin-left: 42%;
+        margin-left: 10%;
     }
 
     #titulo {
@@ -68,7 +68,7 @@ h3 {
     }
 
     .colaborador-unico {
-        margin-left: 110px;
+        margin-left: 60px;
     }
 
     .mat-accordion {
@@ -80,7 +80,7 @@ h3 {
 @media screen and (min-width: 1200px) and (max-width: 1399px) {
 
     .disponibilidad-equipo {
-        margin-left: 20%;
+        margin-left: 5%;
     }
 
     #titulo {
@@ -89,7 +89,11 @@ h3 {
     }
 
     .colaborador-unico {
-        margin-left: 160px;
+        margin-left: 90px;
+    }
+
+    .texto-proyecto {
+        width: 100% !important;
     }
 
 }

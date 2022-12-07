@@ -39,6 +39,7 @@ table {
   
   .example-element-description {
     padding: 16px;
+    max-width: 350px;
   }
   
   .example-element-description-attribution {
