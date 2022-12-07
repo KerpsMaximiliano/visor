@@ -27,7 +27,9 @@ export class LoginComponent implements OnInit {
     this.visibilidadMensaje = false;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    localStorage.getItem('auth_token') !== null ? this._router.navigate(['dashboard']) : this._router.navigate(['login'])
+  }
   
 
   /**
