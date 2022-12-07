@@ -1,4 +1,5 @@
-import { Component, Input, OnInit, SimpleChange } from '@angular/core';
+import { ChangeDetectionStrategy } from '@angular/compiler';
+import { Component, Input, OnInit, OnChanges ,SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { Tarea } from 'src/app/interfaces/tarea';
 import { TareaService } from '../../services/i2t/tarea.service';
 
@@ -7,7 +8,11 @@ import { TareaService } from '../../services/i2t/tarea.service';
   templateUrl: './vista-disenio-tecnico.component.html',
   styleUrls: ['./vista-disenio-tecnico.component.css']
 })
-export class VistaDisenioTecnicoComponent implements OnInit{
+export class VistaDisenioTecnicoComponent implements OnInit, OnChanges{
+
+  anchoRojo: string = '0';
+  anchoAmarillo: string = '0';
+  anchoVerde: string = '0';
 
   proyectoId: any;
   proyectoNombre?: string;
@@ -30,30 +35,15 @@ export class VistaDisenioTecnicoComponent implements OnInit{
 
   @Input() tareasSP: any = [];
 
+  @Output()
+  enviar: EventEmitter<string> = new EventEmitter<string>();
+  mensaje!:string;
+
   ngOnInit(): void {
-      if(this.tareasSP.length > 0){
-        console.log(this.tareasSP)
-        this.noHayProyecto= false;
-        this.organizarTareas();
-        console.log(this.tareasOrg);
-        this.cargarTareas();
-        this.poseeTareas();
-        if (!this.noHayProyecto) {
-          this.setearBarraProgreso();
-          this.ordenarListas();
-        }
-      }
-      else{
-        console.log(this.tareasSP)
-        this.noHayProyecto = true;
-      }
-
-  }
-
-  ngOnChanges(changes: SimpleChange){
-    if (this.tareasSP.length > 0) {
-      this.noHayProyecto = false;
-      console.log("Entra change")
+    this.proyectoId = "d31cfdaa-049e-e6e3-999d-62b5b2f778b7"; // este dato viene del commponente tareas
+    /*this._tareaService.getTareasDeProyecto(this.proyectoId, 'RelevamientoReq').subscribe((response: any) => {
+      this.tareasSP = response.dataset;
+      this.proyectoNombre = this.tareasSP[0].nombre_proyecto;
       this.organizarTareas();
       console.log(this.tareasOrg);
       this.cargarTareas();
@@ -62,8 +52,78 @@ export class VistaDisenioTecnicoComponent implements OnInit{
         this.setearBarraProgreso();
         this.ordenarListas();
       }
+    });;*/
+    if(this.mensaje != undefined && this.mensaje!= null){
+      console.log("llego")
+      this.enviar.emit("vista")
+      
     }
-    this.tareasOrg=[];
+  }
+
+  ngOnChanges(changes: SimpleChanges){
+
+    if (this.tareasSP.length > 0) {
+      console.log(changes['tareasSP'].previousValue)
+      if(changes['tareasSP'].previousValue == undefined || changes['tareasSP'].previousValue.length == 0){ //Selecciona primero proyecto después vista
+        this._tareaService.listaTareas = this.tareasSP//Enviar tareas Filtradas para Componentes Actividades
+        this.organizarTareas();
+        this.cargarTareas();
+        this.poseeTareas();
+        console.log(this.noHayProyecto)
+        if (!this.noHayProyecto) {
+          this.setearBarraProgreso();
+          this.ordenarListas();
+        }
+      }
+      
+      else if( (changes['tareasSP'].previousValue[0].nombre_proyecto != changes['tareasSP'].currentValue[0].nombre_proyecto) ){
+        console.log(changes['tareasSP'].previousValue )
+        console.log(changes['tareasSP'].currentValue)
+        console.log("entra if")
+        this.horasNoIniciadas = 0
+        this.horasEnProgreso = 0
+        this.horasCompleatadas = 0
+        this.tareasOrg = [];
+        this.tareasNoIniciadas = [];
+        this.tareasEnProgreso = [];
+        this.tareasCompletadas = [];
+        this.noHayProyecto = false;
+        console.log(this.anchoRojo)
+        console.log(this.anchoAmarillo)
+        console.log(this.anchoVerde)
+        this._tareaService.listaTareas = this.tareasSP//Enviar tareas Filtradas para Componentes Actividades
+        this.organizarTareas();
+        this.cargarTareas();
+        this.poseeTareas();
+        console.log(this.noHayProyecto)
+        if (!this.noHayProyecto) {
+          this.horasNoIniciadas = 0;
+          this.horasEnProgreso = 0;
+          this.horasCompleatadas = 0;
+          this.setearBarraProgreso();
+          this.ordenarListas();
+        }
+      }
+      else{
+        this.tareasOrg = [];
+        this._tareaService.listaTareas = this.tareasSP//Enviar tareas Filtradas para Componentes Actividades
+        this.organizarTareas();
+        this.cargarTareas();
+        this.poseeTareas();
+        console.log(this.noHayProyecto)
+        if (!this.noHayProyecto) {
+          this.setearBarraProgreso();
+          this.ordenarListas();
+        }
+      }
+    }
+    else{
+      this.tareasOrg=[];
+      this.tareasNoIniciadas= [];
+      this.tareasEnProgreso= [];
+      this.tareasCompletadas= [];
+      this.noHayProyecto = true;
+    }
   }
 
   organizarTareas() {
@@ -90,6 +150,18 @@ export class VistaDisenioTecnicoComponent implements OnInit{
     });
   };
 
+  recibirMensaje(mensaje: string){
+    this.mensaje = mensaje;
+    this.enviar.emit("vista");
+    
+  }
+
+
+  test(i:any){
+    console.log(i)
+    console.log("toco")
+  }
+
   calcularFecha(fecha: string) {
     if (fecha != null) {
       return (fecha.slice(8,10)+'-'+fecha.slice(5,7)+'-'+fecha.slice(0,4));
@@ -107,6 +179,7 @@ export class VistaDisenioTecnicoComponent implements OnInit{
     this.tareasNoIniciadas = this.getTareasNoIniciadas();
     this.tareasEnProgreso = this.getTareasEnProgreso();
     this.tareasCompletadas = this.getTareasCompletadas();
+
   }
 
   getTareasNoIniciadas() {
@@ -179,17 +252,20 @@ export class VistaDisenioTecnicoComponent implements OnInit{
     let anchoVariable = (this.horasNoIniciadas / this.horasTotales * 100);
     const divRojo = document.getElementById('barraRoja');
     if (divRojo != null) {
-      divRojo.style.setProperty('width', (anchoVariable.toString()).concat(porc));
+      //divRojo.style.setProperty('width', (anchoVariable.toString()).concat(porc));
+      this.anchoRojo = (anchoVariable.toString()).concat(porc);
     }
     anchoVariable = (this.horasEnProgreso / this.horasTotales * 100);
     const divAmarillo = document.getElementById('barraAmarilla');
     if (divAmarillo != null) {
-      divAmarillo.style.setProperty('width', (anchoVariable.toString()).concat(porc));
+      //divAmarillo.style.setProperty('width', (anchoVariable.toString()).concat(porc));
+      this.anchoAmarillo = (anchoVariable.toString()).concat(porc);
     }
     anchoVariable = (this.horasCompleatadas / this.horasTotales * 100);
     const divVerde = document.getElementById('barraVerde');
     if (divVerde != null) {
-      divVerde.style.setProperty('width', (anchoVariable.toString()).concat(porc));
+      //divVerde.style.setProperty('width', (anchoVariable.toString()).concat(porc));
+      this.anchoVerde = (anchoVariable.toString()).concat(porc);
     }
   }
 
@@ -260,7 +336,7 @@ export class VistaDisenioTecnicoComponent implements OnInit{
     if (tarea.prioridad == null) {
       arrayOrdenado.push(tarea);
     }});
-    console.log(arrayOrdenado);
+    //console.log(arrayOrdenado);
     return arrayOrdenado;
   }
 

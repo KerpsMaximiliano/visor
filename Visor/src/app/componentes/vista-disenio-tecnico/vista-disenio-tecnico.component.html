@@ -8,9 +8,9 @@
     <!-- Barra de progreso -->
     <!-- <div *ngIf="!noHayProyecto"> -->
     <div class="progress container-barra" [ngClass]="{'oculto': noHayProyecto }">
-        <div id="barraRoja" class="progress-bar bg-danger" role="progressbar" aria-label="Segment one" aria-valuenow="cargarBarraRoja()" aria-valuemin="0" aria-valuemax="100"><p class="porcentajes">{{cargarBarraRoja()}}%</p></div>
-        <div id="barraAmarilla" class="progress-bar bg-warning" role="progressbar" aria-label="Segment two" aria-valuenow="cargarBarraAmarilla()" aria-valuemin="0" aria-valuemax="100"><p id="porcentajeAmarillo" class="porcentajes">{{cargarBarraAmarilla()}}%</p></div>
-        <div id="barraVerde" class="progress-bar bg-success" role="progressbar" aria-label="Segment one" aria-valuenow="cargarBarraVerde()" aria-valuemin="0" aria-valuemax="100"><p class="porcentajes">{{cargarBarraVerde()}}%</p></div>
+        <div id="barraRoja" [style.width]="anchoRojo" class="progress-bar bg-danger" role="progressbar" aria-label="Segment one" aria-valuenow="cargarBarraRoja()" aria-valuemin="0" aria-valuemax="100"><p class="porcentajes">{{cargarBarraRoja()}}%</p></div>
+        <div id="barraAmarilla" [style.width]="anchoAmarillo" class="progress-bar bg-warning" role="progressbar" aria-label="Segment two" aria-valuenow="cargarBarraAmarilla()" aria-valuemin="0" aria-valuemax="100"><p id="porcentajeAmarillo" class="porcentajes">{{cargarBarraAmarilla()}}%</p></div>
+        <div id="barraVerde" [style.width]="anchoVerde" class="progress-bar bg-success" role="progressbar" aria-label="Segment one" aria-valuenow="cargarBarraVerde()" aria-valuemin="0" aria-valuemax="100"><p class="porcentajes">{{cargarBarraVerde()}}%</p></div>
     </div>
 </div>
 <!-- Termina cabecera -->
@@ -28,7 +28,6 @@
                     <mat-accordion>
                         <mat-expansion-panel hideToggle>
                             <mat-divider></mat-divider>
-
                             <div class="iconos-superior">
                                 <i class="icon-edit fas fa-edit fa-xl"></i>
                                 <i class="icon-x fa-solid fa-x fa-xl"></i>
@@ -122,10 +121,10 @@
                                     <i class="icon-general fa-solid fa-angle-down"></i>
                                     <strong>Actividades</strong>
                                 </button>
-                                <app-actividad *ngIf="panelActividadesAbierto == true" [idTarea]="tarea.idTarea"></app-actividad>
+                                <app-actividad (enviar)="recibirMensaje($event)" *ngIf="panelActividadesAbierto == true" [idTarea]="tarea.idTarea"></app-actividad>
                             </div>
                         <mat-expansion-panel-header>
-                        <mat-panel-title>
+                        <mat-panel-title >
                             {{tarea.titulo}}
                         </mat-panel-title>                     
                         </mat-expansion-panel-header>
@@ -141,7 +140,8 @@
                 <h4 id="progress">EN PROGRESO</h4>
             </div>
             <div class="container-all-tareas">
-                <div *ngFor="let tarea of tareasEnProgreso ; let i = index">
+                <div *ngFor="let tarea of tareasEnProgreso ; let i = index;">
+                    
                     <mat-accordion>
                         <mat-expansion-panel hideToggle>
                             <mat-divider></mat-divider>
@@ -205,9 +205,9 @@
                                     <i class="icon-general fa-solid fa-angle-down"></i>
                                     <strong>Actividades</strong>
                                 </button>
-                                <app-actividad *ngIf="panelActividadesAbierto == true" [idTarea]="tarea.idTarea"></app-actividad>
+                                <app-actividad (enviar)="recibirMensaje($event)" *ngIf="panelActividadesAbierto == true" [idTarea]="tarea.idTarea"></app-actividad>
                             </div>
-                        <mat-expansion-panel-header>
+                        <mat-expansion-panel-header (click)="test(i)">
                         <mat-panel-title>
                             {{tarea.titulo}}
                         </mat-panel-title>
@@ -289,7 +289,7 @@
                                 <i class="icon-general fa-solid fa-angle-down"></i>
                                 <strong>Actividades</strong>
                             </button>
-                            <app-actividad *ngIf="panelActividadesAbierto == true" [idTarea]="tarea.idTarea"></app-actividad>
+                            <app-actividad (enviar)="recibirMensaje($event)" *ngIf="panelActividadesAbierto == true" [idTarea]="tarea.idTarea"></app-actividad>
                         </div>
                     <mat-expansion-panel-header>
                     <mat-panel-title>

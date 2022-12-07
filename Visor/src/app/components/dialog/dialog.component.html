@@ -9,7 +9,7 @@
         <mat-dialog-content>
             <mat-label class="label">Numero</mat-label>
         
-            <mat-form-field class="example-form-field" appearance="fill">
+            <mat-form-field class="example-form-field" appearance="outline">
                 <!-- <input matInput type="number" placeholder="1234" [(ngModel)]="numeroProyecto"  [ngModelOptions]="{standalone: true}"  id="nroProyecto" (keyup)="applyFilter($event)"> -->
                 <input matInput type="number" placeholder="1234" [(ngModel)]="numeroProyecto"  [ngModelOptions]="{standalone: true}"  id="nroProyecto" (keyup)="getDatosFiltrosProyecto($event)">
             </mat-form-field>
@@ -18,7 +18,7 @@
         <mat-dialog-content>
             <mat-label class="label">Nombre</mat-label>
             
-            <mat-form-field class="example-form-field" appearance="fill">
+            <mat-form-field class="example-form-field" appearance="outline">
                 <!-- <input matInput type="text" placeholder="Asunto" [(ngModel)]="nombreProyecto" [ngModelOptions]="{standalone: true}" (keyup)="applyFilter($event)" id="nombreProyecto"> -->
                 <input matInput type="text" placeholder="Asunto" [(ngModel)]="nombreProyecto" [ngModelOptions]="{standalone: true}" (keyup)="getDatosFiltrosProyecto($event)" id="nombreProyecto">
             </mat-form-field>
@@ -26,7 +26,7 @@
 
         <mat-dialog-content>
             <mat-label class="label">Cliente</mat-label>
-            <mat-form-field appearance="fill">
+            <mat-form-field appearance="outline">
                 <mat-select placeholder="Proyecto" [(value)]="clienteProyecto" id="clienteProyecto" (selectionChange)="selectProyecto($event)"  >
                     <mat-option></mat-option>
                     <mat-option [value]="cliente"  *ngFor="let cliente of clientesDeProyectos">{{ cliente }} </mat-option>
@@ -37,7 +37,7 @@
 
         <mat-dialog-content>
             <mat-label class="label">Asignado a</mat-label>
-            <mat-form-field appearance="fill">
+            <mat-form-field appearance="outline">
                 <mat-label>Asignado a</mat-label>
                 <mat-select [(value)]="asignadoAproyecto" id="asignadoAproyecto"  (selectionChange)="selectProyecto($event)">
                     <mat-option></mat-option>
@@ -94,14 +94,14 @@
         <mat-dialog-content>
             <mat-label class="label">Nombre</mat-label>
 
-            <mat-form-field class="example-form-field" appearance="fill">
+            <mat-form-field class="example-form-field" appearance="outline">
                 <input matInput type="text" placeholder="nombreTarea" [(ngModel)]="nombreTarea" id="nombreTarea" (keyup)="getNombreTarea($event)">
             </mat-form-field>
         </mat-dialog-content>
 
         <mat-dialog-content>
             <mat-label class="label">Prioridad</mat-label>
-            <mat-form-field appearance="fill">
+            <mat-form-field appearance="outline">
                 <mat-label>Prioridad</mat-label>
                 <mat-select [(value)]="prioridadTarea" id="prioridadTarea" (selectionChange)="selectPrioridadTarea($event)">
                     <mat-option></mat-option>
@@ -113,7 +113,7 @@
 
         <mat-dialog-content>
             <mat-label class="label">Facilitador</mat-label>
-            <mat-form-field appearance="fill">
+            <mat-form-field appearance="outline">
                 <mat-label>Facilitador</mat-label>
                 <mat-select [(value)]="facilitadorTarea" id="facilitadorTarea" (selectionChange)="selectFacilitadorTarea($event)">
                     <mat-option></mat-option>
@@ -125,10 +125,10 @@
 
         <mat-dialog-content>
             <mat-label class="label">Asignado a</mat-label>
-            <mat-form-field appearance="fill">
+            <mat-form-field appearance="outline">
                 <mat-select [(value)]="asignadoAtarea" id="asignadoAtarea" (selectionChange)="selectAsignadoAtarea($event)">
                     <mat-option></mat-option>
-                    <mat-option (click)="getAsignadoAtarea(programador)" [value]="programador"  *ngFor="let programador of usuariosAsignadosTareas">{{ programador }}</mat-option>
+                    <mat-option  [value]="programador"  *ngFor="let programador of usuariosAsignadosTareas">{{ programador }}</mat-option>
                 </mat-select>
             </mat-form-field>
             <!-- <p>You selected: {{selectedFood}}</p> -->
@@ -151,16 +151,16 @@
         </mat-dialog-content>
         <mat-dialog-content class="fechas">
             <mat-label class="label">Por fecha de inicio</mat-label>
-            <mat-form-field appearance="fill">
+            <mat-form-field appearance="outline">
                 <mat-label>dd/mm/aaaa</mat-label>
-                <input matInput [matDatepicker]="fechaInicioDesde" id="fechaInicio"  (dateInput)="getFechaInicio($event)" >
+                <input matInput [(ngModel)]="fechaInicio" [matDatepicker]="fechaInicioDesde" id="fechaInicio"  (dateInput)="getFechaInicio($event)" >
                 <mat-hint>{{getDateFormatString()}}</mat-hint>
                 <mat-datepicker-toggle matSuffix [for]="fechaInicioDesde"></mat-datepicker-toggle>
                 <mat-datepicker #fechaInicioDesde ></mat-datepicker>
             </mat-form-field>
-            <mat-form-field appearance="fill">
+            <mat-form-field appearance="outline">
                 <mat-label>dd/mm/aaaa</mat-label>
-                <input matInput [matDatepicker]="fechaInicioHasta" (dateInput)="getFechaFin($event)">
+                <input matInput [(ngModel)]="fechaFin" [matDatepicker]="fechaInicioHasta" (dateInput)="getFechaFin($event)">
                 <mat-hint>{{getDateFormatString()}}</mat-hint>
                 <mat-datepicker-toggle matSuffix [for]="fechaInicioHasta"></mat-datepicker-toggle>
                 <mat-datepicker #fechaInicioHasta></mat-datepicker>
@@ -168,16 +168,16 @@
         </mat-dialog-content>
         <mat-dialog-content class="fechas">
             <mat-label class="label">Planificada</mat-label>
-            <mat-form-field appearance="fill">
+            <mat-form-field appearance="outline">
                 <mat-label>dd/mm/aaaa</mat-label>
-                <input matInput [matDatepicker]="planificadaDesde">
+                <input matInput [(ngModel)]="fechaPlanificadaDesde" [matDatepicker]="planificadaDesde" (dateInput)="getPlanificadaDesde($event)">
                 <mat-hint>{{getDateFormatString()}}</mat-hint>
                 <mat-datepicker-toggle matSuffix [for]="planificadaDesde"></mat-datepicker-toggle>
                 <mat-datepicker #planificadaDesde></mat-datepicker>
             </mat-form-field>
-            <mat-form-field appearance="fill">
+            <mat-form-field appearance="outline">
                 <mat-label>dd/mm/aaaa</mat-label>
-                <input matInput [matDatepicker]="planificadaHasta">
+                <input matInput [(ngModel)]="fechaPlanificadaHasta" [matDatepicker]="planificadaHasta" (dateInput)="getPlanificadaHasta($event)">
                 <mat-hint>{{getDateFormatString()}}</mat-hint>
                 <mat-datepicker-toggle matSuffix [for]="planificadaHasta"></mat-datepicker-toggle>
                 <mat-datepicker #planificadaHasta></mat-datepicker>
@@ -185,24 +185,24 @@
         </mat-dialog-content>
         <mat-dialog-content class="fechas">
             <mat-label class="label">Fin</mat-label>
-            <mat-form-field appearance="fill">
+            <mat-form-field appearance="outline">
                 <mat-label>dd/mm/aaaa</mat-label>
-                <input matInput [matDatepicker]="finDesde">
+                <input matInput [(ngModel)]="fechaFinDesde" [matDatepicker]="finDesde" (dateInput)="getFinDesde($event)">
                 <mat-hint>{{getDateFormatString()}}</mat-hint>
                 <mat-datepicker-toggle matSuffix [for]="finDesde"></mat-datepicker-toggle>
                 <mat-datepicker #finDesde></mat-datepicker>
             </mat-form-field>
-            <mat-form-field appearance="fill">
+            <mat-form-field appearance="outline">
                 <mat-label>dd/mm/aaaa</mat-label>
-                <input matInput [matDatepicker]="finHasta">
+                <input matInput [(ngModel)]="fechaFinHasta" [matDatepicker]="finHasta" (dateInput)="getFinHasta($event)">
                 <mat-hint>{{getDateFormatString()}}</mat-hint>
                 <mat-datepicker-toggle matSuffix [for]="finHasta"></mat-datepicker-toggle>
                 <mat-datepicker #finHasta></mat-datepicker>
             </mat-form-field>
         </mat-dialog-content>
         <!-- <button mat-button (click)="french()">Dynamically switch to French</button> -->
-        
-        
+            
+
         
         <mat-dialog-actions align="end" class="accionesBotones">
             <button mat-raised-button color="primary" type="submit" (click)="limpiarValoresDeFiltros()"> Limpiar </button>

@@ -13,7 +13,6 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { MyMaterialModule } from 'src/app/material';
 import {ScrollingModule} from '@angular/cdk/scrolling';
 
-
 @NgModule({
   declarations: [
     ActividadComponent,

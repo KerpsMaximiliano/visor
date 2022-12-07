@@ -1,35 +1,16 @@
+
 /*
   Header
 */
 
 #titulo {
   text-align: center;
-  margin-top: 40px;
-  margin-bottom: 20px;
+  margin-top: 10%;
 }
 
 .header {
   display: flex;
-  height: 60px;
-  margin-bottom: 50px;
-}
-
-.input-header {
-  width: 180px;
-  margin-left: 10px;
-}
-
-.boton-icono {
-  margin-top: 10px;
-  margin-left: 3px;
-  margin-right: 3px;
-}
-
-.boton-informacion{
-  margin-top: 10px;
-  margin-right: 0px;
-  margin-left: 5px;
-}
+} 
 
 #seccion-informacion{
   background-color: white;
@@ -42,7 +23,6 @@
 
 .letrasSeccionInformacion{
   font-size: 9px;
-  margin-left: 2px;
 }
 
 #seccion-informacion div{
@@ -68,7 +48,7 @@
 .cc-no-iniciadas{
   height: 15px;
   width: 15px;
-  background-color: red;
+  background-color: #FF0000;
   border-radius: 5px;
   border: solid 1px black;
 }
@@ -77,7 +57,7 @@
   height: 15px;
   width: 15px;
   border-radius: 5px;
-  background-color: yellow;
+  background-color: #FFFF00;
   border: solid 1px black;
 }
 
@@ -85,7 +65,7 @@
   height: 15px;
   width: 15px;
   border-radius: 5px;
-  background-color: rgb(0, 177, 0);
+  background-color: #00FF00;
   border: solid 1px black;
 }
 
@@ -93,13 +73,28 @@
   height: 15px;
   width: 15px;
   border-radius: 5px;
-  background-color: green;
+  background-color: #008000;
   border: solid 1px black;
 }
+
+.container-boton-informacion {
+  padding-top: 10px;
+  margin-left: 5px;
+}
+
 
 .container-informacion{
   float: right;
   display: flex;  
+}
+
+.input-header {
+  width: 150px;
+}
+
+
+.boton-icono {
+  margin: 0.9%;
 }
 
 .icon {
@@ -107,27 +102,26 @@
 }
 
 .porcentaje-rojo {
-  border: 2px solid red;
+  border: 2px solid #FF0000;
 }
 
 .porcentaje-amarillo {
-  border: 2px solid yellow;
+  border: 2px solid #FFFF00;
 }
 
 .porcentaje-verde-claro {
-  border: 2px solid lightgreen;
+  border: 2px solid #00FF00;
 }
 
 .porcentaje-verde-oscuro {
-  border: 2px solid green;
+  border: 2px solid #008000;
 }
 
 .disponibilidad-proyectos {
-  margin-top: 15px;
-  margin-bottom: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 30px;
 }
 
 .acomodar{
@@ -141,10 +135,6 @@
 
 .noVisible{
   display: none;
-}
-
-#ordenarPor{
-  margin-left: 15px;
 }
 
 .menu-orden {
@@ -176,7 +166,9 @@
 */
 
 .letrasSegundoNivel{
-  font-size: 12px;
+  margin-top: 5px;
+  font-size: 18px;
+  text-align: center;
 }
 
 table {
@@ -228,20 +220,20 @@ tr.example-element-row:not(.example-expanded-row):active {
 }
 
 #tareasATiempo{
-  background-color: green;
+  background-color: #008000;
   text-align: center;
-  margin-right: 29%;
-  margin-left: 29%;
+  margin-right: 22%;
+  margin-left: 22%;
   border-radius: 5px;
   border: solid 1.50px black;
   color: #efefef;
 }
 
 #tareasAtrasadas{
-background-color: red;
+background-color: #FF0000;
 text-align: center;
-margin-right: 29%;
-margin-left: 29%;
+margin-right: 22%;
+margin-left: 22%;
 border-radius: 5px;
 border: solid 1.50px black;
 color: #efefef;
@@ -257,12 +249,12 @@ text-align: center;
 
 .tituloColumna{
 text-align: center;
-font-size: 15px;
+font-size: 11px;
 }
 
 .subtitulo{
 text-align: center;
-font-size: 15px;
+font-size: 18px;
 margin-top: 10px;
 }
 
@@ -271,17 +263,23 @@ display: flexbox;
 max-height: 30%;
 }
 
+#iconoArea{
+  margin-top: 18px;
+}
+
 #seccionAvanceArea{
   border-radius: 3px;
+  display: flex;
 }
 
 #seccionAvanceArea p{
   padding-top: 8px;
-  font-size: 15px;
+  font-size: 18px;
+  text-align: center;
 }
 
 #tituloAvanceArea{
-  padding-left: 39%;
+  text-align: center;
 }
 
 .contenido{
@@ -292,140 +290,32 @@ max-height: 30%;
   margin-bottom: 5px;
 }
 
+.mensajeNoTareas{
+  text-align: center;
+  color: grey;
+}
+
+.mensajeError p{
+  font-size: 15px;
+}
+
 /*
   Barra
 */
-.barra{
-  display: flex;
-  width: 100%;
-}
-
-.barra div{
-  margin: 0.1%;
-}
 
 #nombre{
   font-size: 15px;
-}
-
-#barraVerde{
-  background-color: green;
-  width: 25%;
-  text-align: center;
-  color: white;
-  border: solid 0.5px black;
-  font-size: 15px;
-  border-radius: 3px;
-  padding-top: 10px;
-  height: 10%;
-}
-
-#barraRoja{
-  background-color: red;
-  width: 25%;
-  text-align: center;
-  color: white;
-  border: solid 0.5px black;
-  font-size: 15px;
-  border-radius: 3px;
-  padding-top: 10px;
-  height: 10%;
-}
-
-#barraAmarilla{
-  background-color: rgb(221, 221, 27);
-  width: 25%;
-  text-align: center;
-  border: solid 0.5px black;
-  font-size: 15px;
-  border-radius: 3px;
-  padding-top: 10px;
-  height: 10%;
-}
-
-#barraEnPrueba{
-  background-color: rgb(1, 181, 1);
-  width: 25%;
-  text-align: center;
-  color: white;
-  border: solid 0.5px black;
-  font-size: 15px;
-  border-radius: 3px;
-  padding-top: 10px;
-  height: 10%;
 } 
-
-.barraAvance{
-  display: flex;
-}
-
-.barraAvance div{
-  margin: 1px;
-}
-
-#espacio{
-  padding-right: 12px;
-}
-
-#espacioTecnico{
-  padding-right: 11px;
-}
-
-#espacioDesarrollo{
-  padding-right: 35px;
-}
-
-#espacioTesting{
-  padding-right: 50px;
-}
-
-.barraAreaVerde{
-  background-color: green;
-  width: 20%;
-  text-align: center;
-  color: white;
-  border: solid 0.5px black;
-  font-size: 15px;
-  border-radius: 3px;
-  height: 10%;
-}
-
-.barraAreaRoja{
-  background-color: red;
-  width: 20%;
-  text-align: center;
-  color: white;
-  border: solid 0.5px black;
-  font-size: 15px;
-  border-radius: 3px;
-  height: 10%;
-}
-
-.barraAreaAmarilla{
-  background-color: rgb(221, 221, 27);
-  width: 20%;
-  text-align: center;
-  border: solid 0.5px black;
-  font-size: 15px;
-  border-radius: 3px;
-  height: 10%;
-}
-
-.barraAreaEnPrueba{
-  background-color: rgb(1, 181, 1);
-  width: 20%;
-  text-align: center;
-  color: white;
-  border: solid 0.5px black;
-  font-size: 15px;
-  border-radius: 3px;
-  height: 10%;
-}
 
 #container-indicadores{
   height: 10%;
-  background-color: green;
   width: 10%;
+}
+
+.progress{
+  font-size: 14px;
+  font-style: monospace;
+  height: 26px;
 }
 
 

@@ -1,42 +1,32 @@
+
 #titulo {
     text-align: center;
-    margin-top: 40px;
-    margin-bottom: 20px;
+    margin-top: 10%;
 }
 
 .header {
     display: flex;
-    height: 60px;
-    justify-content: space-evenly;
-    margin-left: 10%;
 }
 
 .input-header {
-    width: 180px;
+    width: 25.7%;
+}
+
+.boton-icono {
+    margin: 0.9%;
 }
 
 .icon {
     font-size: 24px;
 }
 
-.boton-icono {
-    margin-top: 10px;
-    margin-left: 3px;
-    margin-right: 3px;
-}
-
 #button-orden {
     min-width: 170px;
-    height: 60px;
 }
 
 .menu-orden {
     display: flex;
     width: 170px;
-}
-
-.fecha-hasta {
-    margin-right: 20px;
 }
 
 h3 {
@@ -49,12 +39,120 @@ h3 {
 }
 
 .disponibilidad-equipo {
-    margin-top: 15px;
-    margin-bottom: 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
+
+/* @media screen and (max-width: 1199px) {
+
+    .disponibilidad-equipo {
+        margin-left: 10%;
+    }
+
+    #titulo {
+        margin-left: 75px;
+        width: 100%;
+    }
+
+    .colaborador-unico {
+        margin-left: 60px;
+    }
+
+    .mat-accordion {
+        width: 100%;
+    }
+
+}
+
+@media screen and (min-width: 1200px) and (max-width: 1399px) {
+
+    .disponibilidad-equipo {
+        margin-left: 5%;
+    }
+
+    #titulo {
+        margin-left: 75px;
+        width: 100%;
+    }
+
+    .colaborador-unico {
+        margin-left: 90px;
+    }
+
+    .texto-proyecto {
+        width: 100% !important;
+    }
+
+}
+
+@media screen and (min-width: 1400px) and (max-width: 2000px) {
+    
+    .disponibilidad-equipo {
+        margin-left: 5%;
+    }
+
+    #titulo {
+        margin-left: 50px;
+        width: 100%;
+    }
+
+    .texto-proyecto {
+        width: 100% !important;
+    }
+
+    .colaborador-unico {
+        margin-left: 75px;
+    }
+
+}
+
+@media screen and (min-width: 1500px) and (max-width: 1699px) {
+    .container-all {
+        width: 700px;
+    }
+
+    .header {
+        margin-left: 75px;
+    }
+
+    #titulo {
+        width: 100%;
+        margin-left: 25px !important;
+    }
+
+    .texto-proyecto {
+        width: 100% !important;
+    }
+
+    .colaborador-unico {
+        margin-left: 100px;
+    }
+
+}
+
+@media screen and (min-width: 1700px) and (max-width: 2000px) {
+    .container-all {
+        width: 900px;
+    }
+
+    .header {
+        margin-left: 150px;
+    }
+
+    #titulo {
+        margin-left: 0px !important;
+    }
+
+    .texto-proyecto {
+        width: 100% !important;
+    }
+
+    .colaborador-unico {
+        margin-left: 100px;
+    }
+
+} */
 
 #porcentaje-disponibilidad-equipo {
     border-radius: 20px;
@@ -62,19 +160,19 @@ h3 {
 }
 
 .porcentaje-rojo {
-    border: 2px solid red;
+    border: 2px solid #FF0000;
 }
 
 .porcentaje-amarillo {
-    border: 2px solid yellow;
+    border: 2px solid #FFFF00;
 }
 
 .porcentaje-verde-claro {
-    border: 2px solid lightgreen;
+    border: 2px solid #00FF00;
 }
 
 .porcentaje-verde-oscuro {
-    border: 2px solid green;
+    border: 2px solid #008000;
 }
 .accordion {
     display: flex;
@@ -83,7 +181,7 @@ h3 {
 
 .equipo {
     display: flex;
-    margin-left: 15%;
+    margin-left: 5%;
 }
 
 .colaborador-unico {
@@ -96,39 +194,39 @@ h3 {
 }
 
 .columna-equipo {
-    width: 50%;
+    width: 70%;
     text-align: center;
+    left: 5%;
 }
 
 .cajaPorcentaje {
-    width: 50px;
+    width: 35px;
     height: 20px;
-    margin-left: auto;
-    margin-right: 0;
     border: 1px solid black;
     border-radius: 5px;
 }
 
+
 .porcentaje-rojo-colaborador {
-    background-color: red;
+    background-color: #FF0000;
     color: white;
 }
 
 .porcentaje-amarillo-colaborador {
-    background-color: yellow;
+    background-color: #FFFF00;
 }
 
 .porcentaje-verde-claro-colaborador {
-    background-color: lightgreen;
+    background-color: #00FF00;
 }
 
 .porcentaje-verde-oscuro-colaborador {
-    background-color: green;
+    background-color: #008000;
     color: white;
 }
 
 .atrasadas {
-    color: red;
+    color: #FF0000;
 }
 
 .div-caja {
@@ -138,10 +236,24 @@ h3 {
 }
 
 .caja-proyecto {
-    margin-top: 10px;
-    margin-bottom: 10px;
+    font-size: 10px;
+    align-items: center;
 }
 
 .mensaje-no-colaboradores {
     text-align: center;
+}
+
+mat-panel-title {
+    font-size: 12px;
+}
+
+.texto-proyecto {
+    text-align: left;
+    width: 100px;
+}
+
+.texto-no-hay-proyecto {
+    text-align: center;
+    font-size: 10px;
 }
