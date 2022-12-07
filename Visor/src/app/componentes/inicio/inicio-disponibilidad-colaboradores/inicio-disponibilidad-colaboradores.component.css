@@ -246,6 +246,7 @@ h3 {
 
 mat-panel-title {
     font-size: 12px;
+    justify-content: space-between;
 }
 
 .texto-proyecto {
