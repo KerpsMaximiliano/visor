@@ -2,16 +2,16 @@
 
 <!-- Comienzo cabecera -->
 <div class="cabecera">
-        <!-- <h2 id="titulo-proyecto" *ngIf="!noHayProyecto">Sala de Sorteos - Extractos Digitales</h2> -->
-        <p id="subtitulo-disenio" *ngIf="!noHayProyecto">Avance de Diseño Funcional</p>
+    <h2 id="titulo-proyecto" *ngIf="!noHayProyecto"> {{ proyectoNombre }} </h2> <!-- El proyecto viene del componente tareas -->
+    <p id="subtitulo-disenio" *ngIf="!noHayProyecto">Avance de Diseño Funcional</p>
 
     <!-- Barra de progreso -->
     <!-- <div *ngIf="!noHayProyecto"> -->
-        <div class="progress container-barra" [ngClass]="{'oculto': noHayProyecto }">
-            <div id="barraRoja" class="progress-bar bg-danger" role="progressbar" aria-label="Segment one" aria-valuenow="cargarBarraRoja()" aria-valuemin="0" aria-valuemax="100"><p class="porcentajes">{{cargarBarraRoja()}}%</p></div>
-            <div id="barraAmarilla" class="progress-bar bg-warning" role="progressbar" aria-label="Segment two" aria-valuenow="cargarBarraAmarilla()" aria-valuemin="0" aria-valuemax="100"><p id="porcentajeAmarillo" class="porcentajes">{{cargarBarraAmarilla()}}%</p></div>
-            <div id="barraVerde" class="progress-bar bg-success" role="progressbar" aria-label="Segment one" aria-valuenow="cargarBarraVerde()" aria-valuemin="0" aria-valuemax="100"><p class="porcentajes">{{cargarBarraVerde()}}%</p></div>
-        </div>
+    <div class="progress container-barra" [ngClass]="{'oculto': noHayProyecto }">
+        <div id="barraRoja" class="progress-bar bg-danger" role="progressbar" aria-label="Segment one" aria-valuenow="cargarBarraRoja()" aria-valuemin="0" aria-valuemax="100"><p class="porcentajes">{{cargarBarraRoja()}}%</p></div>
+        <div id="barraAmarilla" class="progress-bar bg-warning" role="progressbar" aria-label="Segment two" aria-valuenow="cargarBarraAmarilla()" aria-valuemin="0" aria-valuemax="100"><p id="porcentajeAmarillo" class="porcentajes">{{cargarBarraAmarilla()}}%</p></div>
+        <div id="barraVerde" class="progress-bar bg-success" role="progressbar" aria-label="Segment one" aria-valuenow="cargarBarraVerde()" aria-valuemin="0" aria-valuemax="100"><p class="porcentajes">{{cargarBarraVerde()}}%</p></div>
+    </div>
 </div>
 <!-- Termina cabecera -->
 
@@ -53,21 +53,55 @@
                                 <div class="datos">
                                     <i class="icon-general fa-regular fa-calendar-days"></i>
                                     <strong>Fechas: </strong>
-                                    <div class="fecha"><p>De inicio: {{tarea.fechaInicio}}</p></div>
-                                    <div class="fecha"><p>Planificada: {{tarea.fechaPlanificacion}}</p></div>
-                                    <div class="fecha"><p>Fin: {{tarea.fechaFin}}</p></div>
+                                    <div class="caja-fecha">
+                                        <div class="fecha"><p>De inicio:</p></div>
+                                        <div class="fecha"><p>{{tarea.fechaInicio}}</p></div>
+                                    </div>
+                                    <div class="caja-fecha">
+                                        <div class="fecha"><p>Planificada:</p></div>
+                                        <div class="fecha"><p>{{tarea.fechaPlanificacion}}</p></div>
+                                    </div>
+                                    <div class="caja-fecha">
+                                        <div class="fecha"><p>Fin:</p></div>
+                                        <div class="fecha"><p>{{tarea.fechaFin}}</p></div>
+                                    </div>
                                 </div> 
                                 <div class="datos">
                                     <i class="icon-general far fa-clock"></i>
-                                    <strong>Horas:</strong>
-                                        <p class="horas">Planificadas: {{tarea.horasPlanificadas}} hs</p>
-                                        <p class="horas">Ejecutadas: {{tarea.horasEjecutadas}} hs</p>
-                                        <p class="horas">Desvío:</p><p [ngClass]="{
+                                    <strong class="strong-horas">Horas:</strong>
+
+                                    <!-- <div class="caja-fecha">
+                                        <div class="fecha"><p>Planificadas:</p></div>
+                                        <div class="fecha"><p>{{tarea.horasPlanificadas}} hs</p></div>
+                                    </div>
+                                    <div class="caja-fecha">
+                                        <div class="fecha"><p>Ejecutadas:</p></div>
+                                        <div class="fecha"><p>{{tarea.horasEjecutadas}} hs</p></div>
+                                    </div>
+                                    <div class="caja-fecha">
+                                        <div class="fecha"><p>Desvío:</p></div>
+                                        <div class="fecha"><p [ngClass]="{
+                                            'desvioNegativo': calcularDesvio(tarea.horasPlanificadas, tarea.horasEjecutadas),
+                                            'desvioPositivo': !calcularDesvio(tarea.horasPlanificadas, tarea.horasEjecutadas)
+                                        }"></p>{{valorAbsoluto(tarea.horasPlanificadas-tarea.horasEjecutadas)}} hs</div>
+                                    </div> -->
+
+                                    <div class="caja-fecha">
+                                        <div class="fecha"><p>Planificadas:</p></div>
+                                        <div class="fecha"><p>{{numeroNulo(tarea.horasPlanificadas)}} hs</p></div>
+                                    </div>
+                                    <div class="caja-fecha">
+                                        <div class="fecha"><p>Ejecutadas:</p></div>
+                                        <div class="fecha"><p>{{numeroNulo(tarea.horasEjecutadas)}} hs</p></div>
+                                    </div>
+                                    <div class="caja-fecha">
+                                        <div class="fecha"><p class="horas">Desvío:</p><p [ngClass]="{
                                             'desvioNegativo': calcularDesvio(tarea.horasPlanificadas, tarea.horasEjecutadas),
                                             'desvioPositivo': !calcularDesvio(tarea.horasPlanificadas, tarea.horasEjecutadas)
                                         }">
                                             {{valorAbsoluto(tarea.horasPlanificadas-tarea.horasEjecutadas)}} hs
-                                        </p>
+                                        </p></div>
+                                    </div>
                                 </div> 
                                 <div class="datos">
                                     <i class="icon-general fa-solid fa-copy"></i>

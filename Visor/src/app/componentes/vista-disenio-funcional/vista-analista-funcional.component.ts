@@ -48,6 +48,23 @@ export class VistaAnalistaFuncionalComponent implements OnInit {
     }
   }
 
+  ngOnChanges(changes: SimpleChange) {
+    this.tareasOrg = [];
+    if (this.tareasSP.length > 0) {
+      this.noHayProyecto = false;
+      console.log("Entra change")
+      this.organizarTareas();
+      console.log(this.tareasOrg);
+      this.cargarTareas();
+      this.poseeTareas();
+      if (!this.noHayProyecto) {
+        this.setearBarraProgreso();
+        this.ordenarListas();
+      }
+    }
+    this.tareasOrg=[];
+  }
+
   organizarTareas() {
     this.tareasSP.forEach((tarea: any) => {
       this.tareasOrg.push({
@@ -71,23 +88,6 @@ export class VistaAnalistaFuncionalComponent implements OnInit {
       })
     });
   };
-
-  ngOnChanges(changes: SimpleChange) {
-    this.tareasOrg = [];
-    if (this.tareasSP.length > 0) {
-      this.noHayProyecto = false;
-      console.log("Entra change")
-      this.organizarTareas();
-      console.log(this.tareasOrg);
-      this.cargarTareas();
-      this.poseeTareas();
-      if (!this.noHayProyecto) {
-        this.setearBarraProgreso();
-        this.ordenarListas();
-      }
-    }
-    this.tareasOrg=[];
-  }
 
   calcularFecha(fecha: string) {
     if (fecha != null) {
