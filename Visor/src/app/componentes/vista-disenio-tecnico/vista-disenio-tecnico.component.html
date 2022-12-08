@@ -207,7 +207,7 @@
                                 </button>
                                 <app-actividad (enviar)="recibirMensaje($event)" *ngIf="panelActividadesAbierto == true" [idTarea]="tarea.idTarea"></app-actividad>
                             </div>
-                        <mat-expansion-panel-header (click)="test(i)"  >
+                        <mat-expansion-panel-header>
                         <mat-panel-title>
                             {{tarea.titulo}}
                         </mat-panel-title>

@@ -237,7 +237,9 @@ agregarActividadSuite(){
     console.log(actividadS.fecha)
     
     //console.log('ACTIVIDAD SSSS FECHAAA',actividadS.fecha)
-    this._actividadService.form.reset()
+
+
+    //this._actividadService.form.reset()
     if(this.fechaIngresada != null){
       console.log(this.fechaIngresada)
       
@@ -366,7 +368,7 @@ agregarActividadSuite(){
         actividadS.descripcion = 'Esta actividad no tiene descripción';
       }
     
-      this._actividadService.form.reset();
+      //this._actividadService.form.reset();
       
       this._actividadService.editarActividad(actividadS, this.data.idTarea).subscribe((response:any)=>{
         

@@ -106,7 +106,6 @@ export class TareasComponent implements OnInit {
   tecnologiaTarea: '',
   idProyectoSeleccionado: '' 
   }
-  
 
   listaTareasService:any;
   tareasFiltradas: any = [];
@@ -114,16 +113,6 @@ export class TareasComponent implements OnInit {
   columnas: string[] = ['nombre'];
 
   valorInputProyecto:string = ''
-  unProyectoA!:any;
-  mensaje!:string;
-  mensajeP!:string;
-  index!:number;
-  indexT!:number;
-
-  indexPanel!:number;
-
-  //indexPanel!:number;
-
 
   constructor(public dialog: MatDialog, private _snackBar: MatSnackBar, private _tareaService: TareaService, private _filtroService: FiltroService) {
     
@@ -164,33 +153,8 @@ export class TareasComponent implements OnInit {
   }
 
   ngOnInit(): void {
-   
-    this._tareaService.enviarIndexPanelObservable.subscribe(response =>{
-      if(response != undefined && response != null){
-        this.indexPanel = response;
-      }
-    })
   }
-  recibirMensaje(mensaje: string){
-    
-    if (mensaje == "vista"){
-      //console.log(this.unProyectoA)
-      this.seleccionarProyecto(this.unProyectoA);
-      //this._tareaService.enviarIndexPanel(this.indexTarea);
-      
-    }
-  }
-
-  recibirIndexT(indexT: number){
-    this.indexT = indexT;
-    console.log("la Tarea es :",indexT)
-    if(indexT != undefined && indexT != null){
-      //this.indexPanel = indexT
-      this._tareaService.enviarIndexPanel(this.indexT);
-      //this._tareaService.enviarIndexPanel(this.indexT);
-      console.log("Tarea Componenet",this.indexT)
-    }
-  }
+ 
 
   buscarProyectos(event: Event) {                              
     const filterValue = (event.target as HTMLInputElement).value;
@@ -207,7 +171,6 @@ export class TareasComponent implements OnInit {
   }
   
   seleccionarProyecto(unProyecto: any){
-    this.unProyectoA = unProyecto;// Variable para actividad
     this.nombreProyecto = unProyecto.nombre_projecto;
     this.idProyectoSeleccionado = unProyecto.id_projecto
     this.filtrosTarea.idProyectoSeleccionado = this.idProyectoSeleccionado; //Para que no aparezca mensaje al abrir modal de filtro de tareas
