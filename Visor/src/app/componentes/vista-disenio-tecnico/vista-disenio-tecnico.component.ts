@@ -141,24 +141,30 @@ export class VistaDisenioTecnicoComponent implements OnInit, OnChanges{
     });
   };
 
-  //Metodo para actualizar las horas ejecutadas ocasionadas por algun cambio en las Actividades
-  recibirMensaje(obj:{idTarea:string,horas_ejecutadas:number, accion:string}){
-    console.log(obj)
-    this.tareasOrg.forEach((tarea:any)=>{
-      if(obj.idTarea == tarea.idTarea){
-        switch(obj.accion){
-          case 'agregar':
-            tarea.horasEjecutadas = Number(tarea.horasEjecutadas) + Number(obj.horas_ejecutadas);
-          break;
-          case 'delete':
-            tarea.horasEjecutadas = Number(tarea.horasEjecutadas) - Number(obj.horas_ejecutadas);  
-          break;
-          case 'modificar':
-            tarea.horasEjecutadas = Number(tarea.horasEjecutadas) + Number(obj.horas_ejecutadas); 
-        }
+//Metodo para actualizar las horas ejecutadas ocasionadas por algun cambio en las Actividades
+recibirMensaje(obj:{idTarea:string,horas_ejecutadas:number, accion:string}){    
+  this.tareasOrg.forEach((tarea:any)=>{
+    if(obj.idTarea == tarea.idTarea){
+      switch(obj.accion){
+        case 'agregar':
+          tarea.horasEjecutadas = Number(tarea.horasEjecutadas) + Number(obj.horas_ejecutadas);
+          console.log('horasEje',tarea.horasEjecutadas)
+        break;
+        case 'delete':
+          tarea.horasEjecutadas = Number(tarea.horasEjecutadas) - Number(obj.horas_ejecutadas);  
+        break;
+        case 'modificar':
+          tarea.horasEjecutadas = Number(tarea.horasEjecutadas) + Number(obj.horas_ejecutadas); 
       }
-    })
-  }
+      this.tareasSP.forEach((t: {
+        horas_ejecutadas: any; id_tarea: string; })=>{
+        if (t.id_tarea == obj.idTarea){
+          t.horas_ejecutadas = tarea.horasEjecutadas
+        }
+      })
+    }
+  })
+}
 
   calcularFecha(fecha: string) {
     if (fecha != null) {

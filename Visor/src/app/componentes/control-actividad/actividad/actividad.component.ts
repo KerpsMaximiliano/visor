@@ -90,7 +90,6 @@ export class ActividadComponent implements OnInit {
   ngOnInit(): void {
     
     //this.cargarActividades();
-
     this.cargarActividadesSuite();
     //this.form.controls['fecha'].setValue(new Date());
 
@@ -436,7 +435,7 @@ export class ActividadComponent implements OnInit {
       }
     });
   }
-
+  
    
 
 }
