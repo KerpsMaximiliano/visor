@@ -3,8 +3,8 @@
 <div class="flex-header">
     <div>
         <mat-form-field appearance="outline" class="input-header">
-            <mat-label><mat-icon>search</mat-icon> Buscar colaborador...</mat-label>
-            <input matInput name="usuario" (keyup)="applyFilter($event)" [(ngModel)]="inputIzq">
+            
+            <input matInput name="usuario" placeholder="Buscar colaborador..." (keyup)="applyFilter($event)" [(ngModel)]="inputIzq">
         </mat-form-field>
         <button class="boton-icono" mat-mini-fab color="primary" (click)="abrirModalFiltro()" mat-button matTooltip="Filtro Avanzado"><mat-icon class="icon">filter_alt</mat-icon></button>
         <button class="boton-icono" mat-mini-fab color="primary" (click)="contraerColaboradores()" mat-button matTooltip="Cerrar Colaboradores"><mat-icon class="icon">close_fullscreen</mat-icon></button>
