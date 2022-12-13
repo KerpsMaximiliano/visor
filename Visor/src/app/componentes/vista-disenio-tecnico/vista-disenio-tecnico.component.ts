@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy } from '@angular/compiler';
 import { Component, Input, OnInit, OnChanges ,SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { Tarea } from 'src/app/interfaces/tarea';
-import { TareaService } from 'src/app/services/i2t/tarea.service';
+import { TareaService } from '../../services/i2t/tarea.service';
 
 @Component({
   selector: 'app-vista-disenio-tecnico',

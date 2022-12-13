@@ -166,6 +166,7 @@ export class VistaAnalistaFuncionalComponent implements OnInit, OnChanges {
         respuesta.push(tarea);
       }
     });
+    console.log(respuesta[0]);
     return respuesta;
   }
 
