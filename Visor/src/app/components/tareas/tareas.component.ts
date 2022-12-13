@@ -363,7 +363,6 @@ export class TareasComponent implements OnInit {
             });
             if (this.nombreVistaSeleccionada != 'Vista') { //Pregunto si hay una vista seleccionada
               this.setSubtituloProyecto(this.idVistaSeleccionada);
-              console.log("Llamó")
             }
           })
         ).subscribe(result => {
