@@ -36,14 +36,10 @@ export class VistaDesarrolladorComponent implements OnInit, OnChanges {
   horasTotales: number = 0;
   filtroAyuda: boolean = false;
   panelActividadesAbierto: boolean= false;
-  
+ 
   constructor(private _tareaService: TareaService, private _tareaComponent: TareasComponent) { }
 
   @Input() tareasSP: any = [];
-  
-  @Output()
-  enviar: EventEmitter<string> = new EventEmitter<string>();
-  mensaje!:string;
 
   ngOnInit(): void {
     this.proyectoId = "d31cfdaa-049e-e6e3-999d-62b5b2f778b7"; // este dato viene del commponente tareas
@@ -58,7 +54,6 @@ export class VistaDesarrolladorComponent implements OnInit, OnChanges {
         this.ordenarListas();
       }
     });*/
-
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -183,11 +178,30 @@ export class VistaDesarrolladorComponent implements OnInit, OnChanges {
     }
   }
 
-  recibirMensaje(mensaje: string){
-    
-    this.mensaje = mensaje;
-    this.enviar.emit("vista")
-  }
+//Metodo para actualizar las horas ejecutadas ocasionadas por algun cambio en las Actividades
+recibirMensaje(obj:{idTarea:string,horas_ejecutadas:number, accion:string}){    
+  this.tareasOrg.forEach((tarea:any)=>{
+    if(obj.idTarea == tarea.idTarea){
+      switch(obj.accion){
+        case 'agregar':
+          tarea.horasEjecutadas = Number(tarea.horasEjecutadas) + Number(obj.horas_ejecutadas);
+          console.log('horasEje',tarea.horasEjecutadas)
+        break;
+        case 'delete':
+          tarea.horasEjecutadas = Number(tarea.horasEjecutadas) - Number(obj.horas_ejecutadas);  
+        break;
+        case 'modificar':
+          tarea.horasEjecutadas = Number(tarea.horasEjecutadas) + Number(obj.horas_ejecutadas); 
+      }
+      this.tareasSP.forEach((t: {
+        horas_ejecutadas: any; id_tarea: string; })=>{
+        if (t.id_tarea == obj.idTarea){
+          t.horas_ejecutadas = tarea.horasEjecutadas
+        }
+      })
+    }
+  })
+}
 
   calcularSprint(fechaPlan: string) {
     return (fechaPlan.slice(0,4).concat(fechaPlan.slice(5,7)));

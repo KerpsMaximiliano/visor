@@ -22,6 +22,10 @@ export class TareaService {
 
     private enviarBooleanActividadSubject = new Subject<any>();
     enviarBooleanActividadObservable = this.enviarBooleanActividadSubject.asObservable();
+
+    indexPanel!: number;
+    private enviarIndexPanelSubject = new Subject<number>();
+    enviarIndexPanelObservable = this.enviarIndexPanelSubject.asObservable();
     
     constructor(private rest: RestService) { }
     
@@ -44,6 +48,11 @@ export class TareaService {
    enviarCambio(){
     this.unProyecto = this.getProyectoActual();
     this.enviarProyectoActual(this.unProyecto);
+   }
+
+   enviarIndexPanel(indexPanel: number){
+    this.indexPanel = indexPanel;
+    this.enviarIndexPanelSubject.next(indexPanel);
    }
 
 

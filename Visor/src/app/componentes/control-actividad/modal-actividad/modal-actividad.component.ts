@@ -208,6 +208,7 @@ agregarActividadSuite(){
       if(t.id_tarea == this._actividadService.idTarea){
         console.log(t.id_tarea,t.id_actividad);
         this.tareaS = t;
+        console.log("TAREA en ACTIVIDAD",t)
       }
     })
   
@@ -230,12 +231,15 @@ agregarActividadSuite(){
       asignado_a: "",
       id_tarea: this.tareaS.id_tarea
       }
-    
-    //console.log(actividadS);
+   
+
     actividadS.fecha.setHours(10,0,0);
     console.log(actividadS.fecha)
+    
     //console.log('ACTIVIDAD SSSS FECHAAA',actividadS.fecha)
-    this._actividadService.form.reset()
+
+
+    //this._actividadService.form.reset()
     if(this.fechaIngresada != null){
       console.log(this.fechaIngresada)
       
@@ -322,8 +326,10 @@ agregarActividadSuite(){
     if(this.form.valid){
       this.lTareas.forEach(t=>{
         if(t.id_tarea == this._actividadService.idTarea){
-          console.log(t);
+          
           this.tareaS = t;
+          console.log(t);
+          console.log(this.tareaS)
         }
       })
       if(this.index != undefined){
@@ -362,7 +368,7 @@ agregarActividadSuite(){
         actividadS.descripcion = 'Esta actividad no tiene descripción';
       }
     
-      this._actividadService.form.reset();
+      //this._actividadService.form.reset();
       
       this._actividadService.editarActividad(actividadS, this.data.idTarea).subscribe((response:any)=>{
         

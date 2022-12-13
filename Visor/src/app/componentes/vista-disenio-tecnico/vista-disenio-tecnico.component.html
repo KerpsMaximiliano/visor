@@ -143,7 +143,7 @@
                 <div *ngFor="let tarea of tareasEnProgreso ; let i = index;">
                     
                     <mat-accordion>
-                        <mat-expansion-panel hideToggle>
+                        <mat-expansion-panel hideToggle >
                             <mat-divider></mat-divider>
 
                             <div class="iconos-superior">
@@ -207,7 +207,7 @@
                                 </button>
                                 <app-actividad (enviar)="recibirMensaje($event)" *ngIf="panelActividadesAbierto == true" [idTarea]="tarea.idTarea"></app-actividad>
                             </div>
-                        <mat-expansion-panel-header (click)="test(i)">
+                        <mat-expansion-panel-header>
                         <mat-panel-title>
                             {{tarea.titulo}}
                         </mat-panel-title>

@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Inject, Injectable, Input } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -45,6 +45,7 @@ idT!: string;
     tareas: new FormControl('5555')
   });*/
   form! : FormGroup;
+
   private enviarIndexSubject = new Subject<number>();
   enviarIndexObservable = this.enviarIndexSubject.asObservable();
 
@@ -54,9 +55,9 @@ idT!: string;
   private enviarIdTActividadSubject = new Subject<string>();
   enviarIdTActividadObservable = this.enviarIdTActividadSubject.asObservable();
 
-
   private enviarBooleanActividadSubject = new Subject<string>();
   enviarBooleanActividadObservable = this.enviarBooleanActividadSubject.asObservable();
+
 
   idTarea!: string;
   bool!: string;
@@ -101,10 +102,6 @@ idT!: string;
     this.idT = idT;
     this.enviarIdTActividadSubject.next(idT);
     //console.log("enviaR ACTIVIDAD SERVICE",idT);
-   }
-
-   llamarVista(){
-
    }
 
   getActividad(){

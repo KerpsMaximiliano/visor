@@ -35,10 +35,6 @@ export class VistaDisenioTecnicoComponent implements OnInit, OnChanges{
 
   @Input() tareasSP: any = [];
 
-  @Output()
-  enviar: EventEmitter<string> = new EventEmitter<string>();
-  mensaje!:string;
-
   ngOnInit(): void {
     this.proyectoId = "d31cfdaa-049e-e6e3-999d-62b5b2f778b7"; // este dato viene del commponente tareas
     /*this._tareaService.getTareasDeProyecto(this.proyectoId, 'RelevamientoReq').subscribe((response: any) => {
@@ -53,11 +49,6 @@ export class VistaDisenioTecnicoComponent implements OnInit, OnChanges{
         this.ordenarListas();
       }
     });;*/
-    if(this.mensaje != undefined && this.mensaje!= null){
-      console.log("llego")
-      this.enviar.emit("vista")
-      
-    }
   }
 
   ngOnChanges(changes: SimpleChanges){
@@ -150,17 +141,30 @@ export class VistaDisenioTecnicoComponent implements OnInit, OnChanges{
     });
   };
 
-  recibirMensaje(mensaje: string){
-    this.mensaje = mensaje;
-    this.enviar.emit("vista");
-    
-  }
-
-
-  test(i:any){
-    console.log(i)
-    console.log("toco")
-  }
+//Metodo para actualizar las horas ejecutadas ocasionadas por algun cambio en las Actividades
+recibirMensaje(obj:{idTarea:string,horas_ejecutadas:number, accion:string}){    
+  this.tareasOrg.forEach((tarea:any)=>{
+    if(obj.idTarea == tarea.idTarea){
+      switch(obj.accion){
+        case 'agregar':
+          tarea.horasEjecutadas = Number(tarea.horasEjecutadas) + Number(obj.horas_ejecutadas);
+          console.log('horasEje',tarea.horasEjecutadas)
+        break;
+        case 'delete':
+          tarea.horasEjecutadas = Number(tarea.horasEjecutadas) - Number(obj.horas_ejecutadas);  
+        break;
+        case 'modificar':
+          tarea.horasEjecutadas = Number(tarea.horasEjecutadas) + Number(obj.horas_ejecutadas); 
+      }
+      this.tareasSP.forEach((t: {
+        horas_ejecutadas: any; id_tarea: string; })=>{
+        if (t.id_tarea == obj.idTarea){
+          t.horas_ejecutadas = tarea.horasEjecutadas
+        }
+      })
+    }
+  })
+}
 
   calcularFecha(fecha: string) {
     if (fecha != null) {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , EventEmitter, Input} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
 import { finalize } from 'rxjs/operators';
@@ -10,6 +10,7 @@ import {
 import { MatTableDataSource } from '@angular/material/table';
 import { TareaService } from 'src/app/services/i2t/tarea.service';
 import { FiltroService } from 'src/app/services/i2t/filtro.service';
+
 
 
 
@@ -105,7 +106,6 @@ export class TareasComponent implements OnInit {
   tecnologiaTarea: '',
   idProyectoSeleccionado: '' 
   }
-  
 
   listaTareasService:any;
   tareasFiltradas: any = [];
@@ -113,10 +113,6 @@ export class TareasComponent implements OnInit {
   columnas: string[] = ['nombre'];
 
   valorInputProyecto:string = ''
-  unProyectoA!:any;
-  mensaje!:string;
-  mensajeP!:string;
-  index!:number;
 
   constructor(public dialog: MatDialog, private _snackBar: MatSnackBar, private _tareaService: TareaService, private _filtroService: FiltroService) {
     
@@ -157,16 +153,8 @@ export class TareasComponent implements OnInit {
   }
 
   ngOnInit(): void {
-   
   }
-  recibirMensaje(mensaje: string){
-    
-    if (mensaje == "vista"){
-      //console.log(this.unProyectoA)
-      this.seleccionarProyecto(this.unProyectoA);
-      console.log()
-    }
-  }
+ 
 
   buscarProyectos(event: Event) {                              
     const filterValue = (event.target as HTMLInputElement).value;
@@ -183,7 +171,6 @@ export class TareasComponent implements OnInit {
   }
   
   seleccionarProyecto(unProyecto: any){
-    this.unProyectoA = unProyecto;// Variable para actividad
     this.nombreProyecto = unProyecto.nombre_projecto;
     this.idProyectoSeleccionado = unProyecto.id_projecto
     this.filtrosTarea.idProyectoSeleccionado = this.idProyectoSeleccionado; //Para que no aparezca mensaje al abrir modal de filtro de tareas
