@@ -132,14 +132,6 @@ export class TareasComponent implements OnInit {
     this.listaProyectos = proyectos;
     
     this.dataSource = new MatTableDataSource(this.listaProyectos);
-
-    this._tareaService.getABMproyectoService().subscribe((response: any) =>{ //Obtengo los proyectos
-      this.listaProyectosService = response.dataset;
-      this.dataSourceService = new MatTableDataSource(this.listaProyectosService);
-    
-      console.log(this.dataSourceService)
-
-    });
     
     //Obtengo usuario logueado
     this._filtroService.getUserId(localStorage.getItem('usuario')!).subscribe((response: any) => {
@@ -156,16 +148,22 @@ export class TareasComponent implements OnInit {
   }
  
 
-  buscarProyectos(event: Event) {                              
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.valorInputProyecto = (event.target as HTMLInputElement).value;
+  buscarProyectos(event: Event) {   
     
+    this.valorInputProyecto = (event.target as HTMLInputElement).value;   
+    this._tareaService.getABMproyectoService(this.valorInputProyecto).subscribe((response: any) =>{ //Obtengo los proyectos
+      this.listaProyectosService = response.dataset;
+      this.dataSourceService = new MatTableDataSource(this.listaProyectosService);
+    
+      console.log(this.dataSourceService)
+
+    });
+    console.log(this.valorInputProyecto)
     if(this.valorInputProyecto == ''){
       this.estiloListaProyectos = 'ocultarTabla';
     }
     else{
       this.estiloListaProyectos = 'mostrarTabla';
-      this.dataSourceService.filter = filterValue.trim().toLowerCase();
     }
 
   }
