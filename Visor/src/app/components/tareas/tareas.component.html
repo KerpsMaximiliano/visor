@@ -2,7 +2,7 @@
   <span class="buscadores">
     <div class="buscador" appearance="standard">
       <mat-form-field class="example-form-field" appearance="outline" id="searchInput">
-        <input matInput type="text" placeholder="Buscar proyecto..." autocomplete="off" [(ngModel)]="valorInputProyecto"  (keyup.enter)="buscarProyectos($event)">
+        <input matInput type="text" placeholder="Buscar proyecto..." autocomplete="off" [(ngModel)]="valorInputProyecto"  (keyup)="cerrarTablaProyectos($event)"(keyup.enter)="buscarProyectos($event)">
         <div class="lista_proyectos" [ngClass]= estiloListaProyectos >
           <div>
             <table mat-table [dataSource]="dataSourceService" class="mat-elevation-z8 ">

@@ -1,4 +1,4 @@
-import { Component, OnInit , EventEmitter, Input} from '@angular/core';
+import { Component, OnInit , EventEmitter, Input, HostListener} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
 import { finalize } from 'rxjs/operators';
@@ -114,6 +114,8 @@ export class TareasComponent implements OnInit {
 
   valorInputProyecto:string = ''
 
+  
+
   constructor(public dialog: MatDialog, private _snackBar: MatSnackBar, private _tareaService: TareaService, private _filtroService: FiltroService) {
     
     //this.filtrosBusquedaTareas = JSON.parse(JSON.stringify(this.filtrosBusquedaTareas));
@@ -144,6 +146,22 @@ export class TareasComponent implements OnInit {
 
   }
 
+  /* manejo de click para cierre de tabla de proyectos */
+  // @HostListener('click', ['$event'])
+  // manejoClickComponente() {
+  //   // console.log("click en el com");
+  //   this.inside = true;
+    
+  // }
+  @HostListener('document:click', ['$event'])
+  manejoClickFueraComponente() {
+    if (this.estiloListaProyectos == 'mostrarTabla'){
+      this.estiloListaProyectos="ocultarTabla"
+    }     
+  }
+  inside: boolean = false;
+
+
   ngOnInit(): void {
   }
  
@@ -166,6 +184,13 @@ export class TareasComponent implements OnInit {
       this.estiloListaProyectos = 'mostrarTabla';
     }
 
+  }
+
+  cerrarTablaProyectos(event: Event){
+    
+    if(this.valorInputProyecto.length == 0){
+      this.estiloListaProyectos = 'ocultarTabla';
+    }
   }
   
   seleccionarProyecto(unProyecto: any){
