@@ -84,6 +84,7 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
       this.mesesPlanificacion[0].mes = this._colaboradorService.getMesString(this.fechaHastaDate.getMonth());
       this.setearFecha(this.fechaHastaDate);
       this._colaboradorService.disponibilidadUsuario(1, 1, this.mesFechaElegida, this.anioFechaElegida).subscribe((response: any) => {
+        console.log(response)
         this.colaboradoresSP = response.dataset;
         console.log(this.colaboradoresSP);
         
@@ -128,7 +129,8 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
         id: colab.id_usuario,
         nombre: this.cortarSegundoNombre(colab.nombre),  // llamar funcion para cortar el segundo nombre
         apellido: colab.apellido,
-        funcion: this.funcionCheck(colab.funcion_usuario),
+        //funcion: this.funcionCheck(colab.funcion_usuario),
+        funcion: colab.funcion_usuario,
         capacidad: this.nullCheck(colab.capacidad_total),
         horasPlanificadas: colab.horas_asignadas,
         tiempoDisponible: 0,
@@ -390,9 +392,31 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   prepararFiltro() {
     const filtroNombre = this.filtroAvanzado(1, this.nombre);
     const filtroApellido = this.filtroAvanzado(2, this.apellido);
-    const filtroFuncion = this.filtroAvanzado(3, this.funcion);
-    this.colaboradores = this.buscarCoincidencias(filtroNombre, filtroApellido, filtroFuncion);
-    this.aplicarFiltros();
+    if(this.funcion == ''){
+      console.log("Entra")
+      //Elimina nom y ape duplicados
+      console.log(this.colaboradores)
+      this.colaboradoresNoRepeat = [];
+      this.colaboradores.forEach((unColab) => {
+        let repetido: boolean = false;
+        this.colaboradoresNoRepeat.forEach(sinRep => {
+          if ( (unColab.nombre == sinRep.nombre) && (unColab.apellido == sinRep.apellido) ) {
+            repetido = true;
+          }
+        });
+        if (!repetido) {
+          this.colaboradoresNoRepeat.push(unColab)
+        }
+      })
+      console.log(this.colaboradoresNoRepeat)
+      this.colaboradores = this.colaboradoresNoRepeat;
+      this.aplicarFiltros();
+    }
+    else{
+      const filtroFuncion = this.filtroAvanzado(3, this.funcion);
+      this.colaboradores = this.buscarCoincidencias(filtroNombre, filtroApellido, filtroFuncion);
+      this.aplicarFiltros();
+    }
   }
 
   filtroAvanzado(tipo: number, valor: string) {
