@@ -36,11 +36,11 @@
 
 <mat-accordion [multi]="true" [ngClass]="{'equipo': !colaboradorUnico, 'colaborador-unico': colaboradorUnico}" *ngIf="!noHayColaboradores">
     <div class="columna-equipo">
-        <div *ngFor="let colaborador of columna1sinRepetidos">
+        <div *ngFor="let colaborador of columna1">
             <mat-expansion-panel hideToggle>
                 <mat-expansion-panel-header>
                     <mat-panel-title>
-                        {{colaborador.nombre}} {{colaborador.apellido}}
+                        {{colaborador.nombre}} {{colaborador.apellido}} - {{colaborador.funcion}}
                         <div class="cajaPorcentaje cajaPorcentajeDisp" [ngClass]="{
                             'porcentaje-rojo-colaborador': getPorcentajeRojo(colaborador.tiempoDisponible),
                             'porcentaje-amarillo-colaborador': getPorcentajeAmarillo(colaborador.tiempoDisponible),
@@ -101,11 +101,11 @@
     </div>
 
     <div class="columna-equipo" [ngClass]="{'esconder': colaboradorUnico}">
-        <div *ngFor="let colaborador of columna2sinRepetidos">
+        <div *ngFor="let colaborador of columna2">
             <mat-expansion-panel hideToggle>
                 <mat-expansion-panel-header>
                     <mat-panel-title>
-                        {{colaborador.nombre}} {{colaborador.apellido}}
+                        {{colaborador.nombre}} {{colaborador.apellido}} - {{colaborador.funcion}}
                         <div class="cajaPorcentaje cajaPorcentajeDisp" [ngClass]="{
                             'porcentaje-rojo-colaborador': getPorcentajeRojo(colaborador.tiempoDisponible),
                             'porcentaje-amarillo-colaborador': getPorcentajeAmarillo(colaborador.tiempoDisponible),

@@ -9,7 +9,7 @@ import { FiltroService } from 'src/app/services/i2t/filtro.service';
 })
 export class ModalFiltroComponent implements OnInit {
 
-  funciones: string[] = [ 'Analista Funcional', 'Analista Tecnico', 'Desarrollador', 'Tester', 'Project Manager' ];
+  funciones: string[] = [ 'Analista Funcional', 'Analista Técnico', 'Desarrollador', 'Tester', 'Project Manager' ];
   result = {nombre: '', apellido: '', seleccion: '', filtrar: true, limpiar: false};
   saved_search_id = '';
 
