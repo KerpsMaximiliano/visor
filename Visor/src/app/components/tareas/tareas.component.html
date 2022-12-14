@@ -2,7 +2,7 @@
   <span class="buscadores">
     <div class="buscador" appearance="standard">
       <mat-form-field class="example-form-field" appearance="outline" id="searchInput">
-        <input matInput type="text" placeholder="Buscar proyecto..." autocomplete="off" [(ngModel)]="valorInputProyecto"  (keyup)="cerrarTablaProyectos($event)"(keyup.enter)="buscarProyectos($event)">
+        <input matInput type="text" placeholder="Buscar proyecto..." autocomplete="off" [(ngModel)]="valorInputProyecto"  (keyup)="cerrarTablaProyectos($event)" (keyup.enter)="buscarProyectos($event)">
         <div class="lista_proyectos" [ngClass]= estiloListaProyectos >
           <div>
             <table mat-table [dataSource]="dataSourceService" class="mat-elevation-z8 ">
@@ -17,9 +17,9 @@
         </div>
       </mat-form-field>
       <!-- Lupa para buscar proyectos-->
-      <mat-icon class="icon" (click)="abrirDialogProyecto($event)">search</mat-icon>
+<mat-icon id="lupa" class="icon" (click)="abrirDialogProyecto($event)">search</mat-icon>
       
-      <button class="botonVistas" mat-button [matMenuTriggerFor]="menu" [value] = "nombreVistaSeleccionada">{{nombreVistaSeleccionada}}</button>
+      <button class="botonVistas" mat-flat-button color="primary" [matMenuTriggerFor]="menu" [value] = "nombreVistaSeleccionada">{{nombreVistaSeleccionada}}</button>
       <mat-menu #menu="matMenu">
         <button mat-menu-item (click)='verTareasDeVista($event)' id="Vista">Vista</button>
         <button mat-menu-item (click)='verTareasDeVista($event)' id="Analista Funcional">Analista funcional</button>
@@ -31,16 +31,16 @@
     </div>
     
     <div class="buscador">
-      <mat-icon class="icon">add_circle</mat-icon>
+      <mat-icon id="btnABMtareas" class="icon">add_circle</mat-icon>
       <!-- "Sprint" -->
-      <button mat-flat-button color="primary" [matMenuTriggerFor]="sprintMenu" class="sombraBotones" (click)="mesesYanios()">{{mesAnioSeleccionado}}</button>
+      <button id="btn-sprint" mat-flat-button color="primary" [matMenuTriggerFor]="sprintMenu" class="sombraBotones" (click)="mesesYanios()">{{mesAnioSeleccionado}}</button>
       <mat-menu #sprintMenu="matMenu">
         <mat-option [value]="mesAnio"  *ngFor="let mesAnio of mesesAnios" (click)="setMesAnio(mesAnio)">{{ mesAnio }}</mat-option>
       </mat-menu>
       
       <!-- Asignadas a mi -->
       <button [ngClass]="{'sombraBotones': asignadasAmiDesactivado,  'bordeBotonActivado': asignadasAmiActivado }" mat-flat-button color="primary" (click)="getUsuarioTareasAsignadas()">Asignadas a mi</button>
-      <mat-icon class="icon" (click)="buscarTarea()">filter_alt</mat-icon>
+      <mat-icon id="btnFiltroTareas" class="icon" (click)="buscarTarea()">filter_alt</mat-icon>
     </div>
   </span>
   <h1> {{nombreProyecto}}</h1>
