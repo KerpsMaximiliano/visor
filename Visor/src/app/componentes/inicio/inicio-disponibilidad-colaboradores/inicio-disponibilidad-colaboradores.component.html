@@ -36,7 +36,7 @@
 
 <mat-accordion [multi]="true" [ngClass]="{'equipo': !colaboradorUnico, 'colaborador-unico': colaboradorUnico}" *ngIf="!noHayColaboradores">
     <div class="columna-equipo">
-        <div *ngFor="let colaborador of columna1">
+        <div *ngFor="let colaborador of columna1sinRepetidos">
             <mat-expansion-panel hideToggle>
                 <mat-expansion-panel-header>
                     <mat-panel-title>
@@ -101,7 +101,7 @@
     </div>
 
     <div class="columna-equipo" [ngClass]="{'esconder': colaboradorUnico}">
-        <div *ngFor="let colaborador of columna2">
+        <div *ngFor="let colaborador of columna2sinRepetidos">
             <mat-expansion-panel hideToggle>
                 <mat-expansion-panel-header>
                     <mat-panel-title>

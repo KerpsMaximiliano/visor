@@ -24,9 +24,12 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   colaboradoresSP: any[] = [];
   planificacion: any[] = [];
   colaboradores: Colaborador[] = [];
+  colaboradoresNoRepeat: Colaborador[] = [];
   colaboradores2: Colaborador[] = [];
   columna1!: Colaborador[];
   columna2!: Colaborador[];
+  columna1sinRepetidos: Colaborador[] = [];
+  columna2sinRepetidos: Colaborador[] = [];
   dataSource!: any;
   noHayColaboradores = false;
   colaboradorUnico = false;
@@ -84,6 +87,24 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
       this.setearFecha(this.fechaHastaDate);
       this._colaboradorService.disponibilidadUsuario(1, 1, this.mesFechaElegida, this.anioFechaElegida).subscribe((response: any) => {
         this.colaboradoresSP = response.dataset;
+        //Elimina colaboradores repetidos
+        console.log(this.colaboradoresSP)
+        
+        this.colaboradoresSP.forEach((unColab) => {
+          let repeitdo: boolean = false;
+          this.colaboradoresNoRepeat.forEach(sinRep => {
+            console.log("Compara " + unColab.id_usuario + " con: " + sinRep.id)
+            if (unColab.id_usuario == sinRep.id) {
+              repeitdo = true;
+            }
+          });
+          if (!repeitdo) {
+            console.log(unColab)
+            this.colaboradoresNoRepeat.push(unColab)
+          }
+        })
+        console.log(this.colaboradoresNoRepeat)
+        
         this.organizarColaboradores();
         this.getTareasAtrasadas();
         this.getPlanificacionColaboradores();
@@ -283,7 +304,34 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     let tamanioCol1:number;
     tamanioCol1 = Math.round(tamanioCol1 = this.colaboradores.length / 2);
     this.columna1 = this.colaboradores.slice(0, tamanioCol1);
+
+    //Obtengo OBJETOS sin repetir
+    this.columna1.forEach((unObj) => {
+      let respuesta:boolean = false;
+      this.columna1sinRepetidos.forEach(sinRep => {
+        if(sinRep.id == unObj.id){
+          respuesta = true;
+        }
+      });
+      if(!respuesta){
+        this.columna1sinRepetidos.push(unObj)
+      }
+    })
+    console.log(this.columna1sinRepetidos)
     this.columna2 = this.colaboradores.slice(tamanioCol1, this.colaboradores.length);
+    console.log(this.columna2)
+
+    this.columna2.forEach((unObj) => {
+      let respuesta:boolean = false;
+      this.columna2sinRepetidos.forEach(sinRep => {
+        if(sinRep.id == unObj.id){
+          respuesta = true;
+        }
+      });
+      if(!respuesta){
+        this.columna2sinRepetidos.push(unObj)
+      }
+    })
   }
 
   applyFilter(event: Event) {
