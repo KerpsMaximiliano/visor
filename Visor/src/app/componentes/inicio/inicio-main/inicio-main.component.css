@@ -4,8 +4,8 @@
 
 .container-main {
     display: flex;
-    width: 100%;
-    margin-top: 30px;
+    margin: 2%;
+    margin-top: 2.5%;
 }
 
 .flex-item {
@@ -36,4 +36,20 @@
 .division {
     height: 1600px;
     background: linear-gradient(#000, #000) no-repeat center/2px 100%;
+}
+
+#componenteDisponibilidad{
+    width: 49%;
+    margin: 0;
+    margin-right: 2.5%;
+}
+
+#componenteEstado{
+    width: 49%;
+    margin: 0;
+}
+
+.visible{
+    visibility: hidden;
+    display: none;
 }

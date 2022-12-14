@@ -1,10 +1,10 @@
 <div id="topbar">
     <h1> Visor </h1>
-    <button mat-button (click)="inicio()">Inicio</button>
-    <button mat-button>Equipo</button>
-    <button mat-button (click)="tareas()">Tareas</button>
-    <button mat-button>Wiki I+D</button>
-    <button mat-button>Documentos</button>
+    <button class="menu" mat-button (click)="inicio()">Inicio</button>
+    <button class="menu" mat-button>Equipo</button>
+    <button class="menu" mat-button (click)="tareas()">Tareas</button>
+    <button class="menu" mat-button>Wiki I+D</button>
+    <button class="menu" mat-button>Documentos</button>
 
     <button class="nav-end-btn" mat-button tabindex="-1" [matMenuTriggerFor]="menuUsuario">
         <span>{{nombreUsuario}}</span>

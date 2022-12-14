@@ -1,3 +1,9 @@
+.container-all{
+    width: 100%;
+    position: relative;
+    top: -2.3%;
+}
+
 
 #titulo {
     text-align: center;
