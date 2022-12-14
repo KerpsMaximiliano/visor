@@ -13,7 +13,8 @@ h1, h3{
 .lista_proyectos {
     overflow-y: scroll;
     border: 1px solid black;
-    height: 22vw;
+    min-height: 1vw;
+    max-height: 22vw;
     width: 15vw;
 }
 .contenedor{

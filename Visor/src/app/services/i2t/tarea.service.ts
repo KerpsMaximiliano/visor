@@ -71,10 +71,11 @@ export class TareaService {
 
    
 
-    getABMproyectoService() {
+    getABMproyectoService(nombreProyecto?:string) {
         let endPoint = 'AbmProyectos';
         let jsbody: string = JSON.stringify({
-            par_modo: 'G'
+            par_modo: 'G',
+            par_nomProy:nombreProyecto
         });
         return this.rest.getABMproyectoRest(jsbody, endPoint);
     }
