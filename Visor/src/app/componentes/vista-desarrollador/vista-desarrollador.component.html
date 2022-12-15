@@ -22,7 +22,7 @@
             <div id="no-iniciadas" class="titulo-container">
                 <h4>NO INICIADAS</h4>
             </div>
-            <div class="conteiner-all-tareas">
+            <div class="conteiner-all-tareas" [ngClass]="{'barra-scroll': poseeTareasNoIniciadas}">
                 <div class="tareas" *ngFor="let tarea of tareasNoIniciadas ; let i = index">
                     <mat-accordion class="panel-header">
                         <mat-expansion-panel hideToggle>
@@ -118,7 +118,7 @@
                 'oculto': chequearFiltro() }" (click)="filtrarAyuda()"></i>
             <i [ngClass]="{ 'shakehands fa-3x fa-solid fa-handshake': chequearFiltro(),
                 'oculto': !chequearFiltro() }" (click)="filtrarAyuda()"></i>
-            <div class="conteiner-all-tareas">
+            <div class="conteiner-all-tareas" [ngClass]="{'barra-scroll': poseeTareasEnProgreso}">
                 <div class="tareas" *ngFor="let tarea of tareasEnProgreso ; let i = index">
                     <mat-accordion class="panel-header">
                         <mat-expansion-panel hideToggle>
@@ -219,7 +219,7 @@
             <div id="en-prueba" class="titulo-container">
                 <h4>EN PRUEBA</h4>
             </div>
-            <div class="conteiner-all-tareas">
+            <div class="conteiner-all-tareas" [ngClass]="{'barra-scroll': poseeTareasEnPrueba}">
                 <div class="tareas" *ngFor="let tarea of tareasEnPrueba ; let i = index">
                     <mat-accordion class="panel-header">
                         <mat-expansion-panel hideToggle>
@@ -316,7 +316,7 @@
             <div id="completadas" class="titulo-container">
                 <h4>COMPLETADAS</h4>
             </div>
-            <div class="conteiner-all-tareas">
+            <div class="conteiner-all-tareas" [ngClass]="{'barra-scroll': poseeTareasCompletadas}">
                 <div class="tareas" *ngFor="let tarea of tareasCompletadas">
                     <mat-accordion class="panel-header">
                         <mat-expansion-panel hideToggle>
