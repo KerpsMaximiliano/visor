@@ -86,6 +86,9 @@ h4 {
 
 .container-all-tareas {
     margin-top: 10px;
+    
+}
+.barra-scroll{
     overflow-y: scroll;
     height: 21vw;
 }

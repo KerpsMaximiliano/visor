@@ -39,7 +39,12 @@ h4 {
     display: flex;
     justify-content: center;
     padding-top: 20px;
-}  
+} 
+
+.barra-scroll{
+    overflow-y: scroll;
+    height: 21vw;
+}
 
 .container-barra{
     margin-right: 20%;
