@@ -10,6 +10,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   constructor(private router: Router){}
   canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
     if(localStorage.getItem('auth_token')){
+      console.log('el token es: ',localStorage.getItem('auth_token'));
+      
 			return true;
 		}
 		
