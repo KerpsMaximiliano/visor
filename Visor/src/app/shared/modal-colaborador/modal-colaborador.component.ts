@@ -22,7 +22,7 @@ export class ModalColaboradorComponent implements OnInit {
     usuarios!:UsuarioRol [];
     nombreU!:string;
     usuarioR:UsuarioRolRefact []=[];
-    rol!:string;
+    roles:string[] = [];
 
   ngOnInit(): void {
     console.log(this._usuarioService.getUsuarios());
@@ -58,7 +58,7 @@ export class ModalColaboradorComponent implements OnInit {
       if(u.nombre != null && u.apellido!= null ){
         let nombreC:string = u.nombre.concat(" ").concat(u.apellido);
         if(nombreC == this.nombreU){
-          this.rol = u.nombre_rol;
+          this.roles.push(u.nombre_rol);
         }
       }
     })

@@ -15,7 +15,16 @@
     </div>
     <div mat-dialog-content>
             <div class="contenido" style="font-size: 15px;">
-                <div class="roles"><mat-label>Roles: </mat-label><mat-label style="font-weight: bold;">{{rol}}</mat-label></div>
+                <div class="roles">
+                    <mat-label>Roles: </mat-label>
+                    <ul style="margin-bottom: 0px;">
+                        <li *ngFor="let rol of roles; let i = index" style="font-weight: bold;">
+                            <mat-label >
+                                {{rol}}
+                            </mat-label>
+                        </li>
+                    </ul>
+                </div>
                 <div><mat-label>Conocimientos:</mat-label></div>
                 <div><mat-label>Preferencias:</mat-label></div>
                 <div><mat-label>Proyectos actuales:</mat-label></div>

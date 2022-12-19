@@ -4,13 +4,13 @@ export interface UsuarioRolRefact  {
     nombre: string,
     apellido: string,
     nombre_rol: string,
-    conocimientos: Array<String>,
+    //Resto de variables que pide el CU 12
+    /* conocimientos: Array<String>,
     preferencias: Array<string>,
     proyectos_actuales: Array<string>,
     tareas_completadas_tec: Array<string>,
     proyectos_anteriores: Array<String>,
     empresas: Array<String>,
     instituciones: Array<string>,
-    carreras: Array<String>
-
+    carreras: Array<String> */
 }
