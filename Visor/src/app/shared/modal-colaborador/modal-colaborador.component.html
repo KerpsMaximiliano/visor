@@ -1,1 +1,35 @@
-<p>modal-colaborador works!</p>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<div class="container">
+   
+    <div class="close">
+        <div mat-dialog-actions>
+            <button mat-icon-button (click)="closeDialog()" tabIndex="-1">
+                <mat-icon style="position: absolute; top: -20px;font-size: 30px;">close</mat-icon>
+            </button>
+        </div>     
+    </div>
+    
+    <div class="head">
+        <div class="cuadrado"></div>
+        <h1 mat-dialog-title >{{nombreU}}</h1>
+    </div>
+    <div mat-dialog-content>
+            <div class="contenido" style="font-size: 15px;">
+                <div class="roles"><mat-label>Roles: </mat-label><mat-label style="font-weight: bold;">{{rol}}</mat-label></div>
+                <div><mat-label>Conocimientos:</mat-label></div>
+                <div><mat-label>Preferencias:</mat-label></div>
+                <div><mat-label>Proyectos actuales:</mat-label></div>
+                <div><mat-label>Tareas completadas en tecnología:</mat-label></div>
+                <div><mat-label>Proyectos anteriores:</mat-label></div>
+                <div><mat-label>Empresas:</mat-label></div>
+                <div><mat-label>Instituciones de formación:</mat-label></div>
+                <div><mat-label>Carreras:</mat-label></div>
+            </div>
+    </div>
+        <div class="downline">
+            <div mat-dialog-actions>
+                <button ><span class="material-symbols-outlined">download</span></button>
+            </div>
+        </div>
+</div>
+

@@ -1,6 +1,9 @@
 import { ChangeDetectionStrategy } from '@angular/compiler';
 import { Component, Input, OnInit, OnChanges ,SimpleChanges, Output, EventEmitter } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { finalize } from 'rxjs';
 import { Tarea } from 'src/app/interfaces/tarea';
+import { ModalColaboradorComponent } from 'src/app/shared/modal-colaborador/modal-colaborador.component';
 import { TareaService } from '../../services/i2t/tarea.service';
 
 @Component({
@@ -31,7 +34,7 @@ export class VistaDisenioTecnicoComponent implements OnInit, OnChanges{
   horasTotales: number = 0;
   panelActividadesAbierto: boolean= false;
 
-  constructor(private _tareaService: TareaService) {  }
+  constructor(private _tareaService: TareaService, public dialog: MatDialog) {  }
 
   @Input() tareasSP: any = [];
 
@@ -347,5 +350,22 @@ recibirMensaje(obj:{idTarea:string,horas_ejecutadas:number, accion:string}){
   abrirActividades(){
     this.panelActividadesAbierto= this.panelActividadesAbierto ? false : true;
   }
+
+  abrirModal(event: Event, usuario: string){
+    event.preventDefault();
+    console.log("abrio MOdal")
+    console.log()
+    let uId = localStorage.getItem('userId');
+  
+    const dialogRef = this.dialog.open(ModalColaboradorComponent,{width:'400px', data:{usuario}});
+    dialogRef.afterClosed().pipe(
+      finalize(() => {
+        
+      })
+    )
+    .subscribe(result => {
+       console.log(result);
+    })
+   }
 
 }

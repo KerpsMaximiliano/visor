@@ -1,6 +1,9 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter  } from '@angular/core';
 import { TareaService } from 'src/app/services/i2t/tarea.service';
 import { Tarea } from 'src/app/interfaces/tarea';
+import { MatDialog } from '@angular/material/dialog';
+import { ModalColaboradorComponent } from 'src/app/shared/modal-colaborador/modal-colaborador.component';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-vista-analista-funcional',
@@ -30,7 +33,7 @@ export class VistaAnalistaFuncionalComponent implements OnInit, OnChanges {
   horasTotales: number = 0;
   panelActividadesAbierto: boolean= false;
 
-  constructor(private _tareaService: TareaService) {  }
+  constructor(private _tareaService: TareaService,  public dialog: MatDialog ) {  }
 
   @Input() tareasSP: any = [];
 
@@ -338,5 +341,22 @@ recibirMensaje(obj:{idTarea:string,horas_ejecutadas:number, accion:string}){
   abrirActividades(){
     this.panelActividadesAbierto= this.panelActividadesAbierto ? false : true;
   }
+
+  abrirModal(event: Event, usuario: string){
+    event.preventDefault();
+    console.log("abrio MOdal")
+    console.log()
+    let uId = localStorage.getItem('userId');
+  
+    const dialogRef = this.dialog.open(ModalColaboradorComponent,{width:'400px', data:{usuario}});
+    dialogRef.afterClosed().pipe(
+      finalize(() => {
+        
+      })
+    )
+    .subscribe(result => {
+       console.log(result);
+    })
+   }
 
 }
