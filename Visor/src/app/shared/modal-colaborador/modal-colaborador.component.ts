@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Usuario } from 'src/app/interfaces/usuario';
 import { UsuarioRol } from 'src/app/interfaces/usuario-rol';
+import { UsuarioRolRefact } from 'src/app/interfaces/usuarioRolRefact';
 import { LoginService } from 'src/app/services/i2t/login.service';
 import { UsuarioService } from 'src/app/services/i2t/usuario-rol.service';
 
@@ -20,7 +21,7 @@ export class ModalColaboradorComponent implements OnInit {
 
     usuarios!:UsuarioRol [];
     nombreU!:string;
-    //usuarioR:UsuarioRolRefact []=[];
+    usuarioR:UsuarioRolRefact []=[];
     rol!:string;
 
   ngOnInit(): void {
@@ -31,14 +32,14 @@ export class ModalColaboradorComponent implements OnInit {
     this.buscarUsuario();
     console.log(this._usuarioService.getUsuariosRefact());
     this.nombreU = this.dialogRef.componentInstance.data.usuario;
-    /* this._usuarioService.getUsuariosRefact().subscribe(res=>{
+    this._usuarioService.getUsuariosRefact().subscribe(res=>{
       console.log(res);
       this.usuarioR = res.dataset;
       console.log(this.usuarioR);
       this.buscarRolUsuario();
     });
     
-    this.buscarRolUsuario(); */
+    this.buscarRolUsuario();
     
   }
 
@@ -51,7 +52,7 @@ export class ModalColaboradorComponent implements OnInit {
     })
   }
 
-  /* buscarRolUsuario(){
+  buscarRolUsuario(){
     this.usuarioR.forEach(u=>{
       
       if(u.nombre != null && u.apellido!= null ){
@@ -61,7 +62,7 @@ export class ModalColaboradorComponent implements OnInit {
         }
       }
     })
-  } */
+  }
   
 
   closeDialog(){
