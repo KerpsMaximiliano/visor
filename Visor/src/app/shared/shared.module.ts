@@ -8,11 +8,14 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MyMaterialModule } from '../material';
 import { MatConfirmDialogComponent } from './mat-confirm-dialog/mat-confirm-dialog.component';
 import { MatTableDataSource } from '@angular/material/table';
+import { ModalColaboradorComponent } from './modal-colaborador/modal-colaborador.component';
 
 
 
 @NgModule({
   declarations: [
+  
+    ModalColaboradorComponent
   ],
   imports: [
     CommonModule,

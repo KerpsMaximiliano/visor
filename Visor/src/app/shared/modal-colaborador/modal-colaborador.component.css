@@ -1,0 +1,49 @@
+.cuadrado {
+  
+    width: 100px;           /* Ancho de 150 píxeles */
+    height: 100px;          /* Alto de 150 píxeles */
+    background: gray;        /* Fondo de color rojo */
+    border: 2px solid #000; /* Borde color negro y de 1 píxel de grosor */
+  }
+  .close {
+    color: black;
+    grid-column-end: right;
+    /*float: right;*/
+    margin-top: 0%;
+  }
+  .container {
+    display: grid;
+    /*grid-template-columns: repeat(2, 1fr);*/
+    grid-gap: 10px;
+    grid-template-rows: auto;
+  }
+  
+  .head {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 2fr 5fr;
+    gap: 50px;
+    justify-content: space-evenly;
+    /*align-items: center;*/
+    font-size: medium;
+  }
+
+  .contenido {
+    
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr 5fr;
+    /*margin:1rem auto;*/
+    gap: 10px; 
+    max-width: 600px; 
+    padding: 1rem
+    
+  }
+
+  .mat-dialog-actions {
+    grid-column-end: right;
+    float: right;
+  }
+
+  .roles{
+    grid-template-columns: 2fr 5fr 5fr;
+  }
