@@ -35,4 +35,8 @@ export class TopbarComponent implements OnInit {
   tareas(){
     this.router.navigate(['tareas'], {relativeTo: this.route })
   }
+
+  documentos(){
+    this.router.navigate(['documentos'], {relativeTo: this.route })
+  }
 }

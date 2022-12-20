@@ -40,12 +40,15 @@ const routes: Routes = [
     children:[
       { path: 'inicio', component: InicioMainComponent },
       { path: 'tareas', component: TareasComponent },
+      { path: 'documentos', component: SeccionDocumentosComponent},
       { path: 'configuraciones', component: ConfiguracionesComponent,
         children: [
         { path: 'roles-usuarios', component: RolesUsuariosComponent },
         { path: 'permisos-roles', component: PermisosRolesComponent }
-    ] },
-    {path: 'tareas', component: TareasComponent}
+        ]
+      },
+      {path: 'tareas', component: TareasComponent},
+      {path: '',component:InicioMainComponent}
     ]
   }
 ];
