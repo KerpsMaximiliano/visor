@@ -1,4 +1,4 @@
-.cuadrado {
+.foto {
   
     width: 100px;           /* Ancho de 150 píxeles */
     height: 100px;          /* Alto de 150 píxeles */
@@ -7,14 +7,13 @@
   }
   .close {
     color: black;
-    grid-column-end: right;
     /*float: right;*/
     margin-top: 0%;
   }
-  .container {
+  .contenedor {
     display: grid;
     /*grid-template-columns: repeat(2, 1fr);*/
-    grid-gap: 10px;
+    grid-gap: 0.5em;
     grid-template-rows: auto;
   }
   
@@ -29,21 +28,11 @@
   }
 
   .contenido {
-    
-    grid-template-rows: 1fr;
-    grid-template-columns: 1fr 5fr;
-    /*margin:1rem auto;*/
-    gap: 10px; 
     max-width: 600px; 
-    padding: 1rem
-    
+    padding: 0.5em;
   }
 
   .mat-dialog-actions {
     grid-column-end: right;
     float: right;
-  }
-
-  .roles{
-    grid-template-columns: 2fr 5fr 5fr;
   }

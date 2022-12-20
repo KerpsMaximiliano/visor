@@ -1,44 +1,44 @@
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-<div class="container">
-   
-    <div class="close">
-        <div mat-dialog-actions>
-            <button mat-icon-button (click)="closeDialog()" tabIndex="-1">
-                <mat-icon style="position: absolute; top: -20px;font-size: 30px;">close</mat-icon>
-            </button>
-        </div>     
+<link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<div class="contenedor">
+
+    <div mat-dialog-actions class="close">
+        <button mat-icon-button (click)="closeDialog()" tabIndex="-1" style="margin-left: auto; margin-top: -20px;">
+            <mat-icon>close</mat-icon>
+        </button>
     </div>
-    
+
     <div class="head">
-        <div class="cuadrado"></div>
-        <h1 mat-dialog-title >{{nombreU}}</h1>
+        <div class="foto"></div>
+        <h1 mat-dialog-title>{{nombreU}}</h1>
     </div>
     <div mat-dialog-content>
-            <div class="contenido" style="font-size: 15px;">
-                <div class="roles">
-                    <mat-label>Roles: </mat-label>
-                    <ul style="margin-bottom: 0px;">
-                        <li *ngFor="let rol of roles; let i = index" style="font-weight: bold;">
-                            <mat-label >
-                                {{rol}}
-                            </mat-label>
-                        </li>
-                    </ul>
-                </div>
-                <div><mat-label>Conocimientos:</mat-label></div>
-                <div><mat-label>Preferencias:</mat-label></div>
-                <div><mat-label>Proyectos actuales:</mat-label></div>
-                <div><mat-label>Tareas completadas en tecnología:</mat-label></div>
-                <div><mat-label>Proyectos anteriores:</mat-label></div>
-                <div><mat-label>Empresas:</mat-label></div>
-                <div><mat-label>Instituciones de formación:</mat-label></div>
-                <div><mat-label>Carreras:</mat-label></div>
-            </div>
-    </div>
-        <div class="downline">
-            <div mat-dialog-actions>
-                <button ><span class="material-symbols-outlined">download</span></button>
-            </div>
-        </div>
-</div>
+        <div class="contenido contenedor" style="font-size: 15px;">
+            <mat-label>Roles: </mat-label>
+            <ul style="margin-bottom: 0px; list-style: none;">
+                <li *ngFor="let rol of roles; let i = index" style="font-weight: bold;">
+                    <mat-label>
+                        {{rol}}
+                    </mat-label>
+                </li>
+            </ul>
 
+            <mat-label>Conocimientos:</mat-label>
+            <mat-label>Preferencias:</mat-label>
+            <mat-label>Proyectos actuales:</mat-label>
+            <mat-label>Tareas completadas en tecnología:</mat-label>
+            <mat-label>Proyectos anteriores:</mat-label>
+            <mat-label>Empresas:</mat-label>
+            <mat-label>Instituciones de formación:</mat-label>
+            <mat-label>Carreras:</mat-label>
+
+        </div>
+    </div>
+
+    <!-- <div mat-dialog-actions>
+        <button><span class="material-symbols-outlined">download</span></button>
+    </div> -->
+    <button mat-icon-button style="margin-left: auto; font-size: 3em;">
+        <mat-icon>download</mat-icon>
+    </button>
+</div>
