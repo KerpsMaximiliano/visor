@@ -21,7 +21,7 @@ export class PermisosRolesComponent implements OnInit {
   dataSource!: MatTableDataSource<any>;
   displayedColumns: string[] = ['permiso', 'operativo', 'supervisor', 'administrador'];
   privilegio: boolean = false;
-  permisosOrdenados: any[] = [];
+  permisosOrdenados: Permiso[] = [];
 
   constructor(private _permisoService: PermisoService,
               private _usuarioService: UsuarioService,

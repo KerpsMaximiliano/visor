@@ -8,12 +8,15 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { finalize, tap } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 
 @Injectable()
 export class LoggerInterceptor implements HttpInterceptor {
 
-  constructor() {
+  constructor(
+    private router: Router
+  ) {
   }
 
   // obtenerFuncion(url: any){
@@ -49,7 +52,11 @@ export class LoggerInterceptor implements HttpInterceptor {
             else
               console.log('%c dataset: ', 'background: #000; color: #ff0', data.dataset);
           }
-      }
+          if(data.returnset[0].RCode == -6003){
+            localStorage.clear();
+            this.router.navigate(['/login']);
+          }
+        }
     } 
       })
     );

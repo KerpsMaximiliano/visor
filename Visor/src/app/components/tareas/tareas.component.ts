@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , EventEmitter, Input, HostListener} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
 import { finalize } from 'rxjs/operators';
@@ -10,6 +10,7 @@ import {
 import { MatTableDataSource } from '@angular/material/table';
 import { TareaService } from 'src/app/services/i2t/tarea.service';
 import { FiltroService } from 'src/app/services/i2t/filtro.service';
+
 
 
 
@@ -105,7 +106,6 @@ export class TareasComponent implements OnInit {
   tecnologiaTarea: '',
   idProyectoSeleccionado: '' 
   }
-  
 
   listaTareasService:any;
   tareasFiltradas: any = [];
@@ -113,6 +113,8 @@ export class TareasComponent implements OnInit {
   columnas: string[] = ['nombre'];
 
   valorInputProyecto:string = ''
+
+  
 
   constructor(public dialog: MatDialog, private _snackBar: MatSnackBar, private _tareaService: TareaService, private _filtroService: FiltroService) {
     
@@ -132,18 +134,10 @@ export class TareasComponent implements OnInit {
     this.listaProyectos = proyectos;
     
     this.dataSource = new MatTableDataSource(this.listaProyectos);
-
-    this._tareaService.getABMproyectoService().subscribe((response: any) =>{ //Obtengo los proyectos
-      this.listaProyectosService = response.dataset;
-      this.dataSourceService = new MatTableDataSource(this.listaProyectosService);
-    
-      console.log(this.dataSourceService)
-
-    });
     
     //Obtengo usuario logueado
     this._filtroService.getUserId(localStorage.getItem('usuario')!).subscribe((response: any) => {
-      console.log(response)
+      //console.log(response)
       localStorage.setItem('userId', response.dataset[0].id);
       this.idUsuario = response.dataset[0].id;
     })
@@ -152,21 +146,51 @@ export class TareasComponent implements OnInit {
 
   }
 
-  ngOnInit(): void {
-   }
-
-  buscarProyectos(event: Event) {                              
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.valorInputProyecto = (event.target as HTMLInputElement).value;
+  /* manejo de click para cierre de tabla de proyectos */
+  // @HostListener('click', ['$event'])
+  // manejoClickComponente() {
+  //   // console.log("click en el com");
+  //   this.inside = true;
     
+  // }
+  @HostListener('document:click', ['$event'])
+  manejoClickFueraComponente() {
+    if (this.estiloListaProyectos == 'mostrarTabla'){
+      this.estiloListaProyectos="ocultarTabla"
+    }     
+  }
+  inside: boolean = false;
+
+
+  ngOnInit(): void {
+  }
+ 
+
+  buscarProyectos(event: Event) {   
+    
+    this.valorInputProyecto = (event.target as HTMLInputElement).value;   
+    this._tareaService.getABMproyectoService(this.valorInputProyecto).subscribe((response: any) =>{ //Obtengo los proyectos
+      this.listaProyectosService = response.dataset;
+      this.dataSourceService = new MatTableDataSource(this.listaProyectosService);
+    
+      console.log(this.dataSourceService)
+
+    });
+    console.log(this.valorInputProyecto)
     if(this.valorInputProyecto == ''){
       this.estiloListaProyectos = 'ocultarTabla';
     }
     else{
       this.estiloListaProyectos = 'mostrarTabla';
-      this.dataSourceService.filter = filterValue.trim().toLowerCase();
     }
 
+  }
+
+  cerrarTablaProyectos(event: Event){
+    
+    if(this.valorInputProyecto.length == 0){
+      this.estiloListaProyectos = 'ocultarTabla';
+    }
   }
   
   seleccionarProyecto(unProyecto: any){
@@ -349,7 +373,6 @@ export class TareasComponent implements OnInit {
             });
             if (this.nombreVistaSeleccionada != 'Vista') { //Pregunto si hay una vista seleccionada
               this.setSubtituloProyecto(this.idVistaSeleccionada);
-              console.log("Llamó")
             }
           })
         ).subscribe(result => {

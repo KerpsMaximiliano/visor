@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Inject, Injectable, Input } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -8,7 +8,7 @@ import { ModalActividadComponent } from 'src/app/componentes/control-actividad/m
 import { HttpClient } from '@angular/common/http';
 import { ActividadSuite } from 'src/app/interfaces/actividadesSuite';
 import { RestService } from 'src/app/services/i2t/rest.service';
-import { JsonPipe } from '@angular/common';
+
 
 @Injectable({
   providedIn: 'root'
@@ -45,6 +45,7 @@ idT!: string;
     tareas: new FormControl('5555')
   });*/
   form! : FormGroup;
+
   private enviarIndexSubject = new Subject<number>();
   enviarIndexObservable = this.enviarIndexSubject.asObservable();
 
@@ -53,7 +54,13 @@ idT!: string;
 
   private enviarIdTActividadSubject = new Subject<string>();
   enviarIdTActividadObservable = this.enviarIdTActividadSubject.asObservable();
+
+  private enviarBooleanActividadSubject = new Subject<string>();
+  enviarBooleanActividadObservable = this.enviarBooleanActividadSubject.asObservable();
+
+
   idTarea!: string;
+  bool!: string;
 
   /*initializeFormGroup() {
     this.form.setValue({
@@ -81,8 +88,6 @@ idT!: string;
       tareaAsociada: ['',Validators.required]
     })
    }
-
-
 
    enviarIndex(index: number){
     this.index = index;
@@ -240,7 +245,7 @@ idT!: string;
     let year:number=actividadS.fecha.getFullYear();let fechaA:string = year+'-'+month+'-'+day;
     //console.log('fecha ingresar',fechaA);
     
-    //console.log("activdad SUITEEEEE",actividadS.fecha);
+    //console.log("activdad SUITEEEEE",actividadS.tipo_actividad);
     let jsbody: string = JSON.stringify({
       par_modo : 'I',
       descripcion : actividadS.descripcion,
@@ -259,6 +264,7 @@ idT!: string;
   }
 
   editarActividad(actividadS: ActividadSuite, idTarea: string){
+    //console.log("activdad editaaarr",actividadS);
     let day:number=actividadS.fecha.getDate();
     let month:number=actividadS.fecha.getMonth()+1;
     let year:number=actividadS.fecha.getFullYear();
