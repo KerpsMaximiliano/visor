@@ -13,7 +13,7 @@
             </div>
         </div>
         <div id="container-header-bot">
-            <mat-icon id="iconCircle">add_circle</mat-icon> <!-- Icono que abre el dialog para agregar documentos -->
+            <mat-icon id="btnABMDocumentos" (click)="abrirABMDocumentos()">add_circle</mat-icon> <!-- Icono que abre el dialog para agregar documentos -->
             <button id="assignedButton" mat-stroked-button (click)="filterByUser()" [ngClass]="{'buttonOn': buttonOn}">Asignados a mi</button>
             <mat-icon (click)="openFilter()" id="iconFilter">filter_alt</mat-icon> <!-- Icono que abriría el filtro -->
         </div>

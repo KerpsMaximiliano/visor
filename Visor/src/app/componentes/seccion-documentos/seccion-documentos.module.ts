@@ -3,9 +3,10 @@ import { CommonModule } from '@angular/common';
 import { SeccionDocumentosComponent } from './seccion-documentos.component';
 import { MyMaterialModule } from '../../material';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { ModalDocumentosComponent } from './modal-documentos/modal-documentos/modal-documentos.component';
 
 @NgModule({
-  declarations: [SeccionDocumentosComponent],
+  declarations: [SeccionDocumentosComponent, ModalDocumentosComponent],
   imports: [
     CommonModule,
     MyMaterialModule,

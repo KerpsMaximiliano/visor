@@ -25,7 +25,8 @@
     margin-left: 1%;
 }
 
-#iconCircle{
+#btnABMDocumentos{
+    cursor: pointer;
     font-size: 41px;
 }
 

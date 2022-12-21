@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ModalFiltroDocumentosComponent } from '../../shared/modal-filtro-documentos/modal-filtro-documentos.component';
 import { Documento } from '../../interfaces/documento';
 import { DocumentoService } from '../../services/i2t/documento.service';
+import { ModalDocumentosComponent } from './modal-documentos/modal-documentos/modal-documentos.component';
 
 @Component({
   selector: 'app-seccion-documentos',
@@ -597,4 +598,13 @@ export class SeccionDocumentosComponent implements OnInit {
       console.log("Desactivado")
     }
   }
+
+  abrirABMDocumentos(): void{
+    this.dialog.open(ModalDocumentosComponent, {
+      width: '400px',
+      height: '600px'
+    });
+    
+  }
 }
+
