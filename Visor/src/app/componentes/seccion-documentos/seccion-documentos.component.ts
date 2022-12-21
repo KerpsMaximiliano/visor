@@ -601,10 +601,9 @@ export class SeccionDocumentosComponent implements OnInit {
 
   abrirABMDocumentos(): void{
     this.dialog.open(ModalDocumentosComponent, {
-      width: '400px',
-      height: '600px'
+      width: '500px',
+      height: '700px'
     });
-    
   }
 }
 

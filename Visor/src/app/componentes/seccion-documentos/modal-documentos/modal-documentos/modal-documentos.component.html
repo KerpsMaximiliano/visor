@@ -1,1 +1,73 @@
-<p>modal-documentos works!</p>
+<mat-icon class="cerrar" mat-dialog-close>close</mat-icon>
+<h3>Crear Documento</h3>
+<hr>
+<form [formGroup]="formulario" class="formulario">
+    <div>
+        <mat-label>Archivo</mat-label>
+        <button mat-stroked-button onclick="adjuntar.click()">Adjuntar</button>
+        <input type="file" class="oculto" id="adjuntar" formControlName="archivo" required>
+    </div> 
+    <div>
+        <mat-label>Nombre</mat-label>
+        <mat-form-field appearance="outline" class="input">
+            <mat-label>Ingresar...</mat-label>
+            <input matInput formControlName="nombre">
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-label>Proyecto Asociado</mat-label>
+        <mat-form-field appearance="outline" class="input">
+            <mat-label>Ingresar...</mat-label>
+            <input matInput formControlName="proyectoAsociado" >
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-label>Tipo</mat-label>
+        <mat-form-field>
+            <mat-label>Seleccionar</mat-label>
+            <mat-select class="input" formControlName="tipo" >
+                <mat-option *ngFor="let tipo of tipos" [value]="tipo" >{{tipo}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-label>Estado</mat-label>
+        <mat-form-field>
+            <mat-label>Seleccionar</mat-label>
+            <mat-select class="input" formControlName="estado" >
+                <mat-option *ngFor="let estado of estados" [value]="estado" >{{estado}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-label>Fecha de publicacion</mat-label>
+        <mat-form-field appearance="outline">
+            <mat-label>dd/mm/aa</mat-label>
+            <input matInput [matDatepicker]="datepicker" formControlName="fechaPublicacion" >
+            <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+            <mat-datepicker #datepicker></mat-datepicker>
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-label>Fecha de caducidad</mat-label>
+        <mat-form-field appearance="outline">
+            <mat-label>dd/mm/aa</mat-label>
+            <input matInput [matDatepicker]="datepicker" formControlName="fechaCaducidad" >
+            <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+            <mat-datepicker #datepicker></mat-datepicker>
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-label>Asignado a</mat-label>
+        <mat-form-field appearance="outline" class="input">
+            <mat-label>Ingresar...</mat-label>
+            <input matInput formControlName="asignadoA" >
+        </mat-form-field>
+    </div>
+    <mat-label *ngIf="!camposCompletos"></mat-label>
+    <div class="botones">
+        <button mat-stroked-button mat-dialog-close>Cancelar</button>
+        <button mat-stroked-button>Aceptar</button>
+    </div>
+    
+</form>

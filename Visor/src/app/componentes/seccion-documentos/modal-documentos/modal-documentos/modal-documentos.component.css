@@ -1,0 +1,30 @@
+.cerrar {
+    cursor: pointer;
+    float: right;
+}
+
+mat-label {
+    display: inline-block;
+    width: 150px;
+    text-align: right;
+    margin-right: 10px;
+}
+
+mat-form-field{
+    padding: 7px;
+    width: 250px;
+    margin-top: 3px;
+    margin-bottom: -1.25em;
+}
+
+.oculto{
+    display: none;
+}
+
+.botones{
+    text-align: end;
+}
+
+button{
+    margin-right: 5px;
+}
