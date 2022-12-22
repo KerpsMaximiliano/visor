@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogComponent } from 'src/app/components/dialog/dialog.component';
 import { DocumentoService } from 'src/app/services/i2t/documento.service';
 
 @Component({
@@ -38,9 +40,9 @@ export class ModalDocumentosComponent implements OnInit {
     "Eliminado"
   ];
 
-  camposCompletos!: boolean;
+  camposIncompletos!: boolean;
 
-  constructor(private _documentService: DocumentoService) { }
+  constructor(private _documentService: DocumentoService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.formulario = new FormGroup({
@@ -50,12 +52,37 @@ export class ModalDocumentosComponent implements OnInit {
       tipo: new FormControl(null, Validators.required),
       estado: new FormControl(null, Validators.required),
       fechaPublicacion: new FormControl(null, Validators.required),
-      fechaCaducidad: new FormControl(null, Validators.required),
+      fechaCaducidad: new FormControl(null),
       asignadoA: new FormControl(null, Validators.required)
     })
   }
 
-  /* agregarDocumento(event: Event){
+  /**
+   * Metodo que permite adjuntar un archivo haciendo click en un boton y no directamente en el input
+   * 
+   * @param event 
+   */
+
+  adjuntar(event: Event){
+    event.preventDefault();
+    document.getElementById("adjuntar")?.click();
+  }
+
+  /**
+   * Metodo que checkea si el formulario esta completo, y luego agrega el documento
+   * 
+   * @param event 
+   * @returns true si esta completo, false si no lo esta.
+   */
+  mostrarNombre(event: Event){
+    console.log("se activo el change")
+    const target = event.target as HTMLInputElement;
+    if(target.files && target.files.length > 0){
+      document.getElementById("nombreArchivo")!.innerText = target.files[0].name;
+    }
+  }
+
+  async formularioCompleto(event: Event){
     event.preventDefault();
     if(
       this.formulario.get("archivo")?.hasError("required") || 
@@ -67,12 +94,39 @@ export class ModalDocumentosComponent implements OnInit {
       this.formulario.get("fechaCaducidad")?.hasError("required") || 
       this.formulario.get("asignadoA")?.hasError("required")
     ){
-      this.camposCompletos = false;
-      return this.camposCompletos;
+      console.log("campos incompletos")
+      this.camposIncompletos = true;
+    }else{
+      this.camposIncompletos = false;
+      console.log("campos completos")
+      this.agregarDocumento();
+      this.dialog.closeAll();
+      
     }
+    return this.camposIncompletos;
+  }
 
+  /**
+   * Metodo que agrega el documento
+   */
+  agregarDocumento(){
+    let pathArchivo: Array<string> = this.formulario.controls["archivo"].value.split("\\");
 
-  } */
+    const body: string = JSON.stringify({
+      filename: pathArchivo.pop(),
+      document_name: this.formulario.controls["nombre"].value,
+      type: this.formulario.controls["tipo"].value,
+      status: this.formulario.controls["estado"].value,
+      active_date: this.formulario.controls["fechaPublicacion"].value,
+      exp_date: this.formulario.controls["fechaCaducidad"].value,
+      proyectoAsociado: this.formulario.controls["proyectoAsociado"].value,
+      asignadoA: this.formulario.controls["asignadoA"].value,
+      par_modo: "I" 
+    })
 
+    this._documentService.addDocumento(body);
+    console.log(body)
+    return 1;
+  }
 
 }

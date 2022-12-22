@@ -1,11 +1,12 @@
 <mat-icon class="cerrar" mat-dialog-close>close</mat-icon>
 <h3>Crear Documento</h3>
 <hr>
-<form [formGroup]="formulario" class="formulario">
+<form [formGroup]="formulario" class="formulario" (submit)="formularioCompleto($event)">
     <div>
         <mat-label>Archivo</mat-label>
-        <button mat-stroked-button onclick="adjuntar.click()">Adjuntar</button>
-        <input type="file" class="oculto" id="adjuntar" formControlName="archivo" required>
+        <button mat-stroked-button (click)="adjuntar($event)" id="btnAdjuntar">Adjuntar</button>
+        <mat-label id="nombreArchivo"></mat-label>
+        <input type="file" class="oculto" id="adjuntar" formControlName="archivo" (change)="mostrarNombre($event)" required>
     </div> 
     <div>
         <mat-label>Nombre</mat-label>
@@ -52,9 +53,9 @@
         <mat-label>Fecha de caducidad</mat-label>
         <mat-form-field appearance="outline">
             <mat-label>dd/mm/aa</mat-label>
-            <input matInput [matDatepicker]="datepicker" formControlName="fechaCaducidad" >
-            <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
-            <mat-datepicker #datepicker></mat-datepicker>
+            <input matInput [matDatepicker]="datepicker2" formControlName="fechaCaducidad" >
+            <mat-datepicker-toggle matSuffix [for]="datepicker2"></mat-datepicker-toggle>
+            <mat-datepicker #datepicker2></mat-datepicker>
         </mat-form-field>
     </div>
     <div>
@@ -64,10 +65,10 @@
             <input matInput formControlName="asignadoA" >
         </mat-form-field>
     </div>
-    <mat-label *ngIf="!camposCompletos"></mat-label>
+    <mat-label *ngIf="camposIncompletos" class="camposIncompletos">Debe completar todos los campos obligatorios</mat-label>
     <div class="botones">
-        <button mat-stroked-button mat-dialog-close>Cancelar</button>
-        <button mat-stroked-button>Aceptar</button>
+        <button class="red" mat-stroked-button mat-dialog-close onclick="vaciarFormulario()">Cancelar</button>
+        <button class="green" mat-stroked-button>Aceptar</button>
     </div>
     
 </form>

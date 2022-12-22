@@ -1,0 +1,20 @@
+.cerrar {
+    float: right;
+}
+
+.botones{
+    padding: 5px;
+    text-align: end;
+}
+
+button{
+    margin-left: 10px;
+}
+
+.red{
+    background-color: lightcoral;
+}
+
+.green{
+    background-color: lightgreen;
+}

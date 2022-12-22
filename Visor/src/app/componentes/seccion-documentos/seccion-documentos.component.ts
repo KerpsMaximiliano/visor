@@ -5,6 +5,7 @@ import { ModalFiltroDocumentosComponent } from '../../shared/modal-filtro-docume
 import { Documento } from '../../interfaces/documento';
 import { DocumentoService } from '../../services/i2t/documento.service';
 import { ModalDocumentosComponent } from './modal-documentos/modal-documentos/modal-documentos.component';
+import { ModalBajaDocumentosComponent } from './modal-baja-documentos/modal-baja-documentos/modal-baja-documentos.component';
 
 @Component({
   selector: 'app-seccion-documentos',
@@ -602,8 +603,15 @@ export class SeccionDocumentosComponent implements OnInit {
   abrirABMDocumentos(): void{
     this.dialog.open(ModalDocumentosComponent, {
       width: '500px',
-      height: '700px'
+      height: '720px'
     });
+  }
+
+  abrirBajaDocumento(){
+    this.dialog.open(ModalBajaDocumentosComponent, {
+      width: '400px',
+      height: '200px'
+    })
   }
 }
 

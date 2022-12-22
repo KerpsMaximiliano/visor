@@ -28,3 +28,21 @@ mat-form-field{
 button{
     margin-right: 5px;
 }
+
+.red{
+    background-color: lightcoral;
+}
+
+.green {
+    background-color: lightgreen;
+}
+
+.camposIncompletos{
+    color: lightcoral;
+    font-style: italic;
+    width: 100%;
+}
+
+#nombreArchivo{
+    text-align: left;
+}

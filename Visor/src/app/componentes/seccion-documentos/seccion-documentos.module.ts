@@ -5,9 +5,10 @@ import { MyMaterialModule } from '../../material';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ModalDocumentosComponent } from './modal-documentos/modal-documentos/modal-documentos.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { ModalBajaDocumentosComponent } from './modal-baja-documentos/modal-baja-documentos/modal-baja-documentos.component';
 
 @NgModule({
-  declarations: [SeccionDocumentosComponent, ModalDocumentosComponent],
+  declarations: [SeccionDocumentosComponent, ModalDocumentosComponent, ModalBajaDocumentosComponent],
   imports: [
     CommonModule,
     MyMaterialModule,
