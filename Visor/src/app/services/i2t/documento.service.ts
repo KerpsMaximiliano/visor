@@ -15,7 +15,8 @@ export class DocumentoService {
     return this.rest.callProcedimientoVisor(jsbody,"SeccionDocumento");
   }
 
-  public addDocumento(body: string){
+  public ABMDocumento(body: string){
     return this.rest.callProcedimientoVisor(body,"SP_VISOR_ABM_DOCUMENTOS");
   }
+
 }

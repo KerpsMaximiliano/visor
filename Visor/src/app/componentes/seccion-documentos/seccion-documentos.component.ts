@@ -6,7 +6,6 @@ import { Documento } from '../../interfaces/documento';
 import { DocumentoService } from '../../services/i2t/documento.service';
 import { ModalDocumentosComponent } from './modal-documentos/modal-documentos/modal-documentos.component';
 import { ModalBajaDocumentosComponent } from './modal-baja-documentos/modal-baja-documentos/modal-baja-documentos.component';
-
 @Component({
   selector: 'app-seccion-documentos',
   templateUrl: './seccion-documentos.component.html',
@@ -607,11 +606,38 @@ export class SeccionDocumentosComponent implements OnInit {
     });
   }
 
-  abrirBajaDocumento(){
-    this.dialog.open(ModalBajaDocumentosComponent, {
+  abrirBajaDocumento(documento: Documento){
+    const dialogRef = this.dialog.open(ModalBajaDocumentosComponent, {
       width: '400px',
       height: '200px'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result, documento.id);
+      let jsbody: string = JSON.stringify({
+        par_modo: "D",
+        id : documento.id,
+      });
+
+      return this.documentService.ABMDocumento(jsbody);
+
     })
+    
+  }
+
+  abrirEditarDocumento(documento: Documento){
+    console.log(documento);
+    this.dialog.open(ModalDocumentosComponent, {
+      width: '500px',
+      height: '720px',
+      data: {
+        nombre: documento.name,
+        tipo: documento.type,
+        estado: documento.type,
+        fechaPublicacion: documento.date,
+        fechaCaducidad: documento.finishedDate,
+        asignadoA: documento.assigned        
+      }
+    });
   }
 }
 

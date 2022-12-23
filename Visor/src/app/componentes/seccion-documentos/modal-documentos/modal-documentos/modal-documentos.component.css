@@ -22,11 +22,11 @@ mat-form-field{
 }
 
 .botones{
-    text-align: end;
+    text-align: center;
 }
 
 button{
-    margin-right: 5px;
+    margin: 2% 2% 0 2%;
 }
 
 .red{

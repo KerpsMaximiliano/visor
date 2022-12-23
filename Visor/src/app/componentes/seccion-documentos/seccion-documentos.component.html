@@ -13,7 +13,7 @@
             </div>
         </div>
         <div id="container-header-bot">
-            <mat-icon id="btnABMDocumentos" (click)="abrirABMDocumentos()">add_circle</mat-icon> <!-- Icono que abre el dialog para agregar documentos -->
+            <mat-icon id="btnABMDocumentos" (click)="abrirABMDocumentos()" matTooltip="Agregar documento">add_circle</mat-icon> <!-- Icono que abre el dialog para agregar documentos -->
             <button id="assignedButton" mat-stroked-button (click)="filterByUser()" [ngClass]="{'buttonOn': buttonOn}">Asignados a mi</button>
             <mat-icon (click)="openFilter()" id="iconFilter">filter_alt</mat-icon> <!-- Icono que abriría el filtro -->
         </div>
@@ -62,9 +62,9 @@
             }"
             >
             <div class="container-icons">
-                <i id="download-icon" class="fas fa-download"></i>
-                <i id="edit-icon" class="fas fa-edit"></i>
-                <i id="remove-icon" class="fas fa-trash-alt" (click)="abrirBajaDocumento()"></i>
+                <i id="download-icon" class="fas fa-download" matTooltip="Descargar documento"></i>
+                <i id="edit-icon" class="fas fa-edit" (click)="abrirEditarDocumento(d)" matTooltip="Editar documento"></i>
+                <i id="remove-icon" class="fas fa-trash-alt" (click)="abrirBajaDocumento(d)" matTooltip="Eliminar documento"></i>
             </div>
             <div class="card-content">
                 <p class="letters"><b>{{d.name}}</b></p>

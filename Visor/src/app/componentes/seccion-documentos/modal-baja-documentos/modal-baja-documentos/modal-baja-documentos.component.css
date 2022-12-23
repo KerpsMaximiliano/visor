@@ -4,11 +4,11 @@
 
 .botones{
     padding: 5px;
-    text-align: end;
+    text-align: center;
 }
 
 button{
-    margin-left: 10px;
+    margin: 5% 2% 0 2%;
 }
 
 .red{

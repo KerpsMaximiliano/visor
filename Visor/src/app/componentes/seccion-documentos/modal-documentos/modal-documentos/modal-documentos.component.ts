@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogComponent } from 'src/app/components/dialog/dialog.component';
 import { DocumentoService } from 'src/app/services/i2t/documento.service';
+import { SeccionDocumentosComponent } from '../../seccion-documentos.component';
+import { Inject } from '@angular/core';
 
 @Component({
   selector: 'app-modal-documentos',
@@ -42,7 +44,7 @@ export class ModalDocumentosComponent implements OnInit {
 
   camposIncompletos!: boolean;
 
-  constructor(private _documentService: DocumentoService, public dialog: MatDialog) { }
+  constructor(private _documentService: DocumentoService, public dialog: MatDialogRef<SeccionDocumentosComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {
     this.formulario = new FormGroup({
@@ -54,7 +56,17 @@ export class ModalDocumentosComponent implements OnInit {
       fechaPublicacion: new FormControl(null, Validators.required),
       fechaCaducidad: new FormControl(null),
       asignadoA: new FormControl(null, Validators.required)
-    })
+    });
+
+    if(this.data != null){
+      console.log("tipo" + this.data.tipo)
+      this.formulario.controls["nombre"].setValue(this.data.nombre);
+      this.formulario.controls["tipo"].valueChanges.subscribe( tipo => tipo = this.data.tipo);
+      this.formulario.controls["estado"].setValue(this.data.estado);
+      this.formulario.controls["fechaPublicacion"].setValue(this.data.fechaPublicacion);
+      this.formulario.controls["fechaCaducidad"].setValue(this.data.fechaCaducidad);
+      this.formulario.controls["asignadoA"].setValue(this.data.asignadoA);
+    }
   }
 
   /**
@@ -100,7 +112,7 @@ export class ModalDocumentosComponent implements OnInit {
       this.camposIncompletos = false;
       console.log("campos completos")
       this.agregarDocumento();
-      this.dialog.closeAll();
+      this.dialog.close();
       
     }
     return this.camposIncompletos;
@@ -124,7 +136,7 @@ export class ModalDocumentosComponent implements OnInit {
       par_modo: "I" 
     })
 
-    this._documentService.addDocumento(body);
+    this._documentService.ABMDocumento(body);
     console.log(body)
     return 1;
   }

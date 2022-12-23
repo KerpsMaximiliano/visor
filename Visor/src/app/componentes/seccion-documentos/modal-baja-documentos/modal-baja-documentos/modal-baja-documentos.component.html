@@ -3,6 +3,6 @@
 <hr>
 <mat-label>¿Está seguro de que desea eliminar este documento?</mat-label>
 <div class="botones">
-    <button mat-stroked-button mat-dialog-close class="red">Cancelar</button>
-    <button mat-stroked-button class="green">Aceptar</button>
+    <button mat-stroked-button mat-dialog-close (click)="noBorrarDocumento()" class="red">Cancelar</button>
+    <button mat-stroked-button class="green" (click)="borrarDocumento()">Aceptar</button>
 </div>
