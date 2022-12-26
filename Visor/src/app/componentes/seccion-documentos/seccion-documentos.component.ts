@@ -102,7 +102,7 @@ export class SeccionDocumentosComponent implements OnInit {
           category: result.dataset[i].category,
           type: result.dataset[i].type,
           documentStatus: result.dataset[i].status,
-          date: result.dataset[i].actived_date,
+          date: result.dataset[i].active_date,
           finishedDate: result.dataset[i].exp_date
         };
         this.listOfDocuments.push(document); //Array que almacena los proyectos con sus respectivos datos.
@@ -602,7 +602,10 @@ export class SeccionDocumentosComponent implements OnInit {
   abrirABMDocumentos(): void{
     this.dialog.open(ModalDocumentosComponent, {
       width: '500px',
-      height: '720px'
+      height: '720px',
+      data: {
+        titulo: "Crear Documento"
+      }
     });
   }
 
@@ -630,12 +633,13 @@ export class SeccionDocumentosComponent implements OnInit {
       width: '500px',
       height: '720px',
       data: {
+        titulo: "Editar Documento",
         nombre: documento.name,
         tipo: documento.type,
-        estado: documento.type,
+        estado: documento.documentStatus,
         fechaPublicacion: documento.date,
         fechaCaducidad: documento.finishedDate,
-        asignadoA: documento.assigned        
+        asignadoA: documento.assigned      
       }
     });
   }

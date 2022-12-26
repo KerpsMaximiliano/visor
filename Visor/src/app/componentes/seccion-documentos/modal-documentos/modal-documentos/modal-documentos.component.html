@@ -1,5 +1,5 @@
 <mat-icon class="cerrar" mat-dialog-close>close</mat-icon>
-<h3>Crear Documento</h3>
+<h3 id="titulo"></h3>
 <hr>
 <form [formGroup]="formulario" class="formulario" (submit)="formularioCompleto($event)">
     <div>
@@ -26,7 +26,7 @@
         <mat-label>Tipo</mat-label>
         <mat-form-field>
             <mat-label>Seleccionar</mat-label>
-            <mat-select class="input" formControlName="tipo">
+            <mat-select class="input" formControlName="tipo" [compareWith]="compararItems">
                 <mat-option *ngFor="let tipo of tipos" [value]="tipo" >{{tipo}}</mat-option>
             </mat-select>
         </mat-form-field>
@@ -35,7 +35,7 @@
         <mat-label>Estado</mat-label>
         <mat-form-field>
             <mat-label>Seleccionar</mat-label>
-            <mat-select class="input" formControlName="estado" >
+            <mat-select class="input" formControlName="estado" [compareWith]="compararItems">
                 <mat-option *ngFor="let estado of estados" [value]="estado" >{{estado}}</mat-option>
             </mat-select>
         </mat-form-field>

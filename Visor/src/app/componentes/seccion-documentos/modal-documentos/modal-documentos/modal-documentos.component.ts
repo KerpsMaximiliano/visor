@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogComponent } from 'src/app/components/dialog/dialog.component';
 import { DocumentoService } from 'src/app/services/i2t/documento.service';
@@ -16,7 +16,7 @@ export class ModalDocumentosComponent implements OnInit {
   formulario!: FormGroup;
   tipos = [
     "Identificación de necesidades",
-    "Plan de proyecto",
+    "Plan de Proyecto",
     "Requerimientos",
     "Estimación de tareas",
     "Product backlog",
@@ -44,9 +44,12 @@ export class ModalDocumentosComponent implements OnInit {
 
   camposIncompletos!: boolean;
 
-  constructor(private _documentService: DocumentoService, public dialog: MatDialogRef<SeccionDocumentosComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
-
+  constructor(private _documentService: DocumentoService, public dialog: MatDialogRef<SeccionDocumentosComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {}
+  
   ngOnInit(): void {
+    
+    document.getElementById("titulo")!.innerText = this.data.titulo;
+
     this.formulario = new FormGroup({
       archivo: new FormControl(null, Validators.required),
       nombre: new FormControl(null, Validators.required),
@@ -59,9 +62,8 @@ export class ModalDocumentosComponent implements OnInit {
     });
 
     if(this.data != null){
-      console.log("tipo" + this.data.tipo)
       this.formulario.controls["nombre"].setValue(this.data.nombre);
-      this.formulario.controls["tipo"].valueChanges.subscribe( tipo => tipo = this.data.tipo);
+      this.formulario.controls["tipo"].setValue(this.data.tipo);
       this.formulario.controls["estado"].setValue(this.data.estado);
       this.formulario.controls["fechaPublicacion"].setValue(this.data.fechaPublicacion);
       this.formulario.controls["fechaCaducidad"].setValue(this.data.fechaCaducidad);
@@ -141,4 +143,7 @@ export class ModalDocumentosComponent implements OnInit {
     return 1;
   }
 
+  compararItems(objeto1: any, objeto2: any){
+    return objeto1 == objeto2;
+  }
 }
