@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogComponent } from 'src/app/components/dialog/dialog.component';
 import { DocumentoService } from 'src/app/services/i2t/documento.service';
-import { SeccionDocumentosComponent } from '../../seccion-documentos.component';
+import { SeccionDocumentosComponent } from '../seccion-documentos.component';
 import { Inject } from '@angular/core';
 
 @Component({
@@ -16,7 +16,7 @@ export class ModalDocumentosComponent implements OnInit {
   formulario!: FormGroup;
   tipos = [
     "Identificación de necesidades",
-    "Plan de Proyecto",
+    "Plan de proyecto",
     "Requerimientos",
     "Estimación de tareas",
     "Product backlog",
@@ -61,7 +61,7 @@ export class ModalDocumentosComponent implements OnInit {
       asignadoA: new FormControl(null, Validators.required)
     });
 
-    if(this.data != null){
+    if(this.data.estado != null){
       this.formulario.controls["nombre"].setValue(this.data.nombre);
       this.formulario.controls["tipo"].setValue(this.data.tipo);
       this.formulario.controls["estado"].setValue(this.data.estado);
@@ -82,21 +82,20 @@ export class ModalDocumentosComponent implements OnInit {
     document.getElementById("adjuntar")?.click();
   }
 
+  mostrarNombre(event: Event){
+    const target = event.target as HTMLInputElement;
+    if(target.files && target.files.length > 0){
+      document.getElementById("nombreArchivo")!.innerText = target.files[0].name;
+    }
+  }
+  
   /**
    * Metodo que checkea si el formulario esta completo, y luego agrega el documento
    * 
    * @param event 
    * @returns true si esta completo, false si no lo esta.
    */
-  mostrarNombre(event: Event){
-    console.log("se activo el change")
-    const target = event.target as HTMLInputElement;
-    if(target.files && target.files.length > 0){
-      document.getElementById("nombreArchivo")!.innerText = target.files[0].name;
-    }
-  }
-
-  async formularioCompleto(event: Event){
+  formularioCompleto(event: Event){
     event.preventDefault();
     if(
       this.formulario.get("archivo")?.hasError("required") || 
@@ -124,23 +123,33 @@ export class ModalDocumentosComponent implements OnInit {
    * Metodo que agrega el documento
    */
   agregarDocumento(){
+    console.log(this.formulario.controls["fechaPublicacion"].value)
     let pathArchivo: Array<string> = this.formulario.controls["archivo"].value.split("\\");
 
-    const body: string = JSON.stringify({
-      filename: pathArchivo.pop(),
-      document_name: this.formulario.controls["nombre"].value,
-      type: this.formulario.controls["tipo"].value,
-      status: this.formulario.controls["estado"].value,
-      active_date: this.formulario.controls["fechaPublicacion"].value,
-      exp_date: this.formulario.controls["fechaCaducidad"].value,
-      proyectoAsociado: this.formulario.controls["proyectoAsociado"].value,
-      asignadoA: this.formulario.controls["asignadoA"].value,
-      par_modo: "I" 
-    })
+    let jsbody = {
+      par_modo: "",
+      pFilename: pathArchivo.pop(),
+      pDocument_name: this.formulario.controls["nombre"].value,
+      ptipo: this.formulario.controls["tipo"].value,
+      pStatus_id: this.formulario.controls["estado"].value,
+      /* pActive_date: this.formulario.controls["fechaPublicacion"].value,
+      pExp_date: this.formulario.controls["fechaCaducidad"].value, */
+      pID_CASE: this.formulario.controls["proyectoAsociado"].value,
+      pAssigned_user_id: this.formulario.controls["asignadoA"].value
+    };
 
-    this._documentService.ABMDocumento(body);
-    console.log(body)
-    return 1;
+    if(this.data.estado != null){
+      jsbody.par_modo = "U"
+    }else{
+      jsbody.par_modo = "I"
+    }
+
+    let body = JSON.stringify(jsbody);
+
+    console.log(body);
+    return this._documentService.ABMDocumento(body).subscribe( respuesta => {
+      window.location.reload();
+    });
   }
 
   compararItems(objeto1: any, objeto2: any){

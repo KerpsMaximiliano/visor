@@ -4,8 +4,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ModalFiltroDocumentosComponent } from '../../shared/modal-filtro-documentos/modal-filtro-documentos.component';
 import { Documento } from '../../interfaces/documento';
 import { DocumentoService } from '../../services/i2t/documento.service';
-import { ModalDocumentosComponent } from './modal-documentos/modal-documentos/modal-documentos.component';
-import { ModalBajaDocumentosComponent } from './modal-baja-documentos/modal-baja-documentos/modal-baja-documentos.component';
+import { ModalDocumentosComponent } from './modal-documentos/modal-documentos.component';
+import { ModalBajaDocumentosComponent } from './modal-baja-documentos/modal-baja-documentos.component';
 @Component({
   selector: 'app-seccion-documentos',
   templateUrl: './seccion-documentos.component.html',
@@ -612,19 +612,11 @@ export class SeccionDocumentosComponent implements OnInit {
   abrirBajaDocumento(documento: Documento){
     const dialogRef = this.dialog.open(ModalBajaDocumentosComponent, {
       width: '400px',
-      height: '200px'
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(result, documento.id);
-      let jsbody: string = JSON.stringify({
-        par_modo: "D",
-        id : documento.id,
-      });
-
-      return this.documentService.ABMDocumento(jsbody);
-
-    })
-    
+      height: '200px',
+      data: {
+        id: documento.id
+      }
+    });   
   }
 
   abrirEditarDocumento(documento: Documento){

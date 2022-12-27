@@ -67,8 +67,8 @@
     </div>
     <mat-label *ngIf="camposIncompletos" class="camposIncompletos">Debe completar todos los campos obligatorios</mat-label>
     <div class="botones">
-        <button class="red" mat-stroked-button mat-dialog-close onclick="vaciarFormulario()">Cancelar</button>
-        <button class="green" mat-stroked-button>Aceptar</button>
+        <button class="red" mat-stroked-button mat-dialog-close>Cancelar</button>
+        <button class="green" mat-stroked-button (click)="agregarDocumento">Aceptar</button>
     </div>
     
 </form>

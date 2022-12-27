@@ -10,13 +10,12 @@ export class DocumentoService {
 
   public getDocumentos() {
     let jsbody: string = JSON.stringify({
-      "par_modo": "G"
+      "par_modo": "G",
     });
-    return this.rest.callProcedimientoVisor(jsbody,"SeccionDocumento");
+    return this.rest.callProcedimientoVisor(jsbody,"ABMDocumentos");
   }
 
-  public ABMDocumento(body: string){
-    return this.rest.callProcedimientoVisor(body,"SP_VISOR_ABM_DOCUMENTOS");
+  public ABMDocumento(jsbody: string){
+    return this.rest.callProcedimientoVisor(jsbody,"ABMDocumentos");
   }
-
 }
