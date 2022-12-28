@@ -49,6 +49,10 @@
     display: flex;
     justify-content: space-around;
 }
+
+#misProyectos:checked{
+    color: black;
+}
   
 
 

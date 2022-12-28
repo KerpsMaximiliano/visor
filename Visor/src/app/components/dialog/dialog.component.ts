@@ -14,8 +14,16 @@ import { MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepi
 import { FiltroService } from 'src/app/services/i2t/filtro.service';
 import { Tarea } from 'src/app/interfaces/tarea';
 import { TOUCH_BUFFER_MS } from '@angular/cdk/a11y/input-modality/input-modality-detector';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
-
+export interface ProyectoService{
+  id_projecto: string,
+  id_usuario: string,
+  nombre_cliente: string,
+  nombre_projecto: string,
+  numero_proyecto: number
+  usuario_asignado: string
+}
 export interface PropiedadesProyecto{
   id: number,
   nombre: string, 
@@ -54,28 +62,27 @@ export interface PropiedadesTarea{
 
 }
 
-export interface Contenido{
+export interface ContenidoFiltrosProyecto{
   id: string,
   nombre: string,
   cliente: string,
-  asignado: string
+  asignado: string,
+  asignadasAmi: boolean
 }
 
 @Component({
   selector: 'app-dialog',
   templateUrl: './dialog.component.html',
   styleUrls: ['./dialog.component.css'],
-  providers: [
-  ]
+  providers: []
 })
 
 export class DialogComponent implements OnInit {
 
-  encodedData: string = ''
-  contenido: Contenido = {id:'', nombre:'', cliente:'', asignado:''};
-  contenido_tareas: Tareas = {buscaTareas: false, nombreTarea: '', prioridadTarea: '', facilitadorTarea: '', asignadoAtarea: '', tecnologiaTarea: '', idProyectoSeleccionado: '', inicioDesde: '', inicioHasta: '', planificadaDesde: '', planificadaHasta: '', finDesde: '', finHasta: ''};
-  filtrosTarea: Tareas = {buscaTareas: false, nombreTarea: '', prioridadTarea: '', facilitadorTarea: '', asignadoAtarea: '', tecnologiaTarea: '', idProyectoSeleccionado: '', inicioDesde: '', inicioHasta: '', planificadaDesde: '', planificadaHasta: '', finDesde: '', finHasta: ''};
-  filtrosAnterioresTarea: Tareas = {buscaTareas: false, nombreTarea: '', prioridadTarea: '', facilitadorTarea: '', asignadoAtarea: '', tecnologiaTarea: '', idProyectoSeleccionado: '', inicioDesde: '', inicioHasta: '', planificadaDesde: '', planificadaHasta: '', finDesde: '', finHasta: ''};
+  idProyectoSeleccionado: string = '';
+  encodedData: string = '';
+  contenido: ContenidoFiltrosProyecto = {id:'', nombre:'', cliente:'', asignado:'', asignadasAmi: false};
+  filtrosAnteriores: ContenidoFiltrosProyecto = {id:'', nombre:'', cliente:'', asignado:'', asignadasAmi: false};
   saved_search_id: string = '';
   buscarProyecto: boolean = false;
   //filtrosProyectoDialog: any;
@@ -85,28 +92,33 @@ export class DialogComponent implements OnInit {
   nombreProyecto: string = '';
   clienteProyecto: string = '';
   asignadasAmi: boolean = false;
-  
+  userId: string = '';
+  userName: string = '';
   asignadoAproyecto: string = '';
-  listaProyectos: any[] = [];
-  listaProyectosPrueba: any;
-  listaTareasProyectos: PropiedadesTarea[] = [];
-  listaTareasProyectosAux: PropiedadesTarea[] = [];
-  dataSource: MatTableDataSource<PropiedadesProyecto>;
+  listaProyectosService: ProyectoService[] = [];
+  listaProyectosAux: ProyectoService[] = [];
   clientesDeProyectos: String[] = [];
   usuariosDeProyectos: String[] = [];
   dataSourcePrueba!: MatTableDataSource<any>;
   dataSourcePruebaCopia!: MatTableDataSource<any>;
   result: PropiedadesProyecto[] = [];
-  valoresFiltros =  {
-    id: '',
-    nombre: '',
-    cliente: '',
-    asignado: ''
-  }
+  // valoresFiltros =  {
+  //   id: '',
+  //   nombre: '',
+  //   cliente: '',
+  //   asignado: '',
+  //   asignadasAmi: false
+  // }
+  valoresFiltros: ContenidoFiltrosProyecto = {id:'', nombre:'', cliente:'', asignado:'', asignadasAmi: false};
   
-  filtrosAnteriores: Contenido = {id:'', nombre:'', cliente:'', asignado:''};
-  filtrosAnterioresAux: Contenido = {id:'', nombre:'', cliente:'', asignado:''};
+  
+  //filtrosAnterioresAux: Contenido = {id:'', nombre:'', cliente:'', asignado:'', asignadasAmi: false};
 
+  listaTareasProyectos: PropiedadesTarea[] = [];
+  listaTareasProyectosAux: PropiedadesTarea[] = [];
+  contenido_tareas: Tareas = {buscaTareas: false, nombreTarea: '', prioridadTarea: '', facilitadorTarea: '', asignadoAtarea: '', tecnologiaTarea: '', idProyectoSeleccionado: '', inicioDesde: '', inicioHasta: '', planificadaDesde: '', planificadaHasta: '', finDesde: '', finHasta: ''};
+  filtrosTarea: Tareas = {buscaTareas: false, nombreTarea: '', prioridadTarea: '', facilitadorTarea: '', asignadoAtarea: '', tecnologiaTarea: '', idProyectoSeleccionado: '', inicioDesde: '', inicioHasta: '', planificadaDesde: '', planificadaHasta: '', finDesde: '', finHasta: ''};
+  filtrosAnterioresTarea: Tareas = {buscaTareas: false, nombreTarea: '', prioridadTarea: '', facilitadorTarea: '', asignadoAtarea: '', tecnologiaTarea: '', idProyectoSeleccionado: '', inicioDesde: '', inicioHasta: '', planificadaDesde: '', planificadaHasta: '', finDesde: '', finHasta: ''};
   dataSourceTareas!: MatTableDataSource<PropiedadesTarea>;
   prioridadDeTareas: String[] = [];
   facilitadoresTareas: String[] = [];
@@ -123,7 +135,7 @@ export class DialogComponent implements OnInit {
   tecnologiaTarea: string = '';
   
   
-  idProyectoSeleccionado: string = ''
+  
   
   tecnologiatarea : any
   
@@ -137,7 +149,10 @@ export class DialogComponent implements OnInit {
   fechaFinDesde: string = '';
   fechaFinHasta: string = '';
   saved_search_id_tareas:string = ''
-
+  valorCheckbox:boolean = false;
+  
+  
+  
   ngOnInit(): void {
     
   }
@@ -146,16 +161,17 @@ export class DialogComponent implements OnInit {
   @Inject(MAT_DATE_LOCALE) private _locale: string, public dialogRef: MatDialogRef<DialogComponent>, private _tareaService: TareaService, private _filtroService: FiltroService) {
     
     
-    //Pregunto si el pop up se abrió para buscar PROYECTOS
+    //Pregunto si el modal se abrió para buscar PROYECTOS
     if(buscarProyectoInterface.buscaProyectos){
       this.buscarProyecto = buscarProyectoInterface.buscaProyectos;
-      //this.filtrosProyectoDialog = this.buscarProyectoInterface.filtros;
+      this.userId = localStorage.getItem("userId")!;
+      this.userName = localStorage.getItem('usuario')!;
 
+      //Obtengo proyectos desde servicio
       this._tareaService.getABMproyectoService().subscribe((response: any) => {
-        this.listaProyectosPrueba = response.dataset;
-        console.log(this.listaProyectosPrueba)
-        this.dataSourcePrueba = new MatTableDataSource(this.listaProyectosPrueba);
-        this.dataSourcePruebaCopia = new MatTableDataSource(this.listaProyectosPrueba);
+        this.listaProyectosService = response.dataset;
+        this.listaProyectosAux = response.dataset;
+        this.dataSourcePrueba = new MatTableDataSource(this.listaProyectosService);
          
         let cantProyectos = this.dataSourcePrueba.filteredData.length;
         for(let i = 0; i < cantProyectos ; i++){
@@ -163,7 +179,6 @@ export class DialogComponent implements OnInit {
             this.clientesDeProyectos.push( this.dataSourcePrueba.filteredData[i].nombre_cliente);
           }
         }
-        //console.log(this.clientesDeProyectos)
         for(let i = 0; i < cantProyectos ; i++){
           if(!this.usuariosDeProyectos.includes(this.dataSourcePrueba.filteredData[i].usuario_asignado)){
             this.usuariosDeProyectos.push( this.dataSourcePrueba.filteredData[i].usuario_asignado);
@@ -173,11 +188,11 @@ export class DialogComponent implements OnInit {
         this.ordenarAfabeticamente(this.clientesDeProyectos);
         this.ordenarAfabeticamente(this.usuariosDeProyectos);
 
-        //Obtengo filtros
-        this._filtroService.getUserId(localStorage.getItem('usuario')!).subscribe((response: any) => {
+        //Obtengo filtros desde BD
+        this._filtroService.getUserId(this.userName).subscribe((response: any) => {
           localStorage.setItem('userId', response.dataset[0].id);
 
-          this._filtroService.selectFiltro(response.dataset[0].id, 'proyectos').subscribe(resp => {
+          this._filtroService.selectFiltro(this.userId, 'proyectos').subscribe(resp => {
             console.log(resp)
             if (resp.dataset.length != 0) {
               this.saved_search_id = resp.dataset[0].saved_search_id;
@@ -189,24 +204,31 @@ export class DialogComponent implements OnInit {
               this.filtrosAnteriores.nombre = this.contenido.nombre;
               this.filtrosAnteriores.cliente = this.contenido.cliente;
               this.filtrosAnteriores.asignado = this.contenido.asignado;
+              this.filtrosAnteriores.asignadasAmi = this.contenido.asignadasAmi;
+
 
               this.valoresFiltros.id = this.contenido.id;
               this.valoresFiltros.nombre = this.contenido.nombre;
               this.valoresFiltros.cliente = this.contenido.cliente;
               this.valoresFiltros.asignado = this.contenido.asignado;
+              this.valoresFiltros.asignadasAmi = this.contenido.asignadasAmi;
 
               //Set variables para mostrar valores en el dialog
               this.numeroProyecto = this.filtrosAnteriores.id;
               this.nombreProyecto = this.filtrosAnteriores.nombre;
               this.clienteProyecto = this.filtrosAnteriores.cliente;
               this.asignadoAproyecto = this.filtrosAnteriores.asignado;
+              console.log(this.asignadasAmi)
+              this.asignadasAmi = this.filtrosAnteriores.asignadasAmi
 
               
             }
             
-            const valores = Object.values(this.filtrosAnteriores);
-            this.armarFilterPredicateProyectos(valores);
-            this.filtrarProyectosPor(valores);
+            // const valores = Object.values(this.filtrosAnteriores);
+            // this.armarFilterPredicateProyectos(valores);
+            // this.filtrarProyectosPor(valores);
+
+            this.prepararFiltroProyectos();
 
 
           })
@@ -226,7 +248,7 @@ export class DialogComponent implements OnInit {
       // this.asignadoAtarea = this.filtrosTareasDialog.asignadoAtarea;
       // this.tecnologiatarea = this.filtrosTareasDialog.tecnologiatarea;
 
-      
+    
       this._tareaService.getTareasDeProyecto(this.idProyectoSeleccionado).subscribe((response: any) => {
         this.listaTareasProyectos = response.dataset;
         
@@ -319,108 +341,27 @@ export class DialogComponent implements OnInit {
 
     this._locale = 'es';
     this._adapter.setLocale(this._locale);
-    
-        
-    const proyectos: PropiedadesProyecto[] = [
-      { id: 128109, nombre: 'Entrenamiento en Drupal y Symfony', planificadas: 448, noIniciadas: 424, enProgreso: 24, enPrueba: 0, completadas: 0, tieneTareasUsuario: false, cliente: 'Cliente 1', asignadoA: 'Adrian Enrico' },
-      { id: 125039, nombre: 'Restyling y Migración de Portal PAC', planificadas: 3600, noIniciadas: 500, enProgreso: 0, enPrueba: 0, completadas: 2400, tieneTareasUsuario: false, cliente: 'Factory', asignadoA: 'Patricio Hernán Macagno' },
-      { id: 124132, nombre: 'Sala de Sorteos - Extractos Digitales', planificadas: 2400, noIniciadas: 492, enProgreso: 200, enPrueba: 0, completadas: 1640, tieneTareasUsuario: true, cliente: 'Factory', asignadoA: 'Adrian Enrico' },
-      { id: 888886, nombre: 'Visorrr - Panel de control', planificadas: 1040, noIniciadas: 394, enProgreso: 126, enPrueba: 0, completadas: 184, tieneTareasUsuario: true, cliente: 'Federico Gauchat', asignadoA: 'Patricio Hernán Macagno' },
-      { id: 127230, nombre: 'Visor - Panel de control', planificadas: 1040, noIniciadas: 394, enProgreso: 126, enPrueba: 0, completadas: 144, tieneTareasUsuario: false, cliente: 'Factory', asignadoA: 'Patricio Hernán Macagno' },
-      { id: 127230, nombre: 'Visor - Panel de control', planificadas: 1040, noIniciadas: 394, enProgreso: 126, enPrueba: 0, completadas: 184, tieneTareasUsuario: false, cliente: 'Factory', asignadoA: 'Patricio Hernán Macagno' },
-      { id: 127230, nombre: 'Visor - Panel de control', planificadas: 1040, noIniciadas: 394, enProgreso: 126, enPrueba: 0, completadas: 184, tieneTareasUsuario: false, cliente: 'Factory', asignadoA: 'Patricio Hernán Macagno' },
-      { id: 127230, nombre: 'Visor - Panel de control', planificadas: 1040, noIniciadas: 394, enProgreso: 126, enPrueba: 0, completadas: 184, tieneTareasUsuario: false, cliente: 'Factory', asignadoA: 'Patricio Hernán Macagno' },
-      { id: 127230, nombre: 'Visor - Panel de control', planificadas: 1040, noIniciadas: 394, enProgreso: 126, enPrueba: 0, completadas: 184, tieneTareasUsuario: false, cliente: 'Factory', asignadoA: 'Patricio Hernán Macagno' }
-    ]
-    this.listaProyectos = proyectos;
-    //console.log(this.listaProyectosPrueba)
-    
-    this.dataSource = new MatTableDataSource(this.listaProyectos);
-    
-    //this.dataSource = new MatTableDataSource(this.listaProyectosPrueba);
-    
-    
 
   }
+
+  
   ordenarAfabeticamente(arrayDatos: String[]){
     arrayDatos = arrayDatos.sort();
   }
   
-  
-  
 
-  misProyectosAsignados(){
-    this.asignadasAmi = !this.asignadasAmi
-    if(this.asignadasAmi){
-      let userId: any;
-      userId = localStorage.getItem("userId");
-      console.log(this.dataSourcePruebaCopia)
-      this.dataSourcePrueba.filterPredicate = (data: any, filter: string): boolean => {
-        return ( data.id_usuario == userId );
-      }
-      this.dataSourcePruebaCopia.filter = userId.trim().toLowerCase();
-      this.dataSourcePrueba = this.dataSourcePruebaCopia;
-    }
-    else{
-      this.dataSourcePrueba = new MatTableDataSource(this.listaProyectosPrueba);
-    }
+  misProyectosAsignados(event: MatCheckboxChange){
+    this.asignadasAmi = event.checked;
+    this.valoresFiltros.asignadasAmi = this.asignadasAmi;
+    this.prepararFiltroProyectos();
   }
 
   
+
   
-  //Filtra prueba
-  // filtrarProyectos(id:string,valor:string){
-  //   const idParametroFiltro = id;
-  //   var valorParametroFiltro = valor;
-  //   console.log(idParametroFiltro)
-  //   console.log(valorParametroFiltro)
-    
-    
-  //   switch(idParametroFiltro){
-  //     case 'nroProyecto':
-  //       this.numeroProyecto = valorParametroFiltro;
-  //       this.filtrosProyectoDialog[0].numeroProyecto = this.numeroProyecto;//Para permanencia de filtro
-  //       this.valoresFiltros.id = valorParametroFiltro;
-  //       const valores = Object.values(this.valoresFiltros)
-        
-  //       this.armarFilterPredicate(valores);
-  //       this.filtrarPor(valores);
-        
-        
-  //     break;
-  //     case 'nombreProyecto':
-  //       this.nombreProyecto = valorParametroFiltro;
-  //       this.filtrosProyectoDialog[1].nombreProyecto = this.nombreProyecto;//Para permanencia de filtro
-  //       this.valoresFiltros.nombre = valorParametroFiltro;
-  //       const valoresN = Object.values(this.valoresFiltros)
-
-  //       this.armarFilterPredicate(valoresN);
-  //       this.filtrarPor(valoresN);
-        
-  //     break;
-  //     case 'clienteProyecto':
-  //       this.clienteProyecto = valorParametroFiltro;
-  //       this.filtrosProyectoDialog[2] = this.clienteProyecto;
-  //       this.valoresFiltros.cliente = valorParametroFiltro;
-  //       const valoresC = Object.values(this.valoresFiltros);
-
-  //       this.armarFilterPredicate(valoresC);
-  //       this.filtrarPor(valoresC);
-        
-  //       break;
-  //     case 'asignadoAproyecto':
-  //       this.asignadoAproyecto = valorParametroFiltro;
-  //       this.filtrosProyectoDialog[3] = this.asignadoAproyecto;
-  //       this.valoresFiltros.asignado = valorParametroFiltro;
-  //       const valoresA = Object.values(this.valoresFiltros)
-
-  //       this.armarFilterPredicate(valoresA);
-  //       this.filtrarPor(valoresA);
-  //   }
-  // }
 
   //Obtengo los datos para filtrar por PROYECTOS
-  getDatosFiltrosProyecto(event: Event){ //Los inputs
+  getDatosFiltrosProyecto(event: Event){ //Los inputs de filtro de proyectos
     const idParametroFiltro = (event.currentTarget as HTMLInputElement).id;
     const valorParametroFiltro = (event.currentTarget as HTMLInputElement).value;
     this.filtrarProyectos(idParametroFiltro,valorParametroFiltro);
@@ -447,8 +388,10 @@ export class DialogComponent implements OnInit {
         console.log(valores)
         const objeto = JSON.parse(JSON.stringify(this.valoresFiltros))
         
-        this.armarFilterPredicateProyectos(valores);
-        this.filtrarProyectosPor(valores);
+        this.prepararFiltroProyectos()
+        //this.armarFilterPredicateProyectos(valores);
+        //this.filtrarProyectosPor(valores);
+
         
       break;
       case 'nombreProyecto':
@@ -457,9 +400,10 @@ export class DialogComponent implements OnInit {
         this.valoresFiltros.nombre = valorParametroFiltro.split(' ').join('').toLowerCase().toLowerCase();
         const valoresN = Object.values(this.valoresFiltros);
 
+        this.prepararFiltroProyectos()
+        //this.armarFilterPredicateProyectos(valoresN);
+        //this.filtrarProyectosPor(valoresN);
 
-        this.armarFilterPredicateProyectos(valoresN);
-        this.filtrarProyectosPor(valoresN);
 
       break;
       case 'clienteProyecto':
@@ -468,9 +412,10 @@ export class DialogComponent implements OnInit {
         this.valoresFiltros.cliente = valorParametroFiltro;
         const valoresC = Object.values(this.valoresFiltros);
 
-        this.armarFilterPredicateProyectos(valoresC);
-        this.filtrarProyectosPor(valoresC);
-
+        //this.armarFilterPredicateProyectos(valoresC);
+        //this.filtrarProyectosPor(valoresC);
+        this.prepararFiltroProyectos()
+        
         
       break;
       case 'asignadoAproyecto':
@@ -479,11 +424,150 @@ export class DialogComponent implements OnInit {
         this.valoresFiltros.asignado = valorParametroFiltro;
         const valoresA = Object.values(this.valoresFiltros);
 
-        this.armarFilterPredicateProyectos(valoresA);
-        this.filtrarProyectosPor(valoresA);
-
+        //this.armarFilterPredicateProyectos(valoresA);
+        //this.filtrarProyectosPor(valoresA);
+        this.prepararFiltroProyectos()
         
       break;
+    }
+  }
+   //Filtro de Proyectos
+   prepararFiltroProyectos() {
+    const filtroNumeroProyecto = this.filtroAvanzadoProyecto(1, this.valoresFiltros.id);
+    const filtroNombreProyecto = this.filtroAvanzadoProyecto(2, this.valoresFiltros.nombre);
+    const filtroclienteProyecto = this.filtroAvanzadoProyecto(3, this.valoresFiltros.cliente);
+    const filtroAsignadoProyecto = this.filtroAvanzadoProyecto(4, this.valoresFiltros.asignado);
+    if(this.asignadasAmi){
+      this.valoresFiltros.asignadasAmi = this.asignadasAmi;
+      const filtroAsignadoAmiProyecto = this.filtroAvanzadoProyecto(5, this.userId);
+      this.listaTareasProyectosAux = this.buscarCoincidenciasProyectos(filtroNumeroProyecto, filtroNombreProyecto ,filtroclienteProyecto,filtroAsignadoProyecto,filtroAsignadoAmiProyecto);
+    }
+    else{
+      this.valoresFiltros.asignadasAmi = this.asignadasAmi;
+      const filtroAsignadoAmiProyecto = this.filtroAvanzadoProyecto(5, '');
+      this.listaTareasProyectosAux = this.buscarCoincidenciasProyectos(filtroNumeroProyecto, filtroNombreProyecto ,filtroclienteProyecto,filtroAsignadoProyecto,filtroAsignadoAmiProyecto);
+    }
+    
+    console.log(this.listaTareasProyectosAux)
+  }
+
+  filtroAvanzadoProyecto(tipo: number, valor: string) {
+    let arrayTemp: any = [];
+    let arrayTabla: any;
+    switch (tipo) {
+      case 1: //Num proyecto
+        this.listaProyectosAux.forEach(proyecto => {
+          let obj = { id: proyecto.id_projecto, numero: proyecto.numero_proyecto };
+          arrayTemp.push(obj);
+          
+        });
+        arrayTabla = new MatTableDataSource(arrayTemp);
+        arrayTabla.filter = valor.trim().toLowerCase();
+        arrayTemp = arrayTabla.filteredData;
+      return arrayTemp;
+
+      case 2: //Nombre proyecto
+        this.listaProyectosAux.forEach(proyecto => {
+          let obj = { id: proyecto.id_projecto, nombre: proyecto.nombre_projecto };
+          arrayTemp.push(obj);
+        });
+        arrayTabla = new MatTableDataSource(arrayTemp);
+        arrayTabla.filter = valor.trim().toLowerCase();
+        arrayTemp = arrayTabla.filteredData;
+      return arrayTemp;
+
+      case 3: //Cliente proyecto
+        this.listaProyectosAux.forEach(proyecto => {
+          let obj = { id: proyecto.id_projecto, cliente: proyecto.nombre_cliente };
+          arrayTemp.push(obj);
+        });
+        arrayTabla = new MatTableDataSource(arrayTemp);
+        arrayTabla.filter = valor.trim().toLowerCase();
+        arrayTemp = arrayTabla.filteredData;
+      return arrayTemp;
+
+      case 4: //Asignado a
+        this.listaProyectosAux.forEach(proyecto => {
+          let obj = { id: proyecto.id_projecto, asignadoA: proyecto.usuario_asignado };
+          arrayTemp.push(obj);
+        });
+        arrayTabla = new MatTableDataSource(arrayTemp);
+        arrayTabla.filter = valor.trim().toLowerCase();
+        arrayTemp = arrayTabla.filteredData;
+      return arrayTemp;
+
+      case 5: //Mis proyectos
+        
+        this.listaProyectosAux.forEach(proyecto => {
+          let obj = { id: proyecto.id_projecto, idUsuario: proyecto.id_usuario };
+          arrayTemp.push(obj);
+        });
+        arrayTabla = new MatTableDataSource(arrayTemp);
+        arrayTabla.filter = valor.trim().toLowerCase();
+        arrayTemp = arrayTabla.filteredData;
+      return arrayTemp;
+    }
+
+  }
+
+  buscarCoincidenciasProyectos(filtroNumeroProyecto: Array<{}>, filtroNombreProyecto: Array<{}>,filtroClienteProyecto: Array<{}>, filtroAsignadoProyecto: Array<{}>, filtroAsignadoAmiProyecto:Array<{}>){
+    let encontrados: any = [];
+    
+
+    this.listaProyectosAux.forEach(proyecto => {
+      let encontradoIdProyecto = false;
+      let encontradoNombreProyecto = false;
+      let encontradoClienteProyecto = false;
+      let encontradoAsignadoProyecto = false;
+      let asigandosAmi = false;
+      
+      
+      filtroNumeroProyecto.forEach((element: any) => {
+        if (proyecto.id_projecto == element.id) {
+          encontradoIdProyecto = true;
+        }
+      });
+
+      filtroNombreProyecto.forEach((element: any) => {
+        if (proyecto.id_projecto == element.id) {
+          encontradoNombreProyecto = true;
+        }
+      });
+
+      filtroClienteProyecto.forEach((element: any) => {
+        
+        if (proyecto.id_projecto == element.id) {
+          encontradoClienteProyecto = true;
+        }
+      });
+
+      filtroAsignadoProyecto.forEach((element: any) => {
+        
+        if (proyecto.id_projecto == element.id) {
+          encontradoAsignadoProyecto = true;
+        }
+      });
+
+      if (encontradoIdProyecto && encontradoNombreProyecto && encontradoClienteProyecto && encontradoAsignadoProyecto) {
+        encontrados.push(proyecto);
+      }
+      
+
+    });
+    
+    if(this.asignadasAmi){
+      if(encontrados.length != 0){
+        console.log(encontrados)
+        encontrados = encontrados.filter((unEncontrado:any) =>
+          unEncontrado.id_usuario == this.userId
+          
+        );
+        
+        return encontrados;
+      }
+    }
+    else{
+      return encontrados;
     }
   }
   armarFilterPredicateProyectos( valores:string[] ): boolean{                                    
@@ -540,7 +624,7 @@ export class DialogComponent implements OnInit {
       //numero_proyecto y Nombre
       else if(valores[0] != '' && valores[1] != '' && valores[2] == '' && valores[3] == ''){
         console.log("aca")
-        return ( ((data.numero_proyecto.split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1) && ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valores[1])) != -1 );
+        return ( ((String(data.numero_proyecto).split(' ').join('').toLowerCase()).indexOf(valores[0]) != -1) && ((String(data.nombre_projecto).split(' ').join('').toLowerCase()).indexOf(valores[1])) != -1 );
       }
       //Filtra por numero_proyecto, Nombre y Asignado
       else if(valores[0] != '' && valores[1] != '' && valores[2] == '' && valores[2] != ''){
@@ -663,7 +747,6 @@ export class DialogComponent implements OnInit {
 
     for(let i= 0; i < valoresFiltrosAnteriores.length; i++){
       if(valoresFiltrosAnteriores[i] != ''){
-        console.log("entró")
         habiaFiltros = true;
         i = valoresFiltrosAnteriores.length;
       }
@@ -678,33 +761,47 @@ export class DialogComponent implements OnInit {
       }
     }
 
+    console.log(this.valoresFiltros)
     if(habiaFiltros){ //Pregunta si había filtros anteriormente cargados
-      console.log("Filtros iguales")
       if(hayCambios){
         //Update de filtros
         console.log("update")
         const contenido: string = JSON.stringify({ filtros : this.valoresFiltros });
+        
         const encodedData = btoa(contenido);
         this._filtroService.updateFiltro(this.saved_search_id, encodedData).subscribe((rsp: any) => {
           console.log('Filtro actualizado: ', rsp);
         });
       }
+      else{
+        console.log("Había filtros proyecto pero no hubo cambios")
+      }
       
     }
     else{
-      //Insert de servicio
-      console.log("insert");
-      const contenido: string = JSON.stringify({ filtros : this.valoresFiltros });
-      const encodedData = btoa(contenido);
-      this._filtroService.insertFiltro(
-        localStorage.getItem('userId')!,
-        'proyectos', //modulo_busqueda
-        'filtro_proyectos', //nombre
-        encodedData,//contenido
+      let insertFiltro: boolean = false;
+      for (let i = 0; i < valoresFiltrosActuales.length; i++) {
+        if (valoresFiltrosActuales[i] != '') {
+          insertFiltro = true;
+          i = valoresFiltrosActuales.length;
+        }
+      }
+      if (insertFiltro) {
+        //Insert de servicio
+        console.log("insert");
+        const contenido: string = JSON.stringify({ filtros: this.valoresFiltros });
+        const encodedData = btoa(contenido);
+        this._filtroService.insertFiltro(
+          localStorage.getItem('userId')!,
+          'proyectos', //modulo_busqueda
+          'filtro_proyectos', //nombre
+          encodedData,//contenido
 
-        'Actualiza filtros de búsqueda de proyectos').subscribe((rsp: any) => {
-          console.log('Filtro guardado: ', rsp);
-        });
+          'Actualiza filtros de búsqueda de proyectos').subscribe((rsp: any) => {
+            console.log('Filtro guardado: ', rsp);
+          });
+      }
+      
     }
     
     this.dialogRef.close(proyecto);
@@ -896,7 +993,7 @@ export class DialogComponent implements OnInit {
 
 
         arrayTabla.filterPredicate = (arrayTabla: any, valor: string): boolean => {
-          return (arrayTabla.fechaPlanificadaDesde <= valor)
+          return (arrayTabla.fechaPlanificadaDesde.trim() >= valor.trim())
         }
         arrayTabla.filter = valor.trim().toLowerCase();
         arrayTemp = arrayTabla.filteredData;
@@ -911,7 +1008,7 @@ export class DialogComponent implements OnInit {
 
 
         arrayTabla.filterPredicate = (arrayTabla: any, valor: string): boolean => {
-          return (arrayTabla.fechaPlanificadaHasta <= valor)
+          return (arrayTabla.fechaPlanificadaHasta.trim() <= valor.trim())
         }
         arrayTabla.filter = valor.trim().toLowerCase();
         arrayTemp = arrayTabla.filteredData;
@@ -1067,7 +1164,6 @@ export class DialogComponent implements OnInit {
     }
 
     if(habiaFiltros){ //Pregunta si había filtros anteriormente cargados
-      console.log("Filtros iguales")
       if(hayCambios){
         //Update de filtros
         console.log("update")
@@ -1077,23 +1173,34 @@ export class DialogComponent implements OnInit {
           console.log('Filtro actualizado: ', rsp);
         });
       }
+      else{
+
+      }
       
     }
     else{
-      //Insert de servicio
-      console.log(this.fechaInicio,  this.fechaFin);
-      console.log("insert");
-      console.log(this.filtrosTarea)
-      const contenido: string = JSON.stringify({ filtros : this.filtrosTarea });
-      const encodedData = btoa(contenido);
-      this._filtroService.insertFiltro(
-        localStorage.getItem('userId')!,
-        'tareas', //modulo_busqueda
-        'filtro_tareas', //nombre
-        encodedData,//contenido
-        'Actualiza filtros de búsqueda de tareas').subscribe((rsp: any) => {
-          console.log('Filtro guardado: ', rsp);
-        });
+      let insertFiltro: boolean = false;
+      for (let i = 0; i < valoresFiltrosActuales.length; i++) {
+        if (valoresFiltrosActuales[i] != '') {
+          insertFiltro = true;
+          i = valoresFiltrosActuales.length;
+        }
+      }
+      if (insertFiltro) {
+        //Insert de servicio
+        console.log("insert");
+        console.log(this.filtrosTarea)
+        const contenido: string = JSON.stringify({ filtros: this.filtrosTarea });
+        const encodedData = btoa(contenido);
+        this._filtroService.insertFiltro(
+          localStorage.getItem('userId')!,
+          'tareas', //modulo_busqueda
+          'filtro_tareas', //nombre
+          encodedData,//contenido
+          'Actualiza filtros de búsqueda de tareas').subscribe((rsp: any) => {
+            console.log('Filtro guardado: ', rsp);
+          });
+      }
     }
     
     this.dialogRef.close();

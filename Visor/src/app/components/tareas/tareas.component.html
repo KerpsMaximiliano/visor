@@ -35,6 +35,7 @@
       <!-- "Sprint" -->
       <button id="btn-sprint" mat-flat-button color="primary" [matMenuTriggerFor]="sprintMenu" class="sombraBotones" (click)="mesesYanios()">{{mesAnioSeleccionado}}</button>
       <mat-menu #sprintMenu="matMenu">
+        <mat-option value = 'Sprint' (click)="setMesAnio('Sprint')"> Sprint </mat-option>
         <mat-option [value]="mesAnio"  *ngFor="let mesAnio of mesesAnios" (click)="setMesAnio(mesAnio)">{{ mesAnio }}</mat-option>
       </mat-menu>
       

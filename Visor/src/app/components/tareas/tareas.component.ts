@@ -1,7 +1,7 @@
 import { Component, OnInit , EventEmitter, Input, HostListener} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
-import { finalize } from 'rxjs/operators';
+import { finalize, mergeMap } from 'rxjs/operators';
 import {
   MatSnackBar,
   MatSnackBarHorizontalPosition,
@@ -68,7 +68,7 @@ export interface PropiedadesTarea{
 export class TareasComponent implements OnInit {
 
   mesesAnios:Array<String> = [];
-  mesAnioSeleccionado: String = 'Sprint'
+  mesAnioSeleccionado: String = 'Sprint';
   idUsuario: string = '';
   asignadasAmiDesactivado: boolean = true;
   asignadasAmiActivado: boolean = false;
@@ -141,9 +141,28 @@ export class TareasComponent implements OnInit {
       localStorage.setItem('userId', response.dataset[0].id);
       this.idUsuario = response.dataset[0].id;
     })
-    
+
+    if(this.idProyectoSeleccionado != ''){
+      //Obtengo tareas desde el servicio
+      this._tareaService.getTareasDeProyecto(this.idProyectoSeleccionado).pipe(
+        finalize(() => {
+          this.listaTareasService = this.listaTareasService.dataset;
+        })
+      ).subscribe(result => {
+        console.log(result)
+        this.listaTareasService = result;
+      })
+    }
 
 
+  }
+
+
+
+  obtenerTareasDeProyecto(){
+    this._tareaService.getTareasDeProyecto(this.idProyectoSeleccionado).subscribe(result => {
+      this.listaTareasService = result.dataset;
+    })
   }
 
   /* manejo de click para cierre de tabla de proyectos */
@@ -234,28 +253,28 @@ export class TareasComponent implements OnInit {
   }
 
   buscarTarea(){
-    console.log("filtros: "+this.filtrosTarea.idProyectoSeleccionado)
-    const dialogRef = this.dialog.open(DialogComponent,{width:'72%', data:{buscaTareas: true, idProyectoSeleccionado:this.idProyectoSeleccionado}});
-    dialogRef.afterClosed().pipe(
-      finalize(() => {
-        if(this.tareasFiltradas != ''){
-          console.log(this.tareasFiltradas)
-        }
-        if(this.nombreVistaSeleccionada != 'Vista'){ //Pregunto si hay una vista seleccionada
-          this.setSubtituloProyecto(this.idVistaSeleccionada);
-        }
+    if (this.idProyectoSeleccionado != '') {
+      console.log("filtros: " + this.filtrosTarea.idProyectoSeleccionado)
+      const dialogRef = this.dialog.open(DialogComponent, { width: '72%', data: { buscaTareas: true, idProyectoSeleccionado: this.idProyectoSeleccionado } });
+      dialogRef.afterClosed().pipe(
+        finalize(() => {
+          if (this.tareasFiltradas != undefined) {
+            console.log(this.tareasFiltradas)
+            if (this.nombreVistaSeleccionada != 'Vista' && this.tareasFiltradas != undefined) { //Pregunto si hay una vista seleccionada
+              this.setSubtituloProyecto(this.idVistaSeleccionada);
+            }
+          }
+        })
+      )
+      .subscribe(result => {
+        this.tareasFiltradas = result;
+        console.log(result)
       })
-    )
-    .subscribe(result => {
-      if(result != undefined){
-        this.tareasFiltradas= result;
-      }
-      else{
-        this.tareasFiltradas = '';
-      }
-      
-         
-    })
+    }
+    else{
+      this.openSnackBar();
+    }
+    
   }
 
   verTareasDeVista(event: Event){
@@ -267,7 +286,7 @@ export class TareasComponent implements OnInit {
   
 
   setSubtituloProyecto(idVistaSeleccionada: string){
-    
+
     const vistaSeleccionada = idVistaSeleccionada;
     
     this.tareasFiltradasPorVista = [];
@@ -283,7 +302,17 @@ export class TareasComponent implements OnInit {
         if(this.idProyectoSeleccionado == ''){ //Selecciona vista sin elegir proyecto. Muestra solo columnas
           this.tareasFiltradasPorVista= [];
         }
+        else if(this.idProyectoSeleccionado != '' && this.mesAnioSeleccionado != 'Sprint'){
+          //Filtra por 'mes - año' seleccionado
+          console.log('Filtra por "mes - año" seleccionado')
+          this.tareasFiltradas.forEach( (tarea:any) => {
+            if(tarea.tipo_tarea == "Design"){
+              this.tareasFiltradasPorVista.push(tarea);
+            }
+          });
+        }
         else if(this.idProyectoSeleccionado != '' && this.tareasFiltradas == ''){ //Selecciona proyecto y vista. Muestra tareas de ese tipo de vista
+          console.log("Filtra por vista")
           this.listaTareasService.forEach( (tarea:any) => {
             if(tarea.tipo_tarea == "Design"){
               this.tareasFiltradasPorVista.push(tarea);
@@ -291,6 +320,7 @@ export class TareasComponent implements OnInit {
           });
         }
         else{ //Filtró tareas
+          console.log("utilizó filtro de tareas")
           this.tareasFiltradas.forEach( (tarea:any) => {
             if(tarea.tipo_tarea == "Design"){
               this.tareasFiltradasPorVista.push(tarea);
@@ -304,7 +334,17 @@ export class TareasComponent implements OnInit {
         if(this.idProyectoSeleccionado == ''){ //Si no hay un proyecto seleccionado muestra col 
           this.tareasFiltradasPorVista= [];
         }
+        else if(this.idProyectoSeleccionado != '' && this.mesAnioSeleccionado != 'Sprint'){
+          //Filtra por 'mes - año' seleccionado
+          console.log('Filtra por "mes - año" seleccionado')
+          this.tareasFiltradas.forEach( (tarea:any) => {
+            if(tarea.tipo_tarea == "RelevamientoReq"){
+              this.tareasFiltradasPorVista.push(tarea);
+            }
+          });
+        }
         else if(this.idProyectoSeleccionado != '' && this.tareasFiltradas == ''){ //Selecciona proyecto y vista. Muestra tareas de ese tipo de vista
+          console.log("Filtra por vista")
           this.listaTareasService.forEach( (tarea:any) => {
             if(tarea.tipo_tarea == "RelevamientoReq"){
               this.tareasFiltradasPorVista.push(tarea);
@@ -312,6 +352,7 @@ export class TareasComponent implements OnInit {
           });
         }
         else{ //Filtró tareas
+          console.log("utilizó filtro de tareas")
           this.tareasFiltradas.forEach( (tarea:any) => {
             if(tarea.tipo_tarea == "RelevamientoReq"){
               this.tareasFiltradasPorVista.push(tarea);
@@ -324,7 +365,17 @@ export class TareasComponent implements OnInit {
         if(this.idProyectoSeleccionado == ''){ //Si no hay un proyecto seleccionado muestra col 
           this.tareasFiltradasPorVista= [];
         }
+        else if(this.idProyectoSeleccionado != '' && this.mesAnioSeleccionado != 'Sprint'){
+          //Filtra por 'mes - año' seleccionado
+          console.log('Filtra por "mes - año" seleccionado')
+          this.tareasFiltradas.forEach( (tarea:any) => {
+            if(tarea.tipo_tarea == "Produccion"){
+              this.tareasFiltradasPorVista.push(tarea);
+            }
+          });
+        }
         else if(this.idProyectoSeleccionado != '' && this.tareasFiltradas == ''){ //Selecciona proyecto y vista. Muestra tareas de ese tipo de vista   
+          console.log("Filtra por vista")
           this.listaTareasService.forEach( (tarea:any) => {
             if(tarea.tipo_tarea == "Produccion"){
               this.tareasFiltradasPorVista.push(tarea);
@@ -332,6 +383,7 @@ export class TareasComponent implements OnInit {
           });
         }
         else{ //Filtró tareas
+          console.log("utilizó filtro de tareas")
           this.tareasFiltradasPorVista= [];
           this.tareasFiltradas.forEach( (tarea:any) => {
             if(tarea.tipo_tarea == "Produccion"){
@@ -398,7 +450,8 @@ export class TareasComponent implements OnInit {
         let mes;
         let año;
         let mesAño;
-        
+
+        //Agrego opciones ' año - mes '
         this.tareasdelProyecto.forEach( (tarea:any) => {
           if(tarea.fecha_inicio != null){
             mes = tarea.fecha_inicio.split('-')[1];
@@ -409,11 +462,79 @@ export class TareasComponent implements OnInit {
             }
           }
         });
+        //Ordeno 'mes - año' descendentemente
+        this.mesesAnios.sort().reverse();
       });
     }
+    
+
   }
-  setMesAnio(valor:String){
-    this.mesAnioSeleccionado = valor;
+  setMesAnio(mesAnio:String){
+
+    if(mesAnio == 'Sprint'){
+      this.mesAnioSeleccionado = mesAnio;
+      this.tareasFiltradas = [];
+      
+      if (this.nombreVistaSeleccionada != 'Vista') { //Pregunto si hay una vista seleccionada
+        this.setSubtituloProyecto(this.idVistaSeleccionada);
+      }
+    }
+    else {
+      let mes = (mesAnio.split('-')[0]).trim();
+      let anio = (mesAnio.split('-')[1]).trim();
+
+      this.mesAnioSeleccionado = mesAnio;
+
+      //Filtra por mes y año seleccionado
+      this.tareasFiltradas = [];
+      this.listaTareasService.forEach((unaTarea: any) => {
+        let mesUnaTarea = (unaTarea.fecha_planificada.split('-')[1]).trim();
+        let anioUnaTarea = (unaTarea.fecha_planificada.split('-')[0]).trim();
+        if (mes == mesUnaTarea && anio == anioUnaTarea) {
+          this.tareasFiltradas.push(unaTarea)
+        }
+      });
+      console.log(this.tareasFiltradas)
+
+      if (this.nombreVistaSeleccionada != 'Vista') { //Pregunto si hay una vista seleccionada
+        
+        let usuarioLogueado = localStorage.getItem('usuario')!;
+        
+        this._filtroService.getUserId(usuarioLogueado).pipe(
+          mergeMap((data) =>{
+            return this._filtroService.selectFiltro(data.dataset[0].id, 'tareas');
+          })
+        )
+        .subscribe( (resp) =>{
+          console.log(resp)
+          if(resp.dataset != ''){
+            let filtrosObtenidos = resp.dataset;
+            let saved_search_id_tareas = resp.dataset[0].saved_search_id;
+            filtrosObtenidos = JSON.parse(atob(resp.dataset[0].contenido)).filtros;
+            console.log(filtrosObtenidos)
+            console.log(filtrosObtenidos.planificadaDesde + filtrosObtenidos.planificadaHasta)
+            if(filtrosObtenidos.planificadaDesde != '' || filtrosObtenidos.planificadaHasta != ''){
+              filtrosObtenidos.planificadaDesde = '';
+              filtrosObtenidos.planificadaHasta = '';
+              //Actualizo filtros
+              const contenido: string = JSON.stringify({ filtros : filtrosObtenidos });
+              const encodedData = btoa(contenido);
+              this._filtroService.updateFiltro(saved_search_id_tareas, encodedData).subscribe((rsp: any) => {
+              console.log('Filtro actualizado: ', rsp);
+              });
+            }
+            else{
+              console.log("No hizo falta actualizar filtros.")
+            }
+
+          }
+          else{
+            console.log("resp.dataset es vacío")
+          }
+        })
+        this.setSubtituloProyecto(this.idVistaSeleccionada);
+      }
+    }
   }
 
   openSnackBar() {
