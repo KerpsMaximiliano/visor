@@ -1,6 +1,7 @@
 export interface Documento {
     id: string,
-    name: string,
+    filename: string,
+    document_name: string,
     type: string,
     assigned: string,
     documentStatus: string,

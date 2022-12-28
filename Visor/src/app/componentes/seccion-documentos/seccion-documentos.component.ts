@@ -97,7 +97,8 @@ export class SeccionDocumentosComponent implements OnInit {
       {
         let document: Documento = {
           id: result.dataset[i].id,
-          name: result.dataset[i].name,
+          filename: result.dataset[i].filename,
+          document_name: result.dataset[i].document_name,
           assigned: result.dataset[i].user_name,
           category: result.dataset[i].category,
           type: result.dataset[i].type,
@@ -244,7 +245,7 @@ export class SeccionDocumentosComponent implements OnInit {
         return arrayTemp;
       case 2:
         this.listOfDocuments.forEach(documento => {
-          let obj = { id: documento.id, nombre: documento.name };
+          let obj = { id: documento.id, nombre: documento.document_name };
           arrayTemp.push(obj);
         });
         arrayTabla.filter = valor.trim().toLowerCase();
@@ -349,10 +350,10 @@ export class SeccionDocumentosComponent implements OnInit {
   changeOrder(){
     if(this.ordenSeleccion == 'Alfabetico') {
       this.listOfDocuments.sort(function(a, b) {
-        if(a.name < b.name){
+        if(a.document_name < b.document_name){
           return 1;
         }
-        if (a.name > b.name) {
+        if (a.document_name > b.document_name) {
           return -1;
         }
         return 0;
@@ -626,7 +627,9 @@ export class SeccionDocumentosComponent implements OnInit {
       height: '720px',
       data: {
         titulo: "Editar Documento",
-        nombre: documento.name,
+        id: documento.id,
+        filename: documento.filename,
+        nombre: documento.document_name,
         tipo: documento.type,
         estado: documento.documentStatus,
         fechaPublicacion: documento.date,

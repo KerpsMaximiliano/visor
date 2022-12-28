@@ -6,7 +6,7 @@
         <mat-label>Archivo</mat-label>
         <button mat-stroked-button (click)="adjuntar($event)" id="btnAdjuntar">Adjuntar</button>
         <mat-label id="nombreArchivo"></mat-label>
-        <input type="file" class="oculto" id="adjuntar" formControlName="archivo" (change)="mostrarNombre($event)" required>
+        <input type="file" class="oculto" id="adjuntar" formControlName="archivo" (change)="mostrarNombre($event)">
     </div> 
     <div>
         <mat-label>Nombre</mat-label>
@@ -27,7 +27,7 @@
         <mat-form-field>
             <mat-label>Seleccionar</mat-label>
             <mat-select class="input" formControlName="tipo" [compareWith]="compararItems">
-                <mat-option *ngFor="let tipo of tipos" [value]="tipo" >{{tipo}}</mat-option>
+                <mat-option *ngFor="let tipo of tipos" [value]="tipo.descripcion" >{{tipo.descripcion}}</mat-option>
             </mat-select>
         </mat-form-field>
     </div>
@@ -36,7 +36,7 @@
         <mat-form-field>
             <mat-label>Seleccionar</mat-label>
             <mat-select class="input" formControlName="estado" [compareWith]="compararItems">
-                <mat-option *ngFor="let estado of estados" [value]="estado" >{{estado}}</mat-option>
+                <mat-option *ngFor="let estado of estados" [value]="estado.descripcion">{{estado.descripcion}}</mat-option>
             </mat-select>
         </mat-form-field>
     </div>

@@ -61,13 +61,16 @@
                 'implementacion-document-border': isImplementacion(d)
             }"
             >
+            <div class="card-content">
+                <p class="letters"><b>{{d.filename}}</b></p>
+            </div>
             <div class="container-icons">
                 <i id="download-icon" class="fas fa-download" matTooltip="Descargar documento"></i>
                 <i id="edit-icon" class="fas fa-edit" (click)="abrirEditarDocumento(d)" matTooltip="Editar documento"></i>
                 <i id="remove-icon" class="fas fa-trash-alt" (click)="abrirBajaDocumento(d)" matTooltip="Eliminar documento"></i>
             </div>
             <div class="card-content">
-                <p class="letters"><b>{{d.name}}</b></p>
+                <p class="letters"><b>{{d.document_name}}</b></p>
             </div>
             <div class="card-content">
                 <p class="letters"><b>{{d.category}}</b></p>  

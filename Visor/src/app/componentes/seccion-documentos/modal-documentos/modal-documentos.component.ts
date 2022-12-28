@@ -14,33 +14,52 @@ import { Inject } from '@angular/core';
 export class ModalDocumentosComponent implements OnInit {
 
   formulario!: FormGroup;
+
+  /* tipos = [
+    "a. Identificación de necesidades",
+    "b. Plan de proyecto",
+    "c. Requerimientos",
+    "d. Estimación de tareas",
+    "e. Product backlog",
+    "f. Sprint backlog",
+    "g. Documento",
+    "h. Propuesta funcional",
+    "i. Arquitectura",
+    "j. Caso de uso",
+    "k. Requerimiento de configuración",
+    "l. Boceto/Maqueta",
+    "m. Nota de desarrollo",
+    "n. Plan de pruebas",
+    "o. Caso de prueba",
+    "p. Ciclo/corrida",
+    "q. Incidencia",
+    "r. Proceso de despliegue",
+    "s. Requerimientos de cambios"
+  ] */
+
   tipos = [
-    "Identificación de necesidades",
-    "Plan de proyecto",
-    "Requerimientos",
-    "Estimación de tareas",
-    "Product backlog",
-    "Sprint backlog",
-    "Documento",
-    "Propuesta funcional",
-    "Arquitectura",
-    "Caso de uso",
-    "Requerimiento de configuración",
-    "Boceto/Maqueta",
-    "Nota de desarrollo",
-    "Plan de pruebas",
-    "Caso de prueba",
-    "Ciclo/corrida",
-    "Incidencia",
-    "Proceso de despliegue",
-    "Requerimientos de cambios",
-    "Estimación de cambios"
+    { valor: "PlanProyecto", descripcion: "Plan de Proyecto"},
+    { valor: "Requerimientos", descripcion: "Requerimientos"},
+    { valor: "CasodeUso", descripcion: "Caso de Uso"},
+    { valor: "DespliegueProcesoProduccion", descripcion: "Proceso de despliegue"},
+    { valor: "Arquitectura", descripcion: "Arquitectura"},
+    { valor: "EstimacionCasodeUso", descripcion: "Estimacion Caso de Uso"},
+    { valor: "IdentificacionNecesidades", descripcion: "Identificación de necesidades"},
+    { valor: "GestiondeCambios", descripcion: "Gestion de Cambios"},
+    { valor: "Estimaciondecambios", descripcion: "Estimación de cambios"},
   ];
+
   estados = [
+    { valor: "Active", descripcion: "Publicado"},
+    { valor: "Draft", descripcion: "Borrador"},
+    { valor: "Expired", descripcion: "Eliminado"}
+  ];
+
+  /* estados = [
     "Publicado",
     "Borrador",
     "Eliminado"
-  ];
+  ]; */
 
   camposIncompletos!: boolean;
 
@@ -60,8 +79,9 @@ export class ModalDocumentosComponent implements OnInit {
       fechaCaducidad: new FormControl(null),
       asignadoA: new FormControl(null, Validators.required)
     });
-
-    if(this.data.estado != null){
+    
+    console.log("tiene id: "+this.verificarSiTieneId())
+    if(this.verificarSiTieneId()){
       this.formulario.controls["nombre"].setValue(this.data.nombre);
       this.formulario.controls["tipo"].setValue(this.data.tipo);
       this.formulario.controls["estado"].setValue(this.data.estado);
@@ -69,6 +89,7 @@ export class ModalDocumentosComponent implements OnInit {
       this.formulario.controls["fechaCaducidad"].setValue(this.data.fechaCaducidad);
       this.formulario.controls["asignadoA"].setValue(this.data.asignadoA);
     }
+
   }
 
   /**
@@ -123,36 +144,74 @@ export class ModalDocumentosComponent implements OnInit {
    * Metodo que agrega el documento
    */
   agregarDocumento(){
-    console.log(this.formulario.controls["fechaPublicacion"].value)
+    console.log(this.formulario.controls["fechaPublicacion"].value);
     let pathArchivo: Array<string> = this.formulario.controls["archivo"].value.split("\\");
 
     let jsbody = {
       par_modo: "",
+      pID_DOCUMENTO: this.data.id,
       pFilename: pathArchivo.pop(),
       pDocument_name: this.formulario.controls["nombre"].value,
-      ptipo: this.formulario.controls["tipo"].value,
-      pStatus_id: this.formulario.controls["estado"].value,
+      ptipo: this.obtenerValor(this.formulario.controls["tipo"].value, this.tipos),
+      pStatus_id: this.obtenerValor(this.formulario.controls["estado"].value, this.estados),
       /* pActive_date: this.formulario.controls["fechaPublicacion"].value,
       pExp_date: this.formulario.controls["fechaCaducidad"].value, */
       pID_CASE: this.formulario.controls["proyectoAsociado"].value,
       pAssigned_user_id: this.formulario.controls["asignadoA"].value
     };
 
-    if(this.data.estado != null){
-      jsbody.par_modo = "U"
+    if(this.verificarSiTieneId()){
+      jsbody.par_modo = "U";
     }else{
-      jsbody.par_modo = "I"
+      jsbody.par_modo = "I";
     }
 
     let body = JSON.stringify(jsbody);
 
     console.log(body);
+
     return this._documentService.ABMDocumento(body).subscribe( respuesta => {
       window.location.reload();
     });
   }
 
   compararItems(objeto1: any, objeto2: any){
+    console.log("objeto1 " + objeto1)
+    console.log("objeto2 " + objeto2)
     return objeto1 == objeto2;
+  }
+
+  obtenerValor(descripcion: string, array: any){
+    let encontro = false;
+    let cont = 0;
+    do{
+      if(array[cont].descripcion == descripcion){
+        encontro = true;
+      }else{
+        cont++;
+      }
+      
+    }while(encontro==false);
+
+
+    return array[cont].valor;
+
+    /* this.tipos.forEach( tipo =>{
+      if(tipo.descripcion == descripcion){
+        console.log("Encontro")
+        return tipo.valor;
+      }else{
+        console.log("No encontro")
+        return undefined;
+      }
+    }) */
+  }
+
+  verificarSiTieneId(){
+    if(this.data.id){
+      return true;
+    }else{
+      return false;
+    }
   }
 }
