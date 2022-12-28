@@ -143,25 +143,6 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     this.dataSource = new MatTableDataSource(this.colaboradores);
     this.completo = this.dataSource.nombre + ' ' + this.dataSource.apellido;
 
-    //Elimino colaboradores repetidos
-    console.log(this.colaboradores);
-    
-    this.colaboradores.forEach((unColab) => {
-      let repetido: boolean = false;
-      this.colaboradoresNoRepeat.forEach(sinRep => {
-        if ( (unColab.id == sinRep.id) && (unColab.funcion == sinRep.funcion) ) {
-          repetido = true;
-        }
-      });
-      if (!repetido) {
-        this.colaboradoresNoRepeat.push(unColab)
-      }
-    })
-    console.log(this.colaboradoresNoRepeat)
-    this.colaboradores = this.colaboradoresNoRepeat;
-    
-    
-
   }
 
   cortarSegundoNombre(nombre: string) {
@@ -343,7 +324,20 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
         }
       });
     });
-    this.colaboradores = arrayAux;
+    let sinRepetidos:Colaborador[] = []
+    arrayAux.forEach((unColab) => {
+      let repetido: boolean = false;
+      sinRepetidos.forEach(sinRep => {
+        if ( (unColab.nombre == sinRep.nombre) && (unColab.apellido == sinRep.apellido) ) {
+          repetido = true;
+        }
+      });
+      if (!repetido) {
+        sinRepetidos.push(unColab)
+      }
+    })
+    console.log(sinRepetidos)
+    this.colaboradores = sinRepetidos;
     this.aplicarFiltros();
   }
 
@@ -408,8 +402,11 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
           this.colaboradoresNoRepeat.push(unColab)
         }
       })
-      console.log(this.colaboradoresNoRepeat)
+
       this.colaboradores = this.colaboradoresNoRepeat;
+
+      const filtroFuncion = this.filtroAvanzado(3, this.funcion);
+      this.colaboradores = this.buscarCoincidencias(filtroNombre, filtroApellido, filtroFuncion);
       this.aplicarFiltros();
     }
     else{

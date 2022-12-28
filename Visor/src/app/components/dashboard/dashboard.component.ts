@@ -11,7 +11,7 @@ export class DashboardComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.router.navigate(['inicio'], {relativeTo: this.route});
+    // this.router.navigate(['inicio'], {relativeTo: this.route});
   }
 
 }

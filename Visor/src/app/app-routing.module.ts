@@ -43,8 +43,11 @@ const routes: Routes = [
         children: [
         { path: 'roles-usuarios', component: RolesUsuariosComponent },
         { path: 'permisos-roles', component: PermisosRolesComponent }
-    ] },
-    {path: 'tareas', component: TareasComponent}
+        ] 
+      },
+      {path: 'tareas', component: TareasComponent},
+      {path: '',component:InicioMainComponent}
+
     ]
   }
 ];
