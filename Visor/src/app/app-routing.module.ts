@@ -34,16 +34,20 @@ const routes: Routes = [
   {
     path: "dashboard",
     canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
     component: DashboardComponent,
     children:[
-      { path: 'inicio', component: InicioMainComponent },
+      { path: 'inicio', canActivate: [AuthGuard], component: InicioMainComponent },
       { path: 'tareas', component: TareasComponent },
       { path: 'configuraciones', component: ConfiguracionesComponent,
         children: [
         { path: 'roles-usuarios', component: RolesUsuariosComponent },
         { path: 'permisos-roles', component: PermisosRolesComponent }
-    ] },
-    {path: 'tareas', component: TareasComponent}
+        ] 
+      },
+      {path: 'tareas', component: TareasComponent},
+      {path: '',component:InicioMainComponent}
+
     ]
   }
 ];

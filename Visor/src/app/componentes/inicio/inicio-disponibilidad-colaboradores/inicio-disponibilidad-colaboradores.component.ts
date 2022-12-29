@@ -24,9 +24,10 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   colaboradoresSP: any[] = [];
   planificacion: any[] = [];
   colaboradores: Colaborador[] = [];
+  colaboradoresNoRepeat: Colaborador[] = [];
   colaboradores2: Colaborador[] = [];
-  columna1!: Colaborador[];
-  columna2!: Colaborador[];
+  columna1: Colaborador[] = [];
+  columna2: Colaborador[] = [];
   dataSource!: any;
   noHayColaboradores = false;
   colaboradorUnico = false;
@@ -83,7 +84,12 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
       this.mesesPlanificacion[0].mes = this._colaboradorService.getMesString(this.fechaHastaDate.getMonth());
       this.setearFecha(this.fechaHastaDate);
       this._colaboradorService.disponibilidadUsuario(1, 1, this.mesFechaElegida, this.anioFechaElegida).subscribe((response: any) => {
+        console.log(response)
         this.colaboradoresSP = response.dataset;
+        console.log(this.colaboradoresSP);
+        
+
+
         this.organizarColaboradores();
         this.getTareasAtrasadas();
         this.getPlanificacionColaboradores();
@@ -123,7 +129,8 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
         id: colab.id_usuario,
         nombre: this.cortarSegundoNombre(colab.nombre),  // llamar funcion para cortar el segundo nombre
         apellido: colab.apellido,
-        funcion: this.funcionCheck(colab.funcion_usuario),
+        //funcion: this.funcionCheck(colab.funcion_usuario),
+        funcion: colab.funcion_usuario,
         capacidad: this.nullCheck(colab.capacidad_total),
         horasPlanificadas: colab.horas_asignadas,
         tiempoDisponible: 0,
@@ -135,14 +142,19 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     });
     this.dataSource = new MatTableDataSource(this.colaboradores);
     this.completo = this.dataSource.nombre + ' ' + this.dataSource.apellido;
+
   }
 
   cortarSegundoNombre(nombre: string) {
-    const indice = nombre.indexOf(' ');
-    if (indice !== -1) {
-      return nombre.substring(0, indice)
+    if (nombre != null) {
+      const indice = nombre.indexOf(' ');
+      if (indice !== -1) {
+        return nombre.substring(0, indice)
+      } else {
+        return nombre;
+      }
     } else {
-      return nombre;
+      return ' ';
     }
   }
 
@@ -276,10 +288,15 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   }
 
   ordenarColaboradores() {
+  console.log("pepe");
+  
+    console.log(this.colaboradores);
+    
     let tamanioCol1:number;
     tamanioCol1 = Math.round(tamanioCol1 = this.colaboradores.length / 2);
     this.columna1 = this.colaboradores.slice(0, tamanioCol1);
     this.columna2 = this.colaboradores.slice(tamanioCol1, this.colaboradores.length);
+    console.log(this.columna2)
   }
 
   applyFilter(event: Event) {
@@ -307,7 +324,20 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
         }
       });
     });
-    this.colaboradores = arrayAux;
+    let sinRepetidos:Colaborador[] = []
+    arrayAux.forEach((unColab) => {
+      let repetido: boolean = false;
+      sinRepetidos.forEach(sinRep => {
+        if ( (unColab.nombre == sinRep.nombre) && (unColab.apellido == sinRep.apellido) ) {
+          repetido = true;
+        }
+      });
+      if (!repetido) {
+        sinRepetidos.push(unColab)
+      }
+    })
+    console.log(sinRepetidos)
+    this.colaboradores = sinRepetidos;
     this.aplicarFiltros();
   }
 
@@ -340,6 +370,7 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
     });
     
     dialogRef.afterClosed().subscribe(result => {
+      console.log(result)
       this.inputIzq = '';
       this.nombre = result.nombre;
       this.apellido = result.apellido;
@@ -355,9 +386,34 @@ export class InicioDisponibilidadColaboradoresComponent implements OnInit {
   prepararFiltro() {
     const filtroNombre = this.filtroAvanzado(1, this.nombre);
     const filtroApellido = this.filtroAvanzado(2, this.apellido);
-    const filtroFuncion = this.filtroAvanzado(3, this.funcion);
-    this.colaboradores = this.buscarCoincidencias(filtroNombre, filtroApellido, filtroFuncion);
-    this.aplicarFiltros();
+    if(this.funcion == ''){
+      console.log("Entra")
+      //Elimina nom y ape duplicados
+      console.log(this.colaboradores)
+      this.colaboradoresNoRepeat = [];
+      this.colaboradores.forEach((unColab) => {
+        let repetido: boolean = false;
+        this.colaboradoresNoRepeat.forEach(sinRep => {
+          if ( (unColab.nombre == sinRep.nombre) && (unColab.apellido == sinRep.apellido) ) {
+            repetido = true;
+          }
+        });
+        if (!repetido) {
+          this.colaboradoresNoRepeat.push(unColab)
+        }
+      })
+
+      this.colaboradores = this.colaboradoresNoRepeat;
+
+      const filtroFuncion = this.filtroAvanzado(3, this.funcion);
+      this.colaboradores = this.buscarCoincidencias(filtroNombre, filtroApellido, filtroFuncion);
+      this.aplicarFiltros();
+    }
+    else{
+      const filtroFuncion = this.filtroAvanzado(3, this.funcion);
+      this.colaboradores = this.buscarCoincidencias(filtroNombre, filtroApellido, filtroFuncion);
+      this.aplicarFiltros();
+    }
   }
 
   filtroAvanzado(tipo: number, valor: string) {

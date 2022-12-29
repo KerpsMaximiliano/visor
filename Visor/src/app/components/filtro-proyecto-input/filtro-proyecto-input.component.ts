@@ -1,4 +1,4 @@
-import { Component, OnInit,Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit,Input, Output, EventEmitter, HostListener } from '@angular/core';
 import { TareaService } from 'src/app/services/i2t/tarea.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { finalize } from 'rxjs/operators';
@@ -61,29 +61,49 @@ export class FiltroProyectoInputComponent implements OnInit {
 
 
   constructor(private _tareaService: TareaService, public dialog: MatDialog) {
+    
+  }
+
+  @HostListener('document:click', ['$event'])
+  manejoClickFueraComponente() {
+    if (this.estiloListaProyectos == 'mostrarTabla'){
+      this.estiloListaProyectos="ocultarTabla"
+    }     
+  }
+  inside: boolean = false;
+
+  ngOnInit(): void {
+    console.log("Ejecuta")
+  }
+
+  cerrarTablaProyectos(event: Event){
+    
+    if(this.valorInputProyecto.length == 0){
+      this.estiloListaProyectos = 'ocultarTabla';
+    }
+  }
+
+  buscarProyectos(event: Event) {   
     this._tareaService.getABMproyectoService().subscribe((response: any) =>{ //Obtengo los proyectos
       this.listaProyectosService = response.dataset;
       this.listaProyectosService = new MatTableDataSource(this.listaProyectosService);
     
       console.log(this.listaProyectosService)
 
-    });
-  }
+      const filterValue = (event.target as HTMLInputElement).value;
+      this.valorInputProyecto = (event.target as HTMLInputElement).value;
+      console.log(this.valorInputProyecto)
 
-  ngOnInit(): void {
-  }
-
-  buscarProyectos(event: Event) {                                        
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.valorInputProyecto = (event.target as HTMLInputElement).value;
+      if (this.valorInputProyecto == '') {
+        console.log("Entra al if")
+        this.estiloListaProyectos = 'ocultarTabla';
+      }
+      else {
+        this.estiloListaProyectos = 'mostrarTabla';
+        this.listaProyectosService.filter = filterValue.trim().toLowerCase();
+      }
+    });                     
     
-    if(this.valorInputProyecto == ''){
-      this.estiloListaProyectos = 'ocultarTabla';
-    }
-    else{
-      this.estiloListaProyectos = 'mostrarTabla';
-      this.listaProyectosService.filter = filterValue.trim().toLowerCase();
-    }
 
   }
 

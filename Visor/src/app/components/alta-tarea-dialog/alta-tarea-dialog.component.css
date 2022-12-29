@@ -4,6 +4,11 @@
     background-color: red;
 }
 
+.icon{
+    font-size: 40px;
+    width: 45px;
+}
+
 .par{
     height: 6vw;
     display: flex;

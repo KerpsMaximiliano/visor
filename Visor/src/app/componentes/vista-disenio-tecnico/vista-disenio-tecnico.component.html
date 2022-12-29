@@ -23,7 +23,7 @@
                 <h4>NO INICIADAS</h4>
             </div>
 
-            <div class="container-all-tareas">
+            <div class="container-all-tareas" [ngClass]="{'barra-scroll': poseeTareasNoIniciadas}">
                 <div *ngFor="let tarea of tareasNoIniciadas ; let i = index">
                     <mat-accordion>
                         <mat-expansion-panel hideToggle>
@@ -139,11 +139,11 @@
             <div id="en-progreso" class="titulo-container">
                 <h4 id="progress">EN PROGRESO</h4>
             </div>
-            <div class="container-all-tareas">
+            <div class="container-all-tareas" [ngClass]="{'barra-scroll': poseeTareasEnProgreso}" >
                 <div *ngFor="let tarea of tareasEnProgreso ; let i = index;">
                     
                     <mat-accordion>
-                        <mat-expansion-panel hideToggle>
+                        <mat-expansion-panel hideToggle >
                             <mat-divider></mat-divider>
 
                             <div class="iconos-superior">
@@ -207,7 +207,7 @@
                                 </button>
                                 <app-actividad (enviar)="recibirMensaje($event)" *ngIf="panelActividadesAbierto == true" [idTarea]="tarea.idTarea"></app-actividad>
                             </div>
-                        <mat-expansion-panel-header (click)="test(i)">
+                        <mat-expansion-panel-header>
                         <mat-panel-title>
                             {{tarea.titulo}}
                         </mat-panel-title>
@@ -223,7 +223,7 @@
             <div id="completadas" class="titulo-container">
                 <h4>COMPLETADAS</h4>
             </div>
-            <div class="container-all-tareas">
+            <div class="container-all-tareas" [ngClass]="{'barra-scroll': poseeTareasCompletadas}">
                 <div *ngFor="let tarea of tareasCompletadas">
                     <mat-accordion>
                     <mat-expansion-panel hideToggle>

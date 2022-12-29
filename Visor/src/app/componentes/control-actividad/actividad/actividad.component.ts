@@ -65,8 +65,7 @@ export class ActividadComponent implements OnInit {
   proyectoA! : any;
 
   @Output()
-  enviar: EventEmitter<string> = new EventEmitter<string>();
-  mensaje!:string;
+  enviar = new EventEmitter<{idTarea: string , horas_ejecutadas: number, accion: string}>();
 
   @Input() idTarea: string= '';
   @Input() tareasSP: any = [];
@@ -91,13 +90,10 @@ export class ActividadComponent implements OnInit {
   ngOnInit(): void {
     
     //this.cargarActividades();
-
     this.cargarActividadesSuite();
     //this.form.controls['fecha'].setValue(new Date());
 
-    this._tareaService.enviarMensajeObservable.subscribe(response=>{
-      this.mensaje=response;
-    })
+   
     
     if(this._tareaService.listaTareas != null){
       localStorage.setItem('lTareas',JSON.stringify(this._tareaService.listaTareas));
@@ -266,6 +262,7 @@ export class ActividadComponent implements OnInit {
          this._actividadService.deleteActividad(this.dataSource.data[index].id_actividad).subscribe((response:any)=>{
             console.log("DELETE EXITOSO", response);
             this.cargarActividadesSuite();
+            this.enviar.emit({idTarea: this.idTarea,horas_ejecutadas:this.dataSource.data[index].horas_ejecutadas, accion: "delete"});
           })
           this._snackBar.open('Actividad eliminada','',{
           duration: 1500,
@@ -322,9 +319,9 @@ export class ActividadComponent implements OnInit {
   
   }*/
 
-  enviarMensajeEvento(){
+  /*enviarMensajeEvento(){
     this.enviar.emit("hola");
-  }
+  }*/
 
   onEditarActividadSuite(index: number){
 
@@ -356,16 +353,26 @@ export class ActividadComponent implements OnInit {
     
     //this._actividadService.openModalActividad(8);
     const dialogRef = this.dialog.open(ModalActividadComponent,{
-        width: '900px',
-        height: '600px',
+        width: '525px',
+        height: '450px',
         data: {idTarea: this.idTarea}});
     dialogRef.afterClosed().subscribe(res =>{
      if(res){
        console.log("respuesta del modal:",res);
 
        this.cargarActividadesSuite();
-       this.enviarMensajeEvento();
-       this._tareaService.enviarProyectoActual(this.proyectoA);
+       let horas:number;
+       if(Number(this._actividadService.form.value.horasEjecutadas)>Number(this.dataSource.data[index].horas_ejecutadas) || Number(this._actividadService.form.value.horasEjecutadas)<Number(this.dataSource.data[index].horas_ejecutadas)){
+        horas = Number(this._actividadService.form.value.horasEjecutadas) - Number(this.dataSource.data[index].horas_ejecutadas)
+        this.enviar.emit({idTarea: this.idTarea,horas_ejecutadas:horas,accion:'modificar'});
+       }else if(Number(this._actividadService.form.value.horasEjecutadas)==Number(this.dataSource.data[index].horas_ejecutadas)){
+        horas= 0;
+        this.enviar.emit({idTarea: this.idTarea,horas_ejecutadas:horas,accion:'modificar'});
+       }
+
+      
+       //this.enviarMensajeEvento();
+       //this._tareaService.enviarProyectoActual(this.proyectoA);
        this._snackBar.open('Actividad actualizada','',{
          duration: 1500,
          horizontalPosition: 'center',
@@ -406,18 +413,20 @@ export class ActividadComponent implements OnInit {
           tareaAsociada: this.tareaS.nombre_tarea
         })
       }
+      
     //console.log("idTarea del Input",this.idTarea)
       const dialogRef = this.dialog.open(ModalActividadComponent,{
-        width: '900px',
-        height: '600px',
+        width: '525px',
+        height: '450px',
         data:{idTarea: this.idTarea}});
       
   // this.dialog.open(ModalActividadComponent);
     dialogRef.afterClosed().subscribe(res =>{
+      console.log(res);
       if(res){
-        //console.log(res);
+        console.log(res);
         this.cargarActividadesSuite();
-        this.enviarMensajeEvento();
+        this.enviar.emit({idTarea: this.idTarea,horas_ejecutadas:this._actividadService.form.value.horasEjecutadas,accion:'agregar'});
         this._snackBar.open('Actividad agregada','',{
           duration: 1500,
           horizontalPosition: 'center',
@@ -426,11 +435,7 @@ export class ActividadComponent implements OnInit {
       }
     });
   }
-
+  
    
 
 }
-
-
-
-
