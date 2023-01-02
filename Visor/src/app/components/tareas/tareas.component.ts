@@ -136,9 +136,8 @@ export class TareasComponent implements OnInit {
     this._tareaService.getABMproyectoService().subscribe((response: any) =>{ //Obtengo los proyectos
       this.listaProyectosService = response.dataset;
       this.dataSourceService = new MatTableDataSource(this.listaProyectosService);
-    
-      console.log(this.dataSourceService)
 
+      console.log(this.dataSourceService)
     });
     
     //Obtengo usuario logueado

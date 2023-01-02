@@ -5,6 +5,7 @@ import { DialogComponent } from 'src/app/components/dialog/dialog.component';
 import { DocumentoService } from 'src/app/services/i2t/documento.service';
 import { SeccionDocumentosComponent } from '../seccion-documentos.component';
 import { Inject } from '@angular/core';
+import { RestService } from 'src/app/services/i2t/rest.service';
 
 @Component({
   selector: 'app-modal-documentos',
@@ -63,9 +64,13 @@ export class ModalDocumentosComponent implements OnInit {
 
   camposIncompletos!: boolean;
 
-  constructor(private _documentService: DocumentoService, public dialog: MatDialogRef<SeccionDocumentosComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {}
+  constructor(private _documentService: DocumentoService, public dialog: MatDialogRef<SeccionDocumentosComponent>, @Inject(MAT_DIALOG_DATA) public data: any, public _restService: RestService) {}
   
   ngOnInit(): void {
+
+    this._documentService.getProyectos().subscribe(respuesta=>{
+      console.log(respuesta)
+    });
     
     document.getElementById("titulo")!.innerText = this.data.titulo;
 
@@ -83,6 +88,7 @@ export class ModalDocumentosComponent implements OnInit {
     console.log("tiene id: "+this.verificarSiTieneId())
     if(this.verificarSiTieneId()){
       this.formulario.controls["nombre"].setValue(this.data.nombre);
+      this.formulario.controls["proyectoAsociado"].setValue(this.data.proyectoAsociado);
       this.formulario.controls["tipo"].setValue(this.data.tipo);
       this.formulario.controls["estado"].setValue(this.data.estado);
       this.formulario.controls["fechaPublicacion"].setValue(this.data.fechaPublicacion);
@@ -144,8 +150,10 @@ export class ModalDocumentosComponent implements OnInit {
    * Metodo que agrega el documento
    */
   agregarDocumento(){
-    console.log(this.formulario.controls["fechaPublicacion"].value);
     let pathArchivo: Array<string> = this.formulario.controls["archivo"].value.split("\\");
+
+    let usuario = this.formulario.controls["asignadoA"].value;
+    console.log(usuario)
 
     let jsbody = {
       par_modo: "",
@@ -157,7 +165,7 @@ export class ModalDocumentosComponent implements OnInit {
       /* pActive_date: this.formulario.controls["fechaPublicacion"].value,
       pExp_date: this.formulario.controls["fechaCaducidad"].value, */
       pID_CASE: this.formulario.controls["proyectoAsociado"].value,
-      pAssigned_user_id: this.formulario.controls["asignadoA"].value
+      pAssigned_user_id: usuario
     };
 
     if(this.verificarSiTieneId()){
@@ -165,14 +173,22 @@ export class ModalDocumentosComponent implements OnInit {
     }else{
       jsbody.par_modo = "I";
     }
+    
+    this._documentService.getIdUsuario(usuario).subscribe(respuesta => {
+      console.log("El id del usuario de nombre "+respuesta.dataset[0].user_name+" es "+respuesta.dataset[0].id)
+      
+      jsbody.pAssigned_user_id = respuesta.dataset[0].id;
+      
+      let body = JSON.stringify(jsbody);
+      console.log(body);
 
-    let body = JSON.stringify(jsbody);
+      return this._documentService.ABMDocumento(body).subscribe( respuesta => {
+        console.log(respuesta)
+        window.location.reload();
+      });
+    })
 
-    console.log(body);
-
-    return this._documentService.ABMDocumento(body).subscribe( respuesta => {
-      window.location.reload();
-    });
+    
   }
 
   compararItems(objeto1: any, objeto2: any){

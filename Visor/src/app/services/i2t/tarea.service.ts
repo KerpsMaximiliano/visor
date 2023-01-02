@@ -45,8 +45,6 @@ export class TareaService {
         return this.rest.callProcedimientoVisor(jsbody, "TareasProyecto");
     }
 
-   
-
     getABMproyectoService() {
         let endPoint = 'AbmProyectos';
         let jsbody: string = JSON.stringify({
@@ -54,6 +52,4 @@ export class TareaService {
         });
         return this.rest.getABMproyectoRest(jsbody, endPoint);
     }
-
-
 }
