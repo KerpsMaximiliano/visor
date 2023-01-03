@@ -19,14 +19,18 @@ export class DocumentoService {
     return this.rest.callProcedimientoVisor(jsbody,"ABMDocumentos");
   }
 
-  public getIdUsuario(nombreDeUsuario: String){
-    return this.rest.callQueryVisor('users?user_name='+nombreDeUsuario);
+  public getIdUsuario(nombre_usuario:string) {
+    let jsbody: string = JSON.stringify({
+      par_modo: "G",
+      nombre_usuario:nombre_usuario
+    });
+    return this.rest.callProcedimientoVisor(jsbody,"ObtenerIDUsuario");
   }
 
-  public getProyectos() {
+  public getTodosLosProyectos(){
     let jsbody: string = JSON.stringify({
-      par_modo: 'G'
-    });
-    return this.rest.getABMproyectoRest(jsbody, "AbmProyectos");
+      par_modo: "G"
+    })
+    return this.rest.callProcedimientoVisor(jsbody, "AbmProyectos")
   }
 }

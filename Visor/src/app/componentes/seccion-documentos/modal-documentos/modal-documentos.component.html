@@ -19,10 +19,10 @@
         <mat-label>Proyecto Asociado</mat-label>
         <mat-form-field appearance="outline" class="input">
             <mat-label>Ingresar...</mat-label>
-            <input matInput formControlName="proyectoAsociado" autocomplete="off">
+            <input matInput formControlName="proyectoAsociado" autocomplete="off" [(ngModel)]="valorInputProyecto" (keyup)="cerrarTablaProyectos($event)" (keyup.enter)="buscarProyectos($event)">
             <table mat-table [dataSource]="tablaProyectos" class="mat-elevation-z2 lista_proyectos" [ngClass]="estiloTablaProyectos">
                 <ng-container matColumnDef="nombre">
-                    <td mat-cell *matCellDef="let proyecto">{{proyecto.nombre_projecto}}</td>
+                    <td mat-cell *matCellDef="let proyecto" (click)="seleccionarProyecto(proyecto)">{{proyecto.nombre_projecto}}</td>
                 </ng-container>
                 <tr mat-row *matRowDef="let row; columns: columnas"></tr>
             </table>

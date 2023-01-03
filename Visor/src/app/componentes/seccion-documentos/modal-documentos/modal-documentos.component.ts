@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogComponent } from 'src/app/components/dialog/dialog.component';
@@ -7,6 +7,7 @@ import { SeccionDocumentosComponent } from '../seccion-documentos.component';
 import { Inject } from '@angular/core';
 import { RestService } from 'src/app/services/i2t/rest.service';
 import { MatTableDataSource } from '@angular/material/table';
+import { TareaService } from 'src/app/services/i2t/tarea.service';
 
 @Component({
   selector: 'app-modal-documentos',
@@ -65,12 +66,14 @@ export class ModalDocumentosComponent implements OnInit {
 
   camposIncompletos!: boolean;
 
+  proyectosCompletos = [];
   proyectos = [];
   tablaProyectos : any;
   columnas: string[] = ['nombre'];
   estiloTablaProyectos = "mostrarTabla";
+  valorInputProyecto:string = '';
 
-  constructor(private _documentService: DocumentoService, public dialog: MatDialogRef<SeccionDocumentosComponent>, @Inject(MAT_DIALOG_DATA) public data: any, public _restService: RestService) {}
+  constructor(private _documentService: DocumentoService, private _tareaService: TareaService, public dialog: MatDialogRef<SeccionDocumentosComponent>, @Inject(MAT_DIALOG_DATA) public data: any, public _restService: RestService) {}
   
   ngOnInit(): void {
     
@@ -98,11 +101,10 @@ export class ModalDocumentosComponent implements OnInit {
       this.formulario.controls["asignadoA"].setValue(this.data.asignadoA);
     }
 
-    this._documentService.getProyectos().subscribe((resp : any) =>{
-      console.log(resp.dataset);
-      this.proyectos = resp.dataset;
-      this.tablaProyectos = new MatTableDataSource(this.proyectos);
-    });
+    this._documentService.getTodosLosProyectos().subscribe(respuesta => {
+      this.proyectosCompletos = respuesta.dataset;
+      console.log(this.proyectosCompletos);
+    })
 
   }
 
@@ -158,10 +160,15 @@ export class ModalDocumentosComponent implements OnInit {
    * Metodo que agrega el documento
    */
   agregarDocumento(){
+    
+
     let pathArchivo: Array<string> = this.formulario.controls["archivo"].value.split("\\");
 
     let usuario = this.formulario.controls["asignadoA"].value;
     console.log(usuario)
+
+    console.log(this.formulario.controls["proyectoAsociado"].value);
+    console.log(this.obtenerIdProyecto(this.formulario.controls["proyectoAsociado"].value));
 
     let jsbody = {
       par_modo: "",
@@ -172,9 +179,11 @@ export class ModalDocumentosComponent implements OnInit {
       pStatus_id: this.obtenerValor(this.formulario.controls["estado"].value, this.estados),
       /* pActive_date: this.formulario.controls["fechaPublicacion"].value,
       pExp_date: this.formulario.controls["fechaCaducidad"].value, */
-      pID_CASE: this.formulario.controls["proyectoAsociado"].value,
+      pID_CASE: this.obtenerIdProyecto(this.formulario.controls["proyectoAsociado"].value),
       pAssigned_user_id: usuario
     };
+
+    console.log(jsbody.pID_CASE)
 
     if(this.verificarSiTieneId()){
       jsbody.par_modo = "U";
@@ -226,7 +235,6 @@ export class ModalDocumentosComponent implements OnInit {
       
     }while(encontro==false);
 
-
     return array[cont].valor;
 
     /* this.tipos.forEach( tipo =>{
@@ -247,4 +255,72 @@ export class ModalDocumentosComponent implements OnInit {
       return false;
     }
   }
+
+  cerrarTablaProyectos(event: Event){
+    
+    if(this.valorInputProyecto.length == 0){
+      this.estiloTablaProyectos = 'oculto';
+    }
+  }
+
+  buscarProyectos(event: Event) {   
+    
+    this.valorInputProyecto = (event.target as HTMLInputElement).value;   
+    this._tareaService.getABMproyectoService(this.valorInputProyecto).subscribe((response: any) =>{ //Obtengo los proyectos
+      this.proyectos = response.dataset;
+      this.tablaProyectos = new MatTableDataSource(this.proyectos);
+
+      console.log(this.tablaProyectos)
+    });
+    console.log(this.valorInputProyecto)
+    if(this.valorInputProyecto == ''){
+      this.estiloTablaProyectos = 'oculto';
+    }
+    else{
+      this.estiloTablaProyectos = 'mostrarTabla';
+    }
+
+  }
+
+  seleccionarProyecto(proyecto: any){
+    console.log(proyecto.nombre_projecto)
+    console.log(this.valorInputProyecto)
+    this.valorInputProyecto = proyecto.nombre_projecto;
+    console.log(this.valorInputProyecto)
+    this.estiloTablaProyectos = "oculto";
+    console.log(this.formulario.controls["proyectoAsociado"].value)
+    this.formulario.controls["proyectoAsociado"].setValue(proyecto.nombre_projecto);
+    console.log(this.formulario.controls["proyectoAsociado"].value)
+  }
+
+  @HostListener('document:click', ['$event'])
+  manejoClickFueraComponente() {
+    if (this.estiloTablaProyectos == 'mostrarTabla'){
+      this.estiloTablaProyectos="oculto"
+    }     
+  }
+
+  obtenerIdProyecto(nombre_proyecto: string){
+    let encontro = false;
+    let cont = 0;
+    let id = 0;
+    console.log("nombre proyecto"+nombre_proyecto);
+
+    while(encontro == false){
+      if(this.proyectosCompletos[cont]["nombre_projecto"] != nombre_proyecto){
+        cont ++;
+      }else{
+        console.log("ENTRO VECES " + cont)
+        console.log(this.proyectosCompletos[cont]["id_projecto"]);
+        console.log(this.proyectosCompletos[cont]["nombre_projecto"]);
+        id = this.proyectosCompletos[cont]["id_projecto"];
+        encontro = true;
+      }
+    }
+
+    return id;
+    
+  }
 }
+
+// FALTA QUE SE MUESTRE EL NOMBRE DEL PROYECTO EN EL CAMPO Y AGREGAR LAS FECHAS
