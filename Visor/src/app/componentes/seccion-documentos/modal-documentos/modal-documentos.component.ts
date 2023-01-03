@@ -6,6 +6,7 @@ import { DocumentoService } from 'src/app/services/i2t/documento.service';
 import { SeccionDocumentosComponent } from '../seccion-documentos.component';
 import { Inject } from '@angular/core';
 import { RestService } from 'src/app/services/i2t/rest.service';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-modal-documentos',
@@ -64,13 +65,12 @@ export class ModalDocumentosComponent implements OnInit {
 
   camposIncompletos!: boolean;
 
+  proyectos = [];
+  tablaProyectos : any;
+
   constructor(private _documentService: DocumentoService, public dialog: MatDialogRef<SeccionDocumentosComponent>, @Inject(MAT_DIALOG_DATA) public data: any, public _restService: RestService) {}
   
   ngOnInit(): void {
-
-    this._documentService.getProyectos().subscribe(respuesta=>{
-      console.log(respuesta)
-    });
     
     document.getElementById("titulo")!.innerText = this.data.titulo;
 
@@ -95,6 +95,11 @@ export class ModalDocumentosComponent implements OnInit {
       this.formulario.controls["fechaCaducidad"].setValue(this.data.fechaCaducidad);
       this.formulario.controls["asignadoA"].setValue(this.data.asignadoA);
     }
+
+    this._documentService.getProyectos().subscribe((resp : any) =>{
+      console.log(resp.dataset);
+      this.proyectos = resp.dataset;
+    });
 
   }
 
@@ -175,7 +180,16 @@ export class ModalDocumentosComponent implements OnInit {
     }
     
     this._documentService.getIdUsuario(usuario).subscribe(respuesta => {
-      console.log("El id del usuario de nombre "+respuesta.dataset[0].user_name+" es "+respuesta.dataset[0].id)
+      console.log("El id del usuario de nombre "+respuesta.dataset[0].user_name+" es "+respuesta.dataset[0].id);
+
+      /* this.proyectos.forEach((proyecto: any) => {
+        if(jsbody.pID_CASE == proyecto.nombre_proyecto){
+          console.log("coincide nombre de proyecto")
+          jsbody.pID_CASE = proyecto.id_proyecto;
+        }else{
+          console.log("no coincide nombre proyecto");
+        }
+      }) */
       
       jsbody.pAssigned_user_id = respuesta.dataset[0].id;
       
@@ -183,8 +197,8 @@ export class ModalDocumentosComponent implements OnInit {
       console.log(body);
 
       return this._documentService.ABMDocumento(body).subscribe( respuesta => {
-        console.log(respuesta)
-        window.location.reload();
+        console.log(typeof(respuesta))
+        /* window.location.reload(); */
       });
     })
 
