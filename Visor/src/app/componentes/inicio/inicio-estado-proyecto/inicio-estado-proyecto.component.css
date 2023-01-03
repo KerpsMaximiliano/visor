@@ -2,34 +2,18 @@
 /*
   Header
 */
-
+#container-all{
+  position: relative;
+  top: -2.3%;
+}
 #titulo {
   text-align: center;
-  margin-top: 40px;
-  margin-bottom: 20px;
+  margin-top: 10%;
 }
 
 .header {
   display: flex;
-  height: 60px;
-  margin-bottom: 50px;
-}
-
-.input-header {
-  width: 150px;
-}
-
-.boton-icono {
-  margin-top: 10px;
-  margin-left: 3px;
-  margin-right: 3px;
-}
-
-.boton-informacion{
-  margin-top: 10px;
-  margin-right: 0px;
-  margin-left: 5px;
-}
+} 
 
 #seccion-informacion{
   background-color: white;
@@ -42,7 +26,6 @@
 
 .letrasSeccionInformacion{
   font-size: 9px;
-  margin-left: 2px;
 }
 
 #seccion-informacion div{
@@ -97,9 +80,24 @@
   border: solid 1px black;
 }
 
+.container-boton-informacion {
+  padding-top: 10px;
+  margin-left: 5px;
+}
+
+
 .container-informacion{
   float: right;
   display: flex;  
+}
+
+.input-header {
+  width: 150px;
+}
+
+
+.boton-icono {
+  margin: 0.9%;
 }
 
 .icon {
@@ -123,11 +121,10 @@
 }
 
 .disponibilidad-proyectos {
-  margin-top: 15px;
-  margin-bottom: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 30px;
 }
 
 .acomodar{
@@ -141,10 +138,6 @@
 
 .noVisible{
   display: none;
-}
-
-#ordenarPor{
-  margin-left: 15px;
 }
 
 .menu-orden {
@@ -232,8 +225,8 @@ tr.example-element-row:not(.example-expanded-row):active {
 #tareasATiempo{
   background-color: #008000;
   text-align: center;
-  margin-right: 25%;
-  margin-left: 25%;
+  margin-right: 22%;
+  margin-left: 22%;
   border-radius: 5px;
   border: solid 1.50px black;
   color: #efefef;
@@ -242,8 +235,8 @@ tr.example-element-row:not(.example-expanded-row):active {
 #tareasAtrasadas{
 background-color: #FF0000;
 text-align: center;
-margin-right: 25%;
-margin-left: 25%;
+margin-right: 22%;
+margin-left: 22%;
 border-radius: 5px;
 border: solid 1.50px black;
 color: #efefef;

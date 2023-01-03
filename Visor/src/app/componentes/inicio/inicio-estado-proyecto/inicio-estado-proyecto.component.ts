@@ -72,40 +72,12 @@ export class InicioEstadoProyectoComponent implements OnInit {
 
   ngOnInit(): void {
     this.obtenerProyectos();
-    this.obtenerProyectosAbiertos();
+    console.log("luego de obtener los proyectosTotalesArray:",this.proyectosTotalesArray);
+    
+    // this.obtenerProyectosAbiertos();
     //Obtenemos los proyectos.
-    this._filtroService.getUserId(localStorage.getItem('usuario')!).subscribe((response: any) => {
-      localStorage.setItem('userId', response.dataset[0].id);
-      this._filtroService.selectFiltro(response.dataset[0].id, 'inicio-estado-proyecto').subscribe((resp: any) => {
-        if (resp.dataset.length == 0) {
-        } else {
-          console.log('hay datos', resp);
-          resp.dataset.forEach((filtro: any) => {
-            if (filtro.nombre == 'filtro_orden') {
-              this.orden_saved_search_id = filtro.saved_search_id;
-              const contenido = JSON.parse(atob(filtro.contenido));
-              this.ordenSeleccion = contenido.ordenSeleccion; 
-            }
-            if (filtro.nombre == 'filtro_numero_nombre_cliente_asignadoa') {
-              this.modal_saved_search_id = filtro.saved_search_id;
-              const contenido = JSON.parse(atob(filtro.contenido));
-              this.numero = contenido.numero;
-              this.nombre = contenido.nombre;
-              this.cliente = contenido.cliente;
-              this.asignadoA = contenido.asignadoA; 
-              this.misProyectos = contenido.misProyectos;
-              this.proyectosAbiertos = contenido.proyectosAbiertos;   
-              this.inputIzq = contenido.nombre;
-            } 
-          });
-        //Verificamos los checksbox del filtro.
-        this.verificarCheckBoxs();
-        //Filtra proyectos.
-        this.prepararFiltro();
-        this.verificarCeros();
-        }
-      });
-  });
+
+    
   }
 
   private obtenerProyectos(){
@@ -338,6 +310,53 @@ export class InicioEstadoProyectoComponent implements OnInit {
             contadorHTNoIniciadas = 0;
           });
         }
+        console.log("luego de obtener los proyectosTotalesArray dentro de la funcion:",this.proyectosTotalesArray);
+
+
+        this._filtroService.getUserId(localStorage.getItem('usuario')!).subscribe((response: any) => {
+          localStorage.setItem('userId', response.dataset[0].id);
+          this._filtroService.selectFiltro(response.dataset[0].id, 'inicio-estado-proyecto').subscribe((resp: any) => {
+            if (resp.dataset.length == 0) {
+            } else {
+              console.log('hay datos', resp);
+              resp.dataset.forEach((filtro: any) => {
+                if (filtro.nombre == 'filtro_orden') {
+                  this.orden_saved_search_id = filtro.saved_search_id;
+                  const contenido = JSON.parse(atob(filtro.contenido));
+                  console.log("contenido es :",contenido);
+                  
+                  this.ordenSeleccion = contenido.ordenSeleccion; 
+                  console.log("orden seleccion es :",this.ordenSeleccion);
+                  
+                }
+                if (filtro.nombre == 'filtro_numero_nombre_cliente_asignadoa') {
+                  console.log("ingreso a filtro.nombre=filtro_numero_nombre_cliente_asignadoA");
+                  
+                  this.modal_saved_search_id = filtro.saved_search_id;
+                  const contenido = JSON.parse(atob(filtro.contenido));
+                  console.log("contenido no tiene nada todavia? contenido:",contenido);
+                  
+                  this.numero = contenido.numero;
+                  this.nombre = contenido.nombre;
+                  this.cliente = contenido.cliente;
+                  this.asignadoA = contenido.asignadoA; 
+                  this.misProyectos = contenido.misProyectos;
+                  this.proyectosAbiertos = contenido.proyectosAbiertos;   
+                  this.inputIzq = contenido.nombre;
+                  
+                } 
+              });
+            //Verificamos los checksbox del filtro.
+            console.log("antes de hacer las verificaciones");
+            
+            this.verificarCheckBoxs();
+            //Filtra proyectos.
+            this.prepararFiltro();
+            this.verificarCeros();
+            }
+          });
+      });
+      this.obtenerProyectosAbiertos();
     }  
     });
   }
@@ -777,7 +796,11 @@ export class InicioEstadoProyectoComponent implements OnInit {
     const filtroCliente = this.filtroAvanzado(2, this.cliente);
     const filtroAsignado = this.filtroAvanzado(3, this.asignadoA);
     const filtroNumero = this.filtroAvanzado(4, this.numero);
+    // console.log("filtros de preparafiltro()",this.nombre,this.cliente,this.asignadoA,this.numero);
+    
     this.proyectos = this.buscarCoincidencias(filtroNombre, filtroCliente, filtroAsignado, filtroNumero);
+    console.log("coincidencias de proyectos: ",this.proyectos);
+    
     this.aplicarFiltros();
   }
 
@@ -900,6 +923,8 @@ export class InicioEstadoProyectoComponent implements OnInit {
         }
       });
       if (encontradoNumero && encontradoNombre && encontradoCliente && encontradoAsignado) {
+        console.log("ingreso a encontrados numero, nombre,cliente,asignado");
+        
         encontrados.push(project);
       }
     });
@@ -983,7 +1008,11 @@ export class InicioEstadoProyectoComponent implements OnInit {
           return 0;
         });
       }
+      console.log('this.proyectos es : ',this.proyectos);
+      
       this.data = new MatTableDataSource(this.proyectos);
+
+      // console.log('this.data luego de new mattablesource es : ',this.data);
     }
 
     /**
@@ -1018,4 +1047,5 @@ export class InicioEstadoProyectoComponent implements OnInit {
         }
       }
     }
+    
 }

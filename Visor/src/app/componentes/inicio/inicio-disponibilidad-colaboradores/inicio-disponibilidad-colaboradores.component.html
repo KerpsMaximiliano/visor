@@ -1,25 +1,23 @@
 <div class="container-all">
 <div id="titulo"><h1>Disponibilidad de Colaboradores</h1></div>
-<div class="header">
-    
-    <mat-form-field appearance="outline" class="input-header">
-        <mat-label><mat-icon>search</mat-icon> Buscar colaborador...</mat-label>
-        <input matInput name="usuario" (keyup)="applyFilter($event)" [(ngModel)]="inputIzq">
-    </mat-form-field>
-    <button class="boton-icono" mat-mini-fab color="primary" (click)="abrirModalFiltro()" mat-button matTooltip="Filtro Avanzado"><mat-icon class="icon">filter_alt</mat-icon></button>
-    <button class="boton-icono" mat-mini-fab color="primary" (click)="contraerColaboradores()" mat-button matTooltip="Cerrar Colaboradores"><mat-icon class="icon">close_fullscreen</mat-icon></button>
-    <button id="button-orden" mat-button [matMenuTriggerFor]="menuOrden"> {{ordenSeleccion}} <mat-icon>expand_more</mat-icon></button>
-    <mat-menu #menuOrden="matMenu"><button mat-button *ngFor="let o of orden" class="menu-orden" (click)="dispararCambioOrdenDesdePlantilla($event)">{{o}}</button></mat-menu>
-    <div class="fecha-hasta">
+<div class="flex-header">
+    <div>
         <mat-form-field appearance="outline" class="input-header">
-            <mat-label>Fecha Hasta</mat-label>
-            <input matInput [matDatepicker]="picker" [min]="fechaHoy" [(ngModel)]="fechaHastaDate" (dateChange)="cambioFechaHasta($event)">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker startView="year"></mat-datepicker>
+            
+            <input matInput name="usuario" placeholder="Buscar colaborador..." (keyup)="applyFilter($event)" [(ngModel)]="inputIzq">
+        </mat-form-field>
+        <button class="boton-icono" mat-mini-fab color="primary" (click)="abrirModalFiltro()" mat-button matTooltip="Filtro Avanzado"><mat-icon class="icon">filter_alt</mat-icon></button>
+        <button class="boton-icono" mat-mini-fab color="primary" (click)="contraerColaboradores()" mat-button matTooltip="Cerrar Colaboradores"><mat-icon class="icon">close_fullscreen</mat-icon></button>
+        <button id="button-orden" mat-button [matMenuTriggerFor]="menuOrden"> {{ordenSeleccion}} <mat-icon>expand_more</mat-icon></button>
+        <mat-menu #menuOrden="matMenu"><button mat-button *ngFor="let o of orden" class="menu-orden" (click)="dispararCambioOrdenDesdePlantilla($event)">{{o}}</button></mat-menu>
+            <mat-form-field appearance="outline" class="input-header">
+                <mat-label>Fecha Hasta</mat-label>
+                <input matInput [matDatepicker]="picker" [min]="fechaHoy" [(ngModel)]="fechaHastaDate" (dateChange)="cambioFechaHasta($event)">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker startView="year"></mat-datepicker>
         </mat-form-field>
     </div>
-
-</div>
+</div>  
 
 <div class="disponibilidad-equipo">
     <h3>Disponibilidad del Equipo<mat-divider></mat-divider></h3>
@@ -50,13 +48,13 @@
                             'porcentaje-verde-oscuro-colaborador': getPorcentajeVerdeOscuro(colaborador.tiempoDisponible) }"
                             matTooltip="{{colaborador.capacidad-colaborador.horasPlanificadas}} Hs Disp /
                             {{colaborador.capacidad}} Hs Cap"
-                            [matTooltipPosition]="position.value!"> 
+                            [matTooltipPosition]="position2.value!"> 
                             {{ colaborador.tiempoDisponible }}%
                         </div>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
                 <mat-divider></mat-divider>
-                <h3 class="atrasadas" matTooltip="{{colaborador.horasAtrasadas}} Hs" [matTooltipPosition]="position.value!">Tareas Atrasadas: {{ colaborador.atrasadas }} </h3>
+                <h3 class="atrasadas" matTooltip="{{colaborador.horasAtrasadas}} Hs Atrasadas" [matTooltipPosition]="position2.value!">Tareas Atrasadas: {{ colaborador.atrasadas }} </h3>
                 <div *ngFor="let mes of mesesPlanificacion">
                     <mat-expansion-panel hideToggle>
                         <mat-expansion-panel-header>
@@ -71,7 +69,7 @@
                                         'porcentaje-verde-oscuro-colaborador': getPorcentajeVerdeOscuro(getPorcentajeDisponibleMensual(colaborador.id, mes.mes, (colaborador.capacidad/(mesesMostrados+1)))) }"
                                         matTooltip="{{(colaborador.capacidad/(mesesMostrados+1))-getTooltipHsPlanMensual(colaborador.id, mes.mes)}}
                                         Hs Disp / {{(colaborador.capacidad/(mesesMostrados+1))}} Hs Cap"
-                                        [matTooltipPosition]="position.value!">
+                                        [matTooltipPosition]="position2.value!">
                                         {{getPorcentajeDisponibleMensual(colaborador.id, mes.mes, (colaborador.capacidad/(mesesMostrados+1)))}}%
                                     </div>
                                 </div>
@@ -90,7 +88,7 @@
                             <div class="texto-proyecto"> {{proy}} </div>
                             <div class="cajaPorcentaje"
                                 matTooltip="{{getTooltipHsPlanProyecto(proy, colaborador.id, mes.mes)}} Hs Plan / 
-                                {{(colaborador.capacidad/(mesesMostrados+1))}} Hs Cap" [matTooltipPosition]="position.value!"> 
+                                {{(colaborador.capacidad/(mesesMostrados+1))}} Hs Cap" [matTooltipPosition]="position2.value!"> 
                                 {{getPorcentajeOcupadoMensualProyecto(proy, colaborador.id, mes.mes, (colaborador.capacidad/(mesesMostrados+1)))}}%  <!-- ver capacidad, dividir por mesesmostrados+1 -->
                             </div>
                         </div>
@@ -101,8 +99,6 @@
             </mat-expansion-panel>
         </div>
     </div>
-
-    <div class="divisor"></div>
 
     <div class="columna-equipo" [ngClass]="{'esconder': colaboradorUnico}">
         <div *ngFor="let colaborador of columna2">
@@ -117,13 +113,13 @@
                             'porcentaje-verde-oscuro-colaborador': getPorcentajeVerdeOscuro(colaborador.tiempoDisponible) }"
                             matTooltip="{{colaborador.capacidad-colaborador.horasPlanificadas}} Hs Disp /
                             {{colaborador.capacidad}} Hs Cap"
-                            [matTooltipPosition]="position.value!"> 
+                            [matTooltipPosition]="position2.value!"> 
                             {{ colaborador.tiempoDisponible }}%
                         </div>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
                 <mat-divider></mat-divider>
-                <h3 class="atrasadas" matTooltip="{{colaborador.horasAtrasadas}} Hs" [matTooltipPosition]="position2.value!">Tareas Atrasadas: {{ colaborador.atrasadas }} </h3>
+                <h3 class="atrasadas" matTooltip="{{colaborador.horasAtrasadas}} Hs Atrasadas" [matTooltipPosition]="position2.value!">Tareas Atrasadas: {{ colaborador.atrasadas }} </h3>
                 <div *ngFor="let mes of mesesPlanificacion">
                     <mat-expansion-panel hideToggle>
                         <mat-expansion-panel-header>
@@ -138,7 +134,7 @@
                                         'porcentaje-verde-oscuro-colaborador': getPorcentajeVerdeOscuro(getPorcentajeDisponibleMensual(colaborador.id, mes.mes, (colaborador.capacidad/(mesesMostrados+1)))) }"
                                         matTooltip="{{(colaborador.capacidad/(mesesMostrados+1))-getTooltipHsPlanMensual(colaborador.id, mes.mes)}}
                                         Hs Disp / {{(colaborador.capacidad/(mesesMostrados+1))}} Hs Cap"
-                                        [matTooltipPosition]="position.value!">
+                                        [matTooltipPosition]="position2.value!">
                                         {{getPorcentajeDisponibleMensual(colaborador.id, mes.mes, (colaborador.capacidad/(mesesMostrados+1)))}}%
                                     </div>
                                 </div>
@@ -157,7 +153,7 @@
                             <div class="texto-proyecto"> {{proy}} </div>
                             <div class="cajaPorcentaje"
                                 matTooltip="{{getTooltipHsPlanProyecto(proy, colaborador.id, mes.mes)}} Hs Plan / 
-                                {{(colaborador.capacidad/(mesesMostrados+1))}} Hs Cap" [matTooltipPosition]="position.value!"> 
+                                {{(colaborador.capacidad/(mesesMostrados+1))}} Hs Cap" [matTooltipPosition]="position2.value!"> 
                                 {{getPorcentajeOcupadoMensualProyecto(proy, colaborador.id, mes.mes, (colaborador.capacidad/(mesesMostrados+1)))}}%  <!-- ver capacidad, dividir por mesesmostrados+1 -->
                             </div>
                         </div>

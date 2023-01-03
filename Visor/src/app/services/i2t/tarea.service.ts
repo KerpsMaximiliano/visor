@@ -11,13 +11,26 @@ export class TareaService {
 
     asignadasAmi: string = '';
     
-    constructor(private rest: RestService) { }
     unProyecto: any;
+    private enviarProjectSubject = new Subject<any>();
+    enviarProjectObservable = this.enviarProjectSubject.asObservable();
+
+    mensaje!:string ;
+    private enviarMensajeSubject = new Subject<string>();
+    enviarMensajeObservable = this.enviarMensajeSubject.asObservable();
+
+
+    private enviarBooleanActividadSubject = new Subject<any>();
+    enviarBooleanActividadObservable = this.enviarBooleanActividadSubject.asObservable();
+
+    indexPanel!: number;
+    private enviarIndexPanelSubject = new Subject<number>();
+    enviarIndexPanelObservable = this.enviarIndexPanelSubject.asObservable();
+    
+    constructor(private rest: RestService) { }
+    
     listaTareas: Tarea[] = [];
     idTarea: any;
-
-  private enviarProjectSubject = new Subject<any>();
-  enviarProjectObservable = this.enviarProjectSubject.asObservable();
   
 
   enviarProyectoActual(unProyecto: any){
@@ -36,6 +49,17 @@ export class TareaService {
     this.unProyecto = this.getProyectoActual();
     this.enviarProyectoActual(this.unProyecto);
    }
+
+   enviarIndexPanel(indexPanel: number){
+    this.indexPanel = indexPanel;
+    this.enviarIndexPanelSubject.next(indexPanel);
+   }
+
+
+   enviarMensaje(mensaje: string){
+    this.mensaje = mensaje;
+    this.enviarMensajeSubject.next(mensaje);
+   }
    
     getTareasDeProyecto(id_caso: string) {
         let jsbody: string = JSON.stringify({
@@ -45,10 +69,11 @@ export class TareaService {
         return this.rest.callProcedimientoVisor(jsbody, "TareasProyecto");
     }
 
-    getABMproyectoService() {
+    getABMproyectoService(nombreProyecto?:string) {
         let endPoint = 'AbmProyectos';
         let jsbody: string = JSON.stringify({
-            par_modo: 'G'
+            par_modo: 'G',
+            par_nomProy:nombreProyecto
         });
         return this.rest.getABMproyectoRest(jsbody, endPoint);
     }
