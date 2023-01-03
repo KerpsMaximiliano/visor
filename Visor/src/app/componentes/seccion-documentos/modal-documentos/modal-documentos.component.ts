@@ -67,6 +67,8 @@ export class ModalDocumentosComponent implements OnInit {
 
   proyectos = [];
   tablaProyectos : any;
+  columnas: string[] = ['nombre'];
+  estiloTablaProyectos = "mostrarTabla";
 
   constructor(private _documentService: DocumentoService, public dialog: MatDialogRef<SeccionDocumentosComponent>, @Inject(MAT_DIALOG_DATA) public data: any, public _restService: RestService) {}
   
@@ -99,6 +101,7 @@ export class ModalDocumentosComponent implements OnInit {
     this._documentService.getProyectos().subscribe((resp : any) =>{
       console.log(resp.dataset);
       this.proyectos = resp.dataset;
+      this.tablaProyectos = new MatTableDataSource(this.proyectos);
     });
 
   }

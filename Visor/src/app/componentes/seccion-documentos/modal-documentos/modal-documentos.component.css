@@ -21,6 +21,14 @@ mat-form-field{
     display: none;
 }
 
+.mostrarTabla{
+    display: block;
+    position: absolute;
+    left: -7%;
+    top: 102%;
+    z-index: 100;
+}
+
 .botones{
     text-align: center;
 }
