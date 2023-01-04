@@ -4,8 +4,10 @@
     <div id="container-header"> <!-- Comienza el header -->
         <div id="container-header-top">
             <mat-form-field id="projectInput" appearance="outline">
-                <mat-label>Buscar documento</mat-label>
-                <input matInput>
+                <!-- <mat-label>Buscar documento</mat-label> -->
+                <!-- <input matInput> -->
+                <input matInput type="text" placeholder="Buscar documento" autocomplete="off" (keyup)="cerrarTablaDocumentos($event)" (keyup.enter)="buscarDocumentos($event)">
+
             </mat-form-field>
             <div id="container-select">
                 <button id="button-orden" mat-button [matMenuTriggerFor]="menuOrden"> {{ordenSeleccion}} <mat-icon>expand_more</mat-icon></button>
@@ -18,28 +20,47 @@
             <mat-icon (click)="openFilter()" id="iconFilter">filter_alt</mat-icon> <!-- Icono que abriría el filtro -->
         </div>
         <div class="container-informacion">
-            <div id="informacion-section" [ngClass]="{ 'visible': estado == true, 'noVisible': estado == false }">
-                <div id="container-icon">
-                    <i id="informacion-icon" class="fas fa-file"></i>
-                    <p class="informacion-letters">Generales</p>
-                </div>
+            <div id="informacion-section" [ngClass]="{ 'visible': estadoInfo == true, 'noVisible': estadoInfo == false }">
+                <div class="informacion-letters" id="container-icon">
+                    <div id="informacion-icon" class="fas fa-file">Generales</div>
+                    <!-- <p class="informacion-letters">Generales</p> -->
+                </div> 
+                <!-- <div class="informacion-letters" id="container-icon">
+                    <div class="informacion-icon" class="far fa-file">Ventas</div>
+                    <p class="informacion-letters">Ventas</p>
+                </div> -->
                 <div id="container-icon">
                     <div class="informacion-icon">
                         <i id="informacion-icon" class="far fa-file"></i>
                     </div>
-                    <p class="informacion-letters">Ventas</p>
-                </div>
-                <div id="container-icon">
-                    <div class="informacion-icon">
-                        <i id="informacion-icon" class="fa-solid fa-file-lines"></i>
+                    <div>
+                        <p class="informacion-letters">Ventas</p>
                     </div>
-                    <p class="informacion-letters">Diseño</p>
                 </div>
-                <div id="container-icon">
-                    <div class="informacion-icon">
+                <div id="container-icon" class="informacion-letters">
+                    <!-- <div class="informacion-icon"> -->
+                        <div id="informacion-icon" class="fa-solid fa-file-lines">Diseño</div>
+                    <!-- </div> -->
+                    <!-- <p ></p> -->
+                </div>
+                <div id="container-icon" class="informacion-letters">
+                    <!-- <div class="informacion-icon"> -->
+                        <div id="informacion-icon" class="fa-solid fa-file-lines">Testing</div>
+                    <!-- </div> -->
+                    <!-- <p ></p> -->
+                </div>
+                <div id="container-icon" class="informacion-letters">
+                    <!-- <div class="informacion-icon"> -->
+                        <div id="informacion-icon" class="fa-solid fa-file-lines">Implementación</div>
+                    <!-- </div> -->
+                    <!-- <p ></p> -->
+                </div>
 
-                    </div>
-                    <p class="informacion-letters">Completadas</p>
+                <div id="container-icon" class="informacion-letters">
+                    <!-- <div class="informacion-icon"> -->
+                        <div id="informacion-icon" class="fa-solid fa-file-lines">Mantenimiento</div>
+                    <!-- </div> -->
+                    <!-- <p ></p> -->
                 </div>
             </div>
             <button class="informacion-button" (click)="showInformacion()" matTooltip="Información" mat-mini-fab color="primary"><mat-icon class="icony">info</mat-icon></button>
@@ -62,31 +83,45 @@
             }"
             >
             <div class="container-icons">
+                <b>{{d.document_name}}</b>
                 <i id="download-icon" class="fas fa-download"></i>
                 <i id="edit-icon" class="fas fa-edit"></i>
                 <i id="remove-icon" class="fas fa-trash-alt"></i>
             </div>
             <div class="card-content">
                 <p class="letters"><b>{{d.name}}</b></p>
+               <p class="letters">
+                <!-- <b>{{d.document_name}}</b></p> -->
+               <p class="letters"><b [ngClass]="{
+                'publicado-document-status': isPublicado(d),
+                'borrador-document-status': isBorrador(d),
+                'eliminado-document-status': isEliminado(d)}">
+                {{d.status}}
+            </b></p>
             </div>
             <div class="card-content">
-                <p class="letters"><b>{{d.category}}</b></p>  
-                <p class="letters-date"><b>{{d.date}}</b></p>  
+                
             </div>
             <div class="card-content">
+                <!-- <p class="letters"><b>{{d.category}}</b></p>   -->
                 <p class="letters"><b>{{d.type}}</b></p>
+                <p class="letters-date"><b>{{d.active_date}}</b></p>  
             </div>
-            <div class="card-content">
-                <p class="letters"><b>{{d.assigned}}</b></p>
-            </div>
+            <!-- <div class="card-content">
+                <p class="letters"><b>{{d.type}}</b></p>
+                
+            </div> -->
             <div class="card-content-end">
+                <p class="letters"><b>{{d.user_name}}</b></p>
+            </div>
+            <!-- <div class="card-content-end">
                 <p class="letters"><b [ngClass]="{
                     'publicado-document-status': isPublicado(d),
                     'borrador-document-status': isBorrador(d),
                     'eliminado-document-status': isEliminado(d)}">
                     {{d.documentStatus}}
                 </b></p>
-            </div>
+            </div> -->
             <div class="card-content-icon">
                 <i id="list-icon" class="{{iconChecker(d)}}"></i>
             </div>

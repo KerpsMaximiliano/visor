@@ -18,8 +18,9 @@
     <!-- Document category select -->
     <mat-form-field class="select" appearance="outline">
         <mat-label>Categoría</mat-label>
-        <mat-select [(value)]="categorySelected">
-          <mat-option *ngFor="let c of categorys" [value]="c.valueOf">
+        <mat-select [(value)]="categorySelected" (selectionChange)="selectCategory($event)">
+          <mat-option></mat-option>
+          <mat-option *ngFor="let c of categorys" [value]="c">
             {{c}}
           </mat-option>
         </mat-select>
@@ -28,8 +29,9 @@
       <!-- Document type select -->
       <mat-form-field class="select" appearance="outline">
         <mat-label>Tipos</mat-label>
-        <mat-select [(value)]="typeSelected"> 
-          <mat-option *ngFor="let t of types" [value]="t.valueOf">
+        <mat-select  [disabled]="!categorySelected || categorySelected == ''" [(value)]="typeSelected" (selectionChange)="selectTipo($event)"> 
+          <mat-option></mat-option>
+          <mat-option *ngFor="let t of types" [value]="t.valueOf" >
             {{t}}
           </mat-option>
         </mat-select>
@@ -44,7 +46,8 @@
     <!-- Document condition select -->
     <mat-form-field class="select" appearance="outline">
         <mat-label>Estados</mat-label>
-        <mat-select [(value)]="statusSelected">
+        <mat-select [(value)]="statusSelected" (selectionChange)="selectEstado($event)">
+          <mat-option></mat-option>
           <mat-option *ngFor="let c of conditions" [value]="c.valueOf">
             {{c}}
           </mat-option>
@@ -88,6 +91,6 @@
       <div id="container-buttons">
         <button class="blue" mat-stroked-button (click)="limpiarFiltro()">Limpiar</button>
         <button class="red" mat-stroked-button (click)="cancelarBusqueda()">Cancelar</button>
-        <button class="green" mat-stroked-button [mat-dialog-close]="result" (click)="guardarFiltro()">Aplicar</button>
+        <button class="green" mat-stroked-button (click)="guardarFiltro()">Aplicar</button>
       </div>
 </div>
