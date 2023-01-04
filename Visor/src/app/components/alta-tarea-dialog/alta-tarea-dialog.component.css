@@ -1,0 +1,87 @@
+.body{
+    width: 100%;
+    height: 100%;
+    background-color: red;
+}
+
+#close_abm_tareas{
+    text-align: right;
+    width: 100%;
+}
+
+.titulo{
+    text-align: center;
+}
+
+#busqueda_proyectos{
+    height: 6vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: baseline;
+    width: 33%;
+}
+#busqueda_proyectos > input{
+    width: 40%;
+}
+
+.icon{
+    font-size: 40px;
+    width: 45px;
+}
+
+.pares{
+    height: 6vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.ocultarTabla{
+    display: none;
+}
+
+mat-divider{
+    margin-bottom: 10px;
+}
+
+.titulo_opcion{
+    display: flex;
+    width: 20%;
+}
+
+.nombre_dato{
+    display: flex;
+    justify-content: space-around;
+    width: 36%;
+    height: 6vw;
+}
+
+.nombre_dato > mat-select{
+    width: 36%;
+}
+
+.centrado{
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+}
+.separacion_par{
+    display: flex;
+    justify-content: space-between;
+    width: 28%;
+    
+}
+
+#fecha_planificada{
+    display: flex;
+    justify-content: space-around;
+    align-items: baseline;
+    width: 44%;
+}
+
+.separacion_par > input{
+    width: 17%;
+}
+

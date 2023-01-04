@@ -1,6 +1,7 @@
 import { Component, OnInit , EventEmitter, Input, HostListener} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
+import { AltaTareaDialogComponent } from '../alta-tarea-dialog/alta-tarea-dialog.component';
 import { finalize } from 'rxjs/operators';
 import {
   MatSnackBar,
@@ -79,8 +80,7 @@ export class TareasComponent implements OnInit {
   nombreVistaSeleccionada: string = "Vista"
   idVistaSeleccionada: string = "Vista"
   listaProyectosService: ResponseService[] = [] ;
-  listaProyectos: PropiedadesProyecto[] = [];
-  dataSource: MatTableDataSource<PropiedadesProyecto>;
+  
   dataSourceService: any
   // nombreProyecto:string = '';
   nombreProyecto:any;
@@ -122,25 +122,9 @@ export class TareasComponent implements OnInit {
   columnas: string[] = ['nombre'];
 
   valorInputProyecto:string = ''
-  // browserRefresh:boolean = false;
-  constructor(public dialog: MatDialog, private _snackBar: MatSnackBar, private _tareaService: TareaService, private _filtroService: FiltroService,private router: Router,private proxy:ProxyService) {
+  
+  constructor(public dialog: MatDialog, private _snackBar: MatSnackBar, private _tareaService: TareaService, private _filtroService: FiltroService,private router: Router,private proxy:ProxyService, public dialogABMtareas: MatDialog) {
     
-    //this.filtrosBusquedaTareas = JSON.parse(JSON.stringify(this.filtrosBusquedaTareas));
-
-    const proyectos: PropiedadesProyecto[] = [
-      { id: 128109, nombre: 'Entrenamiento en Drupal y Symfony', planificadas: 448, noIniciadas: 424, enProgreso: 24, enPrueba: 0, completadas: 0, tieneTareasUsuario: false, cliente: 'Factory', asignadoA: 'Adrian Enrico' },
-      { id: 125029, nombre: 'Restyling y Migración de Portal PAC', planificadas: 3600, noIniciadas: 500, enProgreso: 0, enPrueba: 0, completadas: 2400, tieneTareasUsuario: false, cliente: 'Factory', asignadoA: 'Patricio Hernán Macagno' },
-      { id: 124192, nombre: 'Sala de Sorteos - Extractos Digitales', planificadas: 2400, noIniciadas: 492, enProgreso: 200, enPrueba: 0, completadas: 1640, tieneTareasUsuario: true, cliente: 'Factory', asignadoA: 'Adrian Enrico' },
-      { id: 888888, nombre: 'Visorrr - Panel de control', planificadas: 1040, noIniciadas: 394, enProgreso: 126, enPrueba: 0, completadas: 184, tieneTareasUsuario: true, cliente: 'Factory', asignadoA: 'Patricio Hernán Macagno' },
-      { id: 127230, nombre: 'Visor - Panel de control', planificadas: 1040, noIniciadas: 394, enProgreso: 126, enPrueba: 0, completadas: 144, tieneTareasUsuario: false, cliente: 'Factory', asignadoA: 'Patricio Hernán Macagno' },
-      { id: 127230, nombre: 'Visor - Panel de control', planificadas: 1040, noIniciadas: 394, enProgreso: 126, enPrueba: 0, completadas: 184, tieneTareasUsuario: false, cliente: 'Factory', asignadoA: 'Patricio Hernán Macagno' },
-      { id: 127230, nombre: 'Visor - Panel de control', planificadas: 1040, noIniciadas: 394, enProgreso: 126, enPrueba: 0, completadas: 184, tieneTareasUsuario: false, cliente: 'Factory', asignadoA: 'Patricio Hernán Macagno' },
-      { id: 127230, nombre: 'Visor - Panel de control', planificadas: 1040, noIniciadas: 394, enProgreso: 126, enPrueba: 0, completadas: 184, tieneTareasUsuario: false, cliente: 'Factory', asignadoA: 'Patricio Hernán Macagno' },
-      { id: 127230, nombre: 'Visor - Panel de control', planificadas: 1040, noIniciadas: 394, enProgreso: 126, enPrueba: 0, completadas: 184, tieneTareasUsuario: false, cliente: 'Factory', asignadoA: 'Patricio Hernán Macagno' }
-    ]
-    this.listaProyectos = proyectos;
-    
-    this.dataSource = new MatTableDataSource(this.listaProyectos);
     
     //Obtengo usuario logueado
     this._filtroService.getUserId(localStorage.getItem('usuario')!).subscribe((response: any) => {
@@ -148,43 +132,10 @@ export class TareasComponent implements OnInit {
       localStorage.setItem('userId', response.dataset[0].id);
       this.idUsuario = response.dataset[0].id;
     })
-    // console.log('vistaAlPrincipio',this.idVistaSeleccionada);
-    
-    // this.vistalocalSto = localStorage.getItem('vista')
-    // this.idProyectoMarcado = localStorage.getItem('proyecto')
-    
-    // if(this.idProyectoMarcado) this.idProyectoSeleccionado = this.idProyectoMarcado
-    // if(this.vistalocalSto){
-    //   this.nombreVistaSeleccionada = this.vistalocalSto;
-    //   this.idVistaSeleccionada = this.vistalocalSto
-    //   console.log('this.nombreVistaSeleccionadaIF',this.nombreVistaSeleccionada);
-      
-    // }else{
-    //   this.nombreVistaSeleccionada = 'Vista'
-    //   this.idVistaSeleccionada = 'Vista'
-    // }
-    
-    // let aux = localStorage.getItem('proyectoN')
-    // if (aux) this.nombreProyecto = aux
-    // console.log('this.vistalocalSto',this.vistalocalSto)
-    // console.log('this.idProyectoMarcado',this.idProyectoSeleccionado);
-    //  this._tareaService.getTareasDeProyecto(this.idProyectoSeleccionado).subscribe((data)=> {
-    //       this.listaTareasService = data.dataset;
-    //       console.log('tareasSerivce',this.listaTareasService);
-   
-    //       this.setSubtituloProyecto(this.nombreVistaSeleccionada);
-    //       console.log('tareasFiltradasPorVista',this.tareasFiltradasPorVista);
-    //     })
 
   }
 
-  /* manejo de click para cierre de tabla de proyectos */
-  // @HostListener('click', ['$event'])
-  // manejoClickComponente() {
-  //   // console.log("click en el com");
-  //   this.inside = true;
-    
-  // }
+  
   @HostListener('document:click', ['$event'])
   manejoClickFueraComponente() {
     if (this.estiloListaProyectos == 'mostrarTabla'){
@@ -251,13 +202,7 @@ export class TareasComponent implements OnInit {
   }
 
   
-  // get nombre(): any{
-  //   return this.proxy.nombre
-  // }
-
-  // set nombre(nombre:any) {
-  //   this.proxy.nombre = nombre
-  // }
+  
   
   seleccionarProyecto(unProyecto: any){
     this.nombreProyecto=unProyecto.nombre_projecto
@@ -515,5 +460,16 @@ export class TareasComponent implements OnInit {
       //verticalPosition: this.verticalPosition,
       verticalPosition: 'top'
     });
+  }
+
+  abrirABMtareas(){
+    const dialogRef = this.dialogABMtareas.open(AltaTareaDialogComponent, {width:'72%'});
+    dialogRef.afterClosed().pipe(
+      finalize(() => {
+        
+      })
+    )
+    .subscribe(result => {
+    })
   }
 }

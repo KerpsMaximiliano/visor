@@ -50,7 +50,7 @@ import { ControlActividadModule } from 'src/app/componentes/control-actividad/co
 import { SharedModule } from './shared/shared.module';
 import { LoginService } from './services/i2t/login.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
+import { AltaTareaDialogModule } from './components/alta-tarea-dialog/alta-tarea-dialog.module';
 
 @NgModule({
   declarations: [
@@ -61,7 +61,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     InicioMainComponent,
     ModalFiltroComponent,
     TopbarComponent,
-    DashboardComponent
+    DashboardComponent,
   ],
   imports: [
     BrowserModule,
@@ -81,7 +81,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     DialogModule,
     ControlActividadModule,
     SharedModule,
-    RecuperarcontraseniaModule
+    RecuperarcontraseniaModule,
+    AltaTareaDialogModule
   ],
 
   //Proveedores agregados
