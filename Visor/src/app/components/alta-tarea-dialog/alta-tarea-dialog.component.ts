@@ -6,7 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { DialogComponent } from '../dialog/dialog.component';
 import { finalize } from 'rxjs';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import { FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-alta-tarea-dialog',
@@ -20,39 +20,48 @@ export class AltaTareaDialogComponent implements OnInit {
 
 
 
-  fechaPlanificada: string = '';
+  
   asignadoSeleccionado: string = '';
   facilitadorSeleccionado: string = '';
-  horasPlanificadas: number = 0;
+  
   tareaPrecondicion: any = '';
   documentoRelacionado: any = '';
 
 
-  valorInputProyecto: string = '';
+  estiloListaProyectos: string = 'ocultarTabla'; //nombre clase css
   idProyectoSeleccionado: String = '';
+
   nombreProyecto: string = '';
   tipoTareaSeleccionada: String = '';
   estadoTareaSeleccionado: String = '';
   prioridadSeleccionada: String = '';
   fromAltaTarea: boolean = false;
-  estiloListaProyectos: string = 'ocultarTabla'; //nombre clase css
   columnas: string[] = ['nombre'];
   tipoTarea: string = '';
   estado: string = '';
   prioridad: string = '';
   asignado: string = '';
   facilitador: string = '';
-
-  datosObligatorios: FormGroup;
+  fechaPlanificada: string = '';
+  horasPlanificadas: number = 0;
+  mostrarMensajeError: boolean = false;
+  mensajeError: string = '';
+  
+  camposObligatorios: FormGroup
+  hayErrores: boolean = false;
+  
   //listaProyectos
-  constructor(public dialogRef: MatDialogRef<AltaTareaDialogComponent>, private _tareaService: TareaService, public dialogProyectos: MatDialogRef<DialogComponent>, public fb: FormBuilder) { 
-    this.datosObligatorios = this.fb.group({
-      nombreProyecto: ['', [Validators.required]],
-      company: ['', [Validators.required]],
-      email: ['', [Validators.required]],
-      age: ['', [Validators.required]],
-      url: ['', [Validators.required]],
-      password: ['', [Validators.required]],
+  constructor(public dialogRef: MatDialogRef<AltaTareaDialogComponent>, private _tareaService: TareaService, public dialogProyectos: MatDialogRef<DialogComponent>) { 
+
+    this.camposObligatorios = new FormGroup({
+      nombreProy: new FormControl('', [Validators.required]),
+      tipoTareaForm: new FormControl('', [Validators.required]),
+      estadoTareaForm: new FormControl('', [Validators.required]),
+      prioridadForm: new FormControl('', [Validators.required]),
+      asignadoForm: new FormControl('', [Validators.required]),
+      facilitadorForm: new FormControl('', [Validators.required]),
+      fechaPlanificadaForm: new FormControl('', [Validators.required]),
+      horasPlanificadasForm: new FormControl(0, [Validators.required])
     });
   }
 
@@ -60,32 +69,40 @@ export class AltaTareaDialogComponent implements OnInit {
   }
 
   seleccionarProyecto(unProyecto: any) {
-    this.nombreProyecto = unProyecto.nombre_projecto;
     this.idProyectoSeleccionado = unProyecto.id_projecto;
+    console.log(this.idProyectoSeleccionado);
+    
+    this.nombreProyecto = unProyecto.nombre_projecto;
     
     this.estiloListaProyectos = 'ocultarTabla'; //nombre clase css
-    this.valorInputProyecto = this.nombreProyecto;
   }
 
   selectTipoTarea(tipoTarea: MatSelectChange){
-    this.tipoTarea = tipoTarea.value;
-    console.log(tipoTarea)
+    
+    this.tipoTareaSeleccionada = tipoTarea.value
+    console.log(this.tipoTareaSeleccionada)
+    
   }
   selectEstadoTarea(estado: MatSelectChange){
-    this.estado = estado.value;
-    console.log(estado)
+    this.estadoTareaSeleccionado = estado.value;
+    
+    
   }
   selectPrioridad(prioridad: MatSelectChange){
-    this.prioridad = prioridad.value;
-    console.log(prioridad)
+    this.prioridadSeleccionada = prioridad.value;
+    console.log(this.prioridadSeleccionada)
+    
+    
   }
   selectAsignado(asignado: MatSelectChange){
     this.asignado = asignado.value;
-    console.log(asignado)
+    
+    
   }
   selectFacilitador(facilitador: MatSelectChange){
-    this.facilitador = facilitador.value;
-    console.log(facilitador)
+    this.facilitador = facilitador.value
+    
+    
   }
 
   getFechaPlanificada(event: MatDatepickerInputEvent<any, any>){
@@ -104,9 +121,9 @@ export class AltaTareaDialogComponent implements OnInit {
 
 
   buscarProyectos(event: Event) {
-    this.valorInputProyecto = (event.target as HTMLInputElement).value;
+    this.nombreProyecto = (event.target as HTMLInputElement).value;
     //Busca proyecto según lo ingresado en el input
-    this._tareaService.getABMproyectoService(this.valorInputProyecto).subscribe((response: any) =>{ //Obtengo los proyectos
+    this._tareaService.getABMproyectoService(this.nombreProyecto).subscribe((response: any) =>{ //Obtengo los proyectos
       this.listaProyectosService = response.dataset;
       this.tablaProyectosService = new MatTableDataSource(this.listaProyectosService);
     
@@ -114,7 +131,7 @@ export class AltaTareaDialogComponent implements OnInit {
 
     });
 
-    if (this.valorInputProyecto == '') {
+    if (this.nombreProyecto == '') {
       this.estiloListaProyectos = 'ocultarTabla';
     }
     else {
@@ -122,6 +139,14 @@ export class AltaTareaDialogComponent implements OnInit {
     }
 
   }
+
+  cerrarTablaProyectos(){
+    
+    if(this.nombreProyecto.length == 0){
+      this.estiloListaProyectos = 'ocultarTabla';
+    }
+  }
+
   abrirDialogProyecto(event: Event){
     event.preventDefault();
     // const dialogRef = this.dialogProyectos.open(DialogComponent,{width:'700px', data:{buscaProyectos: true}});
@@ -136,24 +161,42 @@ export class AltaTareaDialogComponent implements OnInit {
     // })
   }
 
-  cerrarTablaProyectos(){
+  
+
+  altaTarea(){
+
+    let valoresIncorrectos: boolean;
+    valoresIncorrectos = this.validarDatos();
+
+    if(this.camposObligatorios.invalid || valoresIncorrectos){
+      //Mostrar error
+      this.hayErrores = true
+    }
+    else{
+      //llamar servicio de alta tarea
+      console.log("Invoca servicio de alta de tarea");
+
+    }
     
-    if(this.valorInputProyecto.length == 0){
-      this.estiloListaProyectos = 'ocultarTabla';
+  }
+  validarDatos():boolean{
+
+    let estadoTarea = this.camposObligatorios.value['estadoTareaForm'];
+    let horasPlanificadas = this.camposObligatorios.value['horasPlanificadasForm'];
+
+    if(estadoTarea == 'Completada'){
+      this.mensajeError = ' El estado de la tarea no puede ser "Completada" ';
+      return true;
+    }else if(horasPlanificadas == 0){
+      this.mensajeError = ' La cantidad de horas planificadas debe ser mayor a 0 ';
+      return true;
+    }
+    else{
+      return false;
     }
   }
 
-  altaTarea(){
-    console.log(this.datosObligatorios.value);
-    console.log(this.nombreProyecto)
-    console.log(this.tipoTarea);
-    console.log(this.estado);
-    console.log(this.prioridad);
-    console.log(this.asignado);
-    console.log(this.facilitador);
-    console.log(this.fechaPlanificada)
-    console.log(this.horasPlanificadas)
-  }
+
   cerrarDialog(){
     this.dialogRef.close();
   }

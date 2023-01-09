@@ -85,3 +85,9 @@ mat-divider{
     width: 17%;
 }
 
+.acciones_botones{
+    display: flex;
+    width: 50%;
+    justify-content: flex-end;
+}
+

@@ -2,12 +2,12 @@
     <mat-dialog-content class="mat-typography">
         <mat-icon class="icon" id="close_abm_tareas" (click)="cerrarDialog()"> close </mat-icon>
         <h2 mat-dialog-title class="titulo"> Alta de Tareas </h2>
-        <!-- <div class="pares"> -->
+        <form [formGroup]="camposObligatorios">
             <mat-dialog-content>
                 <!-- <mat-form-field class="example-form-field" appearance="outline" id="searchInput"> -->
                     <div id="busqueda_proyectos">
                         <mat-label class="label">Proyecto</mat-label>
-                        <input matInput type="text" placeholder="Buscar proyecto..." autocomplete="off"  [(ngModel)]="valorInputProyecto"
+                        <input matInput type="text" placeholder="Buscar proyecto..." autocomplete="off" formControlName="nombreProy" [(ngModel)]="nombreProyecto"
                             (keyup)="cerrarTablaProyectos()" (keyup.enter)="buscarProyectos($event)">
                         <div class="lista_proyectos" [ngClass]=estiloListaProyectos>
                             <div>
@@ -32,7 +32,7 @@
         
             <mat-dialog-content class="nombre_dato">
                 <mat-label class="label">Tipo de tarea</mat-label>
-                <mat-select placeholder="Tipo de tarea" [(value)]="tipoTareaSeleccionada" id="tipoTarea"
+                <mat-select placeholder="Tipo de tarea" formControlName="tipoTareaForm" [(value)]="tipoTarea" id="tipoTarea"
                     (selectionChange)="selectTipoTarea($event)">
                     <mat-option></mat-option>
                     <mat-option value="Actividad en Cliente">Actividad en Clientelvo</mat-option>
@@ -55,7 +55,7 @@
         <div class="pares">
             <mat-dialog-content class="nombre_dato">
                 <mat-label class="label">Estado</mat-label>
-                    <mat-select placeholder="Tipo de tarea" [(value)]="estadoTareaSeleccionado" id="tipoTarea" (selectionChange)="selectEstadoTarea($event)"  >
+                    <mat-select placeholder="Tipo de tarea" formControlName="estadoTareaForm" [(value)]="estadoTareaSeleccionado" id="tipoTarea" (selectionChange)="selectEstadoTarea($event)"  >
                         <mat-option></mat-option>
                         <mat-option value="No iniciada">No iniciada</mat-option>
                         <mat-option value="En progreso">En progreso</mat-option>
@@ -68,12 +68,12 @@
 
             <mat-dialog-content class="nombre_dato">
                 <mat-label class="label">Prioridad</mat-label>
-                <mat-select placeholder="Tipo de tarea" [(value)]="prioridadSeleccionada" id="prioridad"
+                <mat-select placeholder="Tipo de tarea" formControlName="prioridadForm" [(value)]="prioridadSeleccionada" id="prioridad"
                     (selectionChange)="selectPrioridad($event)">
                     <mat-option></mat-option>
-                    <mat-option value="No iniciada">Alta</mat-option>
-                    <mat-option value="En progreso">Media</mat-option>
-                    <mat-option value="En prueba">Baja</mat-option>
+                    <mat-option value="Alta">Alta</mat-option>
+                    <mat-option value="Media">Media</mat-option>
+                    <mat-option value="Baja">Baja</mat-option>
                 </mat-select>
             </mat-dialog-content>
         </div>
@@ -83,7 +83,8 @@
         <div class="pares">
             <mat-dialog-content class="nombre_dato">
                 <mat-label class="label">Asignado a</mat-label>
-                <mat-select placeholder="Asignado a" [(value)]="asignadoSeleccionado" (selectionChange)="selectAsignado($event)">
+                <mat-select placeholder="Asignado a" formControlName="asignadoForm" [(value)]="asignadoSeleccionado" (selectionChange)="selectAsignado($event)">
+                    <mat-option value="Fede">Fede</mat-option>
                 </mat-select>
             </mat-dialog-content>
 
@@ -91,7 +92,8 @@
 
             <mat-dialog-content class="nombre_dato">
                 <mat-label class="label">Facilitador</mat-label>
-                <mat-select placeholder="Facilitador" [(value)]="facilitadorSeleccionado"(selectionChange)="selectFacilitador($event)">
+                <mat-select placeholder="Facilitador" formControlName="facilitadorForm" [(value)]="facilitadorSeleccionado"(selectionChange)="selectFacilitador($event)">
+                    <mat-option value="mex">mex</mat-option>
                 </mat-select>
             </mat-dialog-content>
         </div>
@@ -102,7 +104,7 @@
                     <mat-label class="label">Fecha planificada</mat-label>
                     <mat-form-field appearance="outline">
                         <mat-label>dd/mm/aaaa</mat-label>
-                        <input matInput [(ngModel)]="fechaPlanificada" [matDatepicker]="planificadaHasta"
+                        <input matInput formControlName="fechaPlanificadaForm" [(ngModel)]="fechaPlanificada" [matDatepicker]="planificadaHasta"
                             (dateInput)="getFechaPlanificada($event)">
                         <!-- <mat-hint>{{getDateFormatString()}}</mat-hint> -->
                         <mat-datepicker-toggle matSuffix [for]="planificadaHasta"></mat-datepicker-toggle>
@@ -117,9 +119,10 @@
                 <div class="separacion_par">
                     <mat-label class="label">Horas planificadas: </mat-label>
                     <input matInput type="number" placeholder="Cantidad horas planificadas" autocomplete="off"
-                    [(ngModel)]="horasPlanificadas">
+                    formControlName="horasPlanificadasForm" [(ngModel)]="horasPlanificadas">
                 </div>
             </mat-dialog-content>
+        </form>
 
         <mat-divider></mat-divider>
 
@@ -144,7 +147,10 @@
             <textarea name="" id="" cols="30" rows="10"></textarea>
         </mat-dialog-content>
 
-        <mat-dialog-actions class="accionesBotones">
+        <mat-dialog-actions class="acciones_botones">
+            <mat-error class="mensajeError" *ngIf="hayErrores">
+                <p>{{mensajeError}}</p>
+            </mat-error>
             <button mat-raised-button color="primary" type="submit" (click)="cerrarDialog()"> Cancelar </button>
             <button mat-raised-button color="primary" type="submit" cdkFocusInitial (click)="altaTarea()"> Aceptar </button>
         </mat-dialog-actions>
