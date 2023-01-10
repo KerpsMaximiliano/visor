@@ -5,7 +5,7 @@
     <div>
         <mat-label>Archivo</mat-label>
         <button mat-stroked-button (click)="adjuntar($event)" type="button" id="btnAdjuntar">Adjuntar</button>
-        <mat-label id="nombreArchivo"></mat-label>
+        <input type="text" formControlName="nombreArchivo" readonly>
         <input type="file" class="oculto" id="adjuntar" formControlName="archivo" (change)="mostrarNombre($event)">
     </div> 
     <div>

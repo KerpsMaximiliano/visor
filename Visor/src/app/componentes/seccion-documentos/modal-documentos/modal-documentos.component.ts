@@ -8,6 +8,7 @@ import { Inject } from '@angular/core';
 import { RestService } from 'src/app/services/i2t/rest.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { TareaService } from 'src/app/services/i2t/tarea.service';
+import { UploadArchivoService } from 'src/app/services/i2t/upload-archivo.service';
 
 @Component({
   selector: 'app-modal-documentos',
@@ -72,15 +73,24 @@ export class ModalDocumentosComponent implements OnInit {
   columnas: string[] = ['nombre'];
   estiloTablaProyectos = "mostrarTabla";
   valorInputProyecto: string = '';
+  archivo!: File;
 
-  constructor(private _documentService: DocumentoService, private _tareaService: TareaService, public dialog: MatDialogRef<SeccionDocumentosComponent>, @Inject(MAT_DIALOG_DATA) public data: any, public _restService: RestService) { }
+  constructor(
+    private _documentService: DocumentoService, 
+    private _tareaService: TareaService, 
+    private _uploadArchivoService: UploadArchivoService,
+    public dialog: MatDialogRef<SeccionDocumentosComponent>, 
+    @Inject(MAT_DIALOG_DATA) public data: any, 
+    public _restService: RestService
+    ) { }
 
   ngOnInit(): void {
 
     document.getElementById("titulo")!.innerText = this.data.titulo; // Cambia segun se haya tocado el boton para editar o crear un documento
 
     this.formulario = new FormGroup({
-      archivo: new FormControl(null, Validators.required),
+      archivo: new FormControl(null),
+      nombreArchivo: new FormControl(null, Validators.required),
       nombre: new FormControl(null, Validators.required),
       proyectoAsociado: new FormControl(null, Validators.required),
       tipo: new FormControl(null, Validators.required),
@@ -93,6 +103,7 @@ export class ModalDocumentosComponent implements OnInit {
     console.log("tiene id: " + this.verificarSiTieneId())
     if (this.verificarSiTieneId()) {
       this.formulario.controls["nombre"].setValue(this.data.nombre);
+      this.formulario.controls["nombreArchivo"].setValue(this.data.filename);
       this.valorInputProyecto = this.data.proyectoAsociado; // como tiene asociado un ngModel, sin hacer esto no se completa el valor del campo
       this.formulario.controls["proyectoAsociado"].setValue(this.data.proyectoAsociado); // esto es necesario para que reconozca el proyecto y recupere su id
       this.formulario.controls["tipo"].setValue(this.data.tipo);
@@ -100,6 +111,7 @@ export class ModalDocumentosComponent implements OnInit {
       this.formulario.controls["fechaPublicacion"].setValue(this.formatearFechaEntrante(this.data.fechaPublicacion));
       this.formulario.controls["fechaCaducidad"].setValue(this.formatearFechaEntrante(this.data.fechaCaducidad));
       this.formulario.controls["asignadoA"].setValue(this.data.asignadoA);
+
     }
 
     this._documentService.getTodosLosProyectos().subscribe(respuesta => {
@@ -128,7 +140,9 @@ export class ModalDocumentosComponent implements OnInit {
   mostrarNombre(event: Event) {
     const target = event.target as HTMLInputElement;
     if (target.files && target.files.length > 0) {
-      document.getElementById("nombreArchivo")!.innerText = target.files[0].name;
+      this.formulario.controls["nombreArchivo"].setValue(target.files[0].name)
+      this.archivo = target.files[0];
+      console.log(target.files[0])
     }
   }
 
@@ -141,7 +155,7 @@ export class ModalDocumentosComponent implements OnInit {
   formularioCompleto(event: Event) {
     event.preventDefault();
     if (
-      this.formulario.get("archivo")?.hasError("required") ||
+      this.formulario.get("nombreArchivo")?.hasError("required") ||
       this.formulario.get("nombre")?.hasError("required") ||
       this.formulario.get("proyectoAsociado")?.hasError("required") ||
       this.formulario.get("tipo")?.hasError("required") ||
@@ -169,12 +183,10 @@ export class ModalDocumentosComponent implements OnInit {
    */
   agregarDocumento() {
 
-    let pathArchivo: Array<string> = this.formulario.controls["archivo"].value.split("\\"); //nombre del archivo a cargar   
-
     let jsbody = {
       par_modo: "",
       pID_DOCUMENTO: this.data.id,
-      pFilename: pathArchivo.pop(),
+      pFilename: this.formulario.controls["nombreArchivo"].value,
       pDocument_name: this.formulario.controls["nombre"].value,
       ptipo: this.obtenerValor(this.formulario.controls["tipo"].value, this.tipos),
       pStatus_id: this.obtenerValor(this.formulario.controls["estado"].value, this.estados),
@@ -195,7 +207,13 @@ export class ModalDocumentosComponent implements OnInit {
 
       let body = JSON.stringify(jsbody);
 
-      return this._documentService.ABMDocumento(body).subscribe(respuesta => {
+      console.log(body)
+
+      this._documentService.ABMDocumento(body).subscribe(respuesta => {
+        console.log(respuesta.returnset[0].RId)
+        if(respuesta.returnset[0].RId){
+          this._uploadArchivoService.subirArchivo(respuesta.returnset[0].RId, this.archivo).subscribe()
+        }
         window.location.reload();
       });
     })
@@ -317,7 +335,9 @@ export class ModalDocumentosComponent implements OnInit {
     let encontro = false;
     let cont = 0;
     let id = 0;
-    console.log("nombre proyecto" + nombre_proyecto);
+    console.log(nombre_proyecto)
+    console.log(this.proyectosCompletos)
+    console.log("nombre proyecto: " + nombre_proyecto);
 
     while (encontro == false) {
       if (this.proyectosCompletos[cont]["nombre_projecto"] != nombre_proyecto) {
