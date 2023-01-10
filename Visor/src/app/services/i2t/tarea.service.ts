@@ -33,6 +33,46 @@ export class TareaService {
     idTarea: any;
   
 
+    public getIdUsuario(nombre_usuario?: string) {
+        let jsbody: string = JSON.stringify({
+            par_modo: "G",
+            nombre_usuario: nombre_usuario
+        });
+        return this.rest.callProcedimientoVisor(jsbody, "ObtenerIDUsuario");
+    }
+
+    public obtenerUsuarios(){
+        let jsbody: string = JSON.stringify({
+            par_modo: "G"
+        });
+        return this.rest.getUsuarios(jsbody);
+    }
+
+    public altaTarea(parModo: string, idProyecto: string, nombreTarea: string, numeroProyecto: number, prioridadTarea: string, idUsuarioAsignado: string, idUsuarioCreaTarea: string,
+                    idFacilitador: string, estadoTarea: string, descripcionTarea: string, fechaInicioTarea: string, tipoTarea: string,
+                    fechaPlanificada: string, horasPlanificadas: number, fechaCierreTarea: string,) {
+        
+        let jsbody: string = JSON.stringify({
+            PAR_MODO: parModo,
+            ID_CASO: idProyecto,
+            ID_PROJECT_TASK_UPD: idProyecto,
+            NAME_TASK: nombreTarea,
+            ID_PROJECT_TASK: numeroProyecto,
+            PRIORITY_TASK: prioridadTarea,
+            ASSIGNED_USER_ID_TASK: idUsuarioAsignado,
+            USER_CREATED_BY: idUsuarioCreaTarea,
+            FACILITADOR_USER_ID: idFacilitador,
+            STATUS_TASK: estadoTarea,
+            DESCRIPTION_TASK: descripcionTarea,
+            DATE_START_TASK: fechaInicioTarea,
+            TYPE_TASK: tipoTarea,
+            DATE_PLAN_TASK: fechaPlanificada,
+            HOUR_PLAN_TASK: horasPlanificadas,
+            DATE_FINISH_TASK: fechaCierreTarea
+        })
+        return this.rest.callProcedimientoVisor(jsbody, "ObtenerIDUsuario");
+    }
+        
   enviarProyectoActual(unProyecto: any){
     this.unProyecto = unProyecto;
     this.enviarProjectSubject.next(unProyecto);

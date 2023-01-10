@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSelectChange } from '@angular/material/select';
 import { TareaService } from 'src/app/services/i2t/tarea.service';
@@ -7,6 +7,17 @@ import { DialogComponent } from '../dialog/dialog.component';
 import { finalize } from 'rxjs';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { FormControl, FormGroup, Validators} from '@angular/forms';
+import { FiltroService } from 'src/app/services/i2t/filtro.service';
+import { TOUCH_BUFFER_MS } from '@angular/cdk/a11y/input-modality/input-modality-detector';
+
+
+
+export interface altaModificacionTareas{
+  altaTarea: boolean,
+  modificacionTarea: boolean
+  pepito: string
+}
+
 
 @Component({
   selector: 'app-alta-tarea-dialog',
@@ -14,10 +25,14 @@ import { FormControl, FormGroup, Validators} from '@angular/forms';
   styleUrls: ['./alta-tarea-dialog.component.css']
 })
 export class AltaTareaDialogComponent implements OnInit {
+  idUsuarioLogueado: string = '';
   listaProyectosService: any
   tablaProyectosService: any
 
+  nombreUsuarios: any = [];
 
+  altaTarea: boolean = false;
+  modificarTarea: boolean = false;
 
 
   
@@ -29,21 +44,27 @@ export class AltaTareaDialogComponent implements OnInit {
 
 
   estiloListaProyectos: string = 'ocultarTabla'; //nombre clase css
-  idProyectoSeleccionado: String = '';
+  idProyectoSeleccionado: string = '';
+  numeroProyecto: number = 0;
 
   nombreProyecto: string = '';
-  tipoTareaSeleccionada: String = '';
-  estadoTareaSeleccionado: String = '';
-  prioridadSeleccionada: String = '';
+  tipoTareaSeleccionada: string = '';
+  estadoTareaSeleccionado: string = '';
+  prioridadSeleccionada: string = '';
   fromAltaTarea: boolean = false;
   columnas: string[] = ['nombre'];
   tipoTarea: string = '';
   estado: string = '';
   prioridad: string = '';
   asignado: string = '';
+  idUsuarioAsignado: string = '';
   facilitador: string = '';
+  idFacilitador: string = '';
   fechaPlanificada: string = '';
+  fechaInicio: string = '';
+  fechaFin: string = '';
   horasPlanificadas: number = 0;
+  descripcionTarea: string = '';
   mostrarMensajeError: boolean = false;
   mensajeError: string = '';
   
@@ -51,7 +72,9 @@ export class AltaTareaDialogComponent implements OnInit {
   hayErrores: boolean = false;
   
   //listaProyectos
-  constructor(public dialogRef: MatDialogRef<AltaTareaDialogComponent>, private _tareaService: TareaService, public dialogProyectos: MatDialogRef<DialogComponent>) { 
+  constructor(public dialogRef: MatDialogRef<AltaTareaDialogComponent>, @Inject(MAT_DIALOG_DATA) desdeAltaTarea: altaModificacionTareas, private _tareaService: TareaService, private _filtrosService: FiltroService, public dialogProyectos: MatDialogRef<DialogComponent>) { 
+    this.altaTarea = desdeAltaTarea.altaTarea;
+    this.modificarTarea = desdeAltaTarea.modificacionTarea;
 
     this.camposObligatorios = new FormGroup({
       nombreProy: new FormControl('', [Validators.required]),
@@ -61,8 +84,21 @@ export class AltaTareaDialogComponent implements OnInit {
       asignadoForm: new FormControl('', [Validators.required]),
       facilitadorForm: new FormControl('', [Validators.required]),
       fechaPlanificadaForm: new FormControl('', [Validators.required]),
-      horasPlanificadasForm: new FormControl(0, [Validators.required])
+      horasPlanificadasForm: new FormControl(0, [Validators.required]),
+      notaForm: new FormControl('', [Validators.required]),
+
     });
+
+    this._tareaService.obtenerUsuarios().subscribe((result) =>{
+      
+      this.nombreUsuarios = result
+      console.log(this.nombreUsuarios.dataset)
+    })
+    
+    this._filtrosService.getUserId(localStorage.getItem('usuario')!).subscribe(
+      result => {
+        this.idUsuarioLogueado = result.dataset[0].id;
+    })
   }
 
   ngOnInit(): void {
@@ -70,11 +106,16 @@ export class AltaTareaDialogComponent implements OnInit {
 
   seleccionarProyecto(unProyecto: any) {
     this.idProyectoSeleccionado = unProyecto.id_projecto;
+    this.numeroProyecto = unProyecto.numero_proyecto;
     console.log(this.idProyectoSeleccionado);
     
     this.nombreProyecto = unProyecto.nombre_projecto;
     
     this.estiloListaProyectos = 'ocultarTabla'; //nombre clase css
+
+    this._tareaService.getIdUsuario("fgauchat").subscribe( (result) =>{
+      console.log(result)
+    })
   }
 
   selectTipoTarea(tipoTarea: MatSelectChange){
@@ -95,12 +136,16 @@ export class AltaTareaDialogComponent implements OnInit {
     
   }
   selectAsignado(asignado: MatSelectChange){
-    this.asignado = asignado.value;
+
+    this.asignado = asignado.value.nombre;
+    this.idUsuarioAsignado = asignado.value.id_usuario; 
+    
     
     
   }
   selectFacilitador(facilitador: MatSelectChange){
-    this.facilitador = facilitador.value
+    this.facilitador = facilitador.value.nombre
+    this.idFacilitador = facilitador.value.id_usuario;
     
     
   }
@@ -109,6 +154,12 @@ export class AltaTareaDialogComponent implements OnInit {
     const fecha = new Date(event.value);
     let fechaJson = fecha.toJSON();
     this.fechaPlanificada = fechaJson.split('T')[0];
+    console.log(this.fechaPlanificada)
+  }
+
+  getHorasPlanificadas():number{
+    this.horasPlanificadas = this.camposObligatorios.value['horasPlanificadasForm'];
+    return this.horasPlanificadas;
   }
 
   selectTareaPrecondicion(tarea: MatSelectChange){
@@ -163,18 +214,32 @@ export class AltaTareaDialogComponent implements OnInit {
 
   
 
-  altaTarea(){
+  crearTarea(){
 
     let valoresIncorrectos: boolean;
     valoresIncorrectos = this.validarDatos();
 
     if(this.camposObligatorios.invalid || valoresIncorrectos){
+    // if( valoresIncorrectos){
       //Mostrar error
       this.hayErrores = true
     }
     else{
       //llamar servicio de alta tarea
       console.log("Invoca servicio de alta de tarea");
+        
+      console.log(this.camposObligatorios.value['notaForm'])
+      this.descripcionTarea = this.camposObligatorios.value['notaForm'];
+      let horasPlanificadas = this.getHorasPlanificadas();
+      
+
+      if(this.altaTarea){
+        
+        this._tareaService.altaTarea("I",this.idProyectoSeleccionado,"nombre de la tarea",this.numeroProyecto,
+        this.prioridadSeleccionada,this.idUsuarioAsignado,this.idUsuarioLogueado,this.idFacilitador,this.estadoTareaSeleccionado,
+        this.descripcionTarea,"fecha inicio",this.tipoTareaSeleccionada,this.fechaPlanificada,horasPlanificadas,"fecha cierre");
+      }
+
 
     }
     

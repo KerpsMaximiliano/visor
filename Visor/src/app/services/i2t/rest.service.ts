@@ -144,4 +144,14 @@ export class RestService {
     let url = this.preUrl + 'api/proc/' + endPoint;
     return this.http.post(url,jsbody, { headers });
   }
+
+  getUsuarios(jsbody:string){
+    let token = localStorage.getItem('auth_token')!; 
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'x-access-token': token
+    });
+    let url = this.preUrl + 'api/proc/' + 'OBTENER_USUARIOS';
+    return this.http.post(url,jsbody, { headers });
+  }
 }

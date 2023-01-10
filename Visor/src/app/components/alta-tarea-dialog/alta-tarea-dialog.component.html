@@ -32,7 +32,7 @@
         
             <mat-dialog-content class="nombre_dato">
                 <mat-label class="label">Tipo de tarea</mat-label>
-                <mat-select placeholder="Tipo de tarea" formControlName="tipoTareaForm" [(value)]="tipoTarea" id="tipoTarea"
+                <mat-select placeholder="Seleccione tipo" formControlName="tipoTareaForm" [(value)]="tipoTarea" id="tipoTarea"
                     (selectionChange)="selectTipoTarea($event)">
                     <mat-option></mat-option>
                     <mat-option value="Actividad en Cliente">Actividad en Clientelvo</mat-option>
@@ -55,7 +55,7 @@
         <div class="pares">
             <mat-dialog-content class="nombre_dato">
                 <mat-label class="label">Estado</mat-label>
-                    <mat-select placeholder="Tipo de tarea" formControlName="estadoTareaForm" [(value)]="estadoTareaSeleccionado" id="tipoTarea" (selectionChange)="selectEstadoTarea($event)"  >
+                    <mat-select placeholder="Seleccione un estado" formControlName="estadoTareaForm" [(value)]="estadoTareaSeleccionado" id="tipoTarea" (selectionChange)="selectEstadoTarea($event)"  >
                         <mat-option></mat-option>
                         <mat-option value="No iniciada">No iniciada</mat-option>
                         <mat-option value="En progreso">En progreso</mat-option>
@@ -68,7 +68,7 @@
 
             <mat-dialog-content class="nombre_dato">
                 <mat-label class="label">Prioridad</mat-label>
-                <mat-select placeholder="Tipo de tarea" formControlName="prioridadForm" [(value)]="prioridadSeleccionada" id="prioridad"
+                <mat-select placeholder="Seleccione prioridad" formControlName="prioridadForm" [(value)]="prioridadSeleccionada" id="prioridad"
                     (selectionChange)="selectPrioridad($event)">
                     <mat-option></mat-option>
                     <mat-option value="Alta">Alta</mat-option>
@@ -83,8 +83,8 @@
         <div class="pares">
             <mat-dialog-content class="nombre_dato">
                 <mat-label class="label">Asignado a</mat-label>
-                <mat-select placeholder="Asignado a" formControlName="asignadoForm" [(value)]="asignadoSeleccionado" (selectionChange)="selectAsignado($event)">
-                    <mat-option value="Fede">Fede</mat-option>
+                <mat-select placeholder="Seleccione usuario" formControlName="asignadoForm" [(value)]="asignadoSeleccionado" (selectionChange)="selectAsignado($event)">
+                    <mat-option [value]="nombreCompleto" *ngFor="let nombreCompleto of nombreUsuarios.dataset" >{{ nombreCompleto.nombre }}</mat-option>
                 </mat-select>
             </mat-dialog-content>
 
@@ -92,8 +92,8 @@
 
             <mat-dialog-content class="nombre_dato">
                 <mat-label class="label">Facilitador</mat-label>
-                <mat-select placeholder="Facilitador" formControlName="facilitadorForm" [(value)]="facilitadorSeleccionado"(selectionChange)="selectFacilitador($event)">
-                    <mat-option value="mex">mex</mat-option>
+                <mat-select placeholder="Seleccione facilitador" formControlName="facilitadorForm" [(value)]="facilitadorSeleccionado"(selectionChange)="selectFacilitador($event)">
+                    <mat-option [value]="nombreCompleto" *ngFor="let nombreCompleto of nombreUsuarios.dataset">{{nombreCompleto.nombre}}</mat-option>
                 </mat-select>
             </mat-dialog-content>
         </div>
@@ -112,6 +112,32 @@
                     </mat-form-field>
                 </div>
             </mat-dialog-content>
+            <mat-dialog-content class="centrado">
+                <div id="fecha_planificada">
+                    <mat-label class="label">Fecha Inicio</mat-label>
+                    <mat-form-field appearance="outline">
+                        <mat-label>dd/mm/aaaa</mat-label>
+                        <input matInput formControlName="fechaPlanificadaForm" [(ngModel)]="fechaInicio" [matDatepicker]="planificadaHasta"
+                            (dateInput)="getFechaPlanificada($event)">
+                        <!-- <mat-hint>{{getDateFormatString()}}</mat-hint> -->
+                        <mat-datepicker-toggle matSuffix [for]="planificadaHasta"></mat-datepicker-toggle>
+                        <mat-datepicker #planificadaHasta></mat-datepicker>
+                    </mat-form-field>
+                </div>
+            </mat-dialog-content>
+            <mat-dialog-content class="centrado">
+                <div id="fecha_planificada">
+                    <mat-label class="label">Fecha cierre</mat-label>
+                    <mat-form-field appearance="outline">
+                        <mat-label>dd/mm/aaaa</mat-label>
+                        <input matInput formControlName="fechaPlanificadaForm" [(ngModel)]="fechaFin" [matDatepicker]="planificadaHasta"
+                            (dateInput)="getFechaPlanificada($event)">
+                        <!-- <mat-hint>{{getDateFormatString()}}</mat-hint> -->
+                        <mat-datepicker-toggle matSuffix [for]="planificadaHasta"></mat-datepicker-toggle>
+                        <mat-datepicker #planificadaHasta></mat-datepicker>
+                    </mat-form-field>
+                </div>
+            </mat-dialog-content>
 
         <mat-divider></mat-divider>
 
@@ -122,7 +148,7 @@
                     formControlName="horasPlanificadasForm" [(ngModel)]="horasPlanificadas">
                 </div>
             </mat-dialog-content>
-        </form>
+        
 
         <mat-divider></mat-divider>
 
@@ -144,15 +170,16 @@
 
         <mat-dialog-content class="centrado">
             <mat-label class="label">Notas</mat-label>
-            <textarea name="" id="" cols="30" rows="10"></textarea>
+            <textarea name="" id="" cols="30" rows="10" formControlName="notaForm"></textarea>
         </mat-dialog-content>
+    </form>
 
         <mat-dialog-actions class="acciones_botones">
             <mat-error class="mensajeError" *ngIf="hayErrores">
                 <p>{{mensajeError}}</p>
             </mat-error>
             <button mat-raised-button color="primary" type="submit" (click)="cerrarDialog()"> Cancelar </button>
-            <button mat-raised-button color="primary" type="submit" cdkFocusInitial (click)="altaTarea()"> Aceptar </button>
+            <button mat-raised-button color="primary" type="submit" cdkFocusInitial (click)="crearTarea()"> Aceptar </button>
         </mat-dialog-actions>
 
     </mat-dialog-content>

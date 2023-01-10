@@ -463,7 +463,7 @@ export class TareasComponent implements OnInit {
   }
 
   abrirABMtareas(){
-    const dialogRef = this.dialogABMtareas.open(AltaTareaDialogComponent, {width:'72%'});
+    const dialogRef = this.dialogABMtareas.open(AltaTareaDialogComponent, {width:'72%', data:{param1: true, modificacionTarea: false, pepe: 5}});
     dialogRef.afterClosed().pipe(
       finalize(() => {
         
