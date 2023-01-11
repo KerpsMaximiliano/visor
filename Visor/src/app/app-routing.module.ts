@@ -16,6 +16,7 @@ import { VistaDesarrolladorComponent } from './componentes/vista-desarrollador/v
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AuthGuard } from './guards/auth.guard';
 import { TareasComponent } from './components/tareas/tareas.component';
+import { EquipoComponent } from './componentes/equipo/equipo.component';
 
 const routes: Routes = [
   {
@@ -45,7 +46,7 @@ const routes: Routes = [
         { path: 'permisos-roles', component: PermisosRolesComponent }
         ] 
       },
-      {path: 'tareas', component: TareasComponent},
+      {path: 'equipo', component: EquipoComponent},
       {path: '',component:InicioMainComponent}
 
     ]
