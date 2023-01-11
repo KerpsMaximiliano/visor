@@ -203,19 +203,25 @@ export class ModalDocumentosComponent implements OnInit {
     }
 
     this._documentService.getIdUsuario(this.formulario.controls["asignadoA"].value).subscribe(respuesta => {
+
       jsbody.pAssigned_user_id = respuesta.dataset[0].id;
 
       let body = JSON.stringify(jsbody);
 
-      console.log(body)
+      this._uploadArchivoService.subirArchivo(respuesta.returnset[0].RId, this.archivo).subscribe()
 
-      this._documentService.ABMDocumento(body).subscribe(respuesta => {
+      /* this._documentService.ABMDocumento(body).subscribe(respuesta => {
+
         console.log(respuesta.returnset[0].RId)
+
         if(respuesta.returnset[0].RId){
+
           this._uploadArchivoService.subirArchivo(respuesta.returnset[0].RId, this.archivo).subscribe()
+
         }
+
         window.location.reload();
-      });
+      }); */
     })
   }
 
