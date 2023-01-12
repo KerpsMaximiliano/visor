@@ -8,13 +8,6 @@ export class DocumentoService {
 
   constructor(private rest: RestService) {}
 
-  // public getDocumentos() {
-  //   let jsbody: string = JSON.stringify({
-  //     par_modo: "G"
-  //   });
-  //   return this.rest.callProcedimientoVisor(jsbody,"ABMDocumentos");
-  // }
-
   public getDocumento(nombreDocumento:String) {
     let jsbody: string = JSON.stringify({
       par_modo: "G",
@@ -25,7 +18,6 @@ export class DocumentoService {
 
   public getDocumentosFiltro(numeroProyecto?: String,nombreProyecto?:String,categoria?:string,tipoDocumento?:String,usuarioAsignado?:String,estado?:String,fechaActivoInicio?:String,fechaActivoFin?:String,fechaExpiraInicio?:String,fechaExpiraFin?:String) {
     // console.log('categoriaservicio',categoria);
-    
      let jsbody: string = JSON.stringify({
        par_modo: "G",
        pID_CASE:numeroProyecto,

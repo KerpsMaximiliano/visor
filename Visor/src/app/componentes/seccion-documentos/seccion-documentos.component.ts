@@ -120,22 +120,18 @@ export class SeccionDocumentosComponent implements OnInit {
   getDocuments(): void{  
     this.estado === '' ? null : this.estado;
     // console.log('estaaaaadooooo',this.estado);
-          
-    if(this.asignadoA !== '' && this.asignadoA !== null && this.asignadoA !== undefined){
     
+    if(this.asignadoA !== '' && this.asignadoA !== null && this.asignadoA !== undefined){
       this.documentService.getIdUsuario(this.asignadoA).subscribe(data => {
       this.idUsuario = data.dataset[0].id
       console.log('id',this.idUsuario);
       this.estado === '' ? null : this.estado
-      // console.log('estadoooantes de cerrar',this.estado);
-      
-    
-    this.documentService.getDocumentosFiltro(this.numero,this.nombre,this.categoria,this.tipo,this.idUsuario,this.estado,this.fechaPublicacionDesde,this.fechaPublicacionHasta,this.fechaCaducidadDesde,this.fechaCaducidadHasta).subscribe(result => {
+      // console.log('estadoooantes de cerrar',this.estado);  
+      this.documentService.getDocumentosFiltro(this.numero,this.nombre,this.categoria,this.tipo,this.idUsuario,this.estado,this.fechaPublicacionDesde,this.fechaPublicacionHasta,this.fechaCaducidadDesde,this.fechaCaducidadHasta).subscribe(result => {
       // console.log('resultgetdocumentos',result);
       
       this.arrayDocuments = result;
-      for(let i = 0;i<result.dataset.length;i++)
-      {
+      for(let i = 0;i<result.dataset.length;i++){
         let document: Documento = {
           id: result.dataset[i].id,
           document_name:result.dataset[i].document_name,
@@ -196,8 +192,7 @@ export class SeccionDocumentosComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(response => {
-      console.log('andesthis.categoria',this.categoria);
-      
+      // console.log('antesthis.categoria',this.categoria);
       this.numero = response.numero;
       this.nombre = response.nombre;
       this.categoria = response.dataset.category;
@@ -209,18 +204,14 @@ export class SeccionDocumentosComponent implements OnInit {
       this.fechaCaducidadDesde = response.fechaCaducidadDesde;
       this.fechaCaducidadHasta = response.fechaCaducidadHasta;
       this.fechaPublicacion = response.active_date
-      console.log('this.fechaPublicacion',this.fechaPublicacion);
-      console.log('this.categoria',this.categoria);
-      
-      
+      // console.log('this.fechaPublicacion',this.fechaPublicacion);
+      // console.log('this.categoria',this.categoria);
       // this.fechaDeCaducidad = result.fechaCaducidad
       // this.fechaPublicacion = response.active_date.slice(8,10)+'-'+response.active_date.slice(5,7)+'-'+response.active_date.slice(0,4)
-      console.log('response',response);
-      
+      // console.log('response',response);
       // result.dataset[i].active_date.slice(8,10)+'-'+result.dataset[i].active_date.slice(5,7)+'-'+result.dataset[i].active_date.slice(0,4)
       this.listOfDocuments = response.dataset
-      
-      console.log('documentosAfterclose',this.listOfDocuments);
+      // console.log('documentosAfterclose',this.listOfDocuments);
     });
   }
   

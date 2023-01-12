@@ -20,17 +20,10 @@ import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 
 
 export class ModalFiltroDocumentosComponent implements OnInit {
-
-  // categorys: string[] = ['General', 'Diseño','Desarrollo','Testing','Implementacion','Mantenimiento'];
   categorys: string[];
   estados: string[];
   types: string[] = [];
   encontrado: boolean = false;
-  typesNuevo: string[] = [];
-  // categorySelected: any;
-  // statusSelected: any;
-  // typeSelected: any;
-  // typeOfDocuments: any;
   numeroDocumento = '';
   idUsuario = '';
   categoria?: string;
@@ -60,9 +53,6 @@ export class ModalFiltroDocumentosComponent implements OnInit {
           console.log('hay datos', resp);
           resp.dataset.forEach((filtro: any) => {
             if (filtro.nombre == 'filtro_numero_nombre_categoria_tipo_asignadoA_estado_fechaPublicacionDesde_fechaPublicacionHasta_fechaCaducidadDesde_fechaCaducidadHasta') {
-              // console.log('filtro',filtro);
-              // console.log('filtroid',filtro.saved_search_id);
-              // console.log('modalfiltro',this.modal_saved_search_id);
               const contenido = JSON.parse(atob(filtro.contenido));
               this.result.numero = contenido.numero;
               this.result.nombre = contenido.nombre;
@@ -77,10 +67,7 @@ export class ModalFiltroDocumentosComponent implements OnInit {
               }else if(this.estado == "Expired"){
                 this.estado = "Eliminado"
               }
-              console.log('categoria',this.categoria);
               if(this.categoria != '' && this.categoria != null &&this.categoria != undefined){
-
-              console.log('aaaaaaaaaaaaaaaaa',this.categoria);
               this.mostrarTipo(this.categoria)    
               }
               // this.fechaDePublicacion = contenido.fechaDePublicacion;
@@ -106,11 +93,10 @@ export class ModalFiltroDocumentosComponent implements OnInit {
       this.result.nombre ="";
     this.categoria =='' ? null : this.categoria = undefined;
     this.tipo =='' ? null : this.tipo= undefined;
-    // this.result.asignadoA =='' ? null : this.result.asignadoA= '';
     this.result.asignadoA ="";
     this.estado =='' ? null : this.estado = undefined;;
-    console.log('estadolimpiar',this.estado);
-    console.log('categorialimpiar',this.categoria);
+    // console.log('estadolimpiar',this.estado);
+    // console.log('categorialimpiar',this.categoria);
     this.fechaPublicacionDesde =='' ? null : this.fechaPublicacionDesde= undefined;
     this.fechaPublicacionHasta =='' ? null : this.fechaPublicacionHasta= undefined;
     this.fechaCaducidadDesde =='' ? null : this.fechaCaducidadDesde= undefined;
@@ -127,12 +113,8 @@ export class ModalFiltroDocumentosComponent implements OnInit {
   cancelarBusqueda(): void {
     if (this.result.limpiar == false) {
       this.result.numero = this.data.numero;
-      console.log('datatnomre',this.data.nombre);
-      console.log('resultnomredata',this.data.nombre);
       this.result.nombre = this.data.nombre;
-      console.log('resultnomre',this.result.nombre);
-
-      this.categoria = this.data.categoria;
+       this.categoria = this.data.categoria;
       this.tipo = this.data.tipo;
       this.result.asignadoA = this.data.asignadoA;
       this.estado = this.data.estado;
@@ -144,9 +126,7 @@ export class ModalFiltroDocumentosComponent implements OnInit {
       this.dialogRef.close(this.result);
     } else {
       this.result.numero = '';
-      console.log('numeroelse',this.result.numero);
       this.result.nombre = '';
-      console.log('nombreelse',this.result.nombre);
       this.categoria = '';
       this.tipo = '';
       this.result.asignadoA = '';
@@ -258,8 +238,8 @@ export class ModalFiltroDocumentosComponent implements OnInit {
       this.estado = "Expired"
     }
 
-    console.log('nombreantes',this.result.nombre);
-    console.log('estadoooooo',this.estado);
+    // console.log('nombreantes',this.result.nombre);
+    // console.log('estadoooooo',this.estado);
      
    if(this.result.numero == ""){
      numero = null
@@ -275,63 +255,40 @@ export class ModalFiltroDocumentosComponent implements OnInit {
       asignadoA = undefined
     }else{
       asignadoA = this.result.asignadoA
-    }
-    // this.result.nombre == "" ? undefined : this.result.nombre
-    // this.result.asignadoA == "" ? undefined : this.result.asignadoA
-    // this.tipo === '' ? null : this.tipo
-    // this.estado === '' ? null : this.estado
-    // this.categoria == '' ? undefined : this.categoria
-    // this.fechaPublicacionDesde  === '' ? null : this.fechaPublicacionDesde
-    // this.fechaPublicacionHasta  === '' ? null : this.fechaPublicacionHasta
-    // this.fechaCaducidadDesde  === '' ? null : this.fechaCaducidadDesde
-    // this.fechaCaducidadHasta === '' ? null : this.fechaCaducidadHasta
-
-    // console.log('result.numero',this.result.numero);
-    // console.log('fechaPublicacionHasta',this.result.nombre);
-
-    // console.log('categoria antes de servicio',this.categoria == '');
-    // if(this.categoria ==''){
-    //   this.categoria = undefined
-    //   this.tipo = undefined
-    // } 
+    } 
     if(this.estado ==''){
       this.estado = undefined
     } 
     if(this.tipo ==''){
       this.tipo = undefined
     } 
-    console.log('categoria antes de servicio2',this.categoria);
+    // console.log('categoria antes de servicio2',this.categoria);
 
     if(this.result.asignadoA !== '' && this.result.asignadoA !== null && this.result.asignadoA !== undefined){
 
       this.documentService.getIdUsuario(this.result.asignadoA).subscribe(data => {
       this.idUsuario = data.dataset[0].id
-      console.log('id',this.idUsuario);
+      // console.log('id',this.idUsuario);
 
-      // console.log('estadoooantes de cerrar',this.estado);
       // console.log(' de cerrar',this.result.numero,this.result.nombre,this.categoria,this.tipo,this.idUsuario,this.estado,this.fechaPublicacionDesde,this.fechaPublicacionHasta,this.fechaCaducidadDesde,this.fechaCaducidadHasta);
-        
-      // this.documentService.getDocumentosFiltro(this.result.numero,this.result.nombre,this.categoria,this.tipo,this.idUsuario,this.estado,this.fechaPublicacionDesde,this.fechaPublicacionHasta,this.fechaCaducidadDesde,this.fechaCaducidadHasta).subscribe(response => {
+    
       this.documentService.getDocumentosFiltro(numero,nombre,this.categoria,this.tipo,this.idUsuario,this.estado,this.fechaPublicacionDesde,this.fechaPublicacionHasta,this.fechaCaducidadDesde,this.fechaCaducidadHasta).subscribe(response => {
         let respuesta
         respuesta = response
         this.dialogRef.close(respuesta)
-        console.log('response',response.dataset)
+        // console.log('response',response.dataset)
         })
       })
     }else{
-      console.log('nombre',nombre);
-      
-    console.log(' entro al else',this.result.numero,this.result.nombre,this.categoria,this.tipo,this.idUsuario,this.estado,this.fechaPublicacionDesde,this.fechaPublicacionHasta,this.fechaCaducidadDesde,this.fechaCaducidadHasta);
-
+      // console.log('nombre',nombre);
+    // console.log(' entro al else',this.result.numero,this.result.nombre,this.categoria,this.tipo,this.idUsuario,this.estado,this.fechaPublicacionDesde,this.fechaPublicacionHasta,this.fechaCaducidadDesde,this.fechaCaducidadHasta);
     this.documentService.getDocumentosFiltro(numero,nombre,this.categoria,this.tipo,asignadoA,this.estado,this.fechaPublicacionDesde,this.fechaPublicacionHasta,this.fechaCaducidadDesde,this.fechaCaducidadHasta).subscribe(response => {
       let respuesta
       respuesta = response
       this.dialogRef.close(respuesta)
-      console.log('response',response.dataset)
+      // console.log('response',response.dataset)
       })
     }
-
   }
 
 
@@ -361,29 +318,21 @@ export class ModalFiltroDocumentosComponent implements OnInit {
   }
 
   selectTipo(event:MatSelectChange){
-    console.log('selectTipo',event.source.triggerValue);
+    // console.log('selectTipo',event.source.triggerValue);
     this.tipo = event.source.triggerValue
     this.tipo == '' ? null : this.tipo
   }
   selectEstado(event:MatSelectChange){
-    console.log('selectEstado',event.source.triggerValue);
+    // console.log('selectEstado',event.source.triggerValue);
     this.estado = event.source.triggerValue
     this.estado == '' ? null : this.estado
   }
-
-  // formatearFechaEntrante(fecha : string){
-  //   let nuevaFecha : Date = new Date(fecha.replace(/-/g, '\/').replace(/T.+/, ''));
-  //   // Los replace con los regex son necesarios porque sino, en JS y JAVA, ocurren errores al crear un objeto Date
-  //   // sin una string con el formato correcto (los regex reemplazan "-" por "/" y el resto de datos de tiempo por " ")
-
-  //   return nuevaFecha;
-  // }
 
   getFechaPublicacionDesde(event: MatDatepickerInputEvent<any>){
     const fecha = new Date(event.value);
     let fechaJson = fecha.toJSON();     
     this.fechaPublicacionDesde= fechaJson.split('T')[0];
-    console.log('this.fechaPublicacionDesde',this.fechaPublicacionDesde);
+    // console.log('this.fechaPublicacionDesde',this.fechaPublicacionDesde);
 
   }
 
