@@ -4,6 +4,7 @@ import { ModalFiltroDocumentosComponent } from './modal-filtro-documentos.compon
 import { MyMaterialModule } from '../../material';
 import { Document } from './Class/document';
 import { FormsModule } from '@angular/forms';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import { FormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     MyMaterialModule,
-    FormsModule
+    FormsModule,
+    MatDatepickerModule
   ],
   exports: [ModalFiltroDocumentosComponent],
   providers: [Document]

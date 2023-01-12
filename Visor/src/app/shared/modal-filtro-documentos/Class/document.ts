@@ -10,7 +10,7 @@ export class Document {
     "Implementacion", 
     "Mantenimiento"];
     
-    typeOfDocuments: string[] = [
+    types: string[] = [
     "Identificacion de Necesidades",
     "Plan de proyecto",
     "Requerimientos",
@@ -31,9 +31,10 @@ export class Document {
     "Incidencia",
     "Proceso de despliegue",
     "Requerimientos de Cambios",
-    "Estimacion de Cambios"];
+    "Estimacion de Cambios"
+    ];
 
-    conditions: string[] = [
+    estados: string[] = [
         "Borrador",
         "Publicado",
         "Eliminado"

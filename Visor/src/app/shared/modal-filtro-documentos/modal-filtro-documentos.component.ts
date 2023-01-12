@@ -6,55 +6,95 @@ import { FiltroService } from '../../services/i2t/filtro.service';
 import { MatSelectChange } from '@angular/material/select';
 import { DocumentoService } from 'src/app/services/i2t/documento.service';
 import { finalize } from 'rxjs';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
+// import { MAT_DATE_LOCALE } from '@angular/material/core/datetime/date-adapter';
+
+
 
 @Component({
   selector: 'app-modal-filtro-documentos',
   templateUrl: './modal-filtro-documentos.component.html',
   styleUrls: ['./modal-filtro-documentos.component.css']
 })
+
+
 export class ModalFiltroDocumentosComponent implements OnInit {
 
   // categorys: string[] = ['General', 'Diseño','Desarrollo','Testing','Implementacion','Mantenimiento'];
-  categorys: string[]
-  types: string[];  
-  conditions: string[];
-
-  categorySelected: any;
-  statusSelected: any;
-  typeSelected: any;
-  typeOfDocuments: any;
+  categorys: string[];
+  estados: string[];
+  types: string[] = [];
+  encontrado: boolean = false;
+  typesNuevo: string[] = [];
+  // categorySelected: any;
+  // statusSelected: any;
+  // typeSelected: any;
+  // typeOfDocuments: any;
   numeroDocumento = '';
-  // categoria?:string;
   idUsuario = '';
-  result = {numero:'', nombre: '', categoria: '', tipo: '', asignadoA: '', estado: '',fechaPublicacionDesde: '', fechaPublicacionHasta: '', fechaCaducidadDesde: '', fechaCaducidadHasta: '' ,filtrar: true, limpiar: false}
+  categoria?: string;
+  estado?: string;
+  tipo?:string;
+  fechaPublicacionDesde?:string;
+  fechaPublicacionHasta?:string;
+  fechaCaducidadDesde?:string;
+  fechaCaducidadHasta?:string;
+  result = {numero:'', nombre: '', categoria: '', tipo: '', asignadoA: '', estado: '',publicacionDesde: '', publicacionHasta: '', caducidadDesde: '', caducidadHasta: '' ,filtrar: true, limpiar: false}
   save_search_id = '';
 
-  constructor(public documentInstance: Document, public dialogRef: MatDialogRef<SeccionDocumentosComponent>, @Inject(MAT_DIALOG_DATA) public data:any, public _filtroService: FiltroService, public documentService:DocumentoService) {
+  constructor(public documentInstance: Document, public dialogRef: MatDialogRef<SeccionDocumentosComponent>, @Inject(MAT_DIALOG_DATA) public data:any, public _filtroService: FiltroService, public documentService:DocumentoService,@Inject(MAT_DATE_LOCALE) private _locale: string, private _adapter: DateAdapter<any>) {
     //Utilizan una instancia de la clase Documents para acceder a la información contenida.
     this.categorys = this.documentInstance.categorys;
-    this.types = this.documentInstance.typeOfDocuments;
-    this.conditions = this.documentInstance.conditions;
+    this.estados = this.documentInstance.estados;    
+    this._locale = 'es';
+    this._adapter.setLocale(this._locale);
   }
 
   ngOnInit(): void {
-    this.result.numero = this.data.numero;
-    
-    
-    this.result.nombre = this.data.nombre;
-    this.result.asignadoA = this.data.asignadoA;
-    this.result.estado = this.data.estado;
-    this.result.tipo = this.data.tipo;
-    this.result.categoria = this.data.categoria;
-    // this.categorySelected = this.result.categoria;
-    console.log('categoriaON',this.data.categoria);
-    console.log('typeON',this.data.tipo);
-    
-    this.result.fechaPublicacionDesde = this.data.fechaPublicacionDesde;
-    this.result.fechaPublicacionHasta = this.data.fechaPublicacionHasta;
-    this.result.fechaCaducidadDesde = this.data.fechaCaducidadDesde;
-    this.result.fechaCaducidadHasta = this.data.fechaCaducidadHasta;
-    this.save_search_id = this.data.search_id;
-    // console.log('savesearch',this.save_search_id);
+    this._filtroService.getUserId(localStorage.getItem('usuario')!).subscribe((response: any) => {
+    localStorage.setItem('userId', response.dataset[0].id);
+    this._filtroService.selectFiltro(response.dataset[0].id, 'documentos').subscribe((resp: any) => {
+      if (resp.dataset.length == 0 ) {
+        } else {
+          console.log('hay datos', resp);
+          resp.dataset.forEach((filtro: any) => {
+            if (filtro.nombre == 'filtro_numero_nombre_categoria_tipo_asignadoA_estado_fechaPublicacionDesde_fechaPublicacionHasta_fechaCaducidadDesde_fechaCaducidadHasta') {
+              // console.log('filtro',filtro);
+              // console.log('filtroid',filtro.saved_search_id);
+              // console.log('modalfiltro',this.modal_saved_search_id);
+              const contenido = JSON.parse(atob(filtro.contenido));
+              this.result.numero = contenido.numero;
+              this.result.nombre = contenido.nombre;
+              this.categoria = contenido.categoria
+              this.tipo = contenido.tipo;
+              this.result.asignadoA = contenido.asignadoA;
+              this.estado = contenido.estado;
+              if(this.estado == "Active"){
+                this.estado = "Publicado"
+              }else if(this.estado == 'Draft'){
+                this.estado = "Borrador"
+              }else if(this.estado == "Expired"){
+                this.estado = "Eliminado"
+              }
+              console.log('categoria',this.categoria);
+              if(this.categoria != '' && this.categoria != null &&this.categoria != undefined){
+
+              console.log('aaaaaaaaaaaaaaaaa',this.categoria);
+              this.mostrarTipo(this.categoria)    
+              }
+              // this.fechaDePublicacion = contenido.fechaDePublicacion;
+              this.fechaPublicacionDesde = contenido.fechaPublicacionDesde;
+              this.fechaPublicacionHasta = contenido.fechaPublicacionHasta;
+              // this.fechaDeCaducidad = contenido.fechaDeCaducidad;
+              this.fechaCaducidadDesde = contenido.fechaCaducidadDesde;
+              this.fechaCaducidadHasta = contenido.fechaCaducidadHasta;
+              this.save_search_id = filtro.saved_search_id;
+            }
+          })
+        };
+      });
+    });
   }
 
 
@@ -62,16 +102,19 @@ export class ModalFiltroDocumentosComponent implements OnInit {
    * Método que limpia los campos del filtro.
    */
   limpiarFiltro(): void{
-    this.result.nombre = '';
-    this.result.numero = '';
-    this.result.asignadoA = '';
-    this.statusSelected = '';
-    this.result.categoria = '';
-    this.typeOfDocuments = '';
-    this.result.fechaPublicacionDesde = '';
-    this.result.fechaPublicacionHasta = '';
-    this.result.fechaCaducidadHasta = '';
-    this.result.fechaCaducidadDesde = '';
+    this.result.numero =""
+      this.result.nombre ="";
+    this.categoria =='' ? null : this.categoria = undefined;
+    this.tipo =='' ? null : this.tipo= undefined;
+    // this.result.asignadoA =='' ? null : this.result.asignadoA= '';
+    this.result.asignadoA ="";
+    this.estado =='' ? null : this.estado = undefined;;
+    console.log('estadolimpiar',this.estado);
+    console.log('categorialimpiar',this.categoria);
+    this.fechaPublicacionDesde =='' ? null : this.fechaPublicacionDesde= undefined;
+    this.fechaPublicacionHasta =='' ? null : this.fechaPublicacionHasta= undefined;
+    this.fechaCaducidadDesde =='' ? null : this.fechaCaducidadDesde= undefined;
+    this.fechaCaducidadHasta =='' ? null : this.fechaCaducidadHasta= undefined;
     this.result.limpiar = true;
     this._filtroService.deleteFiltro(this.save_search_id).subscribe((rsp: any) => {
       console.log('Filtro eliminado: ', rsp);
@@ -79,116 +122,222 @@ export class ModalFiltroDocumentosComponent implements OnInit {
   }
 
   /**
-   * Método que cancela la busqueda del filtro
+   * Método que cancela la búsqueda del filtro y cierra el modal
    */
   cancelarBusqueda(): void {
     if (this.result.limpiar == false) {
-      this.result.nombre = this.data.nombre;
       this.result.numero = this.data.numero;
-      this.result.tipo = this.data.tipo;
+      console.log('datatnomre',this.data.nombre);
+      console.log('resultnomredata',this.data.nombre);
+      this.result.nombre = this.data.nombre;
+      console.log('resultnomre',this.result.nombre);
+
+      this.categoria = this.data.categoria;
+      this.tipo = this.data.tipo;
       this.result.asignadoA = this.data.asignadoA;
-      this.result.estado = this.data.estado;
-      this.result.categoria = this.data.categoria;
-      this.result.fechaPublicacionDesde = this.data.fechaPublicacionDesde;
-      this.result.fechaPublicacionHasta = this.data.fechaPublicacionHasta;
-      this.result.fechaCaducidadDesde = this.data.fechaCaducidadDesde;
-      this.result.fechaPublicacionHasta = this.data.fechaPublicacionHasta;
+      this.estado = this.data.estado;
+      this.fechaPublicacionDesde = this.data.publicacionDesde;
+      this.fechaPublicacionHasta = this.data.publicacionHasta;
+      this.fechaCaducidadDesde = this.data.caducidadDesde;
+      this.fechaCaducidadHasta= this.data.caducidadHasta;
       this.result.filtrar = false;
       this.dialogRef.close(this.result);
     } else {
-      this.result.nombre = '';
       this.result.numero = '';
+      console.log('numeroelse',this.result.numero);
+      this.result.nombre = '';
+      console.log('nombreelse',this.result.nombre);
+      this.categoria = '';
+      this.tipo = '';
       this.result.asignadoA = '';
-      this.result.estado = '';
-      this.result.categoria = '';
-      this.result.tipo = '';
-      this.result.fechaPublicacionDesde = '';
-      this.result.fechaPublicacionHasta = '';
-      this.result.fechaCaducidadDesde = '';
-      this.result.fechaCaducidadHasta = '';
+      this.estado = '';
+      this.fechaPublicacionDesde = '';
+      this.fechaPublicacionHasta = '';
+      this.fechaCaducidadDesde = '';
+      this.fechaCaducidadHasta = '';
       this.result.limpiar = true;
       this.result.filtrar = true;
-      this.dialogRef.close(this.result);  
+      this.dialogRef.close(this.result);
     }
   }
+ /**
+   * Método que según la categoria elegida se habilitan los tipos de esa categoría
+   */
+  mostrarTipo(categoria:string){
+    switch(categoria){
+      case "General": 
+      this.types = ["Identificacion de Necesidades",
+      "Plan de proyecto",
+      "Requerimientos",
+      "Estimacion de tareas",
+      "Product backlog",
+      "Sprint backlog",
+      "Documento"]
+      break;
+      case "Diseño": 
+      this.types = ["Propuesta funcional",
+      "Arquitectura",
+      "Caso de Uso",
+      "Despliegue Proceso Produccion",
+      "Requerimiento de configuracion",
+      "Boceto/Maqueta"]
+      break;
+      case "Desarrollo": 
+      this.types = ["Nota de desarrollo"]
+      break;
+      case "Testing": 
+      this.types = ["Plan de pruebas",
+      "Caso de prueba",
+      "Ciclo/corrida",
+      "Incidencia"]
+      break;
+      case "Implementacion": 
+      this.types = ["Proceso de despliegue"]
+      break;
+      case "Mantenimiento": 
+      this.types = ["Requerimientos de Cambios",
+      "Estimacion de Cambios"]
+      break;
+      default:
+        this.types = [""]
+        break;
+    }
+  }
+
+
 
   /**
    * Método que guarda la información de busqueda proporcionada en el filtro.
    */
   guardarFiltro(): void {
-    // this.documentService.getIdUsuario(this.result.asignadoA).subscribe(response => {
-    //   this.idUsuario = response.dataset[0].id
-    //   console.log('id',this.idUsuario);
-    // })
-  
-   console.log('categoriaaplicar',this.result.categoria);
-   
-    console.log('this.idUsuario',this.idUsuario);
-    console.log('resytknombre',this.data.nombre);
-    // this.categoria = undefined
+    let numero:any;
+    let nombre:any
+    let asignadoA:any 
+
+       if(this.categoria ==''){
+      this.categoria = undefined
+      this.tipo = undefined
+    } 
+
     const contenido: string = JSON.stringify({
-      numero: this.result.numero,
-      nombre: this.result.nombre,
-      categoria: this.result.categoria,
-      tipo: this.result.tipo,
-      asignadoA: this.result.asignadoA,
-      estado: this.result.estado,
-      fechaPublicacionDesde: this.result.fechaPublicacionDesde,
-      fechaPublicacionHasta: this.result.fechaPublicacionHasta,
-      fechaCaducidadDesde: this.result.fechaCaducidadDesde,
-      fechaCaducidadHasta: this.result.fechaCaducidadHasta,
+      numero: this.result.numero == '' ? null : this.result.numero,
+      nombre: this.result.nombre == '' ? null : this.result.nombre,
+      categoria: this.categoria == '' ? undefined : this.categoria,
+      tipo: this.tipo == '' ? null : this.tipo,
+      asignadoA: this.result.asignadoA == '' ? null : this.result.asignadoA,
+      estado: this.estado == '' ? null : this.estado,
+      fechaPublicacionDesde: this.fechaPublicacionDesde == '' ? null : this.fechaPublicacionDesde,
+      fechaPublicacionHasta: this.fechaPublicacionHasta == '' ? null : this.fechaPublicacionHasta,
+      fechaCaducidadDesde: this.fechaCaducidadDesde == '' ? null : this.fechaCaducidadDesde,
+      fechaCaducidadHasta: this.fechaCaducidadHasta == '' ? null : this.fechaCaducidadHasta,
     });
-    
+    // console.log('contenido',contenido);
+
     const encodedData = btoa(contenido);
-  
-    
 
     if (this.save_search_id == '') {
       this._filtroService.insertFiltro(
         localStorage.getItem('userId')!,
         'documentos',
-        // 'filtro_numero_nombre_tipo_asignadoA_estado_categoria_fechaPublicacionDesde_fechaPublicacionHasta_fechaCaducidadDesde_fechaCaducidadHasta',
         'filtro_numero_nombre_categoria_tipo_asignadoA_estado_fechaPublicacionDesde_fechaPublicacionHasta_fechaCaducidadDesde_fechaCaducidadHasta',
         encodedData,
         'Filtra los documentos por las 10 caracteristicas principales').subscribe((rsp: any) => {
           console.log('Filtro guardado: ', rsp);
         });
-    } else {
+    }else {
       this._filtroService.updateFiltro(this.save_search_id, encodedData).subscribe((rsp: any) => {
         console.log('Filtro actualizado: ', rsp);
       });
     }
-    console.log('asignado',this.idUsuario)
-    // console.log('typeSelected',this.data.tipo)
-    console.log('type',this.result.tipo)
-    console.log('statusSelected',this.data.estado)
-    console.log('categoriasd',this.result.categoria);
- 
 
-    // contenido.asignadoA.stringify = this.idUsuario
-    // this.documentService.getDocumentosFiltrarCategoria(this.result.categoria).subscribe(response => {
-    //   // // response.dataset
-    //   let respuesta
-    //   respuesta = response
-    //   this.dialogRef.close(respuesta)
-    //   // console.log('response',response)
-    // })
-    this.documentService.getDocumentosFiltro(this.result.nombre,this.result.tipo,this.result.categoria,this.result.asignadoA,this.result.fechaPublicacionDesde,this.result.fechaPublicacionHasta,this.result.fechaCaducidadDesde,this.result.fechaCaducidadHasta).subscribe(response => {
-      // this.documentService.getDocumentosFiltro(contenido).subscribe(response => {
-       
-        // response.dataset
+    if(this.estado == "Publicado"){
+      this.estado = "Active"
+    }else if(this.estado == 'Borrador'){
+      this.estado = "Draft"
+    }else if(this.estado == "Eliminado"){
+      this.estado = "Expired"
+    }
+
+    console.log('nombreantes',this.result.nombre);
+    console.log('estadoooooo',this.estado);
+     
+   if(this.result.numero == ""){
+     numero = null
+    }else{
+      numero = this.result.numero
+    }
+    if(this.result.nombre == ""){
+      nombre = undefined
+    }else{
+      nombre = this.result.nombre
+    }
+    if(this.result.asignadoA == ""){
+      asignadoA = undefined
+    }else{
+      asignadoA = this.result.asignadoA
+    }
+    // this.result.nombre == "" ? undefined : this.result.nombre
+    // this.result.asignadoA == "" ? undefined : this.result.asignadoA
+    // this.tipo === '' ? null : this.tipo
+    // this.estado === '' ? null : this.estado
+    // this.categoria == '' ? undefined : this.categoria
+    // this.fechaPublicacionDesde  === '' ? null : this.fechaPublicacionDesde
+    // this.fechaPublicacionHasta  === '' ? null : this.fechaPublicacionHasta
+    // this.fechaCaducidadDesde  === '' ? null : this.fechaCaducidadDesde
+    // this.fechaCaducidadHasta === '' ? null : this.fechaCaducidadHasta
+
+    // console.log('result.numero',this.result.numero);
+    // console.log('fechaPublicacionHasta',this.result.nombre);
+
+    // console.log('categoria antes de servicio',this.categoria == '');
+    // if(this.categoria ==''){
+    //   this.categoria = undefined
+    //   this.tipo = undefined
+    // } 
+    if(this.estado ==''){
+      this.estado = undefined
+    } 
+    if(this.tipo ==''){
+      this.tipo = undefined
+    } 
+    console.log('categoria antes de servicio2',this.categoria);
+
+    if(this.result.asignadoA !== '' && this.result.asignadoA !== null && this.result.asignadoA !== undefined){
+
+      this.documentService.getIdUsuario(this.result.asignadoA).subscribe(data => {
+      this.idUsuario = data.dataset[0].id
+      console.log('id',this.idUsuario);
+
+      // console.log('estadoooantes de cerrar',this.estado);
+      // console.log(' de cerrar',this.result.numero,this.result.nombre,this.categoria,this.tipo,this.idUsuario,this.estado,this.fechaPublicacionDesde,this.fechaPublicacionHasta,this.fechaCaducidadDesde,this.fechaCaducidadHasta);
+        
+      // this.documentService.getDocumentosFiltro(this.result.numero,this.result.nombre,this.categoria,this.tipo,this.idUsuario,this.estado,this.fechaPublicacionDesde,this.fechaPublicacionHasta,this.fechaCaducidadDesde,this.fechaCaducidadHasta).subscribe(response => {
+      this.documentService.getDocumentosFiltro(numero,nombre,this.categoria,this.tipo,this.idUsuario,this.estado,this.fechaPublicacionDesde,this.fechaPublicacionHasta,this.fechaCaducidadDesde,this.fechaCaducidadHasta).subscribe(response => {
         let respuesta
         respuesta = response
         this.dialogRef.close(respuesta)
         console.log('response',response.dataset)
+        })
       })
-    
- 
+    }else{
+      console.log('nombre',nombre);
+      
+    console.log(' entro al else',this.result.numero,this.result.nombre,this.categoria,this.tipo,this.idUsuario,this.estado,this.fechaPublicacionDesde,this.fechaPublicacionHasta,this.fechaCaducidadDesde,this.fechaCaducidadHasta);
+
+    this.documentService.getDocumentosFiltro(numero,nombre,this.categoria,this.tipo,asignadoA,this.estado,this.fechaPublicacionDesde,this.fechaPublicacionHasta,this.fechaCaducidadDesde,this.fechaCaducidadHasta).subscribe(response => {
+      let respuesta
+      respuesta = response
+      this.dialogRef.close(respuesta)
+      console.log('response',response.dataset)
+      })
+    }
+
   }
+
 
   /**
    * Método que valida que la tecla pulsada sea enter.
-   * 
+   *
    * @param e KeyboardEvent
    */
     validarTecla(e: KeyboardEvent): void{
@@ -198,23 +347,62 @@ export class ModalFiltroDocumentosComponent implements OnInit {
     }
   }
 
+  /**
+   * Método en el que se seleciona y guarda la categoria.
+   *
+   * @param event
+   */
   selectCategory(event:MatSelectChange){
-    console.log('selectCategoria',event.source.triggerValue);
    
-    
-    this.result.categoria = event.source.triggerValue
-    console.log('select category',this.result.categoria);
+    this.categoria = event.source.triggerValue
+    this.categoria == '' ? null : this.categoria
+    // console.log('selectCategoria', this.categoria);
+    this.mostrarTipo(this.categoria);
   }
 
   selectTipo(event:MatSelectChange){
     console.log('selectTipo',event.source.triggerValue);
-    this.result.tipo = event.source.triggerValue
+    this.tipo = event.source.triggerValue
+    this.tipo == '' ? null : this.tipo
   }
   selectEstado(event:MatSelectChange){
     console.log('selectEstado',event.source.triggerValue);
-    this.result.estado = event.source.triggerValue
+    this.estado = event.source.triggerValue
+    this.estado == '' ? null : this.estado
   }
 
+  // formatearFechaEntrante(fecha : string){
+  //   let nuevaFecha : Date = new Date(fecha.replace(/-/g, '\/').replace(/T.+/, ''));
+  //   // Los replace con los regex son necesarios porque sino, en JS y JAVA, ocurren errores al crear un objeto Date
+  //   // sin una string con el formato correcto (los regex reemplazan "-" por "/" y el resto de datos de tiempo por " ")
 
+  //   return nuevaFecha;
+  // }
+
+  getFechaPublicacionDesde(event: MatDatepickerInputEvent<any>){
+    const fecha = new Date(event.value);
+    let fechaJson = fecha.toJSON();     
+    this.fechaPublicacionDesde= fechaJson.split('T')[0];
+    console.log('this.fechaPublicacionDesde',this.fechaPublicacionDesde);
+
+  }
+
+  getFechaPublicacionHasta(event: MatDatepickerInputEvent<any>){
+    const fecha = new Date(event.value);
+    let fechaJson = fecha.toJSON();
+    this.fechaPublicacionHasta= fechaJson.split('T')[0];
+  }
+
+  getFechaCaducidadDesde(event: MatDatepickerInputEvent<any>){
+    const fecha = new Date(event.value);
+    let fechaJson = fecha.toJSON();
+    this.fechaCaducidadDesde= fechaJson.split('T')[0];
+  }
+
+  getFechaCaducidadHasta(event: MatDatepickerInputEvent<any>){
+    const fecha = new Date(event.value);
+    let fechaJson = fecha.toJSON();
+    this.fechaCaducidadHasta= fechaJson.split('T')[0];
+  }
 
 }

@@ -28,12 +28,13 @@ export class SeccionDocumentosComponent implements OnInit {
   categoria: string = "";
   tipo: string = "";
   estadoDocumento: string = "";
-  fechaDePublicacion: string ="";
-  fechaDeCaducidad: string ="";
-  fechaDePublicacionDesde: string = "";
-  fechaDePublicacionHasta: string = "";
-  fechaDeCaducidadDesde: string = "";
-  fechaDeCaducidadHasta: string = "";
+  idUsuario = '';
+  fechaPublicacion: string ="";
+  fechaCaducidad: string ="";
+  fechaPublicacionDesde: string = "";
+  fechaPublicacionHasta: string = "";
+  fechaCaducidadDesde: string = "";
+  fechaCaducidadHasta: string = "";
   inputIzq: string = "";
   idDocumentoSeleccionado: string ="";
   listOfDocuments: Documento[] = [];
@@ -71,30 +72,43 @@ export class SeccionDocumentosComponent implements OnInit {
               this.orden_saved_search_id = filtro.saved_search_id;
               const contenido = JSON.parse(atob(filtro.contenido));
               this.ordenSeleccion = contenido.ordenSeleccion; 
-              console.log(' this.ordenSeleccion', this.ordenSeleccion);
-              
             }
             if (filtro.nombre == 'filtro_numero_nombre_categoria_tipo_asignadoA_estado_fechaPublicacionDesde_fechaPublicacionHasta_fechaCaducidadDesde_fechaCaducidadHasta') {
-            // if (filtro.nombre == 'filtro_numero_nombre_tipo_asignadoA_estado_categoria_fechaPublicacionDesde_fechaPublicacionHasta_fechaCaducidadDesde_fechaCaducidadHasta') {
-              this.modal_saved_search_id = filtro.saved_search_id;
+             
+              this.modal_saved_search_id = filtro.saved_search_id;     
               const contenido = JSON.parse(atob(filtro.contenido));
               this.numero = contenido.numero;
               this.nombre = contenido.nombre;
-              this.estado = contenido.estado;
+              this.categoria = contenido.categoria
               this.tipo = contenido.tipo;
               this.asignadoA = contenido.asignadoA;
-              // this.fechaDePublicacion = contenido.fechaDePublicacion;
-              this.fechaDePublicacionDesde = contenido.fechaDePublicacionDesde;
-              this.fechaDePublicacionHasta = contenido.fechaDePublicacionHasta;
-              // this.fechaDeCaducidad = contenido.fechaDeCaducidad;
-              this.fechaDeCaducidadDesde = contenido.fechaDeCaducidadDesde;
-              this.fechaDeCaducidadHasta = contenido.fechaDeCaducidadHasta;
-
+              this.estado = contenido.estado;
+              if(contenido.estado == "Publicado"){
+                this.estado = "Active"
+              }else if(contenido.estado == "Borrador"){
+                this.estado = "Draft"
+              }else if(contenido.estado == "Eliminado" ){
+                this.estado = "Expired"
+              }else{
+                // console.log('acaaa',this.estado);
+                
+                this.estado = contenido.estado
+              }
+             
+              this.fechaPublicacion = contenido.fechaPublicacion;
+              this.fechaPublicacionDesde = contenido.fechaPublicacionDesde;
+              this.fechaPublicacionHasta = contenido.fechaPublicacionHasta;
+              this.fechaCaducidad = contenido.fechaCaducidad;
+              this.fechaCaducidadDesde = contenido.fechaCaducidadDesde;
+              this.fechaCaducidadHasta = contenido.fechaCaducidadHasta;
+              // console.log('tipo',this.tipo);
+              // console.log('estado',this.estado);
+              
+              // this.ordenSeleccion = contenido.ordenSeleccion; 
             }
           })
         };
         this.getDocuments();
-        // this.startFilter();
       });
     });
   }
@@ -103,8 +117,22 @@ export class SeccionDocumentosComponent implements OnInit {
    * Método que obtiene los documentos a traves del servicio.
    * 
    */
-  getDocuments(): void{
-    this.documentService.getDocumentos().subscribe(result => {
+  getDocuments(): void{  
+    this.estado === '' ? null : this.estado;
+    // console.log('estaaaaadooooo',this.estado);
+          
+    if(this.asignadoA !== '' && this.asignadoA !== null && this.asignadoA !== undefined){
+    
+      this.documentService.getIdUsuario(this.asignadoA).subscribe(data => {
+      this.idUsuario = data.dataset[0].id
+      console.log('id',this.idUsuario);
+      this.estado === '' ? null : this.estado
+      // console.log('estadoooantes de cerrar',this.estado);
+      
+    
+    this.documentService.getDocumentosFiltro(this.numero,this.nombre,this.categoria,this.tipo,this.idUsuario,this.estado,this.fechaPublicacionDesde,this.fechaPublicacionHasta,this.fechaCaducidadDesde,this.fechaCaducidadHasta).subscribe(result => {
+      // console.log('resultgetdocumentos',result);
+      
       this.arrayDocuments = result;
       for(let i = 0;i<result.dataset.length;i++)
       {
@@ -116,7 +144,7 @@ export class SeccionDocumentosComponent implements OnInit {
           category: result.dataset[i].category,
           type: result.dataset[i].type,
           status: result.dataset[i].status,
-          active_date: result.dataset[i].active_date,
+          active_date: result.dataset[i].active_date.slice(8,10)+'-'+result.dataset[i].active_date.slice(5,7)+'-'+result.dataset[i].active_date.slice(0,4),
           finishedDate: result.dataset[i].exp_date,
           filename:result.dataset[i].filename
         };
@@ -124,9 +152,31 @@ export class SeccionDocumentosComponent implements OnInit {
       }
       this.arrayDocuments = this.listOfDocuments;
       });
+    })
+    }else{
+      this.documentService.getDocumentosFiltro(this.numero,this.nombre,this.categoria,this.tipo,this.asignadoA,this.estado,this.fechaPublicacionDesde,this.fechaPublicacionHasta,this.fechaCaducidadDesde,this.fechaCaducidadHasta).subscribe(result => {
+        this.arrayDocuments = result;
+      for(let i = 0;i<result.dataset.length;i++)
+      {
+        let document: Documento = {
+          id: result.dataset[i].id,
+          document_name:result.dataset[i].document_name,
+          name: result.dataset[i].name,
+          user_name: result.dataset[i].user_name,
+          category: result.dataset[i].category,
+          type: result.dataset[i].type,
+          status: result.dataset[i].status,
+          active_date: result.dataset[i].active_date.slice(8,10)+'-'+result.dataset[i].active_date.slice(5,7)+'-'+result.dataset[i].active_date.slice(0,4),
+          finishedDate: result.dataset[i].exp_date,
+          filename:result.dataset[i].filename
+        };
+        this.listOfDocuments.push(document); //Array que almacena los proyectos con sus respectivos datos.
+      }
+      this.arrayDocuments = this.listOfDocuments;
+      });
+    }
   }
-
-
+  
 
 
   /**
@@ -134,57 +184,43 @@ export class SeccionDocumentosComponent implements OnInit {
    */
   openFilter(){
     console.log('cate',this.categoria);
+    console.log('tipopenfilter',this.tipo);
+    console.log('estado openFilter',this.estado);
+    console.log('fechapublicacion desde',this.fechaPublicacionDesde);
     
     const dialogRef = this.dialog.open(ModalFiltroDocumentosComponent, {
       width: '40%', 
       height: '90%',
       disableClose: true,
-      data: { numero: this.numero, nombre: this.nombre, categoria: this.categoria, tipo: this.tipo, asignadoA: this.asignadoA, estado: this.estadoDocumento,  fechaPublicacionDesde: this.fechaDePublicacionDesde, fechaPublicacionHasta: this.fechaDePublicacionHasta,fechaCaducidadDesde: this.fechaDeCaducidadDesde, fechaCaducidadHasta: this.fechaDeCaducidadHasta, seleccion: this.ordenSeleccion, search_id: this.modal_saved_search_id}
+      data: { numero: this.numero, nombre: this.nombre, categoria: this.categoria, tipo: this.tipo, asignadoA: this.asignadoA, estado: this.estado, publicacionDesde: this.fechaPublicacionDesde,publicacionHasta: this.fechaPublicacionHasta,caducidadDesde: this.fechaCaducidadDesde, caducidadHasta: this.fechaCaducidadHasta, seleccion: this.ordenSeleccion, search_id: this.modal_saved_search_id}
     });
 
     dialogRef.afterClosed().subscribe(response => {
-      // dialogRef.close().subscribe(result => {
-      // if(result.numero == ''){
-      //   this.numero = null
-      // }else{
-      //   this.numero =this.numero
-      // }
-      this.numero = response.numero;
-      this.nombre = response.dataset.nombre;
-      this.estadoDocumento = response.estado;
-      this.asignadoA = response.asignadoA;
-      this.tipo = response.tipo;
-      this.categoria = response.categoria;
-      this.fechaDePublicacionDesde = response.fechaPublicacionDesde;
-      this.fechaDePublicacionHasta = response.fechaPublicacionHasta;
-      this.fechaDeCaducidadDesde = response.fechaCaducidadDesde;
-      this.fechaDeCaducidadHasta = response.fechaCaducidadHasta;
-      // this.fechaDePublicacion = result.fechaDePublicacion
-      // this.fechaDeCaducidad = result.fechaCaducidad
-      let date = response.dataset.active_date
-
-      console.log('resultAfter',response);
-      console.log('date',date);
+      console.log('andesthis.categoria',this.categoria);
       
-      console.log('nombre',this.nombre);
-      console.log('estadoDocumento',this.estadoDocumento);
-      console.log('asignadoA',this.asignadoA);
-      console.log('categoria',response.dataset[0].categoria);
-      console.log('tipo',this.tipo);
-
-      // console.log('fechaDePublicacionDesde',this.fechaDePublicacionDesde);
-      // console.log('fechaDePublicacionHasta',this.fechaDePublicacionHasta);
-      // console.log('fechaDeCaducidadDesde',this.fechaDeCaducidadDesde);
-      // console.log('fechaDeCaducidadHasta',this.fechaDeCaducidadHasta);
+      this.numero = response.numero;
+      this.nombre = response.nombre;
+      this.categoria = response.dataset.category;
+      this.tipo = response.tipo;
+      this.asignadoA = response.asignadoA;
+      this.estado = response.estado;
+      this.fechaPublicacionDesde = response.fechaPublicacionDesde;
+      this.fechaPublicacionHasta = response.fechaPublicacionHasta;
+      this.fechaCaducidadDesde = response.fechaCaducidadDesde;
+      this.fechaCaducidadHasta = response.fechaCaducidadHasta;
+      this.fechaPublicacion = response.active_date
+      console.log('this.fechaPublicacion',this.fechaPublicacion);
+      console.log('this.categoria',this.categoria);
+      
+      
+      // this.fechaDeCaducidad = result.fechaCaducidad
+      // this.fechaPublicacion = response.active_date.slice(8,10)+'-'+response.active_date.slice(5,7)+'-'+response.active_date.slice(0,4)
+      console.log('response',response);
+      
+      // result.dataset[i].active_date.slice(8,10)+'-'+result.dataset[i].active_date.slice(5,7)+'-'+result.dataset[i].active_date.slice(0,4)
       this.listOfDocuments = response.dataset
       
       console.log('documentosAfterclose',this.listOfDocuments);
-      
-      // let filtrar = result.filtrar;
-      // if (result.limpiar) { this.inputIzq = '', filtrar = true }
-      // if (filtrar) {
-      //  this.startFilter(); 
-      // }
     });
   }
   
@@ -194,6 +230,11 @@ export class SeccionDocumentosComponent implements OnInit {
     }
   }
 
+    /**
+   * Este método se utiliza para buscar documentos por el nombre.
+   * 
+   * @param e Event
+   */
   buscarDocumentos(event: Event){
     this.valorInputDocumento = (event.target as HTMLInputElement).value;
     this.documentService.getDocumento(this.valorInputDocumento).subscribe(result => {
@@ -236,8 +277,6 @@ export class SeccionDocumentosComponent implements OnInit {
    */
   changeOrder(){
     if(this.ordenSeleccion == 'Alfabetico') {
-      console.log('ordenseleccion',this.ordenSeleccion);
-      
       this.listOfDocuments.sort(function(a, b) {
         if(a.document_name > b.document_name){
           return 1;
@@ -249,8 +288,7 @@ export class SeccionDocumentosComponent implements OnInit {
       });
     }
 
-    if(this.ordenSeleccion == 'Fecha') {
-      console.log('ordenseleccion',this.ordenSeleccion);
+    if(this.ordenSeleccion == 'Fecha') {      
       this.listOfDocuments.sort(function(a, b) {
         if(a.active_date < b.active_date){
           return 1;

@@ -33,13 +33,15 @@
     <div class="buscador">
       <mat-icon id="btnABMtareas" class="icon">add_circle</mat-icon>
       <!-- "Sprint" -->
-      <button id="btn-sprint" mat-flat-button color="primary" [matMenuTriggerFor]="sprintMenu" class="sombraBotones" (click)="mesesYanios()">{{mesAnioSeleccionado}}</button>
+      <!-- <button id="btn-sprint" mat-flat-button color="primary" [matMenuTriggerFor]="sprintMenu" class="sombraBotones" (click)="mesesYanios()">{{mesAnioSeleccionado}}</button> -->
+      <button id="btn-sprint" mat-stroked-button [matMenuTriggerFor]="sprintMenu" class="sombraBotones" (click)="mesesYanios()">{{mesAnioSeleccionado}}</button>
       <mat-menu #sprintMenu="matMenu">
         <mat-option [value]="mesAnio"  *ngFor="let mesAnio of mesesAnios" (click)="setMesAnio(mesAnio)">{{ mesAnio }}</mat-option>
       </mat-menu>
       
       <!-- Asignadas a mi -->
-      <button [ngClass]="{'sombraBotones': asignadasAmiDesactivado,  'bordeBotonActivado': asignadasAmiActivado }" mat-flat-button color="primary" (click)="getUsuarioTareasAsignadas()">Asignadas a mi</button>
+      <!-- <button [ngClass]="{'sombraBotones': asignadasAmiDesactivado,  'bordeBotonActivado': asignadasAmiActivado }" mat-flat-button color="primary" (click)="getUsuarioTareasAsignadas()">Asignadas a mi</button> -->
+      <button mat-stroked-button  [ngClass]="{'bordeBotonActivado': asignadasAmiActivado }"(click)="getUsuarioTareasAsignadas()">Asignadas a mi</button>
       <mat-icon id="btnFiltroTareas" class="icon" (click)="buscarTarea()">filter_alt</mat-icon>
     </div>
   </span>
