@@ -18,7 +18,6 @@
       </mat-form-field>
       <!-- Lupa para buscar proyectos-->
 <mat-icon id="lupa" class="icon" (click)="abrirDialogProyecto($event)">search</mat-icon>
-      
       <button class="botonVistas" mat-flat-button color="primary" [matMenuTriggerFor]="menu" [value] = "nombreVistaSeleccionada">{{nombreVistaSeleccionada}}</button>
       <mat-menu #menu="matMenu">
         <button mat-menu-item (click)='verTareasDeVista($event)' id="Vista">Vista</button>
