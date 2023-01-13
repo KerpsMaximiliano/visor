@@ -11,17 +11,30 @@
 }
 
 .colaboradores{
+    display: flex;
+    flex-wrap: wrap;
     width: 100%;
+    
 }
 
 .colaborador{
-    height: 50%;
     width: 24%;
     margin: 0.5%;
 }
 
 .inline{
     display: inline-block;
+}
+
+.texto{
+    max-width: 300px;
+}
+
+.elemento{
+    display: inline-block;
+    border: 1px dotted grey;
+    padding: 1.5px;
+    margin: 1.5px;
 }
 
 p{

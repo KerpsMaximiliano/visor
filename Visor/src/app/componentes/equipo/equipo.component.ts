@@ -29,50 +29,15 @@ export interface Usuario {
 export class EquipoComponent implements OnInit {
 
   usuariosRest: Array<UsuarioRolRefact> = [];
-  usuariosRest2: Array<any> = [];
-
   usuarios: Array<Usuario> = [];
 
   constructor(private _usuarioService: UsuarioService) { }
 
   ngOnInit(): void {
-    this.getUsuarios();
-    this.organizarUsuarios();
-    this.getUsuariosReal();
-  }
-
-  getUsuariosReal(){
-    
     this._usuarioService.getUsuariosRefact().subscribe(respuesta => {
-      console.log(respuesta.dataset) 
+      this.usuariosRest = respuesta.dataset; 
+      this.organizarUsuarios();
     });
-    
-  }
-
-  auxiliarGeneracion(min: number, max: number) {
-    return Math.floor(Math.random() * (max - min) + min);
-  }
-
-  getUsuarios() {
-    for (let i = 0; i < 10; i++) {
-      let numeroUsuario = this.auxiliarGeneracion(1, 6);
-      let usuario: UsuarioRolRefact = {
-        id_usuario: `${numeroUsuario}`,
-        nombre_usuario: `usuario${numeroUsuario * 111}`,
-        nombre: `Nombre ${numeroUsuario}`,
-        apellido: `Apellido ${numeroUsuario}`,
-        nombre_rol: `Rol ${this.auxiliarGeneracion(1, 6) * 111}`,
-        conocimientos: [`Conocimiento 0`, `Conocimiento 1`],
-        preferencias: [`Preferencia 0`, `Preferencia 1`],
-        proyectos_actuales: [`Proyecto actual 0`, `Proyecto actual 1`],
-        tareas_completadas_tec: [`Tareas completadas 0`, `Tareas completadas 1`],
-        proyectos_anteriores: [`Proyecto anterior 0`, `Proyecto anterior 1`],
-        empresas: [`Empresa 0`, `Empresa 1`],
-        instituciones: [`Institucion 0`, `Institucion 1`],
-        carreras: [`Carrera 0`, `Carrera 1`]
-      }
-      this.usuariosRest.push(usuario);
-    }
   }
 
   /**
@@ -138,27 +103,31 @@ export class EquipoComponent implements OnInit {
 
 
 
+// Funciones de prueba antes de traer los usuarios desde el service
+
+/* auxiliarGeneracion(min: number, max: number) {
+  return Math.floor(Math.random() * (max - min) + min);
+}
 
 
-/* if(usuarioRest.id_usuario == usuario.id_usuario){
-  console.log("entro en verdadero")
-  usuario.nombre_rol.push(...usuarioRest.nombre_rol)
-}else{
-  let usuarioNuevo: Usuario = {
-    id_usuario : usuarioRest.id_usuario,
-    nombre_usuario : usuarioRest.nombre_usuario,
-    nombre : usuarioRest.nombre,
-    apellido : usuarioRest.apellido,
-    nombre_rol : [usuarioRest.nombre_rol],
-    conocimientos : usuarioRest.conocimientos,
-    preferencias : usuarioRest.preferencias,
-    proyectos_actuales : usuarioRest.proyectos_actuales,
-    tareas_completadas_tec : usuarioRest.tareas_completadas_tec,
-    proyectos_anteriores : usuarioRest.proyectos_anteriores,
-    empresas: usuarioRest.empresas,
-    instituciones: usuarioRest.instituciones,
-    carreras: usuarioRest.carreras
-  };
-  console.log(usuarioNuevo)
-  this.usuarios.push(usuarioNuevo);
+getUsuarios() {
+  for (let i = 0; i < 10; i++) {
+    let numeroUsuario = this.auxiliarGeneracion(1, 6);
+    let usuario: UsuarioRolRefact = {
+      id_usuario: `${numeroUsuario}`,
+      nombre_usuario: `usuario${numeroUsuario * 111}`,
+      nombre: `Nombre ${numeroUsuario}`,
+      apellido: `Apellido ${numeroUsuario}`,
+      nombre_rol: `Rol ${this.auxiliarGeneracion(1, 6) * 111}`,
+      conocimientos: [`Conocimiento 0`, `Conocimiento 1`],
+      preferencias: [`Preferencia 0`, `Preferencia 1`],
+      proyectos_actuales: [`Proyecto actual 0`, `Proyecto actual 1`],
+      tareas_completadas_tec: [`Tareas completadas 0`, `Tareas completadas 1`],
+      proyectos_anteriores: [`Proyecto anterior 0`, `Proyecto anterior 1`],
+      empresas: [`Empresa 0`, `Empresa 1`],
+      instituciones: [`Institucion 0`, `Institucion 1`],
+      carreras: [`Carrera 0`, `Carrera 1`]
+    }
+    this.usuariosRest.push(usuario);
+  }
 } */
