@@ -1,4 +1,4 @@
-<div class="container">
+<div class="contenedor">
     <div class="buscador">
         <mat-form-field class="example-form-field" appearance="outline" id="searchInput">
             <input matInput type="text" placeholder="Buscar colaborador..." autocomplete="off">
@@ -6,5 +6,18 @@
         <button mat-flat-button color="primary" class="btnRol">Rol</button>
     </div>
 
-    <div class="container-colaboradores"></div>
+    <div class="colaboradores">
+        <mat-card class="colaborador inline" *ngFor="let colaborador of usuarios; let i = index">
+            <div class="foto inline"></div>
+            <div class="texto inline">
+                <strong>{{colaborador.nombre}} {{colaborador.apellido}}</strong>
+                <p>Roles: <span>{{colaborador.nombre_rol}}</span></p>
+                <p>Conocimientos: <span *ngFor="let c of colaborador.conocimientos">{{c}}</span></p>
+                <p>Preferencias: <span *ngFor="let p of colaborador.preferencias">{{p}}</span></p>
+                <p>Proyectos actuales: <span *ngFor="let pa of colaborador.proyectos_actuales">{{pa}}</span></p>
+            </div>
+            <div class="iconos inline">
+            </div>
+        </mat-card>
+    </div>
 </div>

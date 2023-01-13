@@ -1,3 +1,38 @@
+.contenedor{
+    margin-top: 5px;
+}
+
+.buscador{
+    margin-left: 3%;
+}
+
 .btnRol{
     margin-left: 1em;
+}
+
+.colaboradores{
+    width: 100%;
+}
+
+.colaborador{
+    height: 50%;
+    width: 24%;
+    margin: 0.5%;
+}
+
+.inline{
+    display: inline-block;
+}
+
+p{
+    margin: 0;
+}
+
+.foto {
+    width: 50px;           /* Ancho de 150 píxeles */
+    height: 50px;          /* Alto de 150 píxeles */
+    background: gray;        /* Fondo de color rojo */
+    border: 2px solid #000; /* Borde color negro y de 1 píxel de grosor */
+    margin-right: 5px;
+    vertical-align: top;
 }
