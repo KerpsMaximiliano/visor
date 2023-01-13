@@ -32,7 +32,8 @@
 
 .elemento{
     display: inline-block;
-    border: 1px dotted grey;
+    border: 1px solid grey;
+    border-radius: 5px;
     padding: 1.5px;
     margin: 1.5px;
 }
@@ -46,6 +47,12 @@ p{
     height: 50px;          /* Alto de 150 píxeles */
     background: gray;        /* Fondo de color rojo */
     border: 2px solid #000; /* Borde color negro y de 1 píxel de grosor */
-    margin-right: 5px;
+    margin-right: 10px;
     vertical-align: top;
+}
+
+.iconos{
+    display: flex;
+    vertical-align: top;
+    float: right;
 }
