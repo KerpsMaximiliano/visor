@@ -5,10 +5,7 @@
         </mat-form-field>
         <button mat-flat-button color="primary" class="btnRol" [matMenuTriggerFor]="menu">Rol</button>
         <mat-menu #menu="matMenu">
-            <button mat-menu-item>a</button>
-            <button mat-menu-item>b</button>
-            <button mat-menu-item>c</button>
-            <button mat-menu-item>d</button>
+            <button mat-menu-item *ngFor="let rol of roles">{{rol.name}}</button>
         </mat-menu>
     </div>
 

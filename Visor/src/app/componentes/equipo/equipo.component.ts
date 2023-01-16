@@ -37,6 +37,7 @@ export class EquipoComponent implements OnInit {
 
   usuariosRest: Array<UsuarioRolRefact> = [];
   usuarios: Array<Usuario> = [];
+  roles: Array<any> = [];
 
   constructor(
     private _usuarioService: UsuarioService,
@@ -48,9 +49,13 @@ export class EquipoComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    
     this._usuarioService.getUsuariosRefact().subscribe(respuesta => {
-      this.usuariosRest = respuesta.dataset;
-      this.organizarUsuarios();
+      this._usuarioService.getRoles().subscribe( r => {
+        this.roles = r.dataset;
+        this.usuariosRest = respuesta.dataset;
+        this.organizarUsuarios();
+      })
     });
   }
 
