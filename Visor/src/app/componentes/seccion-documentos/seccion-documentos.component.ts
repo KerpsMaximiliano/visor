@@ -21,10 +21,12 @@ export class SeccionDocumentosComponent implements OnInit {
   ordenSeleccion = 'Alfabetico';
   orden_saved_search_id = '';
   modal_saved_search_id = '';
+  assigned_saved_search_id ='';
+  usuarioLocal!:string|null ;
   numero: string = "";
   nombre: string = "";
   estado:string = "";
-  asignadoA: string = "";
+  asignadoA?: string = "";
   categoria: string = "";
   tipo: string = "";
   estadoDocumento: string = "";
@@ -43,6 +45,7 @@ export class SeccionDocumentosComponent implements OnInit {
   arrayDocuments: any;
   buttonOn: boolean = false;
   valorInputDocumento:string = '';
+  // assignedToMe: Documento[] = [];
 
   //Array de iconos.
   icons: string[] = [
@@ -61,56 +64,80 @@ export class SeccionDocumentosComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._filtroService.getUserId(localStorage.getItem('usuario')!).subscribe((response: any) => {
-      localStorage.setItem('userId', response.dataset[0].id);
-      this._filtroService.selectFiltro(response.dataset[0].id, 'documentos').subscribe((resp: any) => {
-        if (resp.dataset.length == 0 ) {
-        } else {
-          console.log('hay datos', resp);
-          resp.dataset.forEach((filtro: any) => {            
-            if (filtro.nombre == 'filtro_orden') {
-              this.orden_saved_search_id = filtro.saved_search_id;
-              const contenido = JSON.parse(atob(filtro.contenido));
-              this.ordenSeleccion = contenido.ordenSeleccion; 
-            }
-            if (filtro.nombre == 'filtro_numero_nombre_categoria_tipo_asignadoA_estado_fechaPublicacionDesde_fechaPublicacionHasta_fechaCaducidadDesde_fechaCaducidadHasta') {
-             
-              this.modal_saved_search_id = filtro.saved_search_id;     
-              const contenido = JSON.parse(atob(filtro.contenido));
-              this.numero = contenido.numero;
-              this.nombre = contenido.nombre;
-              this.categoria = contenido.categoria
-              this.tipo = contenido.tipo;
-              this.asignadoA = contenido.asignadoA;
-              this.estado = contenido.estado;
-              if(contenido.estado == "Publicado"){
-                this.estado = "Active"
-              }else if(contenido.estado == "Borrador"){
-                this.estado = "Draft"
-              }else if(contenido.estado == "Eliminado" ){
-                this.estado = "Expired"
-              }else{
-                // console.log('acaaa',this.estado);
-                
-                this.estado = contenido.estado
-              }
-             
-              this.fechaPublicacion = contenido.fechaPublicacion;
-              this.fechaPublicacionDesde = contenido.fechaPublicacionDesde;
-              this.fechaPublicacionHasta = contenido.fechaPublicacionHasta;
-              this.fechaCaducidad = contenido.fechaCaducidad;
-              this.fechaCaducidadDesde = contenido.fechaCaducidadDesde;
-              this.fechaCaducidadHasta = contenido.fechaCaducidadHasta;
-              // console.log('tipo',this.tipo);
-              // console.log('estado',this.estado);
+    this.buscarFiltro();
+    // this._filtroService.getUserId(localStorage.getItem('usuario')!).subscribe((response: any) => {
+    //   localStorage.setItem('userId', response.dataset[0].id);
+    //   this._filtroService.selectFiltro(response.dataset[0].id, 'documentos').subscribe((resp: any) => {
+    //     if (resp.dataset.length == 0 ) {
+    //     } else {
+    //       console.log('hay datos', resp);
+    //       resp.dataset.forEach((filtro: any) => {            
+    //         if (filtro.nombre == 'filtro_orden') {
+    //           // console.log(' this.orden_saved_search_id', this.orden_saved_search_id);
               
-              // this.ordenSeleccion = contenido.ordenSeleccion; 
-            }
-          })
-        };
-        this.getDocuments();
-      });
-    });
+    //           const contenido = JSON.parse(atob(filtro.contenido));
+    //           this.ordenSeleccion = contenido.ordenSeleccion; 
+    //           this.orden_saved_search_id = filtro.saved_search_id;
+    //         }
+    //         if (filtro.nombre == 'filtro_numero_nombre_categoria_tipo_asignadoA_estado_fechaPublicacionDesde_fechaPublicacionHasta_fechaCaducidadDesde_fechaCaducidadHasta') {
+             
+                  
+    //           const contenido = JSON.parse(atob(filtro.contenido));
+    //           this.numero = contenido.numero;
+    //           this.nombre = contenido.nombre;
+    //           this.categoria = contenido.categoria
+    //           this.tipo = contenido.tipo;
+    //           this.asignadoA = contenido.asignadoA;
+    //           this.estado = contenido.estado;
+    //           if(contenido.estado == "Publicado"){
+    //             this.estado = "Active"
+    //           }else if(contenido.estado == "Borrador"){
+    //             this.estado = "Draft"
+    //           }else if(contenido.estado == "Eliminado" ){
+    //             this.estado = "Expired"
+    //           }else{
+    //             // console.log('acaaa',this.estado);
+                
+    //             this.estado = contenido.estado
+    //           }
+             
+    //           this.fechaPublicacion = contenido.fechaPublicacion;
+    //           this.fechaPublicacionDesde = contenido.fechaPublicacionDesde;
+    //           this.fechaPublicacionHasta = contenido.fechaPublicacionHasta;
+    //           this.fechaCaducidad = contenido.fechaCaducidad;
+    //           this.fechaCaducidadDesde = contenido.fechaCaducidadDesde;
+    //           this.fechaCaducidadHasta = contenido.fechaCaducidadHasta;
+    //           // console.log('tipo',this.tipo);
+    //           // console.log('estado',this.estado);
+              
+    //           // this.ordenSeleccion = contenido.ordenSeleccion; 
+    //           this.modal_saved_search_id = filtro.saved_search_id; 
+    //         }
+    //         if(filtro.nombre == 'filtro_misAsignados3'){
+    //           const contenido = JSON.parse(atob(filtro.contenido));
+    //           console.log('contenido',contenido);
+              
+    //           this.buttonOn = contenido.boton
+    //           // this.asignadoA = contenido.usuario
+    //         //   console.log('boton',this.buttonOn);
+    //         console.log('asignadoAaaa',this.asignadoA );
+    //         // //   console.log('this.contenido',contenido);
+    //         // //   // this.asignadoA = contenido.usuario
+    //           if(!contenido.boton == false){
+    //             this.buttonOn = true
+    //             // this.filterByUser();
+    //             this.asignadoA = contenido.usuario
+    //           }
+    //         // //   // this.buttonOn = !contenido.boton
+    //         // //   // console.log('this.buttonOn',this.buttonOn);
+    //         this.assigned_saved_search_id = filtro.saved_search_id
+              
+    //         }
+    //       })
+    //     };
+    //     this.getDocuments();
+    //   });
+    // });
   }
 
   /**
@@ -119,17 +146,14 @@ export class SeccionDocumentosComponent implements OnInit {
    */
   getDocuments(): void{  
     this.estado === '' ? null : this.estado;
-    // console.log('estaaaaadooooo',this.estado);
-    
+    // console.log('asignadoA',this.asignadoA );
     if(this.asignadoA !== '' && this.asignadoA !== null && this.asignadoA !== undefined){
       this.documentService.getIdUsuario(this.asignadoA).subscribe(data => {
       this.idUsuario = data.dataset[0].id
       console.log('id',this.idUsuario);
       this.estado === '' ? null : this.estado
-      // console.log('estadoooantes de cerrar',this.estado);  
+
       this.documentService.getDocumentosFiltro(this.numero,this.nombre,this.categoria,this.tipo,this.idUsuario,this.estado,this.fechaPublicacionDesde,this.fechaPublicacionHasta,this.fechaCaducidadDesde,this.fechaCaducidadHasta).subscribe(result => {
-      // console.log('resultgetdocumentos',result);
-      
       this.arrayDocuments = result;
       for(let i = 0;i<result.dataset.length;i++){
         let document: Documento = {
@@ -147,6 +171,7 @@ export class SeccionDocumentosComponent implements OnInit {
         this.listOfDocuments.push(document); //Array que almacena los proyectos con sus respectivos datos.
       }
       this.arrayDocuments = this.listOfDocuments;
+      // console.log('this.arrayDocuments',this.arrayDocuments);
       });
     })
     }else{
@@ -169,6 +194,7 @@ export class SeccionDocumentosComponent implements OnInit {
         this.listOfDocuments.push(document); //Array que almacena los proyectos con sus respectivos datos.
       }
       this.arrayDocuments = this.listOfDocuments;
+      // console.log('this.arrayDocuments',this.arrayDocuments);
       });
     }
   }
@@ -179,10 +205,10 @@ export class SeccionDocumentosComponent implements OnInit {
    * Este método se utiliza para abrir el dialog del filtro y guarda la información ingresada.
    */
   openFilter(){
-    console.log('cate',this.categoria);
-    console.log('tipopenfilter',this.tipo);
-    console.log('estado openFilter',this.estado);
-    console.log('fechapublicacion desde',this.fechaPublicacionDesde);
+    // console.log('cate',this.categoria);
+    // console.log('tipopenfilter',this.tipo);
+    // console.log('estado openFilter',this.estado);
+    // console.log('fechapublicacion desde',this.fechaPublicacionDesde);
     
     const dialogRef = this.dialog.open(ModalFiltroDocumentosComponent, {
       width: '40%', 
@@ -192,10 +218,16 @@ export class SeccionDocumentosComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(response => {
+      
       // console.log('antesthis.categoria',this.categoria);
+      console.log('response',response);
+      
       this.numero = response.numero;
+      console.log('this.numero', response.numero);
+      
       this.nombre = response.nombre;
-      this.categoria = response.dataset.category;
+      console.log('this.nombre',  this.nombre);
+      this.categoria = response.categoria;
       this.tipo = response.tipo;
       this.asignadoA = response.asignadoA;
       this.estado = response.estado;
@@ -211,7 +243,9 @@ export class SeccionDocumentosComponent implements OnInit {
       // console.log('response',response);
       // result.dataset[i].active_date.slice(8,10)+'-'+result.dataset[i].active_date.slice(5,7)+'-'+result.dataset[i].active_date.slice(0,4)
       this.listOfDocuments = response.dataset
+      this.arrayDocuments = this.listOfDocuments
       // console.log('documentosAfterclose',this.listOfDocuments);
+     
     });
   }
   
@@ -244,6 +278,7 @@ export class SeccionDocumentosComponent implements OnInit {
     this.ordenSeleccion = (e.target as HTMLElement).innerText;
     const contenido: string = JSON.stringify({ ordenSeleccion : this.ordenSeleccion });
     const encodedData = btoa(contenido);
+    console.log('this.orden_saved_search_id',this.orden_saved_search_id);
     if (this.orden_saved_search_id == '') {
       this._filtroService.insertFiltro(
         localStorage.getItem('userId')!,
@@ -496,27 +531,131 @@ export class SeccionDocumentosComponent implements OnInit {
     }
   }
 
+/**
+   * Método para buscar si hay filtros previamente guardados
+   *
+   */
+  buscarFiltro(){
+    this._filtroService.getUserId(localStorage.getItem('usuario')!).subscribe((response: any) => {
+      localStorage.setItem('userId', response.dataset[0].id);
+      this._filtroService.selectFiltro(response.dataset[0].id, 'documentos').subscribe((resp: any) => {
+        if (resp.dataset.length == 0 ) {
+        } else {
+          console.log('hay datos', resp);
+          resp.dataset.forEach((filtro: any) => {   
+            if (filtro.nombre == 'filtro_orden') {           
+              const contenido = JSON.parse(atob(filtro.contenido));
+              this.ordenSeleccion = contenido.ordenSeleccion; 
+              this.orden_saved_search_id = filtro.saved_search_id;
+            }
+            if (filtro.nombre == 'filtro_numero_nombre_categoria_tipo_asignadoA_estado_fechaPublicacionDesde_fechaPublicacionHasta_fechaCaducidadDesde_fechaCaducidadHasta') {
+              // this.modal_saved_search_id = filtro.saved_search_id;     
+              const contenido = JSON.parse(atob(filtro.contenido));
+              this.numero = contenido.numero;
+              this.nombre = contenido.nombre;
+              this.categoria = contenido.categoria
+              this.tipo = contenido.tipo;
+              this.asignadoA = contenido.asignadoA;
+              this.estado = contenido.estado;
+              if(contenido.estado == "Publicado"){
+                this.estado = "Active"
+              }else if(contenido.estado == "Borrador"){
+                this.estado = "Draft"
+              }else if(contenido.estado == "Eliminado" ){
+                this.estado = "Expired"
+              }else{            
+                this.estado = contenido.estado
+              }
+              this.fechaPublicacion = contenido.fechaPublicacion;
+              this.fechaPublicacionDesde = contenido.fechaPublicacionDesde;
+              this.fechaPublicacionHasta = contenido.fechaPublicacionHasta;
+              this.fechaCaducidad = contenido.fechaCaducidad;
+              this.fechaCaducidadDesde = contenido.fechaCaducidadDesde;
+              this.fechaCaducidadHasta = contenido.fechaCaducidadHasta;
+              this.modal_saved_search_id = filtro.saved_search_id;   
+              
+            }  if(filtro.nombre == 'filtro_misAsignados3'){
+              const contenido = JSON.parse(atob(filtro.contenido));
+              this.buttonOn = contenido.boton
+              if(!contenido.boton == false){
+                this.buttonOn = true  
+                this.asignadoA = contenido.usuario
+              }
+            this.assigned_saved_search_id = filtro.saved_search_id  
+            }    
+          }
+      )}
+      this.getDocuments();
+      })
+    })
+
+  }
+
+  // }
   /**
    * Método que sirve para filtrar los documentos y obtener los que están asignados al usuario logueado.
    *
    */
   filterByUser(){
+    console.log('this.arrayDocumentsfilter',this.arrayDocuments);
     let userLocal: string | null = localStorage.getItem('usuario');
     let assignedToMe: Documento[] = [];
     if(this.buttonOn == false){
       this.buttonOn = true;
-      for(let i=0;i<this.listOfDocuments.length;i++){
-        if(this.listOfDocuments[i].user_name == userLocal){
-          assignedToMe.push(this.listOfDocuments[i]);
+      const contenido: string = JSON.stringify({boton : this.buttonOn, usuario:userLocal});
+      const encodedData = btoa(contenido)
+      if (this.assigned_saved_search_id == '') {
+        this._filtroService.insertFiltro(
+          localStorage.getItem('userId')!,
+          'documentos',
+          'filtro_misAsignados3',
+          encodedData,
+          'Filtra los documentos asignados al usuario').subscribe((rsp: any) => {
+            console.log('Filtro guardado: ', rsp);
+          });
+      }else{
+          this._filtroService.updateFiltro(this.assigned_saved_search_id, encodedData).subscribe((rsp: any) => {
+           console.log('Filtro actualizado: ', rsp);
+            });
+          }
+          for(let i=0;i<this.listOfDocuments.length;i++){
+            if(this.listOfDocuments[i].user_name == userLocal){
+              assignedToMe.push(this.listOfDocuments[i]);
+            }
+          }
+          // console.log("Activado",assignedToMe)
+          this.listOfDocuments = assignedToMe;
+      }else{
+        this.buttonOn = false;
+        this.listOfDocuments = []
+        const contenido: string = JSON.stringify({boton : this.buttonOn,usuario:userLocal});
+        const encodedData = btoa(contenido)
+        // console.log('lisdocumen',this.listOfDocuments);
+        // console.log("Desactivado",this.arrayDocuments)   
+        if (this.assigned_saved_search_id == '') {
+          this._filtroService.insertFiltro(
+            localStorage.getItem('userId')!,
+            'documentos',
+            'filtro_misAsignados3',
+            encodedData,
+            'Filtra los documentos asignados al usuario').subscribe((rsp: any) => {
+              console.log('Filtro guardado: ', rsp);
+            });
+        }else {
+          this._filtroService.updateFiltro(this.assigned_saved_search_id, encodedData).subscribe((rsp: any) => {
+            console.log('Filtro actualizado: ', rsp);
+          });
         }
+        // this.listOfDocuments = this.arrayDocuments;
+        this.asignadoA !== '' ?  undefined : this.asignadoA;
+        if(this.asignadoA !== ''){
+          this.asignadoA = undefined
+        }
+        // console.log('falsethis.asignadoA',this.listOfDocuments);
+        this.buscarFiltro()
       }
-      console.log("Activado")
-      this.listOfDocuments = assignedToMe;
-    }
-    else{
-      this.buttonOn = false;
-      this.listOfDocuments = this.arrayDocuments;
-      console.log("Desactivado")
-    }
+
+   
+
   }
 }

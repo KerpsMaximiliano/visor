@@ -42,4 +42,14 @@ export class DocumentoService {
      });
      return this.rest.callProcedimientoVisor(jsbody,"ObtenerIDUsuario");
    }
+
+   public getAsignadosAMi(usuarioAsignado?:string){
+
+    let jsbody: string = JSON.stringify({
+       par_modo: "G",
+       pAssigned_user_id:usuarioAsignado,
+     });
+
+     return this.rest.callProcedimientoVisor(jsbody,"ABMDocumentos");
+   }
 }

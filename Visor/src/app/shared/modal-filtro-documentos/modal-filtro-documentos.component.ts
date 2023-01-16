@@ -54,6 +54,8 @@ export class ModalFiltroDocumentosComponent implements OnInit {
           resp.dataset.forEach((filtro: any) => {
             if (filtro.nombre == 'filtro_numero_nombre_categoria_tipo_asignadoA_estado_fechaPublicacionDesde_fechaPublicacionHasta_fechaCaducidadDesde_fechaCaducidadHasta') {
               const contenido = JSON.parse(atob(filtro.contenido));
+              console.log('contenido',contenido);
+              
               this.result.numero = contenido.numero;
               this.result.nombre = contenido.nombre;
               this.categoria = contenido.categoria
@@ -194,9 +196,9 @@ export class ModalFiltroDocumentosComponent implements OnInit {
     let nombre:any
     let asignadoA:any 
 
-       if(this.categoria ==''){
-      this.categoria = undefined
-      this.tipo = undefined
+    if(this.categoria ==''){
+    this.categoria = undefined
+    this.tipo = undefined
     } 
 
     const contenido: string = JSON.stringify({
@@ -328,7 +330,7 @@ export class ModalFiltroDocumentosComponent implements OnInit {
     this.estado == '' ? null : this.estado
   }
 
-  getFechaPublicacionDesde(event: MatDatepickerInputEvent<any>){
+  getFechaPublicacionDesde(event:any){
     const fecha = new Date(event.value);
     let fechaJson = fecha.toJSON();     
     this.fechaPublicacionDesde= fechaJson.split('T')[0];
