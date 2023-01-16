@@ -36,8 +36,10 @@ const LINKEDIN_ICONO = `
 export class EquipoComponent implements OnInit {
 
   usuariosRest: Array<UsuarioRolRefact> = [];
+  usuariosOriginal: Array<Usuario> = []; // copia del arreglo de usuarios para guardar los usuarios originales traidos por el sp
   usuarios: Array<Usuario> = [];
   roles: Array<any> = [];
+  rolFiltrado: string = '';
 
   constructor(
     private _usuarioService: UsuarioService,
@@ -49,12 +51,13 @@ export class EquipoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
+
     this._usuarioService.getUsuariosRefact().subscribe(respuesta => {
-      this._usuarioService.getRoles().subscribe( r => {
+      this._usuarioService.getRoles().subscribe(r => {
         this.roles = r.dataset;
         this.usuariosRest = respuesta.dataset;
         this.organizarUsuarios();
+        this.usuariosOriginal = this.usuarios;
       })
     });
   }
@@ -102,12 +105,13 @@ export class EquipoComponent implements OnInit {
 
     // Organiza los usuarios albafeticamente por nombre
     this.usuarios.sort((a: Usuario, b: Usuario) => {
-      if (a.nombre > b.nombre){
+      if (a.nombre > b.nombre) {
         return 1;
-      }else{
+      } else {
         return -1;
       }
     })
+
   }
 
   /**
@@ -126,6 +130,33 @@ export class EquipoComponent implements OnInit {
     });
 
     return ids;
+  }
+
+  /**
+   * Metodo que permite modificar el arreglo de usuarios para mostrar los usuarios que posean un rol especifico (de a uno).
+   * Si encuentra que ese rol pertenece al arreglo de roles de un usuario, pushea ese usuario a un arreglo auxiliar que luego se reemplaza en el arreglo "usuarios", para que el contenido de la vista sea modificado.
+   * 1) Debe rehacer la lista de usuarios original cada vez que se elije un nuevo filtro, porque sino filtraria sobre la lista de usuarios previamente modificada.
+   * 
+   * @param rol string
+   */
+  filtrarPorRol(rol: string) {
+    // 1)
+    this.limpiarFiltro();
+    // --------------------
+    let arrayAux: Usuario[] = [];
+    this.usuarios.forEach(usuario => {
+      if (usuario.nombre_rol.indexOf(rol) != -1) {
+        arrayAux.push(usuario);
+      }
+    })
+    this.usuarios = arrayAux;
+  }
+
+  /**
+   * Metodo que rehace la lista de usuarios que fue modificada por el filtro a su contenido de usuarios original
+   */
+  limpiarFiltro(){
+    this.usuarios = this.usuariosOriginal;
   }
 }
 

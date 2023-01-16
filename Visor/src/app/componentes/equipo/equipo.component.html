@@ -5,7 +5,8 @@
         </mat-form-field>
         <button mat-flat-button color="primary" class="btnRol" [matMenuTriggerFor]="menu">Rol</button>
         <mat-menu #menu="matMenu">
-            <button mat-menu-item *ngFor="let rol of roles">{{rol.name}}</button>
+            <button mat-menu-item (click)="limpiarFiltro()">Todos</button>
+            <button mat-menu-item *ngFor="let rol of roles" (click)="filtrarPorRol(rol.name)">{{rol.name}}</button>
         </mat-menu>
     </div>
 
@@ -13,7 +14,7 @@
         <mat-card class="colaborador inline" *ngFor="let colaborador of usuarios; let i = index">
             <div class="foto inline"></div>
             <div class="texto inline">
-                <strong>{{colaborador.nombre}} {{colaborador.apellido}}</strong>
+                <strong class="nombre">{{colaborador.nombre}} {{colaborador.apellido}}</strong>
                 <p>Roles: <span *ngFor="let rol of colaborador.nombre_rol" class="elemento">{{rol}}</span></p>
                 <p>Conocimientos: <span *ngFor="let c of colaborador.conocimientos" class="elemento">{{c}}</span></p>
                 <p>Preferencias: <span *ngFor="let p of colaborador.preferencias">{{p}}</span></p>

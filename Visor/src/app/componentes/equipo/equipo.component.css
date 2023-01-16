@@ -27,7 +27,11 @@
 }
 
 .texto{
-    max-width: 300px;
+    max-width: 65%;
+}
+
+.nombre{
+    font-size: medium;
 }
 
 .elemento{
@@ -43,11 +47,11 @@ p{
 }
 
 .foto {
-    width: 50px;           /* Ancho de 150 píxeles */
-    height: 50px;          /* Alto de 150 píxeles */
-    background: gray;        /* Fondo de color rojo */
-    border: 2px solid #000; /* Borde color negro y de 1 píxel de grosor */
-    margin-right: 10px;
+    width: 50px;           
+    height: 50px;          
+    background: gray;        
+    border: 2px solid #000; 
+    margin-right: 2%;
     vertical-align: top;
 }
 
