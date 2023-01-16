@@ -13,11 +13,11 @@
                 <strong>{{colaborador.nombre}} {{colaborador.apellido}}</strong>
                 <p>Roles: <span *ngFor="let rol of colaborador.nombre_rol" class="elemento">{{rol}}</span></p>
                 <p>Conocimientos: <span *ngFor="let c of colaborador.conocimientos" class="elemento">{{c}}</span></p>
-                <p>Preferencias: <span *ngFor="let p of colaborador.preferencias" class="elemento">{{p}}</span></p>
+                <p>Preferencias: <span *ngFor="let p of colaborador.preferencias">{{p}}</span></p>
                 <p>Proyectos actuales: <span *ngFor="let pa of colaborador.proyectos_actuales" class="elemento">{{pa}}</span></p>
             </div>
             <div class="iconos inline">
-                <mat-icon svgIcon="linkedin"></mat-icon>
+                <a href="https://ar.linkedin.com/" target="_blank"><mat-icon svgIcon="linkedin"></mat-icon></a>
                 <mat-icon>visibility</mat-icon>
             </div>
         </mat-card>
