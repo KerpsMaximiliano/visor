@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EquipoComponent } from './equipo.component';
 import { MyMaterialModule } from 'src/app/material';
+import { FormsModule } from '@angular/forms'; // necesario para el ngModel
 
 
 
@@ -11,7 +12,8 @@ import { MyMaterialModule } from 'src/app/material';
   ],
   imports: [
     CommonModule,
-    MyMaterialModule
+    MyMaterialModule,
+    FormsModule
   ]
 })
 export class EquipoModule { }

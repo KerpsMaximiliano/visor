@@ -37,9 +37,11 @@ export class EquipoComponent implements OnInit {
 
   usuariosRest: Array<UsuarioRolRefact> = [];
   usuariosOriginal: Array<Usuario> = []; // copia del arreglo de usuarios para guardar los usuarios originales traidos por el sp
+  //usuariosFiltradosPorRol: Array<Usuario> = []; // almacena el arreglo de usuarios que va siendo filtrado, para poder usar la busqueda de nombres en paralelo. PRIMERO BUSCA POR ROL, DESPUES POR NOMBRE
   usuarios: Array<Usuario> = [];
   roles: Array<any> = [];
   rolFiltrado: string = '';
+  nombreInput: string = "";
 
   constructor(
     private _usuarioService: UsuarioService,
@@ -58,6 +60,7 @@ export class EquipoComponent implements OnInit {
         this.usuariosRest = respuesta.dataset;
         this.organizarUsuarios();
         this.usuariosOriginal = this.usuarios;
+        // this.usuariosFiltradosPorRol = this.usuarios;
       })
     });
   }
@@ -150,6 +153,7 @@ export class EquipoComponent implements OnInit {
       }
     })
     this.usuarios = arrayAux;
+   // this.usuariosFiltradosPorRol = arrayAux;
   }
 
   /**
@@ -157,6 +161,21 @@ export class EquipoComponent implements OnInit {
    */
   limpiarFiltro(){
     this.usuarios = this.usuariosOriginal;
+  }
+
+  buscar(event: Event){
+    this.nombreInput = (event.target as HTMLInputElement).value;
+
+    let arrayAux: Usuario[] = [];
+    
+    this.usuariosOriginal.forEach(usuario =>{
+      
+      if(usuario.nombre.toLocaleLowerCase().includes(this.nombreInput)){
+        arrayAux.push(usuario);
+      }
+
+    })
+    this.usuarios = arrayAux;
   }
 }
 

@@ -1,7 +1,7 @@
 <div class="contenedor">
     <div class="buscador">
         <mat-form-field class="example-form-field" appearance="outline" id="searchInput">
-            <input matInput type="text" placeholder="Buscar colaborador..." autocomplete="off">
+            <input matInput [(ngModel)]="nombreInput" type="text" placeholder="Buscar colaborador..." autocomplete="off" (keyup)="buscar($event)" >
         </mat-form-field>
         <button mat-flat-button color="primary" class="btnRol" [matMenuTriggerFor]="menu">Rol</button>
         <mat-menu #menu="matMenu">
@@ -21,7 +21,7 @@
                 <p>Proyectos actuales: <span *ngFor="let pa of colaborador.proyectos_actuales" class="elemento">{{pa}}</span></p>
             </div>
             <div class="iconos inline">
-                <a href="https://ar.linkedin.com/" target="_blank"><mat-icon svgIcon="linkedin"></mat-icon></a>
+                <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley" target="_blank"><mat-icon svgIcon="linkedin"></mat-icon></a>
                 <mat-icon>visibility</mat-icon>
             </div>
         </mat-card>
