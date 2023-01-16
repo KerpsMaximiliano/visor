@@ -3,7 +3,13 @@
         <mat-form-field class="example-form-field" appearance="outline" id="searchInput">
             <input matInput type="text" placeholder="Buscar colaborador..." autocomplete="off">
         </mat-form-field>
-        <button mat-flat-button color="primary" class="btnRol">Rol</button>
+        <button mat-flat-button color="primary" class="btnRol" [matMenuTriggerFor]="menu">Rol</button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item>a</button>
+            <button mat-menu-item>b</button>
+            <button mat-menu-item>c</button>
+            <button mat-menu-item>d</button>
+        </mat-menu>
     </div>
 
     <div class="colaboradores">

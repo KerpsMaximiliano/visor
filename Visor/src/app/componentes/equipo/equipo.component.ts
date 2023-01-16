@@ -42,7 +42,9 @@ export class EquipoComponent implements OnInit {
     private _usuarioService: UsuarioService,
     private _iconRegistry: MatIconRegistry,
     private sanitizer: DomSanitizer) {
+
     _iconRegistry.addSvgIconLiteral('linkedin', sanitizer.bypassSecurityTrustHtml(LINKEDIN_ICONO));
+
   }
 
   ngOnInit(): void {
@@ -92,6 +94,15 @@ export class EquipoComponent implements OnInit {
       }
     })
     console.log(this.usuarios)
+
+    // Organiza los usuarios albafeticamente por nombre
+    this.usuarios.sort((a: Usuario, b: Usuario) => {
+      if (a.nombre > b.nombre){
+        return 1;
+      }else{
+        return -1;
+      }
+    })
   }
 
   /**
@@ -112,6 +123,7 @@ export class EquipoComponent implements OnInit {
     return ids;
   }
 }
+
 
 
 
