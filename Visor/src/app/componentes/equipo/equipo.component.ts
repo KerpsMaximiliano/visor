@@ -37,11 +37,10 @@ export class EquipoComponent implements OnInit {
 
   usuariosRest: Array<UsuarioRolRefact> = [];
   usuariosOriginal: Array<Usuario> = []; // copia del arreglo de usuarios para guardar los usuarios originales traidos por el sp
-  //usuariosFiltradosPorRol: Array<Usuario> = []; // almacena el arreglo de usuarios que va siendo filtrado, para poder usar la busqueda de nombres en paralelo. PRIMERO BUSCA POR ROL, DESPUES POR NOMBRE
   usuarios: Array<Usuario> = [];
   roles: Array<any> = [];
-  rolFiltrado: string = '';
-  nombreInput: string = "";
+  filtro = { nombre: "", rol: ""}
+  labelRol = document.getElementById("rol");
 
   constructor(
     private _usuarioService: UsuarioService,
@@ -60,7 +59,7 @@ export class EquipoComponent implements OnInit {
         this.usuariosRest = respuesta.dataset;
         this.organizarUsuarios();
         this.usuariosOriginal = this.usuarios;
-        // this.usuariosFiltradosPorRol = this.usuarios;
+        document.getElementById("rol")!.innerText = "Todos";
       })
     });
   }
@@ -136,77 +135,57 @@ export class EquipoComponent implements OnInit {
   }
 
   /**
-   * Metodo que permite modificar el arreglo de usuarios para mostrar los usuarios que posean un rol especifico (de a uno).
-   * Si encuentra que ese rol pertenece al arreglo de roles de un usuario, pushea ese usuario a un arreglo auxiliar que luego se reemplaza en el arreglo "usuarios", para que el contenido de la vista sea modificado.
-   * 1) Debe rehacer la lista de usuarios original cada vez que se elije un nuevo filtro, porque sino filtraria sobre la lista de usuarios previamente modificada.
-   * 
-   * @param rol string
-   */
-  filtrarPorRol(rol: string) {
-    // 1)
-    this.limpiarFiltro();
-    // --------------------
-    let arrayAux: Usuario[] = [];
-    this.usuarios.forEach(usuario => {
-      if (usuario.nombre_rol.indexOf(rol) != -1) {
-        arrayAux.push(usuario);
-      }
-    })
-    this.usuarios = arrayAux;
-   // this.usuariosFiltradosPorRol = arrayAux;
-  }
-
-  /**
-   * Metodo que rehace la lista de usuarios que fue modificada por el filtro a su contenido de usuarios original
+   * Metodo que rehace la lista de usuarios que fue modificada por el filtro a su contenido de usuarios original.
+   * Es llamado cuando se elije el filtro de rol "Todos". Tambien reinicia el filtro.rol a "".
    */
   limpiarFiltro(){
     this.usuarios = this.usuariosOriginal;
+    this.filtro.rol="";
+    document.getElementById("rol")!.innerText = "Todos";
   }
 
-  buscar(event: Event){
-    this.nombreInput = (event.target as HTMLInputElement).value;
+  /**
+   * Metodo que almacena el rol a filtrar en el filtro y llama a la funcion filtradora.
+   * Tambien cambia el contenido del label "rol" para reflejar que rol se esta filtrando.
+   * 
+   * @param rol string
+   */
+  filtrarRol(rol: string){
+    this.filtro.rol = rol;
+    this.filtrador(this.filtro);
+    document.getElementById("rol")!.innerText = rol;
+  }
 
-    let arrayAux: Usuario[] = [];
-    
-    this.usuariosOriginal.forEach(usuario =>{
-      
-      if(usuario.nombre.toLocaleLowerCase().includes(this.nombreInput)){
-        arrayAux.push(usuario);
+  /**
+   * Metodo que recupera el value del campo del buscador y lo almacena en el filtro para luego llamar a la funcion filtradora.
+   * 
+   * @param event Event
+   */
+  filtrarNombre(event: Event){
+    this.filtro.nombre = (event.target as HTMLInputElement).value;
+    this.filtrador(this.filtro);
+  }
+  
+/**
+ * Metodo encargado de filtrar los elementos del arreglo de usuarios segun un filtro pasado por parametro.
+ * Utiliza la funcion Array.prototype.filter, que recibe un callback en el que se definen las condiciones para que el usuario actual sea almacenado o no en el arreglo de usuarios a mostrar. Si devuelve false, el usuario no es almacenado.
+ * Esta es la manera de implementar el filtro de nombre y rol en simultaneo.
+ * 
+ * 
+ * @param filtro Objeto
+ */
+  filtrador(filtro: any){
+    this.usuarios = this.usuariosOriginal.filter(usuario => { 
+      if(filtro.nombre != "" && !usuario.nombre.toLocaleLowerCase().includes(filtro.nombre.toLocaleLowerCase())){
+        console.log("NOMBRE NO COINCIDE, NO SE AGREGA");
+        return false;
       }
-
+      if(filtro.rol != "" && !usuario.nombre_rol.includes(filtro.rol)){
+        console.log("ROL NO COINCIDE, NO SE AGREGA");
+        return false;
+      }
+      console.log("COINCIDE, SE AGREGA");
+      return true;
     })
-    this.usuarios = arrayAux;
   }
 }
-
-
-
-
-// Funciones de prueba antes de traer los usuarios desde el service
-
-/* auxiliarGeneracion(min: number, max: number) {
-  return Math.floor(Math.random() * (max - min) + min);
-}
-
-
-getUsuarios() {
-  for (let i = 0; i < 10; i++) {
-    let numeroUsuario = this.auxiliarGeneracion(1, 6);
-    let usuario: UsuarioRolRefact = {
-      id_usuario: `${numeroUsuario}`,
-      nombre_usuario: `usuario${numeroUsuario * 111}`,
-      nombre: `Nombre ${numeroUsuario}`,
-      apellido: `Apellido ${numeroUsuario}`,
-      nombre_rol: `Rol ${this.auxiliarGeneracion(1, 6) * 111}`,
-      conocimientos: [`Conocimiento 0`, `Conocimiento 1`],
-      preferencias: [`Preferencia 0`, `Preferencia 1`],
-      proyectos_actuales: [`Proyecto actual 0`, `Proyecto actual 1`],
-      tareas_completadas_tec: [`Tareas completadas 0`, `Tareas completadas 1`],
-      proyectos_anteriores: [`Proyecto anterior 0`, `Proyecto anterior 1`],
-      empresas: [`Empresa 0`, `Empresa 1`],
-      instituciones: [`Institucion 0`, `Institucion 1`],
-      carreras: [`Carrera 0`, `Carrera 1`]
-    }
-    this.usuariosRest.push(usuario);
-  }
-} */

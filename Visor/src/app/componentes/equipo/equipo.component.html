@@ -1,12 +1,13 @@
 <div class="contenedor">
     <div class="buscador">
         <mat-form-field class="example-form-field" appearance="outline" id="searchInput">
-            <input matInput [(ngModel)]="nombreInput" type="text" placeholder="Buscar colaborador..." autocomplete="off" (keyup)="buscar($event)" >
+            <input matInput type="text" placeholder="Buscar colaborador..." autocomplete="off" (keyup)="filtrarNombre($event)" >
         </mat-form-field>
         <button mat-flat-button color="primary" class="btnRol" [matMenuTriggerFor]="menu">Rol</button>
+        <mat-label class="elemento" id="rol"></mat-label>
         <mat-menu #menu="matMenu">
             <button mat-menu-item (click)="limpiarFiltro()">Todos</button>
-            <button mat-menu-item *ngFor="let rol of roles" (click)="filtrarPorRol(rol.name)">{{rol.name}}</button>
+            <button mat-menu-item *ngFor="let rol of roles" (click)="filtrarRol(rol.name)">{{rol.name}}</button>
         </mat-menu>
     </div>
 
