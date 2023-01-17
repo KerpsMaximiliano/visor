@@ -22,7 +22,7 @@
                 <p>Proyectos actuales: <span *ngFor="let pa of colaborador.proyectos_actuales" class="elemento">{{pa}}</span></p>
             </div>
             <div class="iconos inline">
-                <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley" target="_blank"><mat-icon svgIcon="linkedin"></mat-icon></a>
+                <a href={{colaborador.linkedin}} target="_blank"><mat-icon svgIcon="linkedin"></mat-icon></a>
                 <mat-icon>visibility</mat-icon>
             </div>
         </mat-card>

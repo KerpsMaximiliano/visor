@@ -17,7 +17,8 @@ export interface Usuario {
   proyectos_anteriores: Array<String>,
   empresas: Array<String>,
   instituciones: Array<string>,
-  carreras: Array<String>
+  carreras: Array<String>,
+  linkedin: string
 }
 
 // Necesario para poder importar el icono de linkedin
@@ -41,6 +42,7 @@ export class EquipoComponent implements OnInit {
   roles: Array<any> = [];
   filtro = { nombre: "", rol: ""}
   labelRol = document.getElementById("rol");
+  listaLinkedin = [{}];
 
   constructor(
     private _usuarioService: UsuarioService,
@@ -59,6 +61,12 @@ export class EquipoComponent implements OnInit {
         this.usuariosRest = respuesta.dataset;
         this.organizarUsuarios();
         this.usuariosOriginal = this.usuarios;
+        this.usuarios.forEach( usuario => {
+          this.listaLinkedin.push({
+            nombre_usuario : usuario.nombre_usuario,
+            linkedin : ""
+          })
+        })
         document.getElementById("rol")!.innerText = "Todos";
       })
     });
@@ -86,6 +94,8 @@ export class EquipoComponent implements OnInit {
       })
 
       if (usuarioRAux !== undefined) {
+        console.log(usuarioRAux["nombre"], usuarioRAux["apellido"])
+        console.log(this.asignarLinkedin(usuarioRAux["nombre"], usuarioRAux["apellido"]))
         this.usuarios.push({
           id_usuario: id,
           nombre_usuario: usuarioRAux["nombre_usuario"],
@@ -99,7 +109,8 @@ export class EquipoComponent implements OnInit {
           proyectos_anteriores: usuarioRAux["proyectos_anteriores"],
           empresas: usuarioRAux["empresas"],
           instituciones: usuarioRAux["instituciones"],
-          carreras: usuarioRAux["carreras"]
+          carreras: usuarioRAux["carreras"],
+          linkedin: this.asignarLinkedin(usuarioRAux["nombre"], usuarioRAux["apellido"])
         })
       }
     })
@@ -114,6 +125,37 @@ export class EquipoComponent implements OnInit {
       }
     })
 
+  }
+
+  /**
+   * Metodo TEMPORAL hasta que el sp disponga de los linked in de cada usuario.
+   * Recorre el arreglo de links de linkedin, y si el nombre o el apellido coinciden en alguna parte del link, retorna ese link
+   * 
+   * @param nombre string
+   * @param apellido string
+   * @returns linkedin
+   */
+  asignarLinkedin(nombre: string, apellido: string){
+    let retorno = "https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley";
+    let links = [
+      "https://www.linkedin.com/in/facundoghioserra/",
+      "https://www.linkedin.com/in/franco-corvalan/",
+      "https://www.linkedin.com/in/francofriggeri/",
+      "https://www.linkedin.com/in/ignacio-girod/",
+      "https://www.linkedin.com/in/luciano-de-giorgio-8582091b4/",
+      "https://www.linkedin.com/in/maxi-reichert-24ba1a221/",
+      "https://www.linkedin.com/in/patricio-macagno-02340922b/"
+    ]
+    
+    links.forEach( link => {
+      if(link.includes(nombre.toLocaleLowerCase())){
+        retorno = link;
+      }else if (link.includes(apellido.toLocaleLowerCase())){
+        retorno = link;
+      }
+    })
+    
+    return retorno;
   }
 
   /**
