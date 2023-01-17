@@ -10,14 +10,11 @@ import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 // import { MAT_DATE_LOCALE } from '@angular/material/core/datetime/date-adapter';
 
-
-
 @Component({
   selector: 'app-modal-filtro-documentos',
   templateUrl: './modal-filtro-documentos.component.html',
   styleUrls: ['./modal-filtro-documentos.component.css']
 })
-
 
 export class ModalFiltroDocumentosComponent implements OnInit {
   categorys: string[];
@@ -86,7 +83,6 @@ export class ModalFiltroDocumentosComponent implements OnInit {
     });
   }
 
-
   /**
    * Método que limpia los campos del filtro.
    */
@@ -96,9 +92,7 @@ export class ModalFiltroDocumentosComponent implements OnInit {
     this.categoria =='' ? null : this.categoria = undefined;
     this.tipo =='' ? null : this.tipo= undefined;
     this.result.asignadoA ="";
-    this.estado =='' ? null : this.estado = undefined;;
-    // console.log('estadolimpiar',this.estado);
-    // console.log('categorialimpiar',this.categoria);
+    this.estado =='' ? null : this.estado = undefined;
     this.fechaPublicacionDesde =='' ? null : this.fechaPublicacionDesde= undefined;
     this.fechaPublicacionHasta =='' ? null : this.fechaPublicacionHasta= undefined;
     this.fechaCaducidadDesde =='' ? null : this.fechaCaducidadDesde= undefined;
@@ -143,7 +137,7 @@ export class ModalFiltroDocumentosComponent implements OnInit {
     }
   }
  /**
-   * Método que según la categoria elegida se habilitan los tipos de esa categoría
+   * Método para que según la categoria elegida, se habilitan los tipos de esa categoría.
    */
   mostrarTipo(categoria:string){
     switch(categoria){
@@ -185,8 +179,6 @@ export class ModalFiltroDocumentosComponent implements OnInit {
         break;
     }
   }
-
-
 
   /**
    * Método que guarda la información de busqueda proporcionada en el filtro.
@@ -239,9 +231,6 @@ export class ModalFiltroDocumentosComponent implements OnInit {
     }else if(this.estado == "Eliminado"){
       this.estado = "Expired"
     }
-
-    // console.log('nombreantes',this.result.nombre);
-    // console.log('estadoooooo',this.estado);
      
    if(this.result.numero == ""){
      numero = null
@@ -264,16 +253,12 @@ export class ModalFiltroDocumentosComponent implements OnInit {
     if(this.tipo ==''){
       this.tipo = undefined
     } 
-    // console.log('categoria antes de servicio2',this.categoria);
 
     if(this.result.asignadoA !== '' && this.result.asignadoA !== null && this.result.asignadoA !== undefined){
-
       this.documentService.getIdUsuario(this.result.asignadoA).subscribe(data => {
       this.idUsuario = data.dataset[0].id
       // console.log('id',this.idUsuario);
-
       // console.log(' de cerrar',this.result.numero,this.result.nombre,this.categoria,this.tipo,this.idUsuario,this.estado,this.fechaPublicacionDesde,this.fechaPublicacionHasta,this.fechaCaducidadDesde,this.fechaCaducidadHasta);
-    
       this.documentService.getDocumentosFiltro(numero,nombre,this.categoria,this.tipo,this.idUsuario,this.estado,this.fechaPublicacionDesde,this.fechaPublicacionHasta,this.fechaCaducidadDesde,this.fechaCaducidadHasta).subscribe(response => {
         let respuesta
         respuesta = response
@@ -282,17 +267,13 @@ export class ModalFiltroDocumentosComponent implements OnInit {
         })
       })
     }else{
-      // console.log('nombre',nombre);
-    // console.log(' entro al else',this.result.numero,this.result.nombre,this.categoria,this.tipo,this.idUsuario,this.estado,this.fechaPublicacionDesde,this.fechaPublicacionHasta,this.fechaCaducidadDesde,this.fechaCaducidadHasta);
     this.documentService.getDocumentosFiltro(numero,nombre,this.categoria,this.tipo,asignadoA,this.estado,this.fechaPublicacionDesde,this.fechaPublicacionHasta,this.fechaCaducidadDesde,this.fechaCaducidadHasta).subscribe(response => {
       let respuesta
       respuesta = response
       this.dialogRef.close(respuesta)
-      // console.log('response',response.dataset)
       })
     }
   }
-
 
   /**
    * Método que valida que la tecla pulsada sea enter.
@@ -307,7 +288,7 @@ export class ModalFiltroDocumentosComponent implements OnInit {
   }
 
   /**
-   * Método en el que se seleciona y guarda la categoria.
+   * Método en el que se selecciona y guarda la categoria.
    *
    * @param event
    */
@@ -318,42 +299,71 @@ export class ModalFiltroDocumentosComponent implements OnInit {
     // console.log('selectCategoria', this.categoria);
     this.mostrarTipo(this.categoria);
   }
-
+/**
+   * Método en el que se selecciona y guarda el tipo.
+   *
+   * @param event
+   */
   selectTipo(event:MatSelectChange){
     // console.log('selectTipo',event.source.triggerValue);
     this.tipo = event.source.triggerValue
     this.tipo == '' ? null : this.tipo
   }
+  /**
+   * Método en el que se selecciona y guarda el estado ya sea publicado, borrador o eliminado.
+   *
+   * @param event
+   */
   selectEstado(event:MatSelectChange){
     // console.log('selectEstado',event.source.triggerValue);
     this.estado = event.source.triggerValue
     this.estado == '' ? null : this.estado
   }
 
+  /**
+   * Método en el que se selecciona desde cuando puede ser una fecha de inicio.
+   *
+   * @param event
+   */
   getFechaPublicacionDesde(event:any){
     const fecha = new Date(event.value);
-    let fechaJson = fecha.toJSON();     
+    let fechaJson = fecha.toJSON();
+    // console.log('fecjaK',fechaJson);
     this.fechaPublicacionDesde= fechaJson.split('T')[0];
-    // console.log('this.fechaPublicacionDesde',this.fechaPublicacionDesde);
-
+    // console.log(fecha,'this.fechaPublicacionDesde');
+    console.log('this.fechaPublicacionDesde',this.fechaPublicacionDesde);
   }
 
+ /**
+   * Método en el que se selecciona hasta cuando puede ser una fecha de inicio.
+   *
+   * @param event
+   */
   getFechaPublicacionHasta(event: MatDatepickerInputEvent<any>){
     const fecha = new Date(event.value);
     let fechaJson = fecha.toJSON();
     this.fechaPublicacionHasta= fechaJson.split('T')[0];
+    // console.log('event',fecha);
   }
 
+   /**
+   * Método en el que se selecciona desde cuando puede ser una fecha de caducidad.
+   *
+   * @param event
+   */
   getFechaCaducidadDesde(event: MatDatepickerInputEvent<any>){
     const fecha = new Date(event.value);
     let fechaJson = fecha.toJSON();
     this.fechaCaducidadDesde= fechaJson.split('T')[0];
   }
-
+ /**
+   * Método en el que se selecciona hasta cuando puede ser una fecha de caducidad.
+   *
+   * @param event
+   */
   getFechaCaducidadHasta(event: MatDatepickerInputEvent<any>){
     const fecha = new Date(event.value);
     let fechaJson = fecha.toJSON();
     this.fechaCaducidadHasta= fechaJson.split('T')[0];
   }
-
 }
