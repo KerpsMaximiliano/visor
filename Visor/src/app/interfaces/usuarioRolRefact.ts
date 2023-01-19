@@ -1,5 +1,6 @@
 export interface UsuarioRolRefact  {  
     id_usuario: string,
+    foto: Blob,
     nombre_usuario: string,
     nombre: string,
     apellido: string,

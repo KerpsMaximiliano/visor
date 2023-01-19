@@ -13,7 +13,9 @@
 
     <div class="colaboradores">
         <mat-card class="colaborador inline" *ngFor="let colaborador of usuarios; let i = index">
-            <div class="foto inline"></div>
+            <div class="foto inline">
+                <img mat-card-image [src]="colaborador.foto">
+            </div>
             <div class="texto inline">
                 <strong class="nombre">{{colaborador.nombre}} {{colaborador.apellido}}</strong>
                 <p>Roles: <span *ngFor="let rol of colaborador.nombre_rol" class="elemento">{{rol}}</span></p>

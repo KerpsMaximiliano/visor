@@ -3,8 +3,13 @@ import { UsuarioRolRefact } from 'src/app/interfaces/usuarioRolRefact';
 import { UsuarioService } from 'src/app/services/i2t/usuario-rol.service';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ProyectoDataService } from 'src/app/services/i2t/proyecto-data.service';
+import { TareaService } from 'src/app/services/i2t/tarea.service';
+import { UsuarioRol } from 'src/app/interfaces/usuario-rol';
+import { EquipoService } from 'src/app/services/i2t/equipo.service';
 export interface Usuario {
   id_usuario: string,
+  foto: Blob,
   nombre_usuario: string,
   nombre: string,
   apellido: string,
@@ -28,6 +33,7 @@ const LINKEDIN_ICONO = `
   </svg>
 `;
 
+
 @Component({
   selector: 'app-equipo',
   templateUrl: './equipo.component.html',
@@ -39,15 +45,20 @@ export class EquipoComponent implements OnInit {
   usuariosRest: Array<UsuarioRolRefact> = [];
   usuariosOriginal: Array<Usuario> = []; // copia del arreglo de usuarios para guardar los usuarios originales traidos por el sp
   usuarios: Array<Usuario> = [];
-  roles: Array<any> = [];
+  roles: Array<any> = []; // Es solo para generar la tabla desplegable
   filtro = { nombre: "", rol: ""}
   labelRol = document.getElementById("rol");
   listaLinkedin = [{}];
+  proyectosTotales = [];
+  tareasTotales = [[]];
 
   constructor(
     private _usuarioService: UsuarioService,
     private _iconRegistry: MatIconRegistry,
-    private sanitizer: DomSanitizer) {
+    private sanitizer: DomSanitizer,
+    private _proyectosService: ProyectoDataService,
+    private _tareasService : TareaService,
+    private _equipoService: EquipoService) {
 
     _iconRegistry.addSvgIconLiteral('linkedin', sanitizer.bypassSecurityTrustHtml(LINKEDIN_ICONO));
 
@@ -57,6 +68,20 @@ export class EquipoComponent implements OnInit {
 
     this._usuarioService.getUsuariosRefact().subscribe(respuesta => {
       this._usuarioService.getRoles().subscribe(r => {
+
+        this._equipoService.getUsuarios().subscribe();
+
+       /*  this._proyectosService.getTodosLosProyectos().subscribe( proyectos => {
+          this.proyectosTotales = proyectos.dataset;
+          console.log(this.proyectosTotales)
+          this.proyectosTotales.forEach((proyecto: any) => {
+            this._tareasService.getTareasDeProyecto(proyecto.id_projecto).subscribe( (tarea : any) => {
+              if(tarea.dataset.length > 0){
+                this.tareasTotales.push(tarea.dataset);
+              }
+            })
+          })
+        }) */
         this.roles = r.dataset;
         this.usuariosRest = respuesta.dataset;
         this.organizarUsuarios();
@@ -94,10 +119,9 @@ export class EquipoComponent implements OnInit {
       })
 
       if (usuarioRAux !== undefined) {
-        console.log(usuarioRAux["nombre"], usuarioRAux["apellido"])
-        console.log(this.asignarLinkedin(usuarioRAux["nombre"], usuarioRAux["apellido"]))
         this.usuarios.push({
           id_usuario: id,
+          foto: usuarioRAux["foto"],
           nombre_usuario: usuarioRAux["nombre_usuario"],
           nombre: usuarioRAux["nombre"],
           apellido: usuarioRAux["apellido"],
@@ -114,6 +138,7 @@ export class EquipoComponent implements OnInit {
         })
       }
     })
+    console.log("USUARIOS")
     console.log(this.usuarios)
 
     // Organiza los usuarios albafeticamente por nombre
@@ -128,7 +153,7 @@ export class EquipoComponent implements OnInit {
   }
 
   /**
-   * Metodo TEMPORAL hasta que el sp disponga de los linked in de cada usuario.
+   * Metodo temporal hasta que el sp disponga de los linked in de cada usuario.
    * Recorre el arreglo de links de linkedin, y si el nombre o el apellido coinciden en alguna parte del link, retorna ese link
    * 
    * @param nombre string
@@ -230,4 +255,16 @@ export class EquipoComponent implements OnInit {
       return true;
     })
   }
+
+ /*  usuarioCorrespondeTarea(usuario: UsuarioRolRefact){
+    let tareas !: string[];
+    this.tareasTotales.forEach(tarea => {
+      tarea.forEach((t: any) => {
+        if (t["usuario_asignado"].includes(usuario.nombre) && t["usuario_asignado"].includes(usuario.apellido)){
+          tareas.push(t["nombre_proyecto"]);
+        }
+      })
+    })
+    return tareas;
+  } */
 }

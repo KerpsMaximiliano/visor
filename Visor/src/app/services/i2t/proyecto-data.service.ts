@@ -54,4 +54,11 @@ export class ProyectoDataService {
     });
     return this.restService.callProcedimientoVisor(jsbody,"EstadoProyectos");
   }
+
+  public getTodosLosProyectos(){
+    let jsbody: string = JSON.stringify({
+      par_modo: "G"
+    })
+    return this.restService.callProcedimientoVisor(jsbody, "AbmProyectos")
+  }
 }
