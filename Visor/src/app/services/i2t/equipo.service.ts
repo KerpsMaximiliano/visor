@@ -15,9 +15,10 @@ export class EquipoService {
     return this._restService.callProcedimientoVisor(jsbody, "SeccionEquipo");
   }
 
-  public getTareasPorTecnologia(){
+  public getTareasPorTecnologia(id: string){
     let jsbody : string = JSON.stringify({
-      nivel: "3"
+      nivel: "3",
+      users_id: id
     })
     return this._restService.callProcedimientoVisor(jsbody, "SeccionEquipo");
   }

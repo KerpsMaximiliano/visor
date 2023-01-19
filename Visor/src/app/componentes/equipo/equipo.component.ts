@@ -11,8 +11,6 @@ export interface Usuario {
   id_usuario: string,
   foto: Blob,
   nombre_usuario: string,
-  nombre: string,
-  apellido: string,
   nombre_rol: Array<String>,
   //Resto de variables que pide el CU 12
   conocimientos: Array<String>,
@@ -42,22 +40,22 @@ const LINKEDIN_ICONO = `
 
 export class EquipoComponent implements OnInit {
 
-  usuariosRest: Array<UsuarioRolRefact> = [];
+  usuariosRest: Array<any> = [];
   usuariosOriginal: Array<Usuario> = []; // copia del arreglo de usuarios para guardar los usuarios originales traidos por el sp
   usuarios: Array<Usuario> = [];
   roles: Array<any> = []; // Es solo para generar la tabla desplegable
-  filtro = { nombre: "", rol: ""}
+  filtro = { nombre_usuario: "", rol: ""}
   labelRol = document.getElementById("rol");
   listaLinkedin = [{}];
   proyectosTotales = [];
   tareasTotales = [[]];
 
   constructor(
-    private _usuarioService: UsuarioService,
     private _iconRegistry: MatIconRegistry,
     private sanitizer: DomSanitizer,
     private _proyectosService: ProyectoDataService,
     private _tareasService : TareaService,
+    private _usuarioService: UsuarioService,
     private _equipoService: EquipoService) {
 
     _iconRegistry.addSvgIconLiteral('linkedin', sanitizer.bypassSecurityTrustHtml(LINKEDIN_ICONO));
@@ -66,7 +64,7 @@ export class EquipoComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this._usuarioService.getUsuariosRefact().subscribe(respuesta => {
+    this._equipoService.getUsuarios().subscribe(respuesta => {
       this._usuarioService.getRoles().subscribe(r => {
 
         this._equipoService.getUsuarios().subscribe();
@@ -105,37 +103,37 @@ export class EquipoComponent implements OnInit {
    */
   organizarUsuarios() {
     let ids = this.recuperarIdsUnicos();
-    ids.forEach(id => {
+    ids.forEach(idUnico => {
       // 1)
       let roles: string[] = [];
       this.usuariosRest.forEach(uR => {
-        if (uR.id_usuario == id) {
-          roles.push(uR.nombre_rol);
+        if (uR.id == idUnico) {
+          roles.push(uR.name_fun);
         }
       })
+      console.log("ROLES:")
+      console.log(roles)
       // 2)
-      const usuarioRAux = this.usuariosRest.find(({ id_usuario }) => {
-        return id_usuario === id;
+      const usuarioRAux = this.usuariosRest.find(({ id }) => {
+        return id === idUnico;
       })
 
       if (usuarioRAux !== undefined) {
         this.usuarios.push({
-          id_usuario: id,
-          foto: usuarioRAux["foto"],
-          nombre_usuario: usuarioRAux["nombre_usuario"],
-          nombre: usuarioRAux["nombre"],
-          apellido: usuarioRAux["apellido"],
+          id_usuario: idUnico,
+          foto: usuarioRAux["photo"],
+          nombre_usuario: usuarioRAux["name_user"],
           nombre_rol: roles,
-          conocimientos: usuarioRAux["conocimientos"],
-          preferencias: usuarioRAux["preferencias"],
-          proyectos_actuales: usuarioRAux["proyectos_actuales"],
+          conocimientos: usuarioRAux["conocimientos_c"],
+          preferencias: usuarioRAux["preferencias_c"],
+          proyectos_actuales: [usuarioRAux["name_proy"]],
           tareas_completadas_tec: usuarioRAux["tareas_completadas_tec"],
           proyectos_anteriores: usuarioRAux["proyectos_anteriores"],
           empresas: usuarioRAux["empresas"],
           instituciones: usuarioRAux["instituciones"],
           carreras: usuarioRAux["carreras"],
-          linkedin: this.asignarLinkedin(usuarioRAux["nombre"], usuarioRAux["apellido"])
-        })
+          linkedin: this.asignarLinkedin(usuarioRAux["name_user"])
+        })        
       }
     })
     console.log("USUARIOS")
@@ -143,7 +141,7 @@ export class EquipoComponent implements OnInit {
 
     // Organiza los usuarios albafeticamente por nombre
     this.usuarios.sort((a: Usuario, b: Usuario) => {
-      if (a.nombre > b.nombre) {
+      if (a.nombre_usuario > b.nombre_usuario) {
         return 1;
       } else {
         return -1;
@@ -160,7 +158,7 @@ export class EquipoComponent implements OnInit {
    * @param apellido string
    * @returns linkedin
    */
-  asignarLinkedin(nombre: string, apellido: string){
+  asignarLinkedin(nombre: string){
     let retorno = "https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley";
     let links = [
       "https://www.linkedin.com/in/facundoghioserra/",
@@ -171,14 +169,16 @@ export class EquipoComponent implements OnInit {
       "https://www.linkedin.com/in/maxi-reichert-24ba1a221/",
       "https://www.linkedin.com/in/patricio-macagno-02340922b/"
     ]
+
+    console.log(nombre)
     
-    links.forEach( link => {
+    /* links.forEach( link => {
       if(link.includes(nombre.toLocaleLowerCase())){
         retorno = link;
       }else if (link.includes(apellido.toLocaleLowerCase())){
         retorno = link;
       }
-    })
+    }) */
     
     return retorno;
   }
@@ -193,11 +193,10 @@ export class EquipoComponent implements OnInit {
     let ids: string[] = [];
 
     this.usuariosRest.forEach(uR => {
-      if (!ids.includes(uR.id_usuario)) {
-        ids.push(uR.id_usuario);
+      if (!ids.includes(uR.id)) {
+        ids.push(uR.id);
       }
     });
-
     return ids;
   }
 
@@ -229,7 +228,7 @@ export class EquipoComponent implements OnInit {
    * @param event Event
    */
   filtrarNombre(event: Event){
-    this.filtro.nombre = (event.target as HTMLInputElement).value;
+    this.filtro.nombre_usuario = (event.target as HTMLInputElement).value;
     this.filtrador(this.filtro);
   }
   
@@ -243,7 +242,7 @@ export class EquipoComponent implements OnInit {
  */
   filtrador(filtro: any){
     this.usuarios = this.usuariosOriginal.filter(usuario => { 
-      if(filtro.nombre != "" && !usuario.nombre.toLocaleLowerCase().includes(filtro.nombre.toLocaleLowerCase())){
+      if(filtro.nombre != "" && !usuario.nombre_usuario.toLocaleLowerCase().includes(filtro.nombre_usuario.toLocaleLowerCase())){
         console.log("NOMBRE NO COINCIDE, NO SE AGREGA");
         return false;
       }
@@ -255,16 +254,4 @@ export class EquipoComponent implements OnInit {
       return true;
     })
   }
-
- /*  usuarioCorrespondeTarea(usuario: UsuarioRolRefact){
-    let tareas !: string[];
-    this.tareasTotales.forEach(tarea => {
-      tarea.forEach((t: any) => {
-        if (t["usuario_asignado"].includes(usuario.nombre) && t["usuario_asignado"].includes(usuario.apellido)){
-          tareas.push(t["nombre_proyecto"]);
-        }
-      })
-    })
-    return tareas;
-  } */
 }

@@ -17,7 +17,7 @@
                 <img mat-card-image [src]="colaborador.foto">
             </div>
             <div class="texto inline">
-                <strong class="nombre">{{colaborador.nombre}} {{colaborador.apellido}}</strong>
+                <strong class="nombre">{{colaborador.nombre_usuario}}</strong>
                 <p>Roles: <span *ngFor="let rol of colaborador.nombre_rol" class="elemento">{{rol}}</span></p>
                 <p>Conocimientos: <span *ngFor="let c of colaborador.conocimientos" class="elemento">{{c}}</span></p>
                 <p>Preferencias: <span *ngFor="let p of colaborador.preferencias">{{p}}</span></p>
