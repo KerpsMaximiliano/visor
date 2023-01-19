@@ -6,9 +6,9 @@ import { FiltroService } from '../../services/i2t/filtro.service';
 import { MatSelectChange } from '@angular/material/select';
 import { DocumentoService } from 'src/app/services/i2t/documento.service';
 import { finalize } from 'rxjs';
-import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
-// import { MAT_DATE_LOCALE } from '@angular/material/core/datetime/date-adapter';
+import { DateAdapter} from '@angular/material/core';
+import * as moment from 'moment';
+  // import { MAT_DATE_LOCALE } from '@angular/material/core/datetime/date-adapter';
 
 @Component({
   selector: 'app-modal-filtro-documentos',
@@ -27,18 +27,20 @@ export class ModalFiltroDocumentosComponent implements OnInit {
   estado?: string;
   tipo?:string;
   fechaPublicacionDesde?:string;
+  publicacionDesde?:Date;
   fechaPublicacionHasta?:string;
+  publicacionHasta?:Date;
   fechaCaducidadDesde?:string;
+  caducidadDesde?:Date;
   fechaCaducidadHasta?:string;
+  caducidadHasta?:Date;
   result = {numero:'', nombre: '', categoria: '', tipo: '', asignadoA: '', estado: '',publicacionDesde: '', publicacionHasta: '', caducidadDesde: '', caducidadHasta: '' ,filtrar: true, limpiar: false}
   save_search_id = '';
 
-  constructor(public documentInstance: Document, public dialogRef: MatDialogRef<SeccionDocumentosComponent>, @Inject(MAT_DIALOG_DATA) public data:any, public _filtroService: FiltroService, public documentService:DocumentoService,@Inject(MAT_DATE_LOCALE) private _locale: string, private _adapter: DateAdapter<any>) {
+  constructor(public documentInstance: Document, public dialogRef: MatDialogRef<SeccionDocumentosComponent>, @Inject(MAT_DIALOG_DATA) public data:any, public _filtroService: FiltroService, public documentService:DocumentoService, private _adapter: DateAdapter<any>) {
     //Utilizan una instancia de la clase Documents para acceder a la información contenida.
     this.categorys = this.documentInstance.categorys;
     this.estados = this.documentInstance.estados;    
-    this._locale = 'es';
-    this._adapter.setLocale(this._locale);
   }
 
   ngOnInit(): void {
@@ -51,7 +53,7 @@ export class ModalFiltroDocumentosComponent implements OnInit {
           resp.dataset.forEach((filtro: any) => {
             if (filtro.nombre == 'filtro_numero_nombre_categoria_tipo_asignadoA_estado_fechaPublicacionDesde_fechaPublicacionHasta_fechaCaducidadDesde_fechaCaducidadHasta') {
               const contenido = JSON.parse(atob(filtro.contenido));
-              console.log('contenido',contenido);
+              console.log('contenidomodalfiltro',contenido);
               
               this.result.numero = contenido.numero;
               this.result.nombre = contenido.nombre;
@@ -69,12 +71,31 @@ export class ModalFiltroDocumentosComponent implements OnInit {
               if(this.categoria != '' && this.categoria != null &&this.categoria != undefined){
               this.mostrarTipo(this.categoria)    
               }
-              // this.fechaDePublicacion = contenido.fechaDePublicacion;
-              this.fechaPublicacionDesde = contenido.fechaPublicacionDesde;
-              this.fechaPublicacionHasta = contenido.fechaPublicacionHasta;
-              // this.fechaDeCaducidad = contenido.fechaDeCaducidad;
-              this.fechaCaducidadDesde = contenido.fechaCaducidadDesde;
-              this.fechaCaducidadHasta = contenido.fechaCaducidadHasta;
+              this.fechaPublicacionDesde =contenido.fechaPublicacionDesde
+              if(this.fechaPublicacionDesde != '' && this.fechaPublicacionDesde != null &&this.fechaPublicacionDesde != undefined){
+                this.publicacionDesde = moment(this.fechaPublicacionDesde).toDate();
+                // console.log('this.publicacionDesde',this.publicacionDesde);
+                // console.log('fechapublicaciondesde', new Date(this.fechaPublicacionDesde));  
+              }
+              this.fechaPublicacionHasta =contenido.fechaPublicacionHasta
+              if(this.fechaPublicacionHasta != '' && this.fechaPublicacionHasta != null &&this.fechaPublicacionHasta != undefined){
+                this.publicacionHasta = moment(this.fechaPublicacionHasta).toDate();
+                console.log('this.publicacionHasta',this.publicacionHasta);
+                // console.log('fechapublicaciondesde', new Date(this.fechaPublicacionDesde));  
+              }
+              this.fechaCaducidadDesde =contenido.fechaCaducidadDesde
+              if(this.fechaCaducidadDesde != '' && this.fechaCaducidadDesde != null &&this.fechaCaducidadDesde != undefined){
+                this.caducidadDesde = moment(this.fechaCaducidadDesde).toDate();
+              }
+              this.fechaCaducidadHasta =contenido.fechaCaducidadHasta
+              if(this.fechaCaducidadHasta != '' && this.fechaCaducidadHasta != null &&this.fechaCaducidadHasta != undefined){
+                this.caducidadHasta = moment(this.fechaCaducidadHasta).toDate();
+              }
+              // this.formatearFechaEntrante()
+              // this.fechaPublicacionHasta = contenido.fechaPublicacionHasta;
+              // // this.fechaDeCaducidad = contenido.fechaDeCaducidad;
+              // this.fechaCaducidadDesde = contenido.fechaCaducidadDesde;
+              // this.fechaCaducidadHasta = contenido.fechaCaducidadHasta;
               this.save_search_id = filtro.saved_search_id;
             }
           })
@@ -88,11 +109,16 @@ export class ModalFiltroDocumentosComponent implements OnInit {
    */
   limpiarFiltro(): void{
     this.result.numero =""
-      this.result.nombre ="";
+    this.result.nombre ="";
     this.categoria =='' ? null : this.categoria = undefined;
     this.tipo =='' ? null : this.tipo= undefined;
     this.result.asignadoA ="";
     this.estado =='' ? null : this.estado = undefined;
+    // this.fechaPublicacionDesde =='' ? null : this.fechaPublicacionDesde= undefined;
+    this.publicacionDesde = undefined;
+    this.publicacionHasta = undefined;
+    this.caducidadDesde = undefined;
+    this.caducidadHasta = undefined;
     this.fechaPublicacionDesde =='' ? null : this.fechaPublicacionDesde= undefined;
     this.fechaPublicacionHasta =='' ? null : this.fechaPublicacionHasta= undefined;
     this.fechaCaducidadDesde =='' ? null : this.fechaCaducidadDesde= undefined;
@@ -127,7 +153,7 @@ export class ModalFiltroDocumentosComponent implements OnInit {
       this.tipo = '';
       this.result.asignadoA = '';
       this.estado = '';
-      this.fechaPublicacionDesde = '';
+      this.fechaPublicacionDesde = undefined;
       this.fechaPublicacionHasta = '';
       this.fechaCaducidadDesde = '';
       this.fechaCaducidadHasta = '';
@@ -192,7 +218,8 @@ export class ModalFiltroDocumentosComponent implements OnInit {
     this.categoria = undefined
     this.tipo = undefined
     } 
-
+    console.log('caafasfechauasda',this.fechaPublicacionDesde);
+    
     const contenido: string = JSON.stringify({
       numero: this.result.numero == '' ? null : this.result.numero,
       nombre: this.result.nombre == '' ? null : this.result.nombre,
@@ -200,7 +227,7 @@ export class ModalFiltroDocumentosComponent implements OnInit {
       tipo: this.tipo == '' ? null : this.tipo,
       asignadoA: this.result.asignadoA == '' ? null : this.result.asignadoA,
       estado: this.estado == '' ? null : this.estado,
-      fechaPublicacionDesde: this.fechaPublicacionDesde == '' ? null : this.fechaPublicacionDesde,
+      fechaPublicacionDesde: this.fechaPublicacionDesde == undefined ? null : this.fechaPublicacionDesde,
       fechaPublicacionHasta: this.fechaPublicacionHasta == '' ? null : this.fechaPublicacionHasta,
       fechaCaducidadDesde: this.fechaCaducidadDesde == '' ? null : this.fechaCaducidadDesde,
       fechaCaducidadHasta: this.fechaCaducidadHasta == '' ? null : this.fechaCaducidadHasta,
@@ -327,11 +354,9 @@ export class ModalFiltroDocumentosComponent implements OnInit {
    */
   getFechaPublicacionDesde(event:any){
     const fecha = new Date(event.value);
-    let fechaJson = fecha.toJSON();
-    // console.log('fecjaK',fechaJson);
-    this.fechaPublicacionDesde= fechaJson.split('T')[0];
-    // console.log(fecha,'this.fechaPublicacionDesde');
-    console.log('this.fechaPublicacionDesde',this.fechaPublicacionDesde);
+    this.fechaPublicacionDesde= fecha.toJSON().split('T')[0]
+    // console.log('event',fecha);
+    // console.log('this.fechaPublicacionDesde',this.fechaPublicacionDesde);
   }
 
  /**
@@ -339,11 +364,12 @@ export class ModalFiltroDocumentosComponent implements OnInit {
    *
    * @param event
    */
-  getFechaPublicacionHasta(event: MatDatepickerInputEvent<any>){
+  getFechaPublicacionHasta(event:any){
     const fecha = new Date(event.value);
-    let fechaJson = fecha.toJSON();
-    this.fechaPublicacionHasta= fechaJson.split('T')[0];
-    // console.log('event',fecha);
+    // let fechaJson = fecha.toJSON();
+    // this.fechaPublicacionHasta= fechaJson.split('T')[0];
+    this.fechaPublicacionHasta= fecha.toJSON().split('T')[0]
+    console.log('this.fechaPublicacionHasta',this.fechaPublicacionHasta);
   }
 
    /**
@@ -351,19 +377,19 @@ export class ModalFiltroDocumentosComponent implements OnInit {
    *
    * @param event
    */
-  getFechaCaducidadDesde(event: MatDatepickerInputEvent<any>){
-    const fecha = new Date(event.value);
-    let fechaJson = fecha.toJSON();
-    this.fechaCaducidadDesde= fechaJson.split('T')[0];
+  getFechaCaducidadDesde(event:any){
+    const fecha = event.target.value;
+    
+    this.fechaCaducidadDesde= fecha.ToJSON().split('T')[0];
   }
  /**
    * Método en el que se selecciona hasta cuando puede ser una fecha de caducidad.
    *
    * @param event
    */
-  getFechaCaducidadHasta(event: MatDatepickerInputEvent<any>){
-    const fecha = new Date(event.value);
-    let fechaJson = fecha.toJSON();
-    this.fechaCaducidadHasta= fechaJson.split('T')[0];
+  getFechaCaducidadHasta(event: any){
+    const fecha = event.target.value;
+    this.fechaCaducidadHasta= fecha.ToJSON().split('T')[0];
+    // this.fechaCaducidadHasta = fecha
   }
 }

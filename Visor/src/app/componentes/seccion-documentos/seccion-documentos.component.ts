@@ -69,6 +69,73 @@ export class SeccionDocumentosComponent implements OnInit {
   }
 
   /**
+   * Método para buscar si hay filtros previamente guardados
+   *
+   */
+  buscarFiltro(){
+    this._filtroService.getUserId(localStorage.getItem('usuario')!).subscribe((response: any) => {
+      localStorage.setItem('userId', response.dataset[0].id);
+      this._filtroService.selectFiltro(response.dataset[0].id, 'documentos').subscribe((resp: any) => {
+        if (resp.dataset.length == 0 ) {
+        } else {
+          console.log('hay datos', resp);
+          resp.dataset.forEach((filtro: any) => {   
+            if (filtro.nombre == 'filtro_orden') {           
+              this.orden_saved_search_id = filtro.saved_search_id;
+              const contenido = JSON.parse(atob(filtro.contenido));
+              // console.log('contenido es :',contenido);
+              this.ordenSeleccion = contenido.ordenSeleccion; 
+              // console.log('this.ordenSeleccion',this.ordenSeleccion);
+            }
+            if (filtro.nombre == 'filtro_numero_nombre_categoria_tipo_asignadoA_estado_fechaPublicacionDesde_fechaPublicacionHasta_fechaCaducidadDesde_fechaCaducidadHasta') {
+              // this.modal_saved_search_id = filtro.saved_search_id;     
+              const contenido = JSON.parse(atob(filtro.contenido));
+              this.numero = contenido.numero;
+              this.nombre = contenido.nombre;
+              this.categoria = contenido.categoria
+              this.tipo = contenido.tipo;
+              this.asignadoA = contenido.asignadoA;
+              this.estado = contenido.estado;
+              if(contenido.estado == "Publicado"){
+                this.estado = "Active"
+              }else if(contenido.estado == "Borrador"){
+                this.estado = "Draft"
+              }else if(contenido.estado == "Eliminado" ){
+                this.estado = "Expired"
+              }else{            
+                this.estado = contenido.estado
+              }
+              // console.log('contenido',contenido);
+              
+              this.fechaPublicacion = contenido.fechaPublicacion;
+              this.fechaPublicacionDesde = contenido.fechaPublicacionDesde;
+              this.fechaPublicacionHasta = contenido.fechaPublicacionHasta;
+              this.fechaCaducidad = contenido.fechaCaducidad;
+              this.fechaCaducidadDesde = contenido.fechaCaducidadDesde;
+              this.fechaCaducidadHasta = contenido.fechaCaducidadHasta;
+              this.modal_saved_search_id = filtro.saved_search_id;   
+              
+            }  if(filtro.nombre == 'filtro_misAsignados3'){
+              const contenido = JSON.parse(atob(filtro.contenido));
+              this.buttonOn = contenido.boton
+              console.log(' this.buttonOn', contenido.boton);
+              
+              if(!contenido.boton == false){
+                this.buttonOn = true  
+                this.asignadoA = contenido.usuario
+              }else{
+                this.buttonOn = false
+              }
+            this.assigned_saved_search_id = filtro.saved_search_id  
+            }    
+          }
+      )}
+      this.getDocuments();
+      })
+    })
+  }
+
+  /**
    * Método que obtiene los documentos a traves del servicio.
    * 
    */
@@ -76,6 +143,7 @@ export class SeccionDocumentosComponent implements OnInit {
     this.estado === '' ? null : this.estado;
     // console.log('asignadoA',this.asignadoA );
     if(this.asignadoA !== '' && this.asignadoA !== null && this.asignadoA !== undefined){
+      
       this.documentService.getIdUsuario(this.asignadoA).subscribe(data => {
       this.idUsuario = data.dataset[0].id
       console.log('id',this.idUsuario);
@@ -99,6 +167,7 @@ export class SeccionDocumentosComponent implements OnInit {
         this.listOfDocuments.push(document); //Array que almacena los proyectos con sus respectivos datos.
       }
       this.arrayDocuments = this.listOfDocuments;
+      this.changeOrder()
       // console.log('this.arrayDocuments',this.arrayDocuments);
       });
     })
@@ -122,6 +191,7 @@ export class SeccionDocumentosComponent implements OnInit {
         this.listOfDocuments.push(document); //Array que almacena los proyectos con sus respectivos datos.
       }
       this.arrayDocuments = this.listOfDocuments;
+      this.changeOrder()
       // console.log('this.arrayDocuments',this.arrayDocuments);
       });
     }
@@ -169,7 +239,7 @@ export class SeccionDocumentosComponent implements OnInit {
       this.listOfDocuments = response.dataset
       this.arrayDocuments = this.listOfDocuments
       // console.log('documentosAfterclose',this.listOfDocuments);
-     
+     this.changeOrder();
     });
   }
   
@@ -178,7 +248,7 @@ export class SeccionDocumentosComponent implements OnInit {
       this.listOfDocuments;
     }
   }
-
+  
     /**
    * Este método se utiliza para buscar documentos por el nombre.
    * 
@@ -186,6 +256,7 @@ export class SeccionDocumentosComponent implements OnInit {
    */
   buscarDocumentos(event: Event){
     this.valorInputDocumento = (event.target as HTMLInputElement).value;
+    this.buscarFiltro();
     this.documentService.getDocumento(this.valorInputDocumento).subscribe(result => {
       this.listOfDocuments = result.dataset
     })
@@ -200,6 +271,8 @@ export class SeccionDocumentosComponent implements OnInit {
    */
   shotOrder(e: Event){
     this.ordenSeleccion = (e.target as HTMLElement).innerText;
+    console.log('this.ordenseleccion',this.ordenSeleccion);
+    
     const contenido: string = JSON.stringify({ ordenSeleccion : this.ordenSeleccion });
     const encodedData = btoa(contenido);
     console.log('this.orden_saved_search_id',this.orden_saved_search_id);
@@ -236,9 +309,10 @@ export class SeccionDocumentosComponent implements OnInit {
         }
         return 0;
       });
+      // this.listOfDocuments
     }
-
-    if(this.ordenSeleccion == 'Fecha') {      
+    // console.log('entrofecha');
+    if(this.ordenSeleccion == 'Fecha') {     
       this.listOfDocuments.sort(function(a, b) {
         if(a.active_date < b.active_date){
           return 1;
@@ -455,73 +529,13 @@ export class SeccionDocumentosComponent implements OnInit {
     }
   }
 
-/**
-   * Método para buscar si hay filtros previamente guardados
-   *
-   */
-  buscarFiltro(){
-    this._filtroService.getUserId(localStorage.getItem('usuario')!).subscribe((response: any) => {
-      localStorage.setItem('userId', response.dataset[0].id);
-      this._filtroService.selectFiltro(response.dataset[0].id, 'documentos').subscribe((resp: any) => {
-        if (resp.dataset.length == 0 ) {
-        } else {
-          console.log('hay datos', resp);
-          resp.dataset.forEach((filtro: any) => {   
-            if (filtro.nombre == 'filtro_orden') {           
-              const contenido = JSON.parse(atob(filtro.contenido));
-              this.ordenSeleccion = contenido.ordenSeleccion; 
-              this.orden_saved_search_id = filtro.saved_search_id;
-            }
-            if (filtro.nombre == 'filtro_numero_nombre_categoria_tipo_asignadoA_estado_fechaPublicacionDesde_fechaPublicacionHasta_fechaCaducidadDesde_fechaCaducidadHasta') {
-              // this.modal_saved_search_id = filtro.saved_search_id;     
-              const contenido = JSON.parse(atob(filtro.contenido));
-              this.numero = contenido.numero;
-              this.nombre = contenido.nombre;
-              this.categoria = contenido.categoria
-              this.tipo = contenido.tipo;
-              this.asignadoA = contenido.asignadoA;
-              this.estado = contenido.estado;
-              if(contenido.estado == "Publicado"){
-                this.estado = "Active"
-              }else if(contenido.estado == "Borrador"){
-                this.estado = "Draft"
-              }else if(contenido.estado == "Eliminado" ){
-                this.estado = "Expired"
-              }else{            
-                this.estado = contenido.estado
-              }
-              this.fechaPublicacion = contenido.fechaPublicacion;
-              this.fechaPublicacionDesde = contenido.fechaPublicacionDesde;
-              this.fechaPublicacionHasta = contenido.fechaPublicacionHasta;
-              this.fechaCaducidad = contenido.fechaCaducidad;
-              this.fechaCaducidadDesde = contenido.fechaCaducidadDesde;
-              this.fechaCaducidadHasta = contenido.fechaCaducidadHasta;
-              this.modal_saved_search_id = filtro.saved_search_id;   
-              
-            }  if(filtro.nombre == 'filtro_misAsignados3'){
-              const contenido = JSON.parse(atob(filtro.contenido));
-              this.buttonOn = contenido.boton
-              if(!contenido.boton == false){
-                this.buttonOn = true  
-                this.asignadoA = contenido.usuario
-              }
-            this.assigned_saved_search_id = filtro.saved_search_id  
-            }    
-          }
-      )}
-      this.getDocuments();
-      })
-    })
-
-  }
-
   // }
   /**
    * Método que sirve para filtrar los documentos y obtener los que están asignados al usuario logueado.
    *
    */
   filterByUser(){
-    console.log('this.arrayDocumentsfilter',this.arrayDocuments);
+    // console.log('this.arrayDocumentsfilter',this.arrayDocuments);
     let userLocal: string | null = localStorage.getItem('usuario');
     let assignedToMe: Documento[] = [];
     if(this.buttonOn == false){
@@ -549,6 +563,7 @@ export class SeccionDocumentosComponent implements OnInit {
           }
           // console.log("Activado",assignedToMe)
           this.listOfDocuments = assignedToMe;
+          // this.changeOrder()
       }else{
         this.buttonOn = false;
         this.listOfDocuments = []
