@@ -208,20 +208,18 @@ export class ModalDocumentosComponent implements OnInit {
 
       let body = JSON.stringify(jsbody);
 
-      this._uploadArchivoService.subirArchivo(respuesta.returnset[0].RId, this.archivo).subscribe()
-
-      /* this._documentService.ABMDocumento(body).subscribe(respuesta => {
+      this._documentService.ABMDocumento(body).subscribe(respuesta => {
 
         console.log(respuesta.returnset[0].RId)
 
-        if(respuesta.returnset[0].RId){
+        /* if(respuesta.returnset[0].RId){
 
           this._uploadArchivoService.subirArchivo(respuesta.returnset[0].RId, this.archivo).subscribe()
 
-        }
+        } */
 
         window.location.reload();
-      }); */
+      });
     })
   }
 
