@@ -1,11 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { UsuarioRolRefact } from 'src/app/interfaces/usuarioRolRefact';
 import { UsuarioService } from 'src/app/services/i2t/usuario-rol.service';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ProyectoDataService } from 'src/app/services/i2t/proyecto-data.service';
-import { TareaService } from 'src/app/services/i2t/tarea.service';
-import { UsuarioRol } from 'src/app/interfaces/usuario-rol';
 import { EquipoService } from 'src/app/services/i2t/equipo.service';
 export interface Usuario {
   id_usuario: string,
@@ -31,7 +27,6 @@ const LINKEDIN_ICONO = `
   </svg>
 `;
 
-
 @Component({
   selector: 'app-equipo',
   templateUrl: './equipo.component.html',
@@ -46,15 +41,12 @@ export class EquipoComponent implements OnInit {
   roles: Array<any> = []; // Es solo para generar la tabla desplegable
   filtro = { nombre_usuario: "", rol: ""}
   labelRol = document.getElementById("rol");
-  listaLinkedin = [{}];
   proyectosTotales = [];
   tareasTotales = [[]];
 
   constructor(
     private _iconRegistry: MatIconRegistry,
     private sanitizer: DomSanitizer,
-    private _proyectosService: ProyectoDataService,
-    private _tareasService : TareaService,
     private _usuarioService: UsuarioService,
     private _equipoService: EquipoService) {
 
@@ -68,28 +60,10 @@ export class EquipoComponent implements OnInit {
       this._usuarioService.getRoles().subscribe(r => {
 
         this._equipoService.getUsuarios().subscribe();
-
-       /*  this._proyectosService.getTodosLosProyectos().subscribe( proyectos => {
-          this.proyectosTotales = proyectos.dataset;
-          console.log(this.proyectosTotales)
-          this.proyectosTotales.forEach((proyecto: any) => {
-            this._tareasService.getTareasDeProyecto(proyecto.id_projecto).subscribe( (tarea : any) => {
-              if(tarea.dataset.length > 0){
-                this.tareasTotales.push(tarea.dataset);
-              }
-            })
-          })
-        }) */
         this.roles = r.dataset;
         this.usuariosRest = respuesta.dataset;
         this.organizarUsuarios();
         this.usuariosOriginal = this.usuarios;
-        this.usuarios.forEach( usuario => {
-          this.listaLinkedin.push({
-            nombre_usuario : usuario.nombre_usuario,
-            linkedin : ""
-          })
-        })
         document.getElementById("rol")!.innerText = "Todos";
       })
     });
@@ -111,6 +85,7 @@ export class EquipoComponent implements OnInit {
           roles.push(uR.name_fun);
         }
       })
+      
       console.log("ROLES:")
       console.log(roles)
       // 2)
@@ -136,8 +111,6 @@ export class EquipoComponent implements OnInit {
         })        
       }
     })
-    console.log("USUARIOS")
-    console.log(this.usuarios)
 
     // Organiza los usuarios albafeticamente por nombre
     this.usuarios.sort((a: Usuario, b: Usuario) => {
@@ -152,7 +125,7 @@ export class EquipoComponent implements OnInit {
 
   /**
    * Metodo temporal hasta que el sp disponga de los linked in de cada usuario.
-   * Recorre el arreglo de links de linkedin, y si el nombre o el apellido coinciden en alguna parte del link, retorna ese link
+   * Recorre el arreglo de links de linkedin, y si el nombre y/o el apellido coinciden en alguna parte del link, retorna ese link
    * 
    * @param nombre string
    * @param apellido string
@@ -170,16 +143,19 @@ export class EquipoComponent implements OnInit {
       "https://www.linkedin.com/in/patricio-macagno-02340922b/"
     ]
 
-    console.log(nombre)
+    let nombreDesglosado = nombre.toLocaleLowerCase().split(" ");
     
-    /* links.forEach( link => {
-      if(link.includes(nombre.toLocaleLowerCase())){
-        retorno = link;
-      }else if (link.includes(apellido.toLocaleLowerCase())){
+    links.forEach( link => {
+      let coincidencias = 0;
+      nombreDesglosado.forEach( n => {
+        if(link.includes(n)){
+          coincidencias ++;
+        }
+      })
+      if (coincidencias >= 2){
         retorno = link;
       }
-    }) */
-    
+    })
     return retorno;
   }
 
@@ -236,7 +212,6 @@ export class EquipoComponent implements OnInit {
  * Metodo encargado de filtrar los elementos del arreglo de usuarios segun un filtro pasado por parametro.
  * Utiliza la funcion Array.prototype.filter, que recibe un callback en el que se definen las condiciones para que el usuario actual sea almacenado o no en el arreglo de usuarios a mostrar. Si devuelve false, el usuario no es almacenado.
  * Esta es la manera de implementar el filtro de nombre y rol en simultaneo.
- * 
  * 
  * @param filtro Objeto
  */

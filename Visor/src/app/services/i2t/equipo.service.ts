@@ -23,9 +23,10 @@ export class EquipoService {
     return this._restService.callProcedimientoVisor(jsbody, "SeccionEquipo");
   }
 
-  public getProyectosAnteriores(){
+  public getProyectosAnteriores(id: string){
     let jsbody : string = JSON.stringify({
-      nivel: "4"
+      nivel: "4",
+      users_id: id
     })
     return this._restService.callProcedimientoVisor(jsbody, "SeccionEquipo");
   }
