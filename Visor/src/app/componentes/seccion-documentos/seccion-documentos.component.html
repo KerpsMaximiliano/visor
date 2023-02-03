@@ -18,31 +18,31 @@
             <mat-icon id="iconCircle">add_circle</mat-icon> <!-- Icono que abre el dialog para agregar documentos -->
             <button id="assignedButton" mat-stroked-button (click)="filterByUser()" [ngClass]="{'buttonOn': buttonOn}">Asignados a mi</button>
             <mat-icon (click)="openFilter()" id="iconFilter">filter_alt</mat-icon> <!-- Icono que abriría el filtro -->
-        </div>
-        <div class="container-informacion">
-            <div id="informacion-section" [ngClass]="{ 'visible': estadoInfo == true, 'noVisible': estadoInfo == false }">
-                <div class="informacion-letters" id="container-icon">
-                    <div class="informacion-icons" class="fas fa-file">Generales</div>     
-                </div> 
-                <div class="informacion-letters" id="container-icon">
-                    <div class="informacion-icon" class="far fa-file">Ventas</div>
+            <div class="container-informacion">
+                <div id="informacion-section" [ngClass]="{ 'visible': estadoInfo == true, 'noVisible': estadoInfo == false }">
+                    <div class="informacion-letters" id="container-icon">
+                        <div class="informacion-icons" class="fas fa-file">Generales</div>     
+                    </div> 
+                    <div class="informacion-letters" id="container-icon">
+                        <div class="informacion-icon" class="far fa-file">Ventas</div>
+                    </div>
+                    <div id="container-icon" class="informacion-letters">
+                            <div id="informacion-icon" class="fa-solid fa-file-lines">Diseño</div>
+                    </div>
+                    <div id="container-icon" class="informacion-letters">
+                        
+                            <div id="informacion-icon" class="fa-solid fa-file-lines">Testing</div>
+                     
+                    </div>
+                    <div id="container-icon" class="informacion-letters">
+                            <div class="informacion-icon" class="fa-file-lines fa-solid">Implementacion</div>
+                    </div>
+                    <div id="container-icon" class="informacion-letters">
+                        <div class="informacion-icon" class="fa-archive fas">Mantenimiento</div>
+                    </div>
                 </div>
-                <div id="container-icon" class="informacion-letters">
-                        <div id="informacion-icon" class="fa-solid fa-file-lines">Diseño</div>
-                </div>
-                <div id="container-icon" class="informacion-letters">
-                    
-                        <div id="informacion-icon" class="fa-solid fa-file-lines">Testing</div>
-                 
-                </div>
-                <div id="container-icon" class="informacion-letters">
-                        <div class="informacion-icon" class="fa-file-lines fa-solid">Implementacion</div>
-                </div>
-                <div id="container-icon" class="informacion-letters">
-                    <div class="informacion-icon" class="fa-archive fas">Mantenimiento</div>
-                </div>
+                <button class="informacion-button" (click)="showInformacion()" matTooltip="Información" mat-mini-fab color="primary"><mat-icon class="icony">info</mat-icon></button>
             </div>
-            <button class="informacion-button" (click)="showInformacion()" matTooltip="Información" mat-mini-fab color="primary"><mat-icon class="icony">info</mat-icon></button>
         </div>
     </div> <!-- Termina el header -->
 
@@ -81,7 +81,7 @@
                 <p class="letters-date"><b>{{d.active_date}}</b></p>
             </div>
             <div class="card-content-end">
-                <p class="letters"><b>{{d.user_name}}</b></p>
+                <p class="letters"><b>{{d.nombre_usuario}}</b></p>
             </div>
             <div class="card-content-icon">
                 <i id="list-icon" class="{{iconChecker(d)}}"></i>

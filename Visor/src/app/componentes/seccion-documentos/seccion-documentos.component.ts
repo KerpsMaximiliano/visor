@@ -118,7 +118,7 @@ export class SeccionDocumentosComponent implements OnInit {
             }  if(filtro.nombre == 'filtro_misAsignados3'){
               const contenido = JSON.parse(atob(filtro.contenido));
               this.buttonOn = contenido.boton
-              console.log(' this.buttonOn', contenido.boton);
+              // console.log(' this.buttonOn', contenido.boton);
               
               if(!contenido.boton == false){
                 this.buttonOn = true  
@@ -156,6 +156,7 @@ export class SeccionDocumentosComponent implements OnInit {
           id: result.dataset[i].id,
           document_name:result.dataset[i].document_name,
           name: result.dataset[i].name,
+          nombre_usuario: result.dataset[i].nombre_usuario,
           user_name: result.dataset[i].user_name,
           category: result.dataset[i].category,
           type: result.dataset[i].type,
@@ -180,6 +181,7 @@ export class SeccionDocumentosComponent implements OnInit {
           id: result.dataset[i].id,
           document_name:result.dataset[i].document_name,
           name: result.dataset[i].name,
+          nombre_usuario: result.dataset[i].nombre_usuario,
           user_name: result.dataset[i].user_name,
           category: result.dataset[i].category,
           type: result.dataset[i].type,

@@ -8,7 +8,7 @@
 /* Header */
 
 #container-header{
-    margin-bottom: 130px;
+    margin-bottom: 10px;
 }
 
 #container-header-top{
@@ -49,8 +49,11 @@
 }
 
 .container-informacion{
-    float: right;
-    display: flex; 
+    /* float: left; */
+    /* display: flex;  */
+    position: absolute;
+    z-index: 2;
+    right: 40px;
 }
 
 .informacion-letters{
@@ -93,7 +96,7 @@
 }
 
 #document-card{
-    height: 55%;
+    height: 50%;
     width: 19%;
     float: left;
     margin: 0.5%;
@@ -158,6 +161,9 @@
 
 #list-icon{
     font-size: 35px;
+    position: absolute;
+    right: 20px;
+    bottom: 10px;
 }
 
 
