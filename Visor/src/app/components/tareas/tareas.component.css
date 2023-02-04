@@ -32,7 +32,9 @@ h1, h3{
 }
 
 .contenedor > h1{
-    width: 65%;
+    /* width: 47em; */
+    width: 24em;
+    margin-left: 3%;
     text-align: center;
 }
 .buscadores{

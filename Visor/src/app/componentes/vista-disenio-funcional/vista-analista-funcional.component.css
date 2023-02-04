@@ -1,5 +1,5 @@
 * {
-    padding: 0;
+    
     margin: 0;
     text-decoration: none;
     list-style: none;
@@ -112,6 +112,7 @@ mat-accordion mat-expansion-panel-header {
     border: 1.5px solid black;
     border-radius: 4px;
     width: 100%;
+    padding: 16px 0 0 0;
 }
 
 .titulo-container {
