@@ -67,9 +67,6 @@
                 'mantenimiento-document-border': isMantenimiento(d),
                 'implementacion-document-border': isImplementacion(d)
             }">
-        <div class="card-content">
-          <p class="letters"><b>{{d.filename}}</b></p>
-        </div>
         <div class="container-icons">
           <p><b>{{d.document_name}}</b>
             <i id="remove-icon" class="fas fa-trash-alt" (click)="abrirBajaDocumento(d)"
