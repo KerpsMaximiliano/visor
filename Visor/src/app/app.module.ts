@@ -7,14 +7,11 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
-
-
 //Material
 import { MyMaterialModule } from './material';
 
 //Interceptors
 import { LoggerInterceptor } from './interceptors/logger.interceptor';
-
 
 // Componentes
 import { LoginModule } from './componentes/login/login.module';
@@ -53,6 +50,8 @@ import { ModalFiltroDocumentosModule } from './shared/modal-filtro-documentos/mo
 import { SeccionDocumentosModule } from './componentes/seccion-documentos/seccion-documentos.module';
 import { NgxPaginationModule } from 'ngx-pagination';
 
+// TODO: Import TestEstadoModule ( Sección inicio - Estado de proyectos )
+import { TestEstadoModule } from './componentes/inicio/test/test-estado-proyecto.module';
 
 @NgModule({
   declarations: [
@@ -63,8 +62,23 @@ import { NgxPaginationModule } from 'ngx-pagination';
     InicioMainComponent,
     TopbarComponent,
     ModalFiltroComponent,
-    DashboardComponent
+    DashboardComponent,
   ],
+  //Proveedores agregados
+  providers: [
+    RestService,
+    LoginService,
+    Config,
+    MatSnackBar,
+    SnackbarService,
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoggerInterceptor,
+      multi: true,
+    },
+  ],
+  bootstrap: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -86,24 +100,9 @@ import { NgxPaginationModule } from 'ngx-pagination';
     RecuperarcontraseniaModule,
     ModalFiltroDocumentosModule,
     SeccionDocumentosModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    // TODO: Import TestEstadoModule ( Sección inicio - Estado de proyectos )
+    TestEstadoModule,
   ],
-
-  //Proveedores agregados
-  providers: [
-    RestService,
-    LoginService,
-    Config,
-    MatSnackBar,
-    SnackbarService,
-    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: LoggerInterceptor,
-      multi: true
-    }
-  ],
-  bootstrap: [AppComponent]
 })
-export class AppModule { }
-
+export class AppModule {}
