@@ -1,12 +1,13 @@
 export interface Documento {
-    id: string,
-    filename: string,
-    document_name: string,
-    case_name: string,
-    type: string,
-    assigned: string,
-    documentStatus: string,
-    date: string
-    finishedDate: string,
-    category: string //Determina el aspecto de la tarjeta. 
+  id: string;
+  document_name: string;
+  name: string;
+  type: string;
+  user_name: string;
+  nombre_usuario: string;
+  status: string;
+  active_date: string;
+  finishedDate: string;
+  filename: string;
+  category: string; //Determina el aspecto de la tarjeta.
 }

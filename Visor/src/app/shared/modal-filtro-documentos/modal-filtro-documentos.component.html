@@ -18,8 +18,9 @@
     <!-- Document category select -->
     <mat-form-field class="select" appearance="outline">
         <mat-label>Categoría</mat-label>
-        <mat-select [(value)]="categorySelected">
-          <mat-option *ngFor="let c of categorys" [value]="c.valueOf">
+        <mat-select [(value)]="categoria" (selectionChange)="selectCategory($event)">
+          <mat-option [value]="null"></mat-option>
+          <mat-option *ngFor="let c of categorys" [value]="c">
             {{c}}
           </mat-option>
         </mat-select>
@@ -28,8 +29,9 @@
       <!-- Document type select -->
       <mat-form-field class="select" appearance="outline">
         <mat-label>Tipos</mat-label>
-        <mat-select [(value)]="typeSelected"> 
-          <mat-option *ngFor="let t of types" [value]="t.valueOf">
+        <mat-select [disabled]="!categoria || categoria == ''" [(value)]="tipo" (selectionChange)="selectTipo($event)">
+          <mat-option [value]="null"></mat-option>
+          <mat-option *ngFor="let t of types" [value]="t" >
             {{t}}
           </mat-option>
         </mat-select>
@@ -43,10 +45,11 @@
 
     <!-- Document condition select -->
     <mat-form-field class="select" appearance="outline">
-        <mat-label>Estados</mat-label>
-        <mat-select [(value)]="statusSelected">
-          <mat-option *ngFor="let c of conditions" [value]="c.valueOf">
-            {{c}}
+        <mat-label>Estado</mat-label>
+        <mat-select [(value)]="estado" (selectionChange)="selectEstado($event)">
+          <mat-option [value]="null"></mat-option>
+          <mat-option *ngFor="let e of estados" [value]="e">
+            {{e}}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -55,39 +58,44 @@
       <div id="container-dates">
         <mat-form-field appearance="outline" class="picker1">
           <mat-label>Desde</mat-label>
-          <input matInput [matDatepicker]="picker1">
+          <input matInput [(ngModel)]="publicacionDesde" [matDatepicker]="picker1"  (dateChange)="getFechaPublicacionDesde($event)">
           <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-          <mat-datepicker #picker1 startView="year"></mat-datepicker>
+          <mat-datepicker #picker1></mat-datepicker>
         </mat-form-field>
-  
+
         <mat-form-field appearance="outline" class="picker2">
           <mat-label>Hasta</mat-label>
-          <input matInput [matDatepicker]="picker2">
+          <input matInput [(ngModel)]="publicacionHasta" [matDatepicker]="picker2" (dateChange)="getFechaPublicacionHasta($event)">
           <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-          <mat-datepicker #picker2 startView="year"></mat-datepicker>
+          <mat-datepicker #picker2></mat-datepicker>
         </mat-form-field>
-      </div> 
+      </div>
 
       <h4 class="subtitle">Fecha de caducidad</h4>
       <div id="container-dates">
         <mat-form-field appearance="outline" class="picker3">
           <mat-label>Desde</mat-label>
-          <input matInput [matDatepicker]="picker3">
+          <input matInput [(ngModel)]="caducidadDesde" [matDatepicker]="picker3" (dateChange)="getFechaCaducidadDesde($event)">
           <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
-          <mat-datepicker #picker3 startView="year"></mat-datepicker>
-        </mat-form-field>
-  
-        <mat-form-field appearance="outline" class="picker4">
-          <mat-label>Hasta</mat-label>
-          <input matInput [matDatepicker]="picker4">
-          <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
-          <mat-datepicker #picker4 startView="year"></mat-datepicker>
+          <mat-datepicker #picker3></mat-datepicker>
         </mat-form-field>
 
-      </div> 
+        <mat-form-field appearance="outline" class="picker4">
+          <mat-label>Hasta</mat-label>
+          <input matInput [(ngModel)]="caducidadHasta" [matDatepicker]="picker4" (dateChange)="getFechaCaducidadHasta($event)">
+          <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+          <mat-datepicker #picker4></mat-datepicker>
+        </mat-form-field>
+
+      </div>
       <div id="container-buttons">
-        <button class="blue" mat-stroked-button (click)="limpiarFiltro()">Limpiar</button>
-        <button class="red" mat-stroked-button (click)="cancelarBusqueda()">Cancelar</button>
-        <button class="green" mat-stroked-button [mat-dialog-close]="result" (click)="guardarFiltro()">Aplicar</button>
+          <!-- <button class="blue" mat-stroked-button (click)="limpiarFiltro()">Limpiar</button> -->
+          <button mat-raised-button color="primary" class="limpiar" (click)="limpiarFiltro()">Limpiar</button>
+        <div>
+          <!-- <button class="red" mat-stroked-button (click)="cancelarBusqueda()">Cancelar</button> -->
+          <button class="cancelar" mat-stroked-button (click)="cancelarBusqueda()">Cancelar</button>
+          <button class="aplicar" mat-stroked-button (click)="guardarFiltro()">Aplicar</button>
+          <!-- <button class="green" mat-stroked-button (click)="guardarFiltro()">Aplicar</button> -->
+        </div>
       </div>
 </div>

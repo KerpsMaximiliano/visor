@@ -1,57 +1,64 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+  integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+  crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <div id="container-all">
-    <div id="container-header"> <!-- Comienza el header -->
-        <div id="container-header-top">
-            <mat-form-field id="projectInput" appearance="outline">
-                <mat-label>Buscar documento</mat-label>
-                <input matInput>
-            </mat-form-field>
-            <div id="container-select">
-                <button id="button-orden" mat-button [matMenuTriggerFor]="menuOrden"> {{ordenSeleccion}} <mat-icon>expand_more</mat-icon></button>
-                <mat-menu #menuOrden="matMenu"><button mat-button *ngFor="let o of orden" class="menu-orden" (click)="shotOrder($event)">{{o}}</button></mat-menu>
-            </div>
-        </div>
-        <div id="container-header-bot">
-            <mat-icon id="btnABMDocumentos" (click)="abrirABMDocumentos()" matTooltip="Agregar documento">add_circle</mat-icon> <!-- Icono que abre el dialog para agregar documentos -->
-            <button id="assignedButton" mat-stroked-button (click)="filterByUser()" [ngClass]="{'buttonOn': buttonOn}">Asignados a mi</button>
-            <mat-icon (click)="openFilter()" id="iconFilter">filter_alt</mat-icon> <!-- Icono que abriría el filtro -->
-        </div>
-        <div class="container-informacion">
-            <div id="informacion-section" [ngClass]="{ 'visible': estado == true, 'noVisible': estado == false }">
-                <div id="container-icon">
-                    <i id="informacion-icon" class="fas fa-file"></i>
-                    <p class="informacion-letters">Generales</p>
-                </div>
-                <div id="container-icon">
-                    <div class="informacion-icon">
-                        <i id="informacion-icon" class="far fa-file"></i>
-                    </div>
-                    <p class="informacion-letters">Ventas</p>
-                </div>
-                <div id="container-icon">
-                    <div class="informacion-icon">
-                        <i id="informacion-icon" class="fa-solid fa-file-lines"></i>
-                    </div>
-                    <p class="informacion-letters">Diseño</p>
-                </div>
-                <div id="container-icon">
-                    <div class="informacion-icon">
+  <div id="container-header"> <!-- Comienza el header -->
+    <div id="container-header-top">
+      <mat-form-field id="projectInput" appearance="outline">
+        <!-- <mat-label>Buscar documento</mat-label> -->
+        <!-- <input matInput> -->
+        <input matInput type="text" placeholder="Buscar documento" autocomplete="off"
+          (keyup)="cerrarTablaDocumentos($event)" (keyup.enter)="buscarDocumentos($event)">
 
-                    </div>
-                    <p class="informacion-letters">Completadas</p>
-                </div>
-            </div>
-            <button class="informacion-button" (click)="showInformacion()" matTooltip="Información" mat-mini-fab color="primary"><mat-icon class="icony">info</mat-icon></button>
-        </div>
-    </div> <!-- Termina el header -->
+      </mat-form-field>
+      <div id="container-select">
+        <button id="button-orden" mat-button [matMenuTriggerFor]="menuOrden"> {{ordenSeleccion}}
+          <mat-icon>expand_more</mat-icon></button>
+        <mat-menu #menuOrden="matMenu"><button mat-button *ngFor="let o of orden" class="menu-orden"
+            (click)="shotOrder($event)">{{o}}</button></mat-menu>
+      </div>
+    </div>
+    <div id="container-header-bot">
+      <mat-icon id="btnABMDocumentos" (click)="abrirABMDocumentos()"
+        matTooltip="Agregar documento">add_circle</mat-icon> <!-- Icono que abre el dialog para agregar documentos -->
+      <button id="assignedButton" mat-stroked-button (click)="filterByUser()"
+        [ngClass]="{'buttonOn': buttonOn}">Asignados a mi</button>
+      <mat-icon (click)="openFilter()" id="iconFilter">filter_alt</mat-icon> <!-- Icono que abriría el filtro -->
+      <div class="container-informacion">
+        <div id="informacion-section" [ngClass]="{ 'visible': estadoInfo == true, 'noVisible': estadoInfo == false }">
+          <div class="informacion-letters" id="container-icon">
+            <div class="informacion-icons" class="fas fa-file">Generales</div>
+          </div>
+          <div class="informacion-letters" id="container-icon">
+            <div class="informacion-icon" class="far fa-file">Ventas</div>
+          </div>
+          <div id="container-icon" class="informacion-letters">
+            <div id="informacion-icon" class="fa-solid fa-file-lines">Diseño</div>
+          </div>
+          <div id="container-icon" class="informacion-letters">
 
-    <div id="container-body"> <!-- Comienza el body -->
-        <div id="container-cards-documents">
-            <mat-card 
-            id="document-card" *ngFor="let d of listOfDocuments | paginate: {itemsPerPage: 30, currentPage: page } let i = index " 
-            class="pdf-document-border" 
-            [ngClass]="{ 
+            <div id="informacion-icon" class="fa-solid fa-file-lines">Testing</div>
+
+          </div>
+          <div id="container-icon" class="informacion-letters">
+            <div class="informacion-icon" class="fa-file-lines fa-solid">Implementacion</div>
+          </div>
+          <div id="container-icon" class="informacion-letters">
+            <div class="informacion-icon" class="fa-archive fas">Mantenimiento</div>
+          </div>
+        </div>
+        <button class="informacion-button" (click)="showInformacion()" matTooltip="Información" mat-mini-fab
+          color="primary"><mat-icon class="icony">info</mat-icon></button>
+      </div>
+    </div>
+  </div> <!-- Termina el header -->
+
+  <div id="container-body"> <!-- Comienza el body -->
+    <div id="container-cards-documents">
+      <mat-card id="document-card"
+        *ngFor="let d of listOfDocuments | paginate: {itemsPerPage: 30, currentPage: page } let i = index "
+        class="pdf-document-border" [ngClass]="{
                 'disenio-document-border': isDisenio(d),
                 'ventas-document-border': isVentas(d),
                 'general-document-border': isGeneral(d),
@@ -59,45 +66,42 @@
                 'testing-document-border': isTesting(d),
                 'mantenimiento-document-border': isMantenimiento(d),
                 'implementacion-document-border': isImplementacion(d)
-            }"
-            >
-            <div class="card-content">
-                <p class="letters"><b>{{d.filename}}</b></p>
-            </div>
-            <div class="container-icons">
-                <i id="download-icon" class="fas fa-download" matTooltip="Descargar documento"></i>
-                <i id="edit-icon" class="fas fa-edit" (click)="abrirEditarDocumento(d)" matTooltip="Editar documento"></i>
-                <i id="remove-icon" class="fas fa-trash-alt" (click)="abrirBajaDocumento(d)" matTooltip="Eliminar documento"></i>
-            </div>
-            <div class="card-content">
-                <p class="letters"><b>{{d.document_name}}</b></p>
-            </div>
-            <div class="card-content">
-                <p class="letters"><b>{{d.category}}</b></p>  
-                <p class="letters-date"><b>{{d.date}}</b></p>  
-            </div>
-            <div class="card-content">
-                <p class="letters"><b>{{d.type}}</b></p>
-            </div>
-            <div class="card-content">
-                <p class="letters"><b>{{d.assigned}}</b></p>
-            </div>
-            <div class="card-content-end">
-                <p class="letters"><b [ngClass]="{
-                    'publicado-document-status': isPublicado(d),
-                    'borrador-document-status': isBorrador(d),
-                    'eliminado-document-status': isEliminado(d)}">
-                    {{d.documentStatus}}
-                </b></p>
-            </div>
-            <div class="card-content-icon">
-                <i id="list-icon" class="{{iconChecker(d)}}"></i>
-            </div>
-            </mat-card>    
+            }">
+        <div class="card-content">
+          <p class="letters"><b>{{d.filename}}</b></p>
         </div>
-    </div> <!-- Termina el body -->
+        <div class="container-icons">
+          <p><b>{{d.document_name}}</b>
+            <i id="remove-icon" class="fas fa-trash-alt" (click)="abrirBajaDocumento(d)"
+              matTooltip="Eliminar documento"></i>
+            <i id="edit-icon" class="fas fa-edit" (click)="abrirEditarDocumento(d)" matTooltip="Editar documento"></i>
+            <i id="download-icon" class="fas fa-download" matTooltip="Descargar documento"></i>
+          </p>
+        </div>
+        <div class="card-content">
+          <b class="letters">{{d.name}}</b>
+          <b [ngClass]="{
+                'publicado-document-status': isPublicado(d),
+                'borrador-document-status': isBorrador(d),
+                'eliminado-document-status': isEliminado(d)}">
+            {{d.status}}
+          </b>
+        </div>
+        <div class="card-content">
+          <p class="letters"><b>{{d.type}}</b></p>
+          <p class="letters-date"><b>{{d.active_date}}</b></p>
+        </div>
+        <div class="card-content-end">
+          <p class="letters"><b>{{d.nombre_usuario}}</b></p>
+        </div>
+        <div class="card-content-icon">
+          <i id="list-icon" class="{{iconChecker(d)}}"></i>
+        </div>
+      </mat-card>
+    </div>
+  </div> <!-- Termina el body -->
 </div>
 <div id="container-pagination">
-    <pagination-controls (pageChange)="page = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+  <pagination-controls (pageChange)="page = $event" previousLabel="Anterior"
+    nextLabel="Siguiente"></pagination-controls>
 </div>
-

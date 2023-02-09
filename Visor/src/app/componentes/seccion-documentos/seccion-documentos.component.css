@@ -8,7 +8,7 @@
 /* Header */
 
 #container-header{
-    margin-bottom: 130px;
+    margin-bottom: 10px;
 }
 
 #container-header-top{
@@ -50,13 +50,17 @@
 }
 
 .container-informacion{
-    float: right;
-    display: flex; 
+    /* float: left; */
+    /* display: flex;  */
+    position: absolute;
+    z-index: 2;
+    right: 40px;
 }
 
 .informacion-letters{
     font-size: 9px;
-    margin-left: 2px;
+    /* margin-left: 2px; */
+    /* float: left; */
 }
 
 #section-icon{
@@ -74,7 +78,7 @@
     background-color: white;
     border: 1px solid black;
     height: 126px;
-    width: 85px;
+    width: 110px;
     border-radius: 5px;
     padding: 3px;
 }
@@ -82,8 +86,8 @@
 /* Body */
 
 #container-body{
-    height: 100%;
-    text-align: center;
+    height: 70%;
+    /* text-align: center; */
 }
 
 #container-cards-documents{
@@ -93,7 +97,7 @@
 }
 
 #document-card{
-    height: 258px;
+    height: 50%;
     width: 19%;
     float: left;
     margin: 0.5%;
@@ -104,12 +108,12 @@
 }
 
 .letters{
-    font-size: 13px;
+    font-size: 12px;
+    width: 70%;
 }
 
 .container-icons{
     margin-top: 1%;
-    text-align: right;
 }
 
 .container-icons i{
@@ -117,20 +121,27 @@
     margin-bottom: 3%;
 }
 
+.container-icons p{
+    font-size: 18px;
+}
+
 #remove-icon{
-    font-size: 23px;
+    font-size: 18px;
+    float: right;
     color: red;
     cursor: pointer;
 }
 
 #download-icon{
-    font-size: 23px;
+    font-size: 18px;
+    float: right;
     cursor: pointer;
     color: black;
 }
 
 #edit-icon{
-    font-size: 23px;
+    font-size: 18px;
+    float: right;
     color: cornflowerblue;
     cursor: pointer;
 }
@@ -141,19 +152,25 @@
 
 .card-content-end{
     display: flex;
+    /* margin-bottom: 1%; */
 }
 
 .card-content-icon{
     text-align: right;
+    /* position: static; */
 }
 
 #list-icon{
     font-size: 35px;
+    position: absolute;
+    right: 20px;
+    bottom: 10px;
 }
 
+
 .letters-date{
-    font-size: 13px;
-    padding-left: 10%;
+    font-size: 12px;
+    float: right;
 }
 
 #container-select{
@@ -165,6 +182,7 @@
 
 .container-icon{
     display: flex;
+
 }
 
 .container-informacion{
@@ -173,7 +191,7 @@
 }
 
 .informacion-icon{
-    font-size: 10px;
+    font-size: 14px;
 }
 
 
@@ -226,6 +244,7 @@
 
 .publicado-document-status{
     color: green;
+    
 }
 
 .borrador-document-status{
@@ -233,5 +252,8 @@
 }
 
 .buttonOn{
-    background-color: lightgreen;
+    /* background-color: lightgreen; */
+    background-color: #3f51b5;
+    color: white;
+    
 }

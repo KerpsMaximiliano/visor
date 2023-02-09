@@ -7,21 +7,22 @@ export class Document {
     "Diseño", 
     "Desarrollo",
     "Testing", 
-    "Implementación", 
+    "Implementacion", 
     "Mantenimiento"];
     
-    typeOfDocuments: string[] = [
-    "Identificación de necesidades",
+    types: string[] = [
+    "Identificacion de Necesidades",
     "Plan de proyecto",
     "Requerimientos",
-    "Estimación de tareas",
+    "Estimacion de tareas",
     "Product backlog",
     "Sprint backlog",
     "Documento",
     "Propuesta funcional",
     "Arquitectura",
-    "Caso de uso",
-    "Requerimiento de configuración",
+    "Caso de Uso",
+    "Despliegue Proceso Produccion",
+    "Requerimiento de configuracion",
     "Boceto/Maqueta",
     "Nota de desarrollo",
     "Plan de pruebas",
@@ -29,10 +30,11 @@ export class Document {
     "Ciclo/corrida",
     "Incidencia",
     "Proceso de despliegue",
-    "Requerimientos de cambios",
-    "Estimación de cambios"];
+    "Requerimientos de Cambios",
+    "Estimacion de Cambios"
+    ];
 
-    conditions: string[] = [
+    estados: string[] = [
         "Borrador",
         "Publicado",
         "Eliminado"

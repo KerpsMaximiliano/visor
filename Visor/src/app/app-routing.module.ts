@@ -20,43 +20,48 @@ import { SeccionDocumentosComponent } from './componentes/seccion-documentos/sec
 
 const routes: Routes = [
   {
-    path: "",
-    pathMatch: "full",
-    redirectTo: "login"
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'login',
   },
   { path: 'documentos', component: SeccionDocumentosComponent },
   {
-    path: "login",
-    component: LoginComponent
+    path: 'login',
+    component: LoginComponent,
   },
   {
-    path: "recuperar-contraseña",
-    component: RecuperarcontraseniaComponent
+    path: 'recuperar-contraseña',
+    component: RecuperarcontraseniaComponent,
   },
   {
-    path: "dashboard",
+    path: 'dashboard',
     canActivate: [AuthGuard],
     canActivateChild: [AuthGuard],
     component: DashboardComponent,
-    children:[
-      { path: 'inicio', canActivate: [AuthGuard], component: InicioMainComponent },
-      { path: 'tareas', component: TareasComponent },
-      { path: 'documentos', component: SeccionDocumentosComponent},
-      { path: 'configuraciones', component: ConfiguracionesComponent,
-        children: [
-        { path: 'roles-usuarios', component: RolesUsuariosComponent },
-        { path: 'permisos-roles', component: PermisosRolesComponent }
-        ] 
+    children: [
+      {
+        path: 'inicio',
+        canActivate: [AuthGuard],
+        component: InicioMainComponent,
       },
-      {path: 'tareas', component: TareasComponent},
-      {path: '',component:InicioMainComponent}
-
-    ]
-  }
+      { path: 'tareas', component: TareasComponent },
+      { path: 'documentos', component: SeccionDocumentosComponent },
+      {
+        path: 'configuraciones',
+        component: ConfiguracionesComponent,
+        children: [
+          { path: 'roles-usuarios', component: RolesUsuariosComponent },
+          { path: 'permisos-roles', component: PermisosRolesComponent },
+        ],
+      },
+      { path: 'tareas', component: TareasComponent },
+      { path: '', component: InicioMainComponent },
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

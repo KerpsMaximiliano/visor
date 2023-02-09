@@ -1213,11 +1213,11 @@ export class DialogComponent implements OnInit {
 
   
 
-  french() {
-    this._locale = 'fr';
-    this._adapter.setLocale(this._locale);
+  // french() {
+  //   this._locale = 'fr';
+  //   this._adapter.setLocale(this._locale);
 
-  }
+  // }
 
   getDateFormatString(): string {
     
