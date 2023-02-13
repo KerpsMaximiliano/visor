@@ -1,0 +1,16 @@
+<ng-container *ngFor="let item of data; let i = index">
+  <h4 class="h4" *ngIf="title[i] !== 'Default'; else defaultData">{{ title[i] }}</h4>
+  <ng-template #defaultData>
+    <h4 *ngIf="total[i] !== 0" class="h4">{{ title[i] }}</h4>
+  </ng-template>
+  <div [ngStyle]="grid[i]" id="container" *ngIf="total[i] !== 0; else notData">
+    <span *ngIf="item[0] > 0" [ngStyle]="{backgroundColor: '#808080'}">{{ item[0] }}%</span>
+    <span *ngIf="item[1] > 0" [ngStyle]="{backgroundColor: '#dc3545'}">{{ item[1] }}%</span>
+    <span *ngIf="item[2] > 0" [ngStyle]="{backgroundColor: '#ffc107'}">{{ item[2] }}%</span>
+    <span *ngIf="item[3] > 0" [ngStyle]="{backgroundColor: '#009bd6'}">{{ item[3] }}%</span>
+    <span *ngIf="item[4] > 0" [ngStyle]="{backgroundColor: '#198754'}">{{ item[4] }}%</span>
+  </div>
+  <ng-template #notData>
+    <h4 *ngIf="title[i] !== 'Default' && total[i] === 0" class="h4 noTasks">Este área no tiene tareas asignadas.</h4>
+  </ng-template>
+</ng-container>

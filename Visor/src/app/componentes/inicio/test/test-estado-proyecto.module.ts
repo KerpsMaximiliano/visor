@@ -16,10 +16,21 @@ import { MatTableModule } from '@angular/material/table';
 import { MyMaterialModule } from 'src/app/material';
 
 // * COMPONENTS
-import { TestEstadoProyectoComponent } from './test-estado-proyecto.component';
+import { ProjectsComponent } from './components/projects/projects.component';
+import { ProjectStatusComponent } from './components/project-status/project-status.component';
+import { ProjectAreasComponent } from './components/project-areas/project-areas.component';
+
+// * PIPES
+import { LateTasksPipe, OnTimeTasksPipe } from './pipes/project-tasks.pipe';
 
 @NgModule({
-  declarations: [TestEstadoProyectoComponent],
+  declarations: [
+    ProjectsComponent,
+    ProjectStatusComponent,
+    ProjectAreasComponent,
+    LateTasksPipe,
+    OnTimeTasksPipe,
+  ],
   imports: [
     CommonModule,
     MatFormFieldModule,
@@ -29,6 +40,6 @@ import { TestEstadoProyectoComponent } from './test-estado-proyecto.component';
     ScrollingModule,
     TableVirtualScrollModule,
   ],
-  exports: [TestEstadoProyectoComponent],
+  exports: [ProjectsComponent],
 })
-export class TestEstadoModule {}
+export class EstadoProyectoModule {}

@@ -51,7 +51,7 @@ import { SeccionDocumentosModule } from './componentes/seccion-documentos/seccio
 import { NgxPaginationModule } from 'ngx-pagination';
 
 // TODO: Import TestEstadoModule ( Sección inicio - Estado de proyectos )
-import { TestEstadoModule } from './componentes/inicio/test/test-estado-proyecto.module';
+import { EstadoProyectoModule } from './componentes/inicio/test/test-estado-proyecto.module';
 
 @NgModule({
   declarations: [
@@ -101,8 +101,8 @@ import { TestEstadoModule } from './componentes/inicio/test/test-estado-proyecto
     ModalFiltroDocumentosModule,
     SeccionDocumentosModule,
     NgxPaginationModule,
-    // TODO: Import TestEstadoModule ( Sección inicio - Estado de proyectos )
-    TestEstadoModule,
+    // TODO: Import EstadoProyectoModule ( Sección inicio - Estado de proyectos )
+    EstadoProyectoModule,
   ],
 })
 export class AppModule {}

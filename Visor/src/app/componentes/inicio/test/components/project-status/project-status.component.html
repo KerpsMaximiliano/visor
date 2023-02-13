@@ -1,0 +1,20 @@
+<ng-container *ngIf="total !== 0;else notData">
+  <h4 class="h4">Avance del proyecto</h4>
+  <div [ngStyle]="grid">
+    <!-- Index -->
+    <!-- [0]: defaultData; -->
+    <!-- [1]: notStarted; -->
+    <!-- [2]: inProgress; -->
+    <!-- [3]: inTest; -->
+    <!-- [4]: completed; -->
+    <span *ngIf="data[0] > 0" [ngStyle]="{backgroundColor: '#808080'}">{{ data[0] }}%</span>
+    <span *ngIf="data[1] > 0" [ngStyle]="{backgroundColor: '#dc3545'}">{{ data[1] }}%</span>
+    <span *ngIf="data[2] > 0" [ngStyle]="{backgroundColor: '#ffc107'}">{{ data[2] }}%</span>
+    <span *ngIf="data[3] > 0" [ngStyle]="{backgroundColor: '#009bd6'}">{{ data[3] }}%</span>
+    <span *ngIf="data[4] > 0" [ngStyle]="{backgroundColor: '#198754'}">{{ data[4] }}%</span>
+  </div>
+  <app-project-areas [id]="id"></app-project-areas>
+</ng-container>
+<ng-template #notData>
+  <h4 class="h4">No existe información sobre el avance de este proyecto.</h4>
+</ng-template>

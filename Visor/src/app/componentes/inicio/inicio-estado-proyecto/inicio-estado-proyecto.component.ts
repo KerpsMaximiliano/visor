@@ -99,7 +99,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
   }
 
   private obtenerProyectos() {
-    this._dataProyecto.getProyectos().subscribe((resp: any) => {
+    this._dataProyecto.getProjects().subscribe((resp: any) => {
       if (resp.returnset[0].RCode == 1) {
         let contadorHTCompletadas = 0;
         let contadorHTEnProgreso = 0;
@@ -181,7 +181,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
           let contadorHPTotalAreaTesting = 0;
 
           this._dataProyecto
-            .getPorcentajeHPAreas(this.proyectosTotalesArray[i].id, 'FALSE')
+            .getProjectAreas(this.proyectosTotalesArray[i].id, 'FALSE')
             .subscribe((resp: any) => {
               for (let r = 0; r < resp.dataset.length; r++) {
                 switch (resp.dataset[r].Area) {
@@ -435,7 +435,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
         let chtp = 0;
         for (let i = 0; i < this.proyectosTotalesArray.length; i++) {
           this._dataProyecto
-            .getPorcentajeHP(this.proyectosTotalesArray[i].id, 'FALSE')
+            .getProjectAreas(this.proyectosTotalesArray[i].id, 'FALSE')
             .subscribe((resp: any) => {
               for (let r = 0; r < resp.dataset.length; r++) {
                 switch (resp.dataset[r].Estado) {
@@ -548,7 +548,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
     let contadorHTEnProgreso = 0;
     let contadorHTEnPrueba = 0;
     let contadorHTNoIniciadas = 0;
-    this._dataProyecto.getProyectosAbiertos().subscribe((resp: any) => {
+    this._dataProyecto.getProjectsOpen().subscribe((resp: any) => {
       if (resp.returnset[0].RCode == 1) {
         for (let i = 0; i < resp.dataset.length; i++) {
           let objetoTemporal: Proyecto = {
@@ -627,7 +627,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
           let contadorHPTotalAreaTesting = 0;
 
           this._dataProyecto
-            .getPorcentajeHPAreas(this.proyectosAbiertosArray[i].id, 'TRUE')
+            .getProjectAreas(this.proyectosAbiertosArray[i].id, 'TRUE')
             .subscribe((resp: any) => {
               for (let r = 0; r < resp.dataset.length; r++) {
                 switch (resp.dataset[r].Area) {
@@ -881,7 +881,7 @@ export class InicioEstadoProyectoComponent implements OnInit {
         let chtp = 0;
         for (let i = 0; i < this.proyectosAbiertosArray.length; i++) {
           this._dataProyecto
-            .getPorcentajeHP(this.proyectosAbiertosArray[i].id, 'TRUE')
+            .getProjectStatus(this.proyectosAbiertosArray[i].id, 'TRUE')
             .subscribe((resp: any) => {
               for (let r = 0; r < resp.dataset.length; r++) {
                 switch (resp.dataset[r].Estado) {
